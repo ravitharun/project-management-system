@@ -1,7 +1,9 @@
-
+import Input from "../Components/Input"
 function App() {
   return (
-    <div className='bg-red-500'>App</div>
+    <>
+      <Input />
+    </>
   )
 }
 
