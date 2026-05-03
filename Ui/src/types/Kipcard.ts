@@ -1,0 +1,1 @@
+export type Kipcard = { title: string, value: string }
