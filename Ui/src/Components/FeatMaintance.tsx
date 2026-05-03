@@ -17,7 +17,7 @@ function FeatMaintenance({ children }: Props) {
 
     return (
       <div className="flex flex-col items-center justify-center gap-4 text-white">
-        <h2 className="text-2xl font-bold">🚧 Maintenance Mode</h2>
+        <h2 className="text-2xl font-bold"> Maintenance Mode</h2>
 
         <div className="flex gap-4 text-3xl font-bold">
           <div>{days}d</div>
