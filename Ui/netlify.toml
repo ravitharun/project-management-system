@@ -1,0 +1,15 @@
+[build]
+  base = "Ui"
+  command = "npm run build"
+  publish = "Ui/dist"
+
+[context.production]
+  branch = "main"
+
+[context."develop"]
+  command = "npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
