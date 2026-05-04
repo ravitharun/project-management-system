@@ -1,6 +1,6 @@
 import { instance } from "./apiservices"
 
-export const AuthNewAccount = async (fromdata:FormData) => {
+export const AuthNewAccount = async (fromdata: FormData) => {
     try {
         const response = await instance.post("/api/auth/register", fromdata, {
             headers: {
@@ -10,6 +10,6 @@ export const AuthNewAccount = async (fromdata:FormData) => {
         })
         return response
     } catch (error: any) {
-        throw error
+        return error
     }
 } 
