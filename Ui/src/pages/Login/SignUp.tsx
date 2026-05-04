@@ -63,16 +63,28 @@ function SiginUp() {
 
         try {
             const response = await AuthNewAccount(fromdata)
-            console.log(response)
+            console.log(response.status, 'response')
+            if (response.status == 400) {
+                return setresponsetext({
+                    message: "Based  on the Email Account created By Some One. ",
+                    types: "warning",
+                });
+            }
+            if (response.data.message == "new user Created.") {
+                return setresponsetext({
+                    message: "Account created successfully 🎉",
+                    types: "success",
+                });
+            }
         } catch (error: any) {
-            console.log(error.message)
+            return setresponsetext({
+                message: error,
+                types: "failure",
+            });
         }
 
         // response message 
-        setresponsetext({
-            message: "Account created successfully 🎉",
-            types: "success",
-        });
+
     };
 
     return (
