@@ -220,6 +220,7 @@ function SiginUp() {
             </div>
 
             {/* TOAST */}
+            {/* TOAST */}
             {responsetext && (
                 <CustomToast
                     alertmessage={responsetext.message}
