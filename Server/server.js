@@ -6,7 +6,8 @@ const http = require("http");
 
 const AuthRouter = require("./routes/AuthRoutes");
 const { initSocket } = require("./scoket");
-const cors = require("cors")
+const cors = require("cors");
+const connectDb = require("./conifg/Db");
 // Middleware
 app.use(express.json());
 
@@ -26,7 +27,7 @@ const server = http.createServer(app);
 
 // ✅ Initialize socket
 initSocket(server);
-
+connectDb()
 // Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
