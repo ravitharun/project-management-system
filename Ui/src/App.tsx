@@ -1,4 +1,5 @@
-import Task from "./pages/Task"
+import Login from "./pages/Login/Login"
+// import Task from "./pages/Task"
 
 
 
@@ -7,9 +8,7 @@ function App() {
     <>
   
 
-     {/* <Projects  ></Projects> */}
-     <Task></Task>
-     {/* <Team></Team> */}
+   <Login></Login>
     </>
   )
 }
