@@ -4,29 +4,54 @@ import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 import CustomToast from "../../Components/CustomToast";
 import { Link } from "react-router-dom";
+import { AuthLoginAccount } from "../../services/AuthApi";
+
 type response = {
     message: string;
     types: "success" | "failure" | "warning";
 } | null;
+
+export type RequestLogindata = {
+    role: string,
+    email: string,
+    password: string,
+
+}
 function Login() {
+
     const [role, setrole] = useState("")
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
     const [responsetext, setresponsetext] = useState<response>(null)
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
         if (!role || !email || !password) {
             setresponsetext({ message: 'input value is null', types: "warning" })
             return
         }
-        const data = { role, email, password }
-        console.log(data)
-        setresponsetext({ message: 'Good', types: "success" })
-        return
+
+        try {
+            const response = await AuthLoginAccount({ role, email, password })
+            console.log(response, 'response')
+            if (response.status == 403) {
+                console.log(response.data.errmessage, 'errmessage')
+            }
+            if (response.status == 200) {
+                console.log(response.data.token)
+                localStorage.setItem("LoginToken", response.data.token);
+                setresponsetext({ message: response.data.message, types: "success" })
+                return window.location.href = "/"
+
+            }
+
+            return
+        } catch (error: any) {
+            return console.log(error)
+        }
 
     }
-    console.log(responsetext, 'responsetext')
+
 
     return (
         <>
