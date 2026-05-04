@@ -4,7 +4,7 @@ import { FaUser } from "react-icons/fa6";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 import CustomToast from "../../Components/CustomToast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthNewAccount } from "../../services/AuthApi";
 
 type ResponseType = {
@@ -13,6 +13,7 @@ type ResponseType = {
 } | null;
 
 function SiginUp() {
+    const navigate = useNavigate()
     const [role, setrole] = useState("employee");
     const [email, setemail] = useState("");
     const [name, setname] = useState("");
@@ -71,10 +72,13 @@ function SiginUp() {
                 });
             }
             if (response.data.message == "new user Created.") {
-                return setresponsetext({
+                setresponsetext({
                     message: "Account created successfully 🎉",
                     types: "success",
                 });
+                setTimeout(() => {
+                    return navigate("/Login")
+                }, 2000);
             }
         } catch (error: any) {
             return setresponsetext({

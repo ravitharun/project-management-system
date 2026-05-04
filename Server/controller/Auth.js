@@ -1,6 +1,8 @@
 const cloudinary = require("../conifg/Clounadry")
 const UserSchema = require("../Models/Auth")
-
+const jwt = require("jsonwebtoken")
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const AuthNewAccount = async (req, res) => {
     try {
         console.log(req.body)
@@ -10,13 +12,15 @@ const AuthNewAccount = async (req, res) => {
             console.log({ message: "Email is already exits." })
             return res.status(400).json({ message: "Email is already exits." })
         }
+        const haspassowrd = await bcrypt.hash(req.body.password, saltRounds,)
+        console.log(haspassowrd)
         const result = await cloudinary.uploader.upload(req.file.path);
         console.log(result)
         const saveuser = await UserSchema({
             userProfile: result.secure_url,
             Username: req.body.name,
             userEmail: req.body.email,
-            userPassword: req.body.password,
+            userPassword: haspassowrd,
             userrole: req.body.role
         })
         await saveuser.save()
@@ -27,5 +31,35 @@ const AuthNewAccount = async (req, res) => {
     }
 
 }
+const Login = async (req, res) => {
+    try {
+        // role, email, password
+        const { role, email, password } = req.query
+        const isExits = await UserSchema.findOne({ userEmail: email })
+        if (!isExits) {
+            console.log({ message: "Based on These Email User Not Found." })
+            return res.status(400).json({ message: "Based on These Email User Not Found.", status: false })
+        }
+        const haspassowrdComp = await bcrypt.compare(password, isExits.userPassword)
+        if (!haspassowrdComp) {
+            console.log({ message: "Password is incorrect." })
+            return res.status(403).json({ message: "Password is incorrect.", status: false })
+        }
+        if (isExits.userrole != role) {
 
-module.exports = AuthNewAccount
+            console.log({ message: "Role is incorrect." })
+            return res.status(403).json({ message: "Role is incorrect." })
+        }
+        const userinfo = { role, email }
+        const token = jwt.sign({
+            data: userinfo
+        }, 'secret', { expiresIn: '1h' });
+        console.log(token, 'token')
+        return res.status(200).json({ message: "userLogedin.", token: token, userinfo: isExits, status: true })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: error.message })
+    }
+
+}
+module.exports = { AuthNewAccount, Login }
