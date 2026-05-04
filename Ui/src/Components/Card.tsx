@@ -1,4 +1,6 @@
-export default function Card({ title, value, icon }) {
+
+type Cards = { title: string, value: string, icon: any }
+export default function Card({ title, value, icon }: Cards) {
   return (
     <div className="bg-white p-5 rounded-2xl shadow hover:shadow-lg hover:scale-[1.02] transition cursor-pointer flex items-center justify-between">
 

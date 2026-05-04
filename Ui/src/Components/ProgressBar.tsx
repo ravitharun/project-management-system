@@ -1,4 +1,8 @@
-export default function ProgressBar({ name, percent }) {
+
+
+type ProgressBarProps = { name: string, percent: number }
+
+export default function ProgressBar({ name, percent }: ProgressBarProps) {
   return (
     <div className="mb-4">
       <div className="flex justify-between text-sm mb-1 text-gray-700">

@@ -1,4 +1,3 @@
-import React from "react";
 import {
     FaPlusCircle,
     FaTasks,
@@ -46,7 +45,7 @@ function RecentActivity() {
         },
     ];
 
-    const statusColor = {
+    const statusColor:any = {
         green: "bg-green-500",
         blue: "bg-blue-500",
         yellow: "bg-yellow-500",

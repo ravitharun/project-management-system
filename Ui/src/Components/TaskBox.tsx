@@ -1,4 +1,6 @@
-export default function TaskBox({ title, count }) {
+
+type TaskBoxProps = { title: string, count: number }
+export default function TaskBox({ title, count }:TaskBoxProps) {
   return (
     <div className="p-5 border rounded-xl text-center bg-gray-50 hover:bg-white hover:shadow-md transition">
 

@@ -1,8 +1,4 @@
-
-
-// import Projects from "./pages/Projects"
 import Task from "./pages/Task"
-import Team from "./pages/Team"
 
 
 
@@ -12,8 +8,8 @@ function App() {
   
 
      {/* <Projects  ></Projects> */}
-     {/* <Task></Task> */}
-     <Team></Team>
+     <Task></Task>
+     {/* <Team></Team> */}
     </>
   )
 }
