@@ -5,6 +5,7 @@ import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 import CustomToast from "../../Components/CustomToast";
 import { Link } from "react-router-dom";
+import { AuthNewAccount } from "../../services/AuthApi";
 
 type ResponseType = {
     message: string;
@@ -17,39 +18,57 @@ function SiginUp() {
     const [name, setname] = useState("");
     const [password, setpassword] = useState("");
     const [responsetext, setresponsetext] = useState<ResponseType>(null);
-
-    // 🔥 Profile preview state
+    const [file, setfile] = useState<File | null>(null);
     const [profilePreview, setProfilePreview] = useState<string | null>(null);
-
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (file) {
             const url = URL.createObjectURL(file);
             setProfilePreview(url);
+            return setfile(file)
         }
+        alert("file")
+
     };
 
-    // 🔥 Cleanup (important)
+
     useEffect(() => {
         return () => {
             if (profilePreview) URL.revokeObjectURL(profilePreview);
         };
     }, [profilePreview]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!role || !email || !password || !name) {
-            setresponsetext({
+            return setresponsetext({
                 message: "Please fill all fields",
                 types: "warning",
             });
-            return;
+            ;
         }
 
-        const data = { role, email, password, name };
-        console.log(data);
 
+        const fromdata = new FormData()
+        fromdata.append("role", role)
+        fromdata.append("name", name)
+        fromdata.append("email", email)
+        fromdata.append("password", password)
+        // ✅ FIX HERE
+        if (file) {
+            fromdata.append("Profile", file);
+        }
+
+        try {
+            const response = await AuthNewAccount(fromdata)
+            console.log(response)
+        } catch (error: any) {
+            console.log(error.message)
+        }
+
+        // response message 
         setresponsetext({
             message: "Account created successfully 🎉",
             types: "success",
@@ -225,7 +244,7 @@ function SiginUp() {
             {responsetext && (
                 <CustomToast
                     alertmessage={responsetext.message}
-                    toastType={responsetext.types=="success"?"success":"failure"}
+                    toastType={responsetext.types == "success" ? "success" : "failure"}
                     onclickevent={() => setresponsetext(null)}
                 />
             )}
