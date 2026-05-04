@@ -1,14 +1,15 @@
-import Login from "./pages/Login/Login"
-// import Task from "./pages/Task"
+import { checkuser } from "./Components/LocalStorage"
+import Dashboard from "./pages/homePages/Dashboard"
 
 
 
 function App() {
+  checkuser()
   return (
     <>
-  
 
-   <Login></Login>
+
+      <Dashboard></Dashboard>
     </>
   )
 }

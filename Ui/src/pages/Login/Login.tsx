@@ -40,6 +40,7 @@ function Login() {
             if (response.status == 200) {
                 console.log(response.data.token)
                 localStorage.setItem("LoginToken", response.data.token);
+                localStorage.setItem("userinfo",JSON.stringify( response.data.userinfo));
                 setresponsetext({ message: response.data.message, types: "success" })
                 return window.location.href = "/"
 

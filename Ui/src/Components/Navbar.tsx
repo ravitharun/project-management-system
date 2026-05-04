@@ -6,12 +6,12 @@ import {
     FaUsers,
     FaCalendarAlt,
     FaChartLine,
-    FaCog,
     FaUser,
     FaBell,
     FaBars,
     FaTimes,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 type Props = {
     page: string;
@@ -22,14 +22,14 @@ function Sidebar({ page }: Props) {
     const [Bigscreen, setBigscreen] = useState(true);
 
     const menuItems = [
-        { name: "Dashboard", icon: <FaTachometerAlt /> },
-        { name: "Projects", icon: <FaProjectDiagram /> },
-        { name: "Tasks", icon: <FaTasks /> },
-        { name: "Team", icon: <FaUsers /> },
-        { name: "Calendar", icon: <FaCalendarAlt /> },
-        { name: "Analytics", icon: <FaChartLine /> },
-        { name: "Settings", icon: <FaCog /> },
-        { name: "Profile", icon: <FaUser /> },
+        { name: "Dashboard", icon: <FaTachometerAlt />, href: "/" },
+        { name: "Projects", icon: <FaProjectDiagram />, href: "/Projects" },
+        { name: "Tasks", icon: <FaTasks />, href: "/Tasks" },
+        { name: "Team", icon: <FaUsers />, href: "/Team" },
+        { name: "Calendar", icon: <FaCalendarAlt />, href: "/Calendar" },
+        { name: "Analytics", icon: <FaChartLine />, href: "/Analytics" },
+        // { name: "Settings", icon: <FaCog />, href: "/" },
+        { name: "Profile", icon: <FaUser />, href: "/Profile" },
     ];
 
     return (
@@ -68,7 +68,7 @@ function Sidebar({ page }: Props) {
                 <div className="p-5 text-xl font-bold border-b border-gray-800 flex justify-between items-center">
                     ProjectHub
 
-                    
+
                     <div className="flex items-center gap-3">
                         {/* Bigscreen toggle */}
                         <button
@@ -92,17 +92,19 @@ function Sidebar({ page }: Props) {
                 {/* MENU */}
                 <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
                     {menuItems.map((item, i) => (
-                        <div
-                            key={i}
-                            onClick={() => setOpen(false)}
-                            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition
-              ${page === item.name ? "bg-blue-600" : "hover:bg-gray-800"}`}
-                        >
-                            {item.icon}
-                            <span className={`${Bigscreen ? "text-base" : "text-sm"}`}>
-                                {item.name}
-                            </span>
-                        </div>
+                        <Link to={item.href}>
+                            <div
+                                key={i}
+                                onClick={() => setOpen(false)}
+                                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition
+                                ${page === item.name ? "bg-blue-600" : "hover:bg-gray-800"}`}
+                            >
+                                {item.icon}
+                                <span className={`${Bigscreen ? "text-base" : "text-sm"}`}>
+                                    {item.name}
+                                </span>
+                            </div>
+                        </Link>
                     ))}
                 </div>
 
