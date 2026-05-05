@@ -12,6 +12,7 @@ import {
     FaTimes,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { Token } from "./LocalStorage";
 
 type Props = {
     page: string;
@@ -31,7 +32,15 @@ function Sidebar({ page }: Props) {
         // { name: "Settings", icon: <FaCog />, href: "/" },
         { name: "Profile", icon: <FaUser />, href: "/Profile" },
     ];
+    const HandelLogut = () => {
+        const Token = localStorage.removeItem("LoginToken")
+        const userInfo = localStorage.removeItem("userinfo")
+        console.log(Token, userInfo)
+        // if (Token && !userInfo) {
+        //     return window.location.href = "/login"
+        // }
 
+    }
     return (
         <>
             {/* ================= MOBILE TOP BAR ================= */}
@@ -106,6 +115,10 @@ function Sidebar({ page }: Props) {
                             </div>
                         </Link>
                     ))}
+                    <div>
+
+                        <button onClick={HandelLogut}>{Token ? "Logout" : "Login"}</button>
+                    </div>
                 </div>
 
                 {/* FOOTER */}
