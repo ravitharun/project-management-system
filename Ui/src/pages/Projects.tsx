@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import { barData, COLORS, lineData, pieData } from "../types/Charts";
 import type { Kipcard } from "../types/Kipcard";
+import { getuserInfo } from "../Components/LocalStorage";
 
 
 
@@ -42,8 +43,8 @@ function Projects() {
             status: "Completed",
         },
     ];
-    const Role: string = "Emp"
-    const requiredRoles: string[] = ["TeamLeader", "Manager"]
+    const Role: string = getuserInfo?JSON.parse(getuserInfo)?.userrole:""
+    const requiredRoles: string[] = ["TeamLeader", "Manager", "tl"]
     return (
         <div className="flex h-screen bg-gray-100">
 

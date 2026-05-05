@@ -6,6 +6,7 @@ import {
   FaTasks,
   FaSearch,
 } from "react-icons/fa";
+import Sidebar from "../Components/Navbar";
 
 type MemberType = {
   name: string;
@@ -17,7 +18,7 @@ type MemberType = {
   status: string;
 };
 
-function TeamAdmin() {
+function Team() {
   const [view, setView] = useState<"table" | "card">("table");
 
   const [members, setMembers] = useState<MemberType[]>([]);
@@ -84,7 +85,6 @@ function TeamAdmin() {
     fetchData();
   }, []);
 
-  // ---------------- CORE FILTER LOGIC ----------------
   const applyFilters = (searchText: string, dept: string) => {
     let data = members;
 
@@ -129,146 +129,184 @@ function TeamAdmin() {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <>
+      <div className="flex h-screen bg-gray-100">
+        <Sidebar page="Team" />
 
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-4">
+        <main className="flex-1 p-6 overflow-y-auto">
+          <div className="p-6 bg-gray-100 min-h-screen">
 
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">
-            Team Admin Dashboard
-          </h1>
-          <p className="text-sm text-gray-500">
-            Manage team, workload & performance
-          </p>
-        </div>
+            {/* HEADER */}
+            <div className="flex justify-between items-center mb-4">
 
-        {/* VIEW TOGGLE */}
-        <div className="flex bg-white shadow rounded-lg overflow-hidden">
-
-          <button
-            onClick={() => setView("table")}
-            className={`px-4 py-2 flex items-center gap-2 text-sm ${
-              view === "table" ? "bg-blue-600 text-white" : ""
-            }`}
-          >
-            <FaTable /> Table
-          </button>
-
-          <button
-            onClick={() => setView("card")}
-            className={`px-4 py-2 flex items-center gap-2 text-sm ${
-              view === "card" ? "bg-blue-600 text-white" : ""
-            }`}
-          >
-            <FaThLarge /> Cards
-          </button>
-
-        </div>
-      </div>
-
-      {/* FILTER BAR */}
-      <div className="flex flex-col md:flex-row gap-3 mb-6">
-
-        {/* SEARCH */}
-        <div className="flex items-center bg-white px-3 py-2 rounded-lg shadow w-full">
-          <FaSearch className="text-gray-500" />
-          <input
-            placeholder="Search members..."
-            className="ml-2 w-full outline-none"
-            value={search}
-            onChange={handleSearch}
-          />
-        </div>
-
-        {/* FILTER */}
-        <select
-          className="bg-white px-3 py-2 rounded-lg shadow"
-          value={filter}
-          onChange={handleFilter}
-        >
-          <option value="All">All</option>
-          <option value="UI">UI</option>
-          <option value="API">API</option>
-          <option value="Design">Design</option>
-          <option value="Product">Product</option>
-          <option value="Testing">Testing</option>
-          <option value="Active">Active</option>
-          <option value="Idle">Idle</option>
-        </select>
-
-      </div>
-
-      {/* ================= TABLE VIEW ================= */}
-      {view === "table" && (
-        <div className="bg-white rounded-xl shadow overflow-hidden">
-
-          <div className="grid grid-cols-6 bg-gray-200 p-3 text-sm font-semibold">
-            <div>Name</div>
-            <div>Dept</div>
-            <div>Tasks</div>
-            <div>Progress</div>
-            <div>Workload</div>
-            <div>Status</div>
-          </div>
-
-          {filteredMembers.map((m, i) => (
-            <div key={i} className="grid grid-cols-6 p-4 border-b">
-
-              <div className="flex items-center gap-2">
-                <FaUserCircle className="text-2xl text-gray-500" />
-                {m.name}
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800">
+                  Team  Dashboard
+                </h1>
+                <p className="text-sm text-gray-500">
+                  Manage team, workload & performance
+                </p>
               </div>
 
-              <div>{m.department}</div>
+              {/* VIEW TOGGLE */}
+              <div className="flex bg-white shadow rounded-lg overflow-hidden">
 
-              <div className="flex items-center gap-1">
-                <FaTasks /> {m.tasks}
+                <button
+                  onClick={() => setView("table")}
+                  className={`px-4 py-2 flex items-center gap-2 text-sm ${view === "table" ? "bg-blue-600 text-white" : ""
+                    }`}
+                >
+                  <FaTable /> Table
+                </button>
+
+                <button
+                  onClick={() => setView("card")}
+                  className={`px-4 py-2 flex items-center gap-2 text-sm ${view === "card" ? "bg-blue-600 text-white" : ""
+                    }`}
+                >
+                  <FaThLarge /> Cards
+                </button>
+
+              </div>
+            </div>
+
+            {/* FILTER BAR */}
+            <div className="flex flex-col md:flex-row gap-3 mb-6">
+
+              {/* SEARCH */}
+              <div className="flex items-center bg-white px-3 py-2 rounded-lg shadow w-full">
+                <FaSearch className="text-gray-500" />
+                <input
+                  placeholder="Search members..."
+                  className="ml-2 w-full outline-none"
+                  value={search}
+                  onChange={handleSearch}
+                />
               </div>
 
-              <div>{m.progress}%</div>
-
-              <div className={`w-16 h-5 rounded ${getHeatColor(m.tasks)}`}></div>
-
-              <div>{m.status}</div>
+              {/* FILTER */}
+              <select
+                className="bg-white px-3 py-2 rounded-lg shadow"
+                value={filter}
+                onChange={handleFilter}
+              >
+                <option value="All">All</option>
+                <option value="UI">UI</option>
+                <option value="API">API</option>
+                <option value="Design">Design</option>
+                <option value="Product">Product</option>
+                <option value="Testing">Testing</option>
+                <option value="Active">Active</option>
+                <option value="Idle">Idle</option>
+              </select>
 
             </div>
-          ))}
-        </div>
-      )}
 
-      {/* ================= CARD VIEW ================= */}
-      {view === "card" && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* ================= TABLE VIEW ================= */}
+            {view === "table" && (
+              <div className="bg-white rounded-xl shadow overflow-hidden">
 
-          {filteredMembers.map((m, i) => (
-            <div key={i} className="bg-white p-5 rounded-2xl shadow">
-
-              <div className="flex items-center gap-3">
-                <FaUserCircle className="text-5xl text-gray-400" />
-                <div>
-                  <h2 className="font-bold">{m.name}</h2>
-                  <p className="text-sm text-gray-500">{m.role}</p>
+                <div className="grid grid-cols-6 bg-gray-200 p-3 text-sm font-semibold">
+                  <div>Name</div>
+                  <div>Dept</div>
+                  <div>Tasks</div>
+                  <div>Progress</div>
+                  <div>Workload</div>
+                  <div>Status</div>
                 </div>
+
+                {filteredMembers.length == 0 ? <>
+
+                  <div className="flex flex-col items-center justify-center h-64 text-center p-6 border border-dashed border-gray-300 rounded-xl bg-gray-50">
+
+                    <svg
+                      className="w-14 h-14 text-gray-400 mb-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M16.5 9.4a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM3.75 20.25a8.25 8.25 0 0116.5 0"
+                      />
+                    </svg>
+
+                    <h2 className="text-lg font-semibold text-gray-700">
+                      No Team Members Found
+                    </h2>
+
+                    <p className="text-sm text-gray-500 mt-1">
+                      It looks like there are no team members available right now.
+                    </p>
+
+                    <button className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+                      Add Member
+                    </button>
+                  </div>
+                </> : filteredMembers.map((m, i) => (
+                  <div key={i} className="grid grid-cols-6 p-4 border-b">
+
+                    <div className="flex items-center gap-2">
+                      <FaUserCircle className="text-2xl text-gray-500" />
+                      {m.name}
+                    </div>
+
+                    <div>{m.department}</div>
+
+                    <div className="flex items-center gap-1">
+                      <FaTasks /> {m.tasks}
+                    </div>
+
+                    <div>{m.progress}%</div>
+
+                    <div className={`w-16 h-5 rounded ${getHeatColor(m.tasks)}`}></div>
+
+                    <div>{m.status}</div>
+
+                  </div>
+                ))}
               </div>
+            )}
 
-              <p className="text-sm mt-3">
-                Dept: {m.department}
-              </p>
+            {/* ================= CARD VIEW ================= */}
+            {view === "card" && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-              <p className="text-sm">
-                Tasks: {m.tasks} | Progress: {m.progress}%
-              </p>
+                {filteredMembers.map((m, i) => (
+                  <div key={i} className="bg-white p-5 rounded-2xl shadow">
 
-              <div className={`h-2 mt-3 rounded ${getHeatColor(m.tasks)}`}></div>
+                    <div className="flex items-center gap-3">
+                      <FaUserCircle className="text-5xl text-gray-400" />
+                      <div>
+                        <h2 className="font-bold">{m.name}</h2>
+                        <p className="text-sm text-gray-500">{m.role}</p>
+                      </div>
+                    </div>
 
-            </div>
-          ))}
-        </div>
-      )}
+                    <p className="text-sm mt-3">
+                      Dept: {m.department}
+                    </p>
 
-    </div>
+                    <p className="text-sm">
+                      Tasks: {m.tasks} | Progress: {m.progress}%
+                    </p>
+
+                    <div className={`h-2 mt-3 rounded ${getHeatColor(m.tasks)}`}></div>
+
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+        </main>
+      </div>
+
+
+    </>
   );
 }
 
-export default TeamAdmin;
+export default Team;
