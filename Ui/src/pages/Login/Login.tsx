@@ -82,7 +82,7 @@ function Login() {
                                 name="email"
                                 placeholder="Email"
                                 value={email}
-                                onChangeevent={(e) => setemail(e.target.value)}
+                                onChange={(e) => setemail(e.target.value)}
                                 classNameStyle="w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
 
                             />
@@ -96,7 +96,7 @@ function Login() {
                                 name="password"
                                 placeholder="Password"
                                 value={password}
-                                onChangeevent={(e) => setpassword(e.target.value)}
+                                onChange={(e) => setpassword(e.target.value)}
                                 classNameStyle="w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
 
                             />
