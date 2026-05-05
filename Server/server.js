@@ -8,6 +8,7 @@ const AuthRouter = require("./routes/AuthRoutes");
 const { initSocket } = require("./scoket");
 const cors = require("cors");
 const connectDb = require("./conifg/Db");
+const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator");
 // Middleware
 app.use(express.json());
 
@@ -18,6 +19,10 @@ console.log(envStatusurl)
 
 app.use(cors({ origin: envStatusurl }));
 
+console.log("--------- check the id's -----")
+console.log("Task id :" + TaskId("Task"))
+console.log("emp id : " + GetEmpNameGenById(""))
+console.log("Project id : " + ProjetcId())
 
 
 // Routes
@@ -28,7 +33,7 @@ const server = http.createServer(app);
 
 
 // Test server is Running
-app.get("/", (req,res) => {
+app.get("/", (req, res) => {
   return res.status(200).json({ message: "Server Is Running..." })
 })
 
