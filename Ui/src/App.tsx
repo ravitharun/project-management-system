@@ -1,10 +1,10 @@
-import { checkuser } from "./Components/LocalStorage"
+// import { checkuser } from "./Components/LocalStorage"
 import Dashboard from "./pages/homePages/Dashboard"
 
 
 
 function App() {
-  checkuser()
+  
   return (
     <>
 
