@@ -7,8 +7,22 @@ import Projects from "../pages/Projects"
 import Task from "../pages/Task"
 import Team from "../pages/Team"
 import Calendar from "../pages/Calendra"
+import { useEffect } from "react"
+import { socket } from "../Scokets/ScoketConfig"
 
 function AppRouter() {
+    useEffect(() => {
+        const handleCheck = (data: any) => {
+            console.log(data);
+        };
+        socket.on("join_room", handleCheck);
+       
+
+        return () => {
+            socket.off("room_joined", handleCheck);
+        };
+    }, []);
+
     return (
         <>
 
