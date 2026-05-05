@@ -1,0 +1,82 @@
+{
+  "projectName": "LMS Website",
+  "description": "College learning management system",
+
+  "owner": {
+    "userId": "user123",
+    "name": "Ravi Tharun",
+    "email": "tharunravi672@gmail.com"
+  },
+
+  "teamMembers": [
+    {
+      "userId": "user1",
+      "name": "Pranav",
+      "role": "Frontend Developer"
+    },
+    {
+      "userId": "user2",
+      "name": "Rahul",
+      "role": "Backend Developer"
+    }
+  ],
+
+  "status": "In Progress",
+  "priority": "High",
+
+  "startDate": "2026-05-01",
+  "endDate": "2026-06-15",
+
+  "budget": {
+    "total": 50000,
+    "spent": 12000,
+    "currency": "INR"
+  },
+
+  "tags": ["React", "Node.js", "MongoDB"],
+
+  "tasks": [
+    {
+      "taskId": "task1",
+      "title": "Design UI",
+      "description": "Create UI design in Figma",
+
+      "assignedTo": {
+        "userId": "user1",
+        "name": "Pranav"
+      },
+
+      "status": "In Progress",
+      "priority": "High",
+
+      "startDate": "2026-05-02",
+      "dueDate": "2026-05-10",
+
+      "estimatedHours": 10,
+      "actualHours": 6,
+
+      "comments": [
+        {
+          "user": "Ravi",
+          "message": "Make it responsive",
+          "createdAt": "2026-05-03"
+        }
+      ],
+
+      "attachments": [
+        {
+          "type": "link",
+          "url": "https://figma.com/design-link"
+        }
+      ],
+
+      "createdAt": "2026-05-02",
+      "updatedAt": "2026-05-05"
+    }
+  ],
+
+  "progress": 40,
+
+  "createdAt": "2026-05-01",
+  "updatedAt": "2026-05-05"
+}
