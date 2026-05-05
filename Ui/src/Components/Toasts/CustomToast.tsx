@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Toast } from "../types/CustomToast";
+import type { Toast } from "../../types/CustomToast";
 import { FaCheckCircle, FaExclamationTriangle, FaInfoCircle } from "react-icons/fa";
 
 function CustomToast({ alertmessage, toastType, onclickevent }: Toast) {
