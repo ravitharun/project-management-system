@@ -32,19 +32,23 @@ function AppRouter() {
                     : `${data?.userId.Username || "Someone"} is offline`;
             return toast.error(msg)
         };
-
+        const ToastNotify = (data: any) => {
+            toast.success(data)
+        }
         socket.on("onlineUser", handleCheckuserOnline);
         socket.on("offlineUser", handleCheckuserOffline);
-
+        socket.on("AddedNewProject", ToastNotify);
+        
         socket.on("connect", () => {
             console.log("Connected:", socket.id);
         });
-
+        
         socket.on("disconnect", () => {
             console.log("Disconnected from server");
         });
-
+        
         return () => {
+            socket.off("AddedNewProject", ToastNotify);
             socket.off("onlineUser", handleCheckuserOnline);
             socket.off("offlineUser", handleCheckuserOffline);
             socket.off("connect");
