@@ -188,7 +188,7 @@ function SiginUp() {
                                     type="text"
                                     placeholder="Name"
                                     value={name}
-                                    onChangeevent={(e) => setname(e.target.value)}
+                                    onChange={(e) => setname(e.target.value)}
                                     classNameStyle="w-full pl-10 py-2 border rounded-lg"
                                 />
                             </div>
@@ -200,7 +200,7 @@ function SiginUp() {
                                     type="email"
                                     placeholder="Email"
                                     value={email}
-                                    onChangeevent={(e) => setemail(e.target.value)}
+                                    onChange={(e) => setemail(e.target.value)}
                                     classNameStyle="w-full pl-10 py-2 border rounded-lg"
                                 />
                             </div>
@@ -212,7 +212,7 @@ function SiginUp() {
                                     type="password"
                                     placeholder="Password"
                                     value={password}
-                                    onChangeevent={(e) => setpassword(e.target.value)}
+                                    onChange={(e) => setpassword(e.target.value)}
                                     classNameStyle="w-full pl-10 py-2 border rounded-lg"
                                 />
                             </div>
