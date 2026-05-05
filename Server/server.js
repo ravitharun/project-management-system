@@ -13,7 +13,8 @@ app.use(express.json());
 
 
 // cors
-const envStatusurl = process.env.envStatus == "Production" ? "http://localhost:5173" : process.env.LiveUI
+const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
+console.log(envStatusurl)
 
 app.use(cors({ origin: envStatusurl }));
 
@@ -24,6 +25,12 @@ app.use("/api/auth", AuthRouter);
 
 // Create server
 const server = http.createServer(app);
+
+
+// Test server is Running
+app.get("/", (req,res) => {
+  return res.status(200).json({ message: "Server Is Running..." })
+})
 
 // ✅ Initialize socket
 initSocket(server);
