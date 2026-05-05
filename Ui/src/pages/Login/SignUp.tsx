@@ -3,7 +3,7 @@ import { FaEnvelope, FaLock, FaRocket, FaUsers, FaBolt } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
-import CustomToast from "../../Components/CustomToast";
+import CustomToast from "../../Components/Toasts/CustomToast";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthNewAccount } from "../../services/AuthApi";
 

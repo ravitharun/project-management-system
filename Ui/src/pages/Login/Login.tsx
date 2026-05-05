@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaEnvelope, FaLock, FaUserTie } from "react-icons/fa";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
-import CustomToast from "../../Components/CustomToast";
+import CustomToast from "../../Components/Toasts/CustomToast";
 import { Link } from "react-router-dom";
 import { AuthLoginAccount } from "../../services/AuthApi";
 

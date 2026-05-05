@@ -2,6 +2,7 @@ const cloudinary = require("../conifg/Clounadry")
 const UserSchema = require("../Models/Auth")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
+const { GetEmpNameGenById } = require("../Utils/EmpIDGenrator");
 const saltRounds = 10;
 const AuthNewAccount = async (req, res) => {
     try {
@@ -13,10 +14,12 @@ const AuthNewAccount = async (req, res) => {
             return res.status(400).json({ message: "Email is already exits." })
         }
         const haspassowrd = await bcrypt.hash(req.body.password, saltRounds,)
-        console.log(haspassowrd)
+
         const result = await cloudinary.uploader.upload(req.file.path);
-        console.log(result)
+        const EmpId = GetEmpNameGenById(req.body.name)
+        console.log(EmpId,'EmpId')
         const saveuser = await UserSchema({
+            userID:EmpId,
             userProfile: result.secure_url,
             Username: req.body.name,
             userEmail: req.body.email,
