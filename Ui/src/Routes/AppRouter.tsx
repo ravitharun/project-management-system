@@ -8,7 +8,7 @@ import Team from "../pages/Team";
 import Calendar from "../pages/Calendra";
 import { useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
-import { useremail } from "../Components/LocalStorage";
+import { checkuser, useremail } from "../Components/LocalStorage";
 import toast, { Toaster } from 'react-hot-toast';
 
 function AppRouter() {
@@ -52,6 +52,7 @@ function AppRouter() {
         };
 
     }, []);
+    checkuser()
 
     return (
         <>
@@ -68,7 +69,7 @@ function AppRouter() {
                 </Routes>
             </BrowserRouter>
 
-      
+
         </>
     );
 }
