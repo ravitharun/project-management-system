@@ -24,7 +24,7 @@ function Sidebar({ page }: Props) {
 
     const menuItems = [
         { name: "Dashboard", icon: <FaTachometerAlt />, href: "/" },
-        { name: "Projects", icon: <FaProjectDiagram />, href: "/Projects" },
+        { name: "Projects", icon: <FaProjectDiagram />, href: "/projects" },
         { name: "Tasks", icon: <FaTasks />, href: "/Tasks" },
         { name: "Team", icon: <FaUsers />, href: "/Team" },
         { name: "Calendar", icon: <FaCalendarAlt />, href: "/Calendar" },

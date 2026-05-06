@@ -1,7 +1,8 @@
 const express = require("express")
-const {CreateProjects,FetchProjects} = require("../controller/AddProjetcs")
+const { CreateProjects, FetchProjects } = require("../controller/AddProjetcs")
+const AuthUserTokeen = require("../Middleware/AuthMiddleware")
 const ProjectsRoute = express.Router()
 // /api/ManageProject/Create
-ProjectsRoute.post("/Create", CreateProjects)
-ProjectsRoute.get("/Projects", FetchProjects)
+ProjectsRoute.post("/Create", AuthUserTokeen, CreateProjects)
+ProjectsRoute.get("/Projects", AuthUserTokeen, FetchProjects)
 module.exports = ProjectsRoute
