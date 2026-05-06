@@ -56,6 +56,7 @@ const CreateProjects = async (req, res) => {
 const FetchProjects = async (req, res) => {
     try {
         const GetProjects = await AddProject.find({})
+        console.log(GetProjects,'GetProjects')
         if (GetProjects.length == 0) {
             return res.status(404).json({ message: "No projects Found .." })
         }
