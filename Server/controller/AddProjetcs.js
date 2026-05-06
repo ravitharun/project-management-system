@@ -52,6 +52,7 @@ const CreateProjects = async (req, res) => {
 
     }
 }
+
 const FetchProjects = async (req, res) => {
     try {
         const GetProjects = await AddProject.find({})
