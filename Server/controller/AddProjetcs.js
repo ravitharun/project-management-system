@@ -36,7 +36,8 @@ const CreateProjects = async (req, res) => {
                 username: data.data.username,
                 userEmail: data.data.userEmail,
                 userrole: data.data.userrole
-            }
+            },
+            totalMember: teamMembers.length
 
         })
         await saveAddProject.save()
@@ -51,5 +52,18 @@ const CreateProjects = async (req, res) => {
 
     }
 }
+const FetchProjects = async (req, res) => {
+    try {
+        const GetProjects = await AddProject.find({})
+        if (GetProjects.length == 0) {
+            return res.status(404).json({ message: "No projects Found .." })
+        }
+        return res.status(200).json({ data: GetProjects, status: true })
 
-module.exports = CreateProjects
+
+    } catch (error) {
+        return res.status(500).json({ message: 'server error', status: false })
+
+    }
+}
+module.exports = { CreateProjects, FetchProjects }

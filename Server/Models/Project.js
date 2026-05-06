@@ -15,7 +15,9 @@ const AddProject = new mongoose.Schema({
         username: { type: String, required: true },
         userEmail: { type: String, required: true },
         userrole: { type: String, required: true }
-    }
+    },
+    progress: { type: Number, default: 0 },
+    totalMember: { type: Number, default: 0 }
 }, {
     timeseries: true
 })
