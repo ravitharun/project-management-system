@@ -17,44 +17,58 @@ import {
 import { barData, COLORS, lineData, pieData } from "../types/Charts";
 import type { Kipcard } from "../types/Kipcard";
 import { getuserInfo } from "../Components/LocalStorage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTaskForm from "../Components/AddTaskForm";
-
-
+import { fetchProjects } from "../services/ProjetcApi";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 function Projects() {
-    const projects = [
-        {
-            name: "E-Commerce App",
-            desc: "Full stack MERN shopping platform",
-            progress: 70,
-            status: "Active",
-        },
-        {
-            name: "LMS Platform",
-            desc: "Learning management system",
-            progress: 40,
-            status: "Pending",
-        },
-        {
-            name: "Portfolio Website",
-            desc: "Personal portfolio builder",
-            progress: 90,
-            status: "Completed",
-        },
-    ];
+
+    const [Projects, setprojects] = useState([])
     const Role: string = getuserInfo ? JSON.parse(getuserInfo)?.userrole : ""
     const requiredRoles: string[] = ["TeamLeader", "Manager", "tl"]
-
     const [Open, setopenform] = useState<boolean>(false)
+
+
+
+
+
+    useEffect(() => {
+        const FetchProjects = async () => {
+            try {
+                const response = await fetchProjects()
+                console.log(response, 'response')
+                setprojects(response.data.data)
+
+            } catch (error: any) {
+                toast.error(error)
+
+            }
+        }
+        FetchProjects()
+    }, [])
+
     const handelOpenTaskForm = () => {
         setopenform((prev) => !prev)
         console.log('first')
     }
+    const naviagte = useNavigate()
+    const handelProjectDetaile = (project: any) => {
+
+        if (!project) {
+            return toast.error("Some thing went wrong")
+        }
+        naviagte("/naviagte-ProjectDeatils", {
+            state: {
+                project
+            }
+        })
+    }
     return (
         <>
-        
+
             <div className="flex h-screen bg-gray-100">
 
                 {/* SIDEBAR */}
@@ -177,62 +191,69 @@ function Projects() {
                     {/* PROJECT CARDS */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                        {projects.map((p, i) => (
-                            <div
-                                key={i}
-                                className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition"
-                            >
+                        {Projects?.map((p: any, i: any) => (
+                            <>
 
-                                <h2 className="text-xl font-bold text-gray-800">
-                                    {p.name}
-                                </h2>
-
-                                <p className="text-gray-500 text-sm mt-1">
-                                    {p.desc}
-                                </p>
-
-                                <span className={`inline-block mt-3 px-3 py-1 text-xs rounded-full
-                ${p.status === "Completed"
-                                        ? "bg-green-100 text-green-600"
-                                        : p.status === "Active"
-                                            ? "bg-blue-100 text-blue-600"
-                                            : "bg-yellow-100 text-yellow-600"
-                                    }`}
+                                <div
+                                    key={i}
+                                    className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition"
+                                    onClick={()=>handelProjectDetaile(p)}
                                 >
-                                    {p.status}
-                                </span>
 
-                                {/* PROGRESS */}
-                                <div className="mt-4">
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span>Progress</span>
-                                        <span>{p.progress}%</span>
-                                    </div>
+                                    <h2 className="text-xl font-bold text-gray-800">
+                                        {p?.projectName}
+                                    </h2>
 
-                                    <div className="w-full bg-gray-200 h-2 rounded-full">
-                                        <div
-                                            className="bg-blue-500 h-2 rounded-full"
-                                            style={{ width: `${p.progress}%` }}
-                                        />
-                                    </div>
-                                </div>
+                                    <p className="text-gray-500 text-sm mt-1">
+                                        {/* {p.?desc} */}
+                                        {p?.description}
+                                    </p>
 
-                                {/* FOOTER */}
-                                <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
-                                    <span className="flex items-center gap-1">
-                                        <FaUsers /> 3 members
+                                    <span className={`inline-block mt-3 px-3 py-1 text-xs rounded-full
+                ${p?.status === "Completed"
+                                            ? "bg-green-100 text-green-600"
+                                            : p?.status === "Active"
+                                                ? "bg-blue-100 text-blue-600"
+                                                : "bg-yellow-100 text-yellow-600"
+                                        }`}
+                                    >
+                                        {p?.status}
                                     </span>
-                                    <span>Due: 20 May</span>
+
+                                    {/* PROGRESS */}
+                                    <div className="mt-4">
+                                        <div className="flex justify-between text-sm mb-1">
+                                            <span>Progress</span>
+                                            <span>{p?.progress}%</span>
+                                        </div>
+
+                                        <div className="w-full bg-gray-200 h-2 rounded-full">
+                                            <div
+                                                className="bg-blue-500 h-2 rounded-full"
+                                                style={{ width: `${p?.progress}%` }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* FOOTER */}
+                                    <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
+                                        <span className="flex items-center gap-1">
+                                            <FaUsers />{p?.totalMember || 0} members
+                                        </span>
+                                        <span>Due: {new Date(p?.endDate).toLocaleDateString()}</span>
+                                    </div>
+
                                 </div>
 
-                            </div>
+                            </>
+
                         ))}
 
                     </div>
 
                 </main>
             </div>
-                {Open &&
+            {Open &&
 
                 <AddTaskForm onclick={handelOpenTaskForm}></AddTaskForm>
 
