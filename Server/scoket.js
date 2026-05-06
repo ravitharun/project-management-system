@@ -75,6 +75,7 @@ const initSocket = (server) => {
             userId: user,
             isactive: false,
           });
+          
         }
       });
 

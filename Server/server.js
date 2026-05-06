@@ -9,6 +9,7 @@ const { initSocket } = require("./scoket");
 const cors = require("cors");
 const connectDb = require("./conifg/Db");
 const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator");
+const ProjectsRoute = require("./routes/HandelProjectRouter");
 // Middleware
 app.use(express.json());
 
@@ -27,6 +28,7 @@ console.log("Project id : " + ProjetcId())
 
 // Routes
 app.use("/api/auth", AuthRouter);
+app.use("/api/ManageProject", ProjectsRoute);
 
 // Create server
 const server = http.createServer(app);
