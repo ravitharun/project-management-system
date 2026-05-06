@@ -10,6 +10,7 @@ const cors = require("cors");
 const connectDb = require("./conifg/Db");
 const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator");
 const ProjectsRoute = require("./routes/HandelProjectRouter");
+const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
 // Middleware
 app.use(express.json());
 
@@ -25,10 +26,11 @@ console.log("Task id :" + TaskId("Task"))
 console.log("emp id : " + GetEmpNameGenById(""))
 console.log("Project id : " + ProjetcId())
 
-
+// /api/ProjectfileUploads/upload
 // Routes
 app.use("/api/auth", AuthRouter);
 app.use("/api/ManageProject", ProjectsRoute);
+app.use("/api/ProjectfileUpload",FileUploadRouter)
 
 // Create server
 const server = http.createServer(app);

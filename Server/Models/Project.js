@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const mongoose = require("mongoose")
 const AddProject = new mongoose.Schema({
     projectId: { type: String, required: true },
@@ -17,7 +18,15 @@ const AddProject = new mongoose.Schema({
         userrole: { type: String, required: true }
     },
     progress: { type: Number, default: 0 },
-    totalMember: { type: Number, default: 0 }
+    totalMember: { type: Number, default: 0 },
+    // files: [
+    //     {
+    //         fileId: { type: String, default: uuidv4(), unique: true },
+    //         uploadfileurl: { type: String },
+    //         UploadedBy: { type: String },
+    //         FileName: { type: String }
+    //     }
+    // ]
 }, {
     timeseries: true
 })

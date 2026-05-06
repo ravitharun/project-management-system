@@ -65,7 +65,7 @@ function AppRouter() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<App />} />
-                    <Route path="/Projects" element={<Projects />} />
+                    <Route path="/projects" element={<Projects />} />
                     <Route path="//naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
                     <Route path="/Tasks" element={<Task />} />
                     <Route path="/Calendar" element={<Calendar />} />

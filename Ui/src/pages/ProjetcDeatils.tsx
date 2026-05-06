@@ -13,6 +13,9 @@ import {
     // FaFileUpload
 } from "react-icons/fa";
 import Input from "../Components/Input";
+import toast from "react-hot-toast";
+import { getuserInfo } from "../Components/LocalStorage";
+import { instance } from "../services/apiservices";
 
 function ProjetcDeatils() {
     const data = useLocation().state.project;
@@ -27,7 +30,39 @@ function ProjetcDeatils() {
         data?.priority === "High"
             ? "bg-red-100 text-red-600"
             : "bg-blue-100 text-blue-600";
+    const HandelFile = async (e: any) => {
+        const fileFormdata = new FormData()
+        const userinfo: any = {
+            Info: getuserInfo ? JSON.parse(getuserInfo) : null
+        }
+        console.log(userinfo, 'userinfo')
+        const uploadfile = e.target.files[0]
+        if (!uploadfile) { return alert("file    is required to Upload") }
+        fileFormdata.append("uploadfile", uploadfile)
+        fileFormdata.append("projectId", data.projectId)
+        fileFormdata.append("Username", userinfo.Info.Username)
+        fileFormdata.append("userEmail", userinfo.Info.userEmail)
+        fileFormdata.append("userrole", userinfo.Info.userrole)
 
+
+
+        try {
+            const response = await instance.post("/api/ProjectfileUpload/upload", fileFormdata, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+            if (response.data.
+                message
+                ===
+                "File uploaded.") {
+                return toast.success("File uploaded.")
+            }
+        } catch (error: any) {
+           return  toast.error(error.message)
+        }
+
+    }
     return (
         <div className="flex h-screen bg-gray-50">
             <Sidebar page="Projects" />
@@ -89,55 +124,55 @@ function ProjetcDeatils() {
                     </div>
 
                     {/* RIGHT */}
-                <div className="w-full md:w-64 flex flex-col gap-3">
+                    <div className="w-full md:w-64 flex flex-col gap-3">
 
-  {/* UPLOAD BOX */}
-  <div className="border-2 border-dotted border-gray-300 rounded-xl p-5 text-center hover:border-blue-400 hover:bg-gray-50 transition">
+                        {/* UPLOAD BOX */}
+                        <div className="border-2 border-dotted border-gray-300 rounded-xl p-5 text-center hover:border-blue-400 hover:bg-gray-50 transition">
 
-    <label className="cursor-pointer flex flex-col items-center gap-2">
+                            <label className="cursor-pointer flex flex-col items-center gap-2">
 
-      <FaFileUpload className="text-gray-400 text-2xl" />
+                                <FaFileUpload className="text-gray-400 text-2xl" />
 
-      <span className="text-sm font-medium text-gray-700">
-        Upload Project File
-      </span>
+                                <span className="text-sm font-medium text-gray-700">
+                                    Upload Project File
+                                </span>
 
-      <span className="text-xs text-gray-400">
-        Click to upload (PDF only)
-      </span>
+                                <span className="text-xs text-gray-400">
+                                    Click to upload (PDF only)
+                                </span>
 
-      <Input
-        required={true}
-        type="file"
-        accept="application/pdf"
-        onChange={(e: any) => console.log(e.target.files[0])}
-        classNameStyle="hidden"
-      />
+                                <Input
+                                    required={true}
+                                    type="file"
+                                    accept="application/pdf"
+                                    onChange={(e: any) => HandelFile(e)}
+                                    classNameStyle="hidden"
+                                />
 
-    </label>
-  </div>
+                            </label>
+                        </div>
 
-  {/* NOTE */}
-  <p className="text-xs text-gray-500 leading-relaxed text-center">
-    Upload documents to help your team understand the project better.
-  </p>
+                        {/* NOTE */}
+                        <p className="text-xs text-gray-500 leading-relaxed text-center">
+                            Upload documents to help your team understand the project better.
+                        </p>
 
-  {/* PROGRESS */}
-  <div className="mt-2">
-    <div className="flex justify-between text-xs text-gray-500 mb-1">
-      <span>Progress</span>
-      <span>{data?.progress || 0}%</span>
-    </div>
+                        {/* PROGRESS */}
+                        <div className="mt-2">
+                            <div className="flex justify-between text-xs text-gray-500 mb-1">
+                                <span>Progress</span>
+                                <span>{data?.progress || 0}%</span>
+                            </div>
 
-    <div className="w-full bg-gray-200 rounded-full h-3">
-      <div
-        className="bg-green-500 h-3 rounded-full transition-all"
-        style={{ width: `${data?.progress || 0}%` }}
-      />
-    </div>
-  </div>
+                            <div className="w-full bg-gray-200 rounded-full h-3">
+                                <div
+                                    className="bg-green-500 h-3 rounded-full transition-all"
+                                    style={{ width: `${data?.progress || 0}%` }}
+                                />
+                            </div>
+                        </div>
 
-</div>
+                    </div>
                 </div>
 
                 {/* DETAILS GRID */}
