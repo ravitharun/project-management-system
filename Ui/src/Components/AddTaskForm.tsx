@@ -10,6 +10,10 @@ import {
   FaUsers,
   FaFlag,
 } from "react-icons/fa";
+import { instance } from "../services/apiservices";
+import toast from "react-hot-toast";
+import { getuserInfo } from "./LocalStorage";
+import { validateProject } from "../types/errortype";
 
 type Props = {
   onclick: () => void;
@@ -66,22 +70,50 @@ function AddProjectForm({ onclick }: Props) {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    type UserInfo = {
+      Username: string;
+      userEmail: string;
+      userrole: string;
+    };
+
+    const CreatedInfo: UserInfo | null = getuserInfo
+      ? JSON.parse(getuserInfo)
+      : null;
+
+    const data = {
+      username: CreatedInfo?.Username ?? "",
+      userEmail: CreatedInfo?.userEmail ?? "",
+      userrole: CreatedInfo?.userrole ?? "",
+    };
     const formattedData = {
       ...projectData,
       teamMembers: projectData.teamMembers.split(","),
       tags: projectData.tags.split(","),
+      data
     };
+    const error = validateProject(formattedData);
+    if (error) {
+      toast.error(error);
+      return;
+    }
 
-    console.log("Project Data:", formattedData);
-    onclick();
+    try {
+      const response = await instance.post("/api/ManageProject/Create", { data: formattedData })
+      console.log(response.data.message)
+
+    } catch (error: any) {
+      toast.error(error)
+
+    }
+    // onclick();
   };
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-      
+
       <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-gray-200 p-6 overflow-y-auto max-h-[90vh]">
-        
+
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold flex items-center gap-2 text-gray-800">
