@@ -39,9 +39,8 @@ function Projects() {
         const FetchProjects = async () => {
             try {
                 const response = await fetchProjects()
-                console.log(response, 'response')
-                setprojects(response.data.data)
-
+                console.log(JSON.parse(response.data.data), 'response')
+                setprojects(JSON.parse(response.data.data))
             } catch (error: any) {
                 toast.error(error)
 
