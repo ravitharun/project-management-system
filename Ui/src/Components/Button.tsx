@@ -1,4 +1,4 @@
-type buttonProps = { type: "button" | "reset" | "submit" , Btnname: string, classaName: string, OnclickEvent?: () => void }
+type buttonProps = { type: "button" | "reset" | "submit" , Btnname: string | any, classaName: string, OnclickEvent?: () => void }
 
 function Button({ type, Btnname, classaName, OnclickEvent }: buttonProps) {
   return (

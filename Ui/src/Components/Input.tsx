@@ -7,6 +7,7 @@ type InputProps = {
   name?: string;
   required?: boolean;
   classNameStyle?: string;
+  accept?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -17,6 +18,7 @@ function Input({
   name,
   required,
   classNameStyle,
+  accept,
   onChange,
 }: InputProps) {
   return (
@@ -27,6 +29,7 @@ function Input({
       name={name}
       required={required}
       onChange={onChange}
+      accept={accept}
       className={`w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-800 
       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
       hover:border-gray-400 transition ${classNameStyle}`}

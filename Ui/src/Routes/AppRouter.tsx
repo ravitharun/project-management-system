@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
 import { checkuser, useremail } from "../Components/LocalStorage";
 import toast, { Toaster } from 'react-hot-toast';
+import ProjetcDeatils from "../pages/ProjetcDeatils";
 
 function AppRouter() {
     useEffect(() => {
@@ -65,6 +66,7 @@ function AppRouter() {
                 <Routes>
                     <Route path="/" element={<App />} />
                     <Route path="/Projects" element={<Projects />} />
+                    <Route path="//naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
                     <Route path="/Tasks" element={<Task />} />
                     <Route path="/Calendar" element={<Calendar />} />
                     <Route path="/Team" element={<Team />} />
