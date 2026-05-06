@@ -58,10 +58,8 @@ function ProjetcDeatils() {
                 "File uploaded.") {
                 return toast.success("File uploaded.")
             }
-
         } catch (error: any) {
-            toast.error(error.message)
-
+           return  toast.error(error.message)
         }
 
     }
