@@ -16,10 +16,13 @@ import Input from "../Components/Input";
 import toast from "react-hot-toast";
 import { getuserInfo } from "../Components/LocalStorage";
 import { instance } from "../services/apiservices";
+import { useEffect, useState } from "react";
 
 function ProjetcDeatils() {
     const data = useLocation().state.project;
     const navigate = useNavigate();
+    console.log(data, 'data')
+    const [ProjectInfo, setProjectInfo] = useState<any>([])
 
     const statusColor =
         data?.status === "Completed"
@@ -59,10 +62,33 @@ function ProjetcDeatils() {
                 return toast.success("File uploaded.")
             }
         } catch (error: any) {
-           return  toast.error(error.message)
+            return toast.error(error.message)
         }
 
     }
+
+
+
+    useEffect(() => {
+        const GetProjects = async () => {
+            try {
+                const response = await instance.get("api/ProjectfileUpload/Fileuploads", {
+                    params: {
+                        projectsid: data?.projectId
+                    }
+                })
+                setProjectInfo(response.data.data)
+                console.log(response.data.data, 'response.data.data')
+            } catch (error: any) {
+                console.log(error.message)
+                toast.error(error)
+
+
+            }
+        }
+        GetProjects()
+    }, [])
+
     return (
         <div className="flex h-screen bg-gray-50">
             <Sidebar page="Projects" />
@@ -152,7 +178,6 @@ function ProjetcDeatils() {
                             </label>
                         </div>
 
-                        {/* NOTE */}
                         <p className="text-xs text-gray-500 leading-relaxed text-center">
                             Upload documents to help your team understand the project better.
                         </p>
@@ -246,6 +271,81 @@ function ProjetcDeatils() {
                         </div>
                     </div>
 
+                </div>
+
+
+                {/* ProjectInfo */}
+                <div className="p-6 bg-gray-100 min-h-screen">
+
+                    {/* Project Card */}
+                    <div className="bg-white rounded-2xl shadow-lg p-6">
+
+                        {/* Project ID */}
+                        <div className="flex items-center gap-2 mb-4 text-lg font-semibold">
+                            <span>Prj icno</span>
+                            <span>Project ID:</span>
+                            <span className="text-blue-600">{ProjectInfo[0]?.projectId}</span>
+                        </div>
+
+                        {/* Table */}
+                        <div className="overflow-x-auto">
+                            <table className="w-full border border-gray-200 rounded-xl overflow-hidden">
+
+                                <thead className="bg-gray-200 text-left">
+                                    <tr>
+                                        <th className="p-3">#</th>
+                                        <th className="p-3"> File Name</th>
+                                        <th className="p-3"> Download File</th>
+                                        <th className="p-3"> View File </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {ProjectInfo[0]?.files.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={4} className="text-center p-4 text-gray-500">
+                                                 No files uploaded
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        ProjectInfo[0]?.files.map((file:any, idx:any) => (
+                                            <tr key={idx} className="border-t hover:bg-gray-50 transition">
+                                                <td className="p-3">{idx + 1}</td>
+
+                                                <td className="p-3 flex items-center gap-2">
+                                                     {file?.filename}
+                                                </td>
+
+                                                <td className="p-3">
+                                                    <a
+                                                        href={file?.fileUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-500 hover:underline flex items-center gap-1"
+                                                    >
+                                                         Download File
+                                                    </a>
+                                                </td>
+
+                                                <td className="p-3">
+                                                    <a
+                                                        href={`https://docs.google.com/gview?url=${file?.fileUrl}&embedded=true`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-500 hover:underline flex items-center gap-1"
+                                                    >
+                                                         View File
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
                 </div>
             </main>
         </div>
