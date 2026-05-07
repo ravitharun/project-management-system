@@ -11,6 +11,7 @@ import { socket } from "../Scokets/ScoketConfig";
 import { checkuser, useremail } from "../Components/LocalStorage";
 import toast, { Toaster } from 'react-hot-toast';
 import ProjetcDeatils from "../pages/ProjetcDeatils";
+import { formatProjectNotification } from "../utils/toastMessge";
 function AppRouter() {
     const navigate = useNavigate();
     useEffect(() => {
@@ -36,6 +37,10 @@ function AppRouter() {
         const ToastNotify = (data: any) => {
             toast.success(data)
         }
+        const handelProjectInfoUpload = (data: any) => {
+
+            toast.success(formatProjectNotification(data,useremail))
+        }
         socket.on("onlineUser", handleCheckuserOnline);
         socket.on("offlineUser", handleCheckuserOffline);
         socket.on("AddedNewProject", ToastNotify);
@@ -47,11 +52,13 @@ function AppRouter() {
         socket.on("disconnect", () => {
             console.log("Disconnected from server");
         });
+        socket.on("ProjectInfoUpload", handelProjectInfoUpload)
 
         return () => {
             socket.off("AddedNewProject", ToastNotify);
             socket.off("onlineUser", handleCheckuserOnline);
             socket.off("offlineUser", handleCheckuserOffline);
+            socket.off("ProjectInfoUpload", handelProjectInfoUpload);
             socket.off("connect");
             socket.off("disconnect");
         };
