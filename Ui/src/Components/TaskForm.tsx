@@ -17,12 +17,16 @@ import {
     FaTimes,
     FaPlus,
 } from "react-icons/fa"
+import { instance } from "../services/apiservices"
+import toast, { Toaster } from "react-hot-toast"
 
 type props = {
+    AddedBy: string | null,
+    projectid: string
     onclose: () => void
 }
 
-function TaskForm({ onclose }: props) {
+function TaskForm({ onclose, AddedBy, projectid }: props) {
 
     // STATES
     const [taskName, setTaskName] = useState("")
@@ -37,7 +41,7 @@ function TaskForm({ onclose }: props) {
     const [progress, setProgress] = useState(0)
 
     // SUBMIT
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
         const TaskData = {
@@ -51,18 +55,31 @@ function TaskForm({ onclose }: props) {
             tags,
             estimatedHours,
             progress,
+            AddedBy,
+            projectid
+
         }
 
         console.log(TaskData)
 
-        alert("Task Added Successfully ")
+        try {
+            const response = await instance.post("/api/Task/Addtask", { TaskData: TaskData })
+            console.log(response.data.message, 'response')
+            if (response?.data?.message == "Task Created.") {
+                return toast.success("Task Created.")
+            }
+        } catch (error: any) {
+            toast.error(error)
+
+        }
+
     }
 
     return (
         <>
 
             {/* BACKDROP */}
-            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-5" onClick={onclose}>
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-5" >
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
                     {/* MODAL */}
                     <div className="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
@@ -73,7 +90,7 @@ function TaskForm({ onclose }: props) {
                                     <FaTasks />
                                     Create New Task's
                                 </h1>
-
+                                <Toaster></Toaster>
                                 <p className="text-blue-100 text-sm mt-1">
                                     Manage your project workflow efficiently
                                 </p>
