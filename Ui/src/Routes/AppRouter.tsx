@@ -35,15 +35,23 @@ function AppRouter() {
             return toast.error(msg)
         };
         const ToastNotify = (data: any) => {
-            toast.success(data)
+            console.log(data, 'data')
         }
         const handelProjectInfoUpload = (data: any) => {
 
-            toast.success(formatProjectNotification(data,useremail))
+            toast.success(formatProjectNotification(data, useremail))
+        }
+
+        // task notify
+        const handelTask = (data: any) => {
+            setTimeout(() => {
+                toast.success(data.message)
+            }, 2000);
         }
         socket.on("onlineUser", handleCheckuserOnline);
         socket.on("offlineUser", handleCheckuserOffline);
         socket.on("AddedNewProject", ToastNotify);
+        socket.on("NewTask", handelTask);
 
         socket.on("connect", () => {
             console.log("Connected:", socket.id);
@@ -55,6 +63,7 @@ function AppRouter() {
         socket.on("ProjectInfoUpload", handelProjectInfoUpload)
 
         return () => {
+            socket.off("NewTask", handelTask);
             socket.off("AddedNewProject", ToastNotify);
             socket.off("onlineUser", handleCheckuserOnline);
             socket.off("offlineUser", handleCheckuserOffline);

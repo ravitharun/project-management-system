@@ -96,9 +96,16 @@ function ProjetcDeatils() {
         GetProjects()
     }, [])
 
-const handelClose=()=>{
-    setAddtask((prev)=>!prev)
-}
+    const handelClose = () => {
+        setAddtask((prev) => !prev)
+    }
+    const Data = getuserInfo ? JSON.parse(getuserInfo) : null
+    const AddedBy: any = {
+        name: Data.Username,
+        userEmail: Data.userEmail,
+        userrole: Data.userrole,
+
+    }
     return (
         <div className="flex h-screen bg-gray-50">
             <Sidebar page="Projects" />
@@ -379,10 +386,10 @@ const handelClose=()=>{
                 {Addtask && <>
 
 
-                   <div className="ml-10">
+                    <div className="ml-10">
 
-                     <TaskForm onclose={handelClose}></TaskForm>
-                   </div>
+                        <TaskForm onclose={handelClose} projectid={data.projectId} AddedBy={AddedBy}></TaskForm>
+                    </div>
                 </>}
             </main>
         </div>
