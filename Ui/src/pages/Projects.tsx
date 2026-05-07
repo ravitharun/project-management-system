@@ -68,13 +68,13 @@ function Projects() {
     return (
         <>
 
-            <div className="flex h-screen bg-gray-100">
+            <div className="flex h-screen bg-gray-100 scroll-auto">
 
                 {/* SIDEBAR */}
                 <Sidebar page="Projects" />
 
                 {/* MAIN CONTENT */}
-                <main className="flex-1 p-6 overflow-y-auto">
+                <main className="flex-1 p-6 overflow-y-auto hide-scrollbar">
 
                     {/* HEADER */}
                     <div className="flex justify-between items-center mb-6">
@@ -241,15 +241,10 @@ function Projects() {
                                         </span>
                                         <span>Due: {new Date(p?.endDate).toLocaleDateString()}</span>
                                     </div>
-
                                 </div>
-
                             </>
-
                         ))}
-
                     </div>
-
                 </main>
             </div>
             {Open &&
