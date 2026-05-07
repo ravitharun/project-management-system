@@ -241,15 +241,10 @@ function Projects() {
                                         </span>
                                         <span>Due: {new Date(p?.endDate).toLocaleDateString()}</span>
                                     </div>
-
                                 </div>
-
                             </>
-
                         ))}
-
                     </div>
-
                 </main>
             </div>
             {Open &&
