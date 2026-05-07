@@ -11,19 +11,23 @@ import {
     FaMoneyBillWave,
     FaPlus,
     FaFileUpload,
+    FaFilePdf,
     // FaFileUpload
 } from "react-icons/fa";
+import "../index.css"
 import Input from "../Components/Input";
 import toast from "react-hot-toast";
 import { getuserInfo } from "../Components/LocalStorage";
 import { instance } from "../services/apiservices";
 import { useEffect, useState } from "react";
+import TaskForm from "../Components/TaskForm";
 
 function ProjetcDeatils() {
     const data = useLocation().state.project;
     const navigate = useNavigate();
     console.log(data, 'data')
     const [ProjectInfo, setProjectInfo] = useState<any>([])
+    const [Addtask, setAddtask] = useState<boolean>(false)
 
     const statusColor =
         data?.status === "Completed"
@@ -92,11 +96,14 @@ function ProjetcDeatils() {
         GetProjects()
     }, [])
 
+const handelClose=()=>{
+    setAddtask((prev)=>!prev)
+}
     return (
         <div className="flex h-screen bg-gray-50">
             <Sidebar page="Projects" />
 
-            <main className="flex-1 p-6 overflow-y-auto">
+            <main className="flex-1 p-6 overflow-y-auto hide-scrollbar space-y-6">
 
                 {/* HEADER */}
                 <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
@@ -117,7 +124,7 @@ function ProjetcDeatils() {
                                 </span>
                             }
                             classaName="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-md"
-                            OnclickEvent={() => console.log("Add Task")}
+                            OnclickEvent={handelClose}
                             type="button"
                         />
 
@@ -160,7 +167,7 @@ function ProjetcDeatils() {
 
                             <label className="cursor-pointer flex flex-col items-center gap-2">
 
-                                <FaFileUpload className="text-gray-400 text-2xl" />
+                                <FaFileUpload className="text-blue-500 text-3xl bg-blue-100 p-2 rounded-full" />
 
                                 <span className="text-sm font-medium text-gray-700">
                                     Upload Project File
@@ -187,17 +194,19 @@ function ProjetcDeatils() {
 
                         {/* PROGRESS */}
                         <div className="mt-2">
+
                             <div className="flex justify-between text-xs text-gray-500 mb-1">
                                 <span>Progress</span>
                                 <span>{data?.progress || 0}%</span>
                             </div>
 
-                            <div className="w-full bg-gray-200 rounded-full h-3">
+                            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                                 <div
-                                    className="bg-green-500 h-3 rounded-full transition-all"
+                                    className="bg-green-500 h-full rounded-full transition-all duration-700"
                                     style={{ width: `${data?.progress || 0}%` }}
                                 />
                             </div>
+
                         </div>
 
                     </div>
@@ -206,7 +215,7 @@ function ProjetcDeatils() {
                 {/* DETAILS GRID */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                    <div className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition">
+                    <div className="bg-white p-5 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                         <h2 className="flex items-center gap-2 font-semibold mb-3">
                             <FaUser /> Owner
                         </h2>
@@ -214,7 +223,7 @@ function ProjetcDeatils() {
                         <p className="text-gray-500 text-sm">{data?.owner?.email}</p>
                     </div>
 
-                    <div className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition">
+                    <div className="bg-white p-5 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                         <h2 className="flex items-center gap-2 font-semibold mb-3">
                             <FaCalendarAlt /> Timeline
                         </h2>
@@ -226,7 +235,7 @@ function ProjetcDeatils() {
                         </p>
                     </div>
 
-                    <div className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition">
+                    <div className="bg-white p-5 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                         <h2 className="flex items-center gap-2 font-semibold mb-3">
                             <FaMoneyBillWave /> Budget
                         </h2>
@@ -257,7 +266,7 @@ function ProjetcDeatils() {
                         </div>
                     </div>
 
-                    <div className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition">
+                    <div className="bg-white p-5 rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                         <h2 className="flex items-center gap-2 font-semibold mb-3">
                             <FaTag /> Tech Stack
                         </h2>
@@ -278,7 +287,7 @@ function ProjetcDeatils() {
 
 
                 {/* ProjectInfo */}
-                <div className="p-6 bg-gray-100 min-h-screen">
+                <div className="p-6 bg-gray-100 rounded-2xl mt-6">
 
                     {/* Project Card */}
                     <div className="bg-white rounded-2xl shadow-lg p-6">
@@ -291,10 +300,12 @@ function ProjetcDeatils() {
                         </div>
 
                         {/* Table */}
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                            Project Documents
+                        </h2>
                         <div className="overflow-x-auto">
                             <table className="w-full border border-gray-200 rounded-xl overflow-hidden">
-
-                                <thead className="bg-gray-200 text-left">
+                                <thead className="bg-gray-800 text-white text-left">
                                     <tr>
                                         <th className="p-3">#</th>
                                         <th className="p-3"> File Name</th>
@@ -308,14 +319,20 @@ function ProjetcDeatils() {
                                     {ProjectInfo.length == 0 && <>
                                         <tr>
                                             <td colSpan={4} className="text-center p-4 text-gray-500">
-                                                No ProjectInfo uploaded
+                                                <div className="flex flex-col items-center py-8 text-gray-400">
+                                                    <MdWork className="text-4xl mb-2" />
+                                                    <p>No Project yet</p>
+                                                </div>
                                             </td>
                                         </tr>
                                     </>}
                                     {ProjectInfo[0]?.files.length === 0 ? (
                                         <tr>
                                             <td colSpan={4} className="text-center p-4 text-gray-500">
-                                                No files uploaded
+                                                <div className="flex flex-col items-center py-8 text-gray-400">
+                                                    <FaFilePdf className="text-4xl mb-2" />
+                                                    <p>No files uploaded yet</p>
+                                                </div>
                                             </td>
                                         </tr>
                                     ) : (
@@ -358,6 +375,15 @@ function ProjetcDeatils() {
 
                     </div>
                 </div>
+
+                {Addtask && <>
+
+
+                   <div className="ml-10">
+
+                     <TaskForm onclose={handelClose}></TaskForm>
+                   </div>
+                </>}
             </main>
         </div>
     );

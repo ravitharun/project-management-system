@@ -4,3 +4,29 @@
 body {
   font-family: 'Inter', sans-serif;
 }
+
+/* hide scrollbar but allow scroll */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+@keyframes flow {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-flow {
+  animation: flow 2s linear infinite;
+}
