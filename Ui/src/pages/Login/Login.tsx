@@ -65,7 +65,7 @@ function Login() {
 
                     {/* TITLE */}
                     <h2 className="text-2xl font-bold text-center mb-6">
-                        Welcome Back user
+                        Welcome Back
                     </h2>
 
                     <p className="text-center text-gray-500 mb-8">
