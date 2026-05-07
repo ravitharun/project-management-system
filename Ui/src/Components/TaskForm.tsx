@@ -66,13 +66,12 @@ function TaskForm({ onclose }: props) {
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
                     {/* MODAL */}
                     <div className="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
-
                         {/* HEADER */}
                         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 flex justify-between items-center text-white">
                             <div>
                                 <h1 className="text-2xl font-bold flex items-center gap-2">
                                     <FaTasks />
-                                    Create New Task
+                                    Create New Task's
                                 </h1>
 
                                 <p className="text-blue-100 text-sm mt-1">
