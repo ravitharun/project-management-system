@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../Components/Navbar";
 import Button from "../Components/Button";
+import { MdWork } from "react-icons/md";
 import {
     FaArrowLeft,
     FaUser,
@@ -59,7 +60,9 @@ function ProjetcDeatils() {
                 message
                 ===
                 "File uploaded.") {
-                return toast.success("File uploaded.")
+                setTimeout(() => {
+                    return toast.success("File uploaded.")
+                }, 1500);
             }
         } catch (error: any) {
             return toast.error(error.message)
@@ -282,7 +285,7 @@ function ProjetcDeatils() {
 
                         {/* Project ID */}
                         <div className="flex items-center gap-2 mb-4 text-lg font-semibold">
-                            <span>Prj icno</span>
+                            <span><MdWork></MdWork> </span>
                             <span>Project ID:</span>
                             <span className="text-blue-600">{ProjectInfo[0]?.projectId}</span>
                         </div>
@@ -301,19 +304,27 @@ function ProjetcDeatils() {
                                 </thead>
 
                                 <tbody>
+
+                                    {ProjectInfo.length == 0 && <>
+                                        <tr>
+                                            <td colSpan={4} className="text-center p-4 text-gray-500">
+                                                No ProjectInfo uploaded
+                                            </td>
+                                        </tr>
+                                    </>}
                                     {ProjectInfo[0]?.files.length === 0 ? (
                                         <tr>
                                             <td colSpan={4} className="text-center p-4 text-gray-500">
-                                                 No files uploaded
+                                                No files uploaded
                                             </td>
                                         </tr>
                                     ) : (
-                                        ProjectInfo[0]?.files.map((file:any, idx:any) => (
+                                        ProjectInfo[0]?.files.map((file: any, idx: any) => (
                                             <tr key={idx} className="border-t hover:bg-gray-50 transition">
                                                 <td className="p-3">{idx + 1}</td>
 
                                                 <td className="p-3 flex items-center gap-2">
-                                                     {file?.filename}
+                                                    {file?.filename}
                                                 </td>
 
                                                 <td className="p-3">
@@ -323,7 +334,7 @@ function ProjetcDeatils() {
                                                         rel="noopener noreferrer"
                                                         className="text-blue-500 hover:underline flex items-center gap-1"
                                                     >
-                                                         Download File
+                                                        Download File
                                                     </a>
                                                 </td>
 
@@ -334,7 +345,7 @@ function ProjetcDeatils() {
                                                         rel="noopener noreferrer"
                                                         className="text-blue-500 hover:underline flex items-center gap-1"
                                                     >
-                                                         View File
+                                                        View File
                                                     </a>
                                                 </td>
                                             </tr>
