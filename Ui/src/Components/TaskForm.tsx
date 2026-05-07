@@ -69,7 +69,6 @@ function TaskForm({ onclose }: props) {
 
                         {/* HEADER */}
                         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 flex justify-between items-center text-white">
-
                             <div>
                                 <h1 className="text-2xl font-bold flex items-center gap-2">
                                     <FaTasks />
@@ -80,7 +79,6 @@ function TaskForm({ onclose }: props) {
                                     Manage your project workflow efficiently
                                 </p>
                             </div>
-
                             <button
                                 onClick={onclose}
                                 className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition"
