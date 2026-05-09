@@ -12,7 +12,9 @@ const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator"
 const ProjectsRoute = require("./routes/HandelProjectRouter");
 const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
 const client = require("../Server/conifg/Redis");
+const TaskRotuer = require("../Server/routes/TaskRouter")
 const Connect = require("../Server/conifg/Redis");
+const TaskRouter = require("../Server/routes/TaskRouter");
 // Middleware
 app.use(express.json());
 
@@ -33,6 +35,7 @@ console.log("Project id : " + ProjetcId())
 app.use("/api/auth", AuthRouter);
 app.use("/api/ManageProject", ProjectsRoute);
 app.use("/api/ProjectfileUpload", FileUploadRouter)
+app.use("/api/Task", TaskRouter)
 client.connectRedis()
 // Create server
 const server = http.createServer(app);
