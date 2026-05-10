@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../Components/Navbar";
 import Button from "../Components/Button";
-import { MdWork } from "react-icons/md";
+// import { MdWork } from "react-icons/md";
 import {
     FaArrowLeft,
     FaUser,
@@ -11,7 +11,7 @@ import {
     FaMoneyBillWave,
     FaPlus,
     FaFileUpload,
-    FaFilePdf,
+    // FaFilePdf
     // FaFileUpload
 } from "react-icons/fa";
 import "../index.css"
@@ -22,6 +22,7 @@ import { instance } from "../services/apiservices";
 import { useEffect, useState } from "react";
 import TaskForm from "../Components/TaskForm";
 import ProjectDocuments from "../Components/ProjectDocuments";
+import TasksByProjectId from "../Components/TasksByProjectId";
 
 function ProjetcDeatils() {
     const data = useLocation().state.project;
@@ -107,6 +108,23 @@ function ProjetcDeatils() {
         userrole: Data.userrole,
 
     }
+
+
+
+    useEffect(() => {
+
+        const FetchTask = async () => {
+            const response = await instance.get("/api/Task/TaskBYPproject", {
+                params: {
+                    projectId: data.projectId
+                }
+            })
+            console.log(response,'responses')
+
+        }
+        FetchTask()
+    }, [])
+
     return (
         <div className="flex h-screen bg-gray-50">
             <Sidebar page="Projects" />
@@ -298,6 +316,10 @@ function ProjetcDeatils() {
                 <div className="p-6 bg-gray-100 rounded-2xl mt-6">
 
                     <ProjectDocuments ProjectInfo={ProjectInfo} />
+                </div>
+                <div className="p-6 bg-gray-100 rounded-2xl mt-6">
+
+                    <TasksByProjectId ProjectTask={ProjectInfo} />
                 </div>
 
                 {Addtask && <>
