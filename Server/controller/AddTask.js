@@ -32,7 +32,6 @@ const AddTask = async (req, res) => {
             Taskstatus: TaskData.progress,
         })
         await AddAssignTask.save()
-        console.log(TaskData, 'TaskData')
 
         io.emit("NewTask", {
             message: `Team update: New task added to project ${TaskData.projectid}`,
@@ -47,6 +46,25 @@ const AddTask = async (req, res) => {
     }
 }
 
+const fetchTaskes = async (req, res) => {
+    try {
 
+        const { projectId } = req.query
+        console.log(projectId, 'projectId')
+        if (!projectId) {
+            console.log("projectId")
+            return res.status(404).json({ message: "Something Went Wrong." })
+        }
+        const fetchByProjectId = await AssignTask.find({ ProjectID: projectId })
+        if (fetchByProjectId.length == 0) {
+            return res.status(200).json({ message: "No Task Added in these Project.", status: true })
+        }
+        console.log(fetchByProjectId, 'fetch')
 
-module.exports = AddTask
+        return res.status(200).json({ message: fetchByProjectId, status: true })
+    } catch (error) {
+        return res.status(500).json({ message: "server Error.", status: false })
+    }
+}
+
+module.exports = { AddTask, fetchTaskes }
