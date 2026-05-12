@@ -59,12 +59,33 @@ const fetchTaskes = async (req, res) => {
         if (fetchByProjectId.length == 0) {
             return res.status(200).json({ message: "No Task Added in these Project.", status: true })
         }
-        console.log(fetchByProjectId, 'fetch')
 
         return res.status(200).json({ message: fetchByProjectId, status: true })
     } catch (error) {
         return res.status(500).json({ message: "server Error.", status: false })
     }
 }
+const updatedProgress = async (req, res) => {
+    try {
+        const {projectId} = req.query
+        console.log(projectId,'projectId')
+        // if (!projectId) {
+        //     console.log({ message: "task Id is missing .." })
+        //     return res.status(404).json({ message: "task Id is missing .." })
+        // }
 
-module.exports = { AddTask, fetchTaskes }
+        // const UpdateProgress = await AssignTask.findByIdAndUpdate()
+        // if (!UpdateProgress) {
+        //     return res.status(404).json({ message: 'task Not Found' })
+
+        // }
+
+        return res.status(200).json({message:"Progresss Task Is updated..."})
+
+
+    } catch (error) {
+        return res.status(500).json({ message: "server Error" })
+
+    }
+}
+module.exports = { AddTask, fetchTaskes,updatedProgress }
