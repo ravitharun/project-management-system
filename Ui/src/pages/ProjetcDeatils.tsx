@@ -333,6 +333,8 @@ function ProjetcDeatils() {
                         <TaskForm onclose={handelClose} projectid={data.projectId} AddedBy={AddedBy}></TaskForm>
                     </div>
                 </>}
+
+                
             </main>
         </div>
     );

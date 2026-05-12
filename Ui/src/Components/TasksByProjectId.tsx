@@ -6,6 +6,9 @@ import {
     FolderKanban,
     User,
 } from "lucide-react";
+import { instance } from "../services/apiservices";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 type propsProjectTask = {
     ProjectTask: any;
@@ -13,6 +16,22 @@ type propsProjectTask = {
 
 function TasksByProjectId({ ProjectTask }: propsProjectTask) {
     console.log(ProjectTask, "ProjectTask");
+    const handelUpadateProgress = async (id: number) => {
+        console.log(instance,'instance')
+        try {
+            const response = await instance.patch("/api/Task/TaskProgressUpdatet", {
+                Params:{
+                     projectId: id 
+                }
+            })
+            console.log(response, 'response')
+            toast.success(response.data.message)
+        } catch (error: any) {
+
+            toast.error(error.message)
+        }
+
+    }
 
     return (
         <>
@@ -32,6 +51,7 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                             <th className="px-5 py-4 text-left">Start</th>
                             <th className="px-5 py-4 text-left">End</th>
                             <th className="px-5 py-4 text-left">Progress</th>
+                            <th className="px-5 py-4 text-left">Actions</th>
                         </tr>
                     </thead>
 
@@ -153,7 +173,7 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
 
                                     {/* Progress */}
                                     <td className="px-5 py-4 w-52">
-                                        <div className="w-full bg-gray-200 rounded-full h-3">
+                                        <div className="w-full bg-gray-200 rounded-full h-3" onClick={() => handelUpadateProgress(task._id)}>
                                             <div
                                                 className="bg-blue-500 h-3 rounded-full"
                                                 style={{
@@ -166,6 +186,8 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                             {task.TaskProgress}%
                                         </p>
                                     </td>
+
+
                                 </tr>
                             ))}
                     </tbody>
