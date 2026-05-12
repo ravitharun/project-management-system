@@ -31,6 +31,8 @@ function ProjetcDeatils() {
     const [ProjectInfo, setProjectInfo] = useState<any>([])
     const [Addtask, setAddtask] = useState<boolean>(false)
 
+    const [Taskes, setTaskes] = useState<any[] | null>([])
+
     const statusColor =
         data?.status === "Completed"
             ? "bg-green-100 text-green-600"
@@ -119,7 +121,8 @@ function ProjetcDeatils() {
                     projectId: data.projectId
                 }
             })
-            console.log(response,'responses')
+            console.log(response, 'responses')
+            setTaskes(response.data.message)
 
         }
         FetchTask()
@@ -319,7 +322,7 @@ function ProjetcDeatils() {
                 </div>
                 <div className="p-6 bg-gray-100 rounded-2xl mt-6">
 
-                    <TasksByProjectId ProjectTask={ProjectInfo} />
+                    <TasksByProjectId ProjectTask={Taskes} />
                 </div>
 
                 {Addtask && <>
@@ -330,6 +333,8 @@ function ProjetcDeatils() {
                         <TaskForm onclose={handelClose} projectid={data.projectId} AddedBy={AddedBy}></TaskForm>
                     </div>
                 </>}
+
+                
             </main>
         </div>
     );
