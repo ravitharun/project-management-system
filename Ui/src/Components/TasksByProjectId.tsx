@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { instance } from "../services/apiservices";
 import toast from "react-hot-toast";
-import axios from "axios";
 
 type propsProjectTask = {
     ProjectTask: any;
