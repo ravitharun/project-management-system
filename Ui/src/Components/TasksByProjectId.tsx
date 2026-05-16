@@ -6,7 +6,6 @@ import {
     FolderKanban,
     User,
 } from "lucide-react";
-import { instance } from "../services/apiservices";
 import toast from "react-hot-toast";
 import axios from "axios";
 
@@ -20,12 +19,8 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
         console.log(id, 'id')
         try {
             // http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=
-            console.log(instance + "/api/Task/TaskProgressUpdatet")
-            const response = await instance.patch("/api/Task/TaskProgressUpdatet", {
-                Params: {
-                    projectId: id
-                }
-            })
+          
+            const response = await axios.patch(`http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=${id}`)
             console.log(response, 'response')
             toast.success(response.data.message)
         } catch (error: any) {

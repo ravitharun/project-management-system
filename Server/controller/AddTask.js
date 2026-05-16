@@ -67,21 +67,27 @@ const fetchTaskes = async (req, res) => {
 }
 const updatedProgress = async (req, res) => {
     try {
-        const {projectId} = req.query
-        console.log(projectId,'req')
+        const { projectId } = req.query
+        console.log(projectId, 'req')
         // console.log(projectId,'projectId')
         if (!projectId) {
             console.log({ message: "task Id is missing .." })
             return res.status(404).json({ message: "task Id is missing .." })
         }
 
-        // const UpdateProgress = await AssignTask.findByIdAndUpdate()
-        // if (!UpdateProgress) {
-        //     return res.status(404).json({ message: 'task Not Found' })
+        const UpdateProgress = await AssignTask.findByIdAndUpdate({ _id: projectId }, {
+            TaskProgress: 100
+        }, {
+            new: true
+        })
+        //  UpdateProgress.TaskProgress=100
+        console.log(UpdateProgress,'UpdateProgress')
+        if (!UpdateProgress) {
+            return res.status(404).json({ message: 'task Not Found' })
 
-        // }
+        }
 
-        return res.status(200).json({message:"Progresss Task Is updated..."})
+        return res.status(200).json({ message: "Progresss Task Is updated..." })
 
 
     } catch (error) {
@@ -89,4 +95,4 @@ const updatedProgress = async (req, res) => {
 
     }
 }
-module.exports = { AddTask, fetchTaskes,updatedProgress }
+module.exports = { AddTask, fetchTaskes, updatedProgress }
