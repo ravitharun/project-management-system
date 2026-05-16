@@ -3,7 +3,7 @@ import type { Props, Timeline } from "../types/Uitype";
 
 
 function FeatMaintenance({ children }: Props) {
-  const isMaintance: boolean = true
+  const isMaintance: boolean = false
   const liveDate = new Date("2026-05-21T00:00:00");
   if (!isMaintance) {
     return <>{children}</>;

@@ -68,11 +68,12 @@ const fetchTaskes = async (req, res) => {
 const updatedProgress = async (req, res) => {
     try {
         const {projectId} = req.query
-        console.log(projectId,'projectId')
-        // if (!projectId) {
-        //     console.log({ message: "task Id is missing .." })
-        //     return res.status(404).json({ message: "task Id is missing .." })
-        // }
+        console.log(projectId,'req')
+        // console.log(projectId,'projectId')
+        if (!projectId) {
+            console.log({ message: "task Id is missing .." })
+            return res.status(404).json({ message: "task Id is missing .." })
+        }
 
         // const UpdateProgress = await AssignTask.findByIdAndUpdate()
         // if (!UpdateProgress) {

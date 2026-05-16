@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { instance } from "../services/apiservices";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 type propsProjectTask = {
     ProjectTask: any;
@@ -16,11 +17,13 @@ type propsProjectTask = {
 function TasksByProjectId({ ProjectTask }: propsProjectTask) {
     console.log(ProjectTask, "ProjectTask");
     const handelUpadateProgress = async (id: number) => {
-        console.log(instance,'instance')
+        console.log(id, 'id')
         try {
+            // http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=
+            console.log(instance + "/api/Task/TaskProgressUpdatet")
             const response = await instance.patch("/api/Task/TaskProgressUpdatet", {
-                Params:{
-                     projectId: id 
+                Params: {
+                    projectId: id
                 }
             })
             console.log(response, 'response')
