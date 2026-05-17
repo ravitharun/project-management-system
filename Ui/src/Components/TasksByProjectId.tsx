@@ -8,19 +8,33 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useState } from "react";
 
 type propsProjectTask = {
     ProjectTask: any;
 };
 
 function TasksByProjectId({ ProjectTask }: propsProjectTask) {
-    console.log(ProjectTask, "ProjectTask");
-    const handelUpadateProgress = async (id: number) => {
-        console.log(id, 'id')
+    // console.log(ProjectTask, "ProjectTask");
+    const [progressNumber, setprogressNumber] = useState<number>(0)
+    const [showProgressPoup, setprogresspoup] = useState<boolean>(false)
+    const handelpoup = () => {
+
+        setprogresspoup((prev) => !prev)
+    }
+
+
+    const setprogressvalue=(num:number)=>{
+        setprogressNumber(num)
+
+    }
+    const handelUpadateProgress = async (id: number,num:string) => {
+        console.log(num,'num to update')
+
         try {
             // http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=
-          
-            const response = await axios.patch(`http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=${id}`)
+
+            const response = await axios.patch(`http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=${id}&num=${num}`)
             console.log(response, 'response')
             toast.success(response.data.message)
         } catch (error: any) {
@@ -167,10 +181,30 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                             ).toLocaleDateString()}
                                         </div>
                                     </td>
+                                    {
+                                        showProgressPoup &&
 
+                                        <td>
+                                            <div >
+                                                <select name="" id="" onChange={(e) => handelUpadateProgress(task._id,e.target.value)}>
+                                                    {
+                                                        [10, 40, 60, 90, 100].map((num, idx) => (
+                                                            <>
+
+
+
+                                                                <option value={num} key={idx} >{num}</option>
+                                                            </>
+                                                        ))
+                                                    }
+                                                </select>
+                                            </div>
+                                            <button onClick={() => setprogresspoup(false)}> Close</button>
+                                        </td>
+                                    }
                                     {/* Progress */}
                                     <td className="px-5 py-4 w-52">
-                                        <div className="w-full bg-gray-200 rounded-full h-3" onClick={() => handelUpadateProgress(task._id)}>
+                                        <div className="w-full bg-gray-200 rounded-full h-3" onClick={handelpoup}>
                                             <div
                                                 className="bg-blue-500 h-3 rounded-full"
                                                 style={{
