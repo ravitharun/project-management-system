@@ -16,20 +16,19 @@ type propsProjectTask = {
 
 function TasksByProjectId({ ProjectTask }: propsProjectTask) {
     // console.log(ProjectTask, "ProjectTask");
-    const [progressNumber, setprogressNumber] = useState<number>(0)
     const [showProgressPoup, setprogresspoup] = useState<boolean>(false)
-    const handelpoup = () => {
+
+    const [showid, setshowid] = useState<number>()
+    const handelpoup = (id: number) => {
+        setshowid(id)
 
         setprogresspoup((prev) => !prev)
     }
 
 
-    const setprogressvalue=(num:number)=>{
-        setprogressNumber(num)
-
-    }
-    const handelUpadateProgress = async (id: number,num:string) => {
-        console.log(num,'num to update')
+    console.log(showProgressPoup)
+    const handelUpadateProgress = async (id: number, num: string) => {
+        console.log(num, 'num to update')
 
         try {
             // http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=
@@ -182,11 +181,11 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                         </div>
                                     </td>
                                     {
-                                        showProgressPoup &&
+                                        showid == task._id &&
 
                                         <td>
                                             <div >
-                                                <select name="" id="" onChange={(e) => handelUpadateProgress(task._id,e.target.value)}>
+                                                <select name="" id="" onChange={(e) => handelUpadateProgress(task._id, e.target.value)}>
                                                     {
                                                         [10, 40, 60, 90, 100].map((num, idx) => (
                                                             <>
@@ -204,7 +203,7 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                     }
                                     {/* Progress */}
                                     <td className="px-5 py-4 w-52">
-                                        <div className="w-full bg-gray-200 rounded-full h-3" onClick={handelpoup}>
+                                        <div className="w-full bg-gray-200 rounded-full h-3" onClick={() => handelpoup(task._id)}>
                                             <div
                                                 className="bg-blue-500 h-3 rounded-full"
                                                 style={{
