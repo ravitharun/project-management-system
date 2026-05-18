@@ -19,9 +19,8 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
     const [showProgressPoup, setprogresspoup] = useState<boolean>(false)
 
     const [showid, setshowid] = useState<number>()
-    const handelpoup = (id: number) => {
+    const handelpoup = (id?: number) => {
         setshowid(id)
-
         setprogresspoup((prev) => !prev)
     }
 
@@ -200,7 +199,7 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                                     >
                                                         <option>Select Progress</option>
 
-                                                        {[0,10, 40, 60, 90, 100].map((num, idx) => (
+                                                        {[0, 10, 40, 60, 90, 100].map((num, idx) => (
                                                             <option value={num} key={idx}>
                                                                 {num}%
                                                             </option>
@@ -208,8 +207,7 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                                     </select>
 
                                                     <button
-                                                        // onClick={()=>handelpoup(task._id)}
-                                                        onClick={handelpoup}
+                                                        onClick={() => handelpoup(task._id)}
                                                         className="mt-5 w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition"
                                                     >
                                                         Close
