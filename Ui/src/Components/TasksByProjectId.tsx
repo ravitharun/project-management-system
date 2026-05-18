@@ -180,32 +180,53 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                             ).toLocaleDateString()}
                                         </div>
                                     </td>
+
+
+                                    {/* Progress Popup */}
                                     {
-                                        showid == task._id &&
+                                        showid === task._id && (
+                                            <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+                                                <div className="bg-white p-6 rounded-2xl shadow-2xl w-80 animate-in fade-in zoom-in">
 
-                                        <td>
-                                            <div >
-                                                <select name="" id="" onChange={(e) => handelUpadateProgress(task._id, e.target.value)}>
-                                                    {
-                                                        [10, 40, 60, 90, 100].map((num, idx) => (
-                                                            <>
+                                                    <h2 className="text-xl font-semibold mb-4 text-gray-700">
+                                                        Update Progress
+                                                    </h2>
 
+                                                    <select
+                                                        className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-400"
+                                                        onChange={(e) =>
+                                                            handelUpadateProgress(task._id, e.target.value)
+                                                        }
+                                                    >
+                                                        <option>Select Progress</option>
 
+                                                        {[0,10, 40, 60, 90, 100].map((num, idx) => (
+                                                            <option value={num} key={idx}>
+                                                                {num}%
+                                                            </option>
+                                                        ))}
+                                                    </select>
 
-                                                                <option value={num} key={idx} >{num}</option>
-                                                            </>
-                                                        ))
-                                                    }
-                                                </select>
+                                                    <button
+                                                        // onClick={()=>handelpoup(task._id)}
+                                                        onClick={handelpoup}
+                                                        className="mt-5 w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition"
+                                                    >
+                                                        Close
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <button onClick={() => setprogresspoup(false)}> Close</button>
-                                        </td>
+
+                                        )
                                     }
-                                    {/* Progress */}
+                                    {/* Progress Bar */}
                                     <td className="px-5 py-4 w-52">
-                                        <div className="w-full bg-gray-200 rounded-full h-3" onClick={() => handelpoup(task._id)}>
+                                        <div
+                                            className="w-full bg-gray-200 rounded-full h-3 cursor-pointer overflow-hidden"
+                                            onClick={() => handelpoup(task._id)}
+                                        >
                                             <div
-                                                className="bg-blue-500 h-3 rounded-full"
+                                                className="bg-blue-500 h-3 rounded-full transition-all duration-500"
                                                 style={{
                                                     width: `${task.TaskProgress}%`,
                                                 }}
@@ -216,6 +237,7 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                             {task.TaskProgress}%
                                         </p>
                                     </td>
+
 
 
                                 </tr>
