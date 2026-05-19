@@ -1,24 +1,22 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../Components/Navbar";
+import { fetchtaskApi } from "../services/taskApi";
+import toast from "react-hot-toast";
+// import { instance } from "../services/apiservices";
+import axios from "axios";
 
-type Task = {
-    id: string;
-    title: string;
-    date: string;
-    status?: "todo" | "done";
-};
+// type Task = {
+//     id: string;
+//     title: string;
+//     date: string;
+//     status?: "todo" | "done";
+// };
 
 export default function ProjectCalendar() {
-    const [tasks, setTasks] = useState<Task[]>([
-        { id: "1", title: "Frontend Task", date: "2026-05-05" },
-        { id: "2", title: "Backend API", date: "2026-05-01" },
-        { id: "3", title: "Backend API", date: "2026-05-01", status: "todo" },
-        { id: "73", title: "Backend API/DbApi", date: "2026-05-04", status: "todo" },
-
-    ]);
+    const [tasks, setTasks] = useState<[]>();
     const isSameDay = (a: Date, b: Date) =>
         a.getFullYear() === b.getFullYear() &&
         a.getMonth() === b.getMonth() &&
@@ -41,34 +39,57 @@ export default function ProjectCalendar() {
     };
 
     // convert tasks to FullCalendar events
-    const events = tasks.map((task) => ({
-        id: task.id,
-        title: task.title,
-        date: task.date,
-        backgroundColor: getEventColor(task.date, task.status),
-        borderColor: getEventColor(task.date, task.status),
+    const events = tasks?.map((task: any) => ({
+        id: task.TaskId,
+        title: task.TaskName,
+        date: task.TaskstartDate,
+        backgroundColor: getEventColor(task.TaskstartDate, task.taskpriority),
+        borderColor: getEventColor(task.TaskstartDate, task.taskpriority),
+
 
     }));
 
     // click to add task
-    const handleDateClick = (info: any) => {
-        const title = prompt("Enter Task Name:");
-        if (!title) return;
+    // const handleDateClick = (info: any) => {
+    //     const title = prompt("Enter Task Name:");
+    //     if (!title) return;
+    //     setTasks((prev) => [
+    //         ...prev
+    //     ]);
+    // };
+    const HanledlUpdates = async (info: any) => {
+        // console.log("Task ID:", info.event.id);
+        // console.log("Task Name:", info.event.title);
+        // console.log("Start Date:", info.event.start);
+        // console.log("end Date:", info.event._instance.range.end);
 
-        setTasks((prev) => [
-            ...prev,
-            {
-                id: Date.now().toString(),
-                title,
-                date: info.dateStr,
-            },
-        ]);
-    };
-    const HanledlUpdates = (info: any) => {
-        console.log("Task ID:", info.event.id);
-        console.log("Task Name:", info.event.title);
-        console.log("Start Date:", info.event.start);
+        const data: any = { info}
+        console.log(data)
+
+
+        const updateTask = await axios.patch("http://localhost:5000/api/Task/taskUpdate", {
+            data: data
+        })
+        console.log(updateTask, 'taskupdate /api/Task/taskUpdate')
     }
+
+
+
+
+    useEffect(() => {
+        const fetchTaskes = async () => {
+            try {
+                const response = await fetchtaskApi();
+                console.log(response.data.message)
+                setTasks(response?.data?.message
+                )
+            } catch (error: any) {
+                toast.error(error)
+            }
+        }
+        fetchTaskes()
+
+    }, [])
 
     return (
         <>
@@ -93,7 +114,7 @@ export default function ProjectCalendar() {
                                 console.log("New Date:", info);
                             }}
                             droppable={true}
-                            dateClick={handleDateClick}
+                            // dateClick={handleDateClick}
                             headerToolbar={{
                                 left: "prev,next today",
                                 center: "title",

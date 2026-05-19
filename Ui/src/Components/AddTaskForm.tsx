@@ -106,7 +106,6 @@ function AddProjectForm({ onclick }: Props) {
       toast.error(error)
 
     }
-    // onclick();
   };
 
   return (
