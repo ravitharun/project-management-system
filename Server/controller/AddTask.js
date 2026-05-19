@@ -67,8 +67,8 @@ const fetchTaskes = async (req, res) => {
 }
 const updatedProgress = async (req, res) => {
     try {
-        const { projectId,num } = req.query
-        console.log(typeof(num),'num')
+        const { projectId, num } = req.query
+        console.log(typeof (num), 'num')
         if (!projectId) {
             console.log({ message: "task Id is missing .." })
             return res.status(404).json({ message: "task Id is missing .." })
@@ -80,7 +80,7 @@ const updatedProgress = async (req, res) => {
             new: true
         })
         //  UpdateProgress.TaskProgress=100
-        console.log(UpdateProgress,'UpdateProgress')
+        console.log(UpdateProgress, 'UpdateProgress')
         if (!UpdateProgress) {
             return res.status(404).json({ message: 'task Not Found' })
 
@@ -94,4 +94,48 @@ const updatedProgress = async (req, res) => {
 
     }
 }
-module.exports = { AddTask, fetchTaskes, updatedProgress }
+const fetchalltaskes = async (req, res) => {
+    try {
+        const fetchtaskall = await AssignTask.find({})
+        console.log(fetchtaskall.length)
+        if (fetchtaskall.length == 0) {
+            return res.status(404).json({ message: "no task Found", status: true })
+        }
+
+        return res.status(200).json({ message: fetchtaskall, status: true })
+    } catch (error) {
+        return res.status(500).json({ message: 'server error', status: false })
+
+    }
+
+}
+
+
+
+
+const updatetask = async (req, res) => {
+
+
+
+    try {
+        // console.log("Task ID:", info.event.id);
+        // console.log("Task Name:", info.event.title);
+        // console.log("Start Date:", info.event.start);
+        // console.log("end Date:", info.event._instance.range.end);
+        const io = getIO();
+        const { data } = req.body
+        console.log(data, 'data')
+        const updateTask = await AssignTask.findOneAndUpdate({ TaskId: data.info.event.id }, {
+            TaskendDate: data.info.event.start,
+            TaskstartDate: data.info.event.start
+        }, { new: true })
+
+        io.emit("updateTaskdate", `some one  task is updated `)
+        return res.status(200).json({ message: data, status: true })
+    } catch (error) {
+        console.log(error.message, 'err')
+        return res.status(500).json({ message: "server error", status: false })
+
+    }
+}
+module.exports = { AddTask, fetchTaskes, updatedProgress, fetchalltaskes, updatetask }
