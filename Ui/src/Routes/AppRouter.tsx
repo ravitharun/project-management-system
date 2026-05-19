@@ -50,31 +50,39 @@ function AppRouter() {
         }
 
 
-        const handelupdateTaskdate=(data:any)=>{
+        const handelupdateTaskdate = (data: any) => {
 
 
-        setTimeout(() => {
+            setTimeout(() => {
                 toast.success(data)
-        }, 2500);
+            }, 2500);
+        }
+
+        const HandelDeleteUser = (data: any) => {
+            setTimeout(() => {
+                toast.success(data)
+            }, 2500);
         }
         socket.on("onlineUser", handleCheckuserOnline);
         socket.on("offlineUser", handleCheckuserOffline);
+        socket.on("HandelDeleteUser", HandelDeleteUser);
         socket.on("AddedNewProject", ToastNotify);
         socket.on("NewTask", handelTask);
-        socket.on("updateTaskdate",handelupdateTaskdate)
-        
+        socket.on("updateTaskdate", handelupdateTaskdate)
+
         socket.on("connect", () => {
             console.log("Connected:", socket.id);
         });
-        
+
         socket.on("disconnect", () => {
             console.log("Disconnected from server");
         });
         socket.on("ProjectInfoUpload", handelProjectInfoUpload)
-        
+
         return () => {
             socket.off("NewTask", handelTask);
-            socket.off("updateTaskdate",handelupdateTaskdate)
+            socket.off("HandelDeleteUser", HandelDeleteUser);
+            socket.off("updateTaskdate", handelupdateTaskdate)
             socket.off("AddedNewProject", ToastNotify);
             socket.off("onlineUser", handleCheckuserOnline);
             socket.off("offlineUser", handleCheckuserOffline);
