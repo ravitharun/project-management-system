@@ -96,6 +96,10 @@ const updatedProgress = async (req, res) => {
 }
 const fetchalltaskes = async (req, res) => {
     try {
+
+
+
+        // const cache=await redis
         const fetchtaskall = await AssignTask.find({})
         console.log(fetchtaskall.length)
         if (fetchtaskall.length == 0) {
@@ -123,19 +127,51 @@ const updatetask = async (req, res) => {
         // console.log("Start Date:", info.event.start);
         // console.log("end Date:", info.event._instance.range.end);
         const io = getIO();
-        const { data } = req.body
-        console.log(data, 'data')
-        const updateTask = await AssignTask.findOneAndUpdate({ TaskId: data.info.event.id }, {
-            TaskendDate: data.info.event.start,
-            TaskstartDate: data.info.event.start
-        }, { new: true })
+        const { TaskId, TaskstartDate, TaskendDate } = req.body
+        console.log({ TaskId, TaskstartDate, TaskendDate }, 'data')
+        const updateTask = await AssignTask.findOneAndUpdate(
+            { TaskId: TaskId },
+            {
+                TaskendDate: TaskstartDate,
+                TaskstartDate: TaskendDate
+            },
+            { returnDocument: "after" }
+        )
+        // 2026-05-08T00:00:00.000+00:00
+        // 2026-05-09T00:00:00.000+00:00
 
-        io.emit("updateTaskdate", `some one  task is updated `)
-        return res.status(200).json({ message: data, status: true })
+
+        io.emit("updateTaskdate", "A task deadline has been updated")
+        return res.status(200).json({ message: "updated", status: true })
     } catch (error) {
         console.log(error.message, 'err')
         return res.status(500).json({ message: "server error", status: false })
 
+    }
+}
+
+
+
+// delete api request
+const DeleteTask = async (req, res) => {
+    try {
+        const { taskid } = req.body
+        if (!taskid) {
+            return res.status(404).json({ message: "some thing went wrong.", status: true })
+
+        }
+
+        const getresponsedelet = await AssignTask.findOneAndDelete({ TaskId: TaskId })
+        console.log(getresponsedelet)
+        if (getresponsedelet) {
+
+
+            // const 
+            return res.status(200).json({ messaage: "task Deleted", status: true })
+        }
+    } catch (error) {
+        console.log(error.message)
+        return res.status(500).json({ messaage: "Server Error", status: false })
     }
 }
 module.exports = { AddTask, fetchTaskes, updatedProgress, fetchalltaskes, updatetask }
