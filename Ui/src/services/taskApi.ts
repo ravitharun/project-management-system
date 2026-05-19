@@ -18,7 +18,7 @@ export const HandelDeleteTask = async (TaskId: any) => {
         const response = await instance.delete("/api/Task/DeleteTask", {
             params: {
                 TaskId: TaskId,
-                getuserInfo: JSON.parse(getuserInfo )
+
             }
         })
         console.log(response)
