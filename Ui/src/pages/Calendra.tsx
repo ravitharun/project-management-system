@@ -6,10 +6,11 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 
 import Sidebar from "../Components/Navbar";
-import { fetchtaskApi } from "../services/taskApi";
+import { fetchtaskApi, HandelDeleteTask } from "../services/taskApi";
 
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import { instance } from "../services/apiservices";
 
 export default function ProjectCalendar() {
 
@@ -82,7 +83,7 @@ export default function ProjectCalendar() {
                 toast.success("Task Updated");
             }
 
-        } catch (error:any) {
+        } catch (error: any) {
 
             console.log(error.message);
             toast.error("Update Failed");
@@ -112,6 +113,21 @@ export default function ProjectCalendar() {
 
     }, []);
 
+
+    const [TaskId, setTaskId] = useState<any>()
+
+    const handelDelete = async () => {
+
+
+        try {
+            const response = await HandelDeleteTask(TaskId)
+            console.log(response)
+        } catch (error: any) {
+            toast.error(error.message)
+
+        }
+
+    }
     return (
         <>
             {/* Popup */}
@@ -149,6 +165,7 @@ export default function ProjectCalendar() {
 
                         <button
                             className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+                            onClick={handelDelete}
                         >
                             🗑 Delete
                         </button>
@@ -198,9 +215,10 @@ export default function ProjectCalendar() {
                             }}
 
                             // Click Event
-                            eventClick={(info) => {
-
-                              setpoupaction((prev)=>!prev)
+                            eventClick={(info: any) => {
+                                setTaskId(info.event.id)
+                                // console.log(info.event.id)
+                                setpoupaction((prev) => !prev)
                             }}
 
                             // Drag & Drop Event
