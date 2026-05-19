@@ -105,7 +105,6 @@ const fetchalltaskes = async (req, res) => {
         if (fetchtaskall.length == 0) {
             return res.status(404).json({ message: "no task Found", status: true })
         }
-
         return res.status(200).json({ message: fetchtaskall, status: true })
     } catch (error) {
         return res.status(500).json({ message: 'server error', status: false })
@@ -155,18 +154,24 @@ const updatetask = async (req, res) => {
 // delete api request
 const DeleteTask = async (req, res) => {
     try {
-        const { taskid } = req.body
-        if (!taskid) {
+        const { TaskId, getuserInfo, UserRole } = req.query
+        console.log({ TaskId, UserRole, getuserInfo }, 'user')
+        const io = getIO()
+        console.log(TaskId, 'TaskId')
+        if (!TaskId) {
             return res.status(404).json({ message: "some thing went wrong.", status: true })
 
         }
 
+
+
+
+
+
         const getresponsedelet = await AssignTask.findOneAndDelete({ TaskId: TaskId })
         console.log(getresponsedelet)
         if (getresponsedelet) {
-
-
-            // const 
+            io.emit("HandelDeleteUser", `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`)
             return res.status(200).json({ messaage: "task Deleted", status: true })
         }
     } catch (error) {
@@ -174,4 +179,4 @@ const DeleteTask = async (req, res) => {
         return res.status(500).json({ messaage: "Server Error", status: false })
     }
 }
-module.exports = { AddTask, fetchTaskes, updatedProgress, fetchalltaskes, updatetask }
+module.exports = { AddTask, fetchTaskes, updatedProgress, fetchalltaskes, updatetask, DeleteTask }
