@@ -10,7 +10,6 @@ import { fetchtaskApi, HandelDeleteTask } from "../services/taskApi";
 
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-import { instance } from "../services/apiservices";
 
 export default function ProjectCalendar() {
 
