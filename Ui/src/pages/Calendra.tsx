@@ -4,11 +4,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 import Sidebar from "../Components/Navbar";
 import { fetchtaskApi, HandelDeleteTask } from "../services/taskApi";
 
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 export default function ProjectCalendar() {
@@ -116,7 +117,10 @@ export default function ProjectCalendar() {
     const [TaskId, setTaskId] = useState<any>()
 
     const handelDelete = async () => {
-
+        console.log(TaskId, 'TaskId')
+        if (!TaskId) {
+            return toast.info('No tasks available to delete. ', { position: "top-center" })
+        }
 
         try {
             const response = await HandelDeleteTask(TaskId)
@@ -129,6 +133,20 @@ export default function ProjectCalendar() {
     }
     return (
         <>
+            <ToastContainer position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            // transition={Bounce}
+
+
+            ></ToastContainer>
             {/* Popup */}
             {
                 poupAction &&
