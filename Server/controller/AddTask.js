@@ -3,6 +3,8 @@
 const AssignTask = require("../Models/Task")
 const { getIO } = require("../scoket")
 const { v4: uuidv4 } = require('uuid');
+const NotificationSchema = require("../Models/Notification");
+const { client } = require("../conifg/Redis");
 
 const AddTask = async (req, res) => {
     try {
@@ -11,7 +13,6 @@ const AddTask = async (req, res) => {
         const { TaskData } = req.body
         // err handling last
 
-        console.log(TaskData)
         const AddAssignTask = new AssignTask({
             ProjectID: TaskData.projectid,
             // TaskId: { type: String, default: TaskId("task"), unique: true },
@@ -32,6 +33,11 @@ const AddTask = async (req, res) => {
             Taskstatus: TaskData.progress,
         })
         await AddAssignTask.save()
+        const NotificationFormatData = {
+            userId: "userId", message: ` ${data.data.username} created a new project`, isRead: false
+
+        }
+        await NotificationSchema.create(NotificationFormatData)
 
         io.emit("NewTask", {
             message: `Team update: New task added to project ${TaskData.projectid}`,
@@ -121,10 +127,7 @@ const updatetask = async (req, res) => {
 
 
     try {
-        // console.log("Task ID:", info.event.id);
-        // console.log("Task Name:", info.event.title);
-        // console.log("Start Date:", info.event.start);
-        // console.log("end Date:", info.event._instance.range.end);
+
         const io = getIO();
         const { TaskId, TaskstartDate, TaskendDate } = req.body
         console.log({ TaskId, TaskstartDate, TaskendDate }, 'data')
@@ -139,7 +142,13 @@ const updatetask = async (req, res) => {
         // 2026-05-08T00:00:00.000+00:00
         // 2026-05-09T00:00:00.000+00:00
 
+        const NotificationFormatData = {
+            userId: "userId", message: "A task deadline has been updated", isRead: false
 
+        }
+        await client.del("Notificatons")
+
+        await NotificationSchema.create(NotificationFormatData)
         io.emit("updateTaskdate", "A task deadline has been updated")
         return res.status(200).json({ message: "updated", status: true })
     } catch (error) {
@@ -169,8 +178,14 @@ const DeleteTask = async (req, res) => {
 
 
         const getresponsedelet = await AssignTask.findOneAndDelete({ TaskId: TaskId })
-        console.log(getresponsedelet)
+
         if (getresponsedelet) {
+            const NotificationFormatData = {
+                userId: "userId", message: `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`, isRead: false
+            }
+                     await client.del("Notificatons")
+            
+            await NotificationSchema.create(NotificationFormatData)
             io.emit("HandelDeleteUser", `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`)
             return res.status(200).json({ messaage: "task Deleted", status: true })
         }
