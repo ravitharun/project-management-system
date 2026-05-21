@@ -5,6 +5,7 @@ const { getIO } = require("../scoket")
 const { ProjetcId } = require("../Utils/EmpIDGenrator")
 const { client } = require("../conifg/Redis")
 const { json } = require("express")
+const NotificationSchema = require("../Models/Notification")
 const CreateProjects = async (req, res) => {
     try {
         const io = getIO()
@@ -44,6 +45,12 @@ const CreateProjects = async (req, res) => {
 
         })
         await saveAddProject.save()
+        const NotificationFormatData = {
+            userId: "userId", message: `${data.data.username} created a new project`, isRead: false
+
+        }
+         await client.del("Notificatons")
+        await NotificationSchema.create(NotificationFormatData)
         io.emit(
             "AddedNewProject",
             `🚀 ${data.data.username} created a new project`
@@ -59,7 +66,7 @@ const CreateProjects = async (req, res) => {
 const FetchProjects = async (req, res) => {
     try {
         const GetCache = await client.get("Projects")
-        if (GetCache==null) {
+        if (GetCache == null) {
             console.log("no cache  Db set")
             const GetProjects = await AddProject.find({})
             console.log(GetProjects, 'fetch GetProjects')

@@ -8,7 +8,6 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import Sidebar from "../Components/Navbar";
 import { fetchtaskApi, HandelDeleteTask } from "../services/taskApi";
-
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
 
@@ -144,7 +143,6 @@ export default function ProjectCalendar() {
                 pauseOnHover
                 theme="colored"
             // transition={Bounce}
-
 
             ></ToastContainer>
             {/* Popup */}

@@ -15,6 +15,7 @@ const client = require("../Server/conifg/Redis");
 const TaskRotuer = require("../Server/routes/TaskRouter")
 const Connect = require("../Server/conifg/Redis");
 const TaskRouter = require("../Server/routes/TaskRouter");
+const NotificatonsRouter = require("./routes/NotificatonsRouter");
 // Middleware
 app.use(express.json());
 
@@ -36,6 +37,8 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/ManageProject", ProjectsRoute);
 app.use("/api/ProjectfileUpload", FileUploadRouter)
 app.use("/api/Task", TaskRouter)
+app.use("/api/Notificatons", NotificatonsRouter)
+
 client.connectRedis()
 // Create server
 const server = http.createServer(app);
