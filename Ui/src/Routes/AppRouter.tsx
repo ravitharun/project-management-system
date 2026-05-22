@@ -65,7 +65,14 @@ function AppRouter() {
                 toast.success(data)
             }, 2500);
         }
+        const handleAddProjectMembers = (data: any) => {
+            setTimeout(() => {
+                toast.success(data)
+            }, 2500);
+        }
+
         socket.on("onlineUser", handleCheckuserOnline);
+        socket.on("AddProjectMembers", handleAddProjectMembers);
         socket.on("offlineUser", handleCheckuserOffline);
         socket.on("HandelDeleteUser", HandelDeleteUser);
         socket.on("AddedNewProject", ToastNotify);
@@ -83,6 +90,7 @@ function AppRouter() {
 
         return () => {
             socket.off("NewTask", handelTask);
+            socket.off("AddProjectMembers", handleAddProjectMembers);
             socket.off("HandelDeleteUser", HandelDeleteUser);
             socket.off("updateTaskdate", handelupdateTaskdate)
             socket.off("AddedNewProject", ToastNotify);
