@@ -13,7 +13,9 @@ const NotificationSchema = new mongoose.Schema({
     },
     isRead: [
         {
-            userid: { type: String, isread: Boolean, default: true }
+            userid: { type: String },
+   
+
         }
     ],
 
