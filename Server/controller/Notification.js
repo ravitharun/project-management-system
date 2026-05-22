@@ -5,7 +5,7 @@ const Notificationschema = require("../Models/Notification")
 const FetchNotification = async (req, res) => {
     try {
         const notificationCache = await client.get("Notificatons")
-        console.log(notificationCache)
+        
         if (!notificationCache) {
             console.log('no cache for notification')
             const GetNotifaction = await Notificationschema.find({})
