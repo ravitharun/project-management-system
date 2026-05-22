@@ -11,11 +11,11 @@ const NotificationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
-    isRead: {
-        type: Boolean,
-        default: false,
-    },
+    isRead: [
+        {
+            userid: { type: String, isread: Boolean, default: true }
+        }
+    ],
 
     date: {
         type: Date,
@@ -23,4 +23,4 @@ const NotificationSchema = new mongoose.Schema({
     },
 });
 
-module.exports= mongoose.model("Notification", NotificationSchema);
+module.exports = mongoose.model("Notification", NotificationSchema);

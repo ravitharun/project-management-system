@@ -1,8 +1,11 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-body {
-  font-family: 'Inter', sans-serif;
+html, body {
+  height: 100%;
+    font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  /* margin-top: 10px; */
 }
 
 /* hide scrollbar but allow scroll */

@@ -120,17 +120,20 @@ function Sidebar({ page }: Props) {
                         <button onClick={HandelLogut}>{Token ? "Logout" : "Login"}</button>
                     </div>
                 </div>
+                {/* http://localhost:5000/api/Notificatons/Notificatons */}
 
                 {/* FOOTER */}
                 <div className="p-4 border-t border-gray-800">
-                    <div className="flex items-center justify-between bg-gray-800 p-3 rounded-lg">
-                        <span className="flex items-center gap-2">
-                            <FaBell /> Notifications
-                        </span>
-                        <span className="bg-red-500 text-xs px-2 py-1 rounded-full">
-                            3
-                        </span>
-                    </div>
+                    <Link to='/Notifications'>
+                        <div className="flex items-center justify-between bg-gray-800 p-3 rounded-lg">
+                            <span className="flex items-center gap-2">
+                                <FaBell /> Notifications
+                            </span>
+                            <span className="bg-red-500 text-xs px-2 py-1 rounded-full">
+                                3
+                            </span>
+                        </div>
+                    </Link>
                 </div>
             </aside>
         </>
