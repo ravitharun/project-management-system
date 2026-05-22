@@ -54,7 +54,7 @@ A full-stack **Project Management Web Application** built using the **MERN stack
 
 ### Frontend
 - React.js
-- Redux / Context API
+- Context API
 - FullCalendar
 
 ### Backend
