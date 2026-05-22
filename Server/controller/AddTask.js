@@ -33,12 +33,13 @@ const AddTask = async (req, res) => {
             Taskstatus: TaskData.progress,
         })
         await AddAssignTask.save()
+        await client.del("Notificatons")
         const NotificationFormatData = {
-            userId: "userId", message: ` ${data.data.username} created a new project`, isRead: false
+            userId: "userId", message: ` ${TaskData.AddedBy.name} created a new Task`,
 
         }
         await NotificationSchema.create(NotificationFormatData)
-
+        console.log(`${TaskData.AddedBy.name} created a new project`, NotificationFormatData)
         io.emit("NewTask", {
             message: `Team update: New task added to project ${TaskData.projectid}`,
             taskAddedBy: `${TaskData.AddedBy.name} to ${TaskData.assignTo}`
@@ -74,28 +75,34 @@ const fetchTaskes = async (req, res) => {
 const updatedProgress = async (req, res) => {
     try {
         const { projectId, num } = req.query
-        console.log(typeof (num), 'num')
+
         if (!projectId) {
             console.log({ message: "task Id is missing .." })
             return res.status(404).json({ message: "task Id is missing .." })
         }
 
-        const UpdateProgress = await AssignTask.findByIdAndUpdate({ _id: projectId }, {
+        const UpdateProgress = await AssignTask.findOneAndUpdate({ _id: projectId }, {
             TaskProgress: num
         }, {
-            new: true
+            returnDocument: 'after'
         })
-        //  UpdateProgress.TaskProgress=100
-        console.log(UpdateProgress, 'UpdateProgress')
         if (!UpdateProgress) {
             return res.status(404).json({ message: 'task Not Found' })
 
         }
+        await client.del("Notificatons")
+        const NotificationFormatData = {
+            userId: "userId", message: `projectId:  ${projectId} Updated the Progress`, isRead: []
+
+        }
+        console.log(NotificationFormatData, 'NotificationFormatData')
+        await NotificationSchema.create(NotificationFormatData)
 
         return res.status(200).json({ message: "Progresss Task Is updated..." })
 
 
     } catch (error) {
+        console.log(error.message)
         return res.status(500).json({ message: "server Error" })
 
     }
@@ -139,7 +146,7 @@ const updatetask = async (req, res) => {
             },
             { returnDocument: "after" }
         )
-   
+
 
         const NotificationFormatData = {
             userId: "userId", message: "A task deadline has been updated", isRead: false
@@ -182,8 +189,8 @@ const DeleteTask = async (req, res) => {
             const NotificationFormatData = {
                 userId: "userId", message: `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`, isRead: false
             }
-                     await client.del("Notificatons")
-            
+            await client.del("Notificatons")
+
             await NotificationSchema.create(NotificationFormatData)
             io.emit("HandelDeleteUser", `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`)
             return res.status(200).json({ messaage: "task Deleted", status: true })
