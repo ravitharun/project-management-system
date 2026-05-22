@@ -13,6 +13,7 @@ import { checkuser, useremail } from "../Components/LocalStorage";
 import toast, { Toaster } from 'react-hot-toast';
 import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
+import Notifications from "../pages/Notifications";
 function AppRouter() {
     const navigate = useNavigate();
     useEffect(() => {
@@ -109,6 +110,7 @@ function AppRouter() {
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
                     <Route path="/Tasks" element={<Task />} />
+                    <Route path="/Notifications" element={<Notifications />} />
                     <Route path="/Calendar" element={<Calendra />} />
                     <Route path="/Team" element={<Team />} />
                     <Route path="/Login" element={<Login />} />

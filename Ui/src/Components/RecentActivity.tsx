@@ -6,6 +6,9 @@ import {
 } from "react-icons/fa";
 
 function RecentActivity() {
+    const textIcon: string[] = ["created", "assigned", 'updated', 'task', 'completed']
+    console.log(textIcon)
+
     const activities = [
         {
             text: "Ravi created new project",
@@ -45,7 +48,7 @@ function RecentActivity() {
         },
     ];
 
-    const statusColor:any = {
+    const statusColor: any = {
         green: "bg-green-500",
         blue: "bg-blue-500",
         yellow: "bg-yellow-500",
