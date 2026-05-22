@@ -1,17 +1,18 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "../pages/Login/Login";
 import SiginUp from "../pages/Login/SignUp";
-import App from "../App";
-import Projects from "../pages/Projects";
-import Task from "../pages/Task";
-import Team from "../pages/Team";
-import Calendar from "../pages/Calendra";
-import { useEffect } from "react";
+const App = lazy(() => import("../App"))
+const Task = lazy(() => import("../pages/Task"))
+const Projects = lazy(() => import("../pages/Projects"))
+const Team = lazy(() => import("../pages/Team"))
+const ProjetcDeatils = lazy(() => import("../pages/ProjetcDeatils"))
+const Calendra = lazy(() => import("../pages/Calendra"))
+import { lazy, Suspense, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
 import { checkuser, useremail } from "../Components/LocalStorage";
 import toast, { Toaster } from 'react-hot-toast';
-import ProjetcDeatils from "../pages/ProjetcDeatils";
 import { formatProjectNotification } from "../utils/toastMessge";
+import Loader from "../Components/Loader";
 function AppRouter() {
     const navigate = useNavigate();
     useEffect(() => {
@@ -101,18 +102,19 @@ function AppRouter() {
     return (
         <>
             <Toaster></Toaster>
+            <Suspense fallback={<Loader />}>
+                <Routes>
 
-            <Routes>
-
-                <Route path="/" element={<App />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
-                <Route path="/Tasks" element={<Task />} />
-                <Route path="/Calendar" element={<Calendar />} />
-                <Route path="/Team" element={<Team />} />
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Signup" element={<SiginUp />} />
-            </Routes>
+                    <Route path="/" element={<App />} />
+                    <Route path="/projects" element={<Projects />} />
+                    <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
+                    <Route path="/Tasks" element={<Task />} />
+                    <Route path="/Calendar" element={<Calendra />} />
+                    <Route path="/Team" element={<Team />} />
+                    <Route path="/Login" element={<Login />} />
+                    <Route path="/Signup" element={<SiginUp />} />
+                </Routes>
+            </Suspense>
 
 
         </>
