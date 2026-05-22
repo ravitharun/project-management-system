@@ -81,12 +81,12 @@ A full-stack **Project Management Web Application** built using the **MERN stack
 git clone https://github.com/ravitharun/project-management-system.git
 
 # Move into backend folder
-cd server
+cd Server
 npm install
 npm start
 
 # Move into frontend folder
-cd ../client
+cd Ui
 npm install
 npm start
 ```
@@ -94,9 +94,8 @@ npm start
 ## 👨‍💻 Author
 **Ravi Tharun**  
 Full Stack Developer (MERN)  
-📍 Andhra Pradesh, India  
-📧 [tharunravi672@gmail.com](mailto:tharunravi672@gmail.com)  
-📱 7396994383
+[tharunravi672@gmail.com](mailto:tharunravi672@gmail.com)  
+7396994383
 
 ## ⭐ Support
 If you like this project, give it a **star** on GitHub.
