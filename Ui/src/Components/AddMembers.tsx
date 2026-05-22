@@ -147,7 +147,7 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
                                                 <input
                                                     type="checkbox"
                                                     className="w-4 h-4 accent-blue-600"
-                                                    onClick={(e) => addmembersIntoArray(role.id)}
+                                                    onClick={() => addmembersIntoArray(role.id)}
                                                 />
 
                                                 <div className="flex flex-col">
