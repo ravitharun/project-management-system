@@ -49,7 +49,7 @@ const CreateProjects = async (req, res) => {
             userId: "userId", message: `${data.data.username} created a new project`, isRead: false
 
         }
-         await client.del("Notificatons")
+        await client.del("Notificatons")
         await NotificationSchema.create(NotificationFormatData)
         io.emit(
             "AddedNewProject",
@@ -85,4 +85,43 @@ const FetchProjects = async (req, res) => {
 
     }
 }
-module.exports = { CreateProjects, FetchProjects }
+
+
+const ManageMembersProject = async (req, res) => {
+    try {
+        const io = getIO()
+        const { data } = req.body
+        await client.DEL("Projects")
+        console.log(data.userid, data.projectsid)
+        if (!data.projectsid) {
+            return res.status(404).json({ message: "Something went Wrong" })
+        }
+        if (data.userid.length == 0) {
+            return res.status(404).json({ message: "More Than 1 Members are required to added in these project" })
+        }
+        const NotificationFormatData = {
+            userId: "userId", message: `${data.projectsid}  New ${data.userid.length <= 1 ? "Members" : "Member"} Added`, isRead: false
+        }
+
+
+        const GetprojectByProjId = await AddProject.findOneAndUpdate({ projectId: data.projectsid }, {
+            $addToSet: {
+                teamMembers: data.userid
+            }
+        }, {
+            returnDocument: "after"
+        })
+
+        await client.del("Notificatons")
+        await NotificationSchema.create(NotificationFormatData)
+        io.emit(
+            "AddProjectMembers",
+            `${data.userid.length > 1 ? "New members have" : "A new member has"} been added to project ${data.projectsid}`
+        );
+        return res.status(200).json({ message: "Added", status: true })
+    } catch (error) {
+        return res.status(500).json({ message: "server Error", status: false })
+
+    }
+}
+module.exports = { CreateProjects, FetchProjects, ManageMembersProject }
