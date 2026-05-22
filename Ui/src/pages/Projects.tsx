@@ -34,13 +34,13 @@ function Projects() {
 
 
 
-
     useEffect(() => {
         const FetchProjects = async () => {
             try {
                 const response = await fetchProjects()
                 console.log(JSON.parse(response.data.data), 'response')
                 setprojects(JSON.parse(response.data.data))
+
             } catch (error: any) {
                 toast.error(error)
 
@@ -49,9 +49,12 @@ function Projects() {
         FetchProjects()
     }, [])
 
+
+
     const handelOpenTaskForm = () => {
         setopenform((prev) => !prev)
         console.log('first')
+
     }
     const naviagte = useNavigate()
     const handelProjectDetaile = (project: any) => {
@@ -65,6 +68,7 @@ function Projects() {
             }
         })
     }
+
     return (
         <>
 
@@ -74,7 +78,7 @@ function Projects() {
                 <Sidebar page="Projects" />
 
                 {/* MAIN CONTENT */}
-                <main className="flex-1 p-6 overflow-y-auto hide-scrollbar">
+                <main  className="flex-1 p-6 overflow-y-auto hide-scrollbar mt-10">
 
                     {/* HEADER */}
                     <div className="flex justify-between items-center mb-6">
@@ -95,22 +99,7 @@ function Projects() {
                         <KpiCard title="Team Members" value="5" />
                     </div>
 
-                    {/* SEARCH */}
-                    <div className="flex flex-col md:flex-row gap-3 mb-6">
-
-                        <div className="flex items-center bg-white px-3 py-2 rounded-lg shadow w-full">
-                            <FaSearch className="text-gray-500" />
-                            <input
-                                placeholder="Search projects..."
-                                className="ml-2 w-full outline-none"
-                            />
-                        </div>
-
-                        <button className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow">
-                            <FaFilter /> Filter
-                        </button>
-
-                    </div>
+               
 
                     {/* ================= ANALYTICS only for the Team Leaders Or Mangers can View these Analytics ================= */}
                     {!requiredRoles.includes(Role) ?
@@ -187,6 +176,22 @@ function Projects() {
 
 
                     }
+                         {/* SEARCH */}
+                    <div className="flex flex-col md:flex-row gap-3 mb-6">
+
+                        <div className="flex items-center bg-white px-3 py-2 rounded-lg shadow w-full">
+                            <FaSearch className="text-gray-500" />
+                            <input
+                                placeholder="Search projects..."
+                                className="ml-2 w-full outline-none"
+                            />
+                        </div>
+
+                        <button className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow">
+                            <FaFilter /> Filter
+                        </button>
+
+                    </div>
                     {/* PROJECT CARDS */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -196,7 +201,7 @@ function Projects() {
                                 <div
                                     key={i}
                                     className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition"
-                                    onClick={()=>handelProjectDetaile(p)}
+                                    onClick={() => handelProjectDetaile(p)}
                                 >
 
                                     <h2 className="text-xl font-bold text-gray-800">

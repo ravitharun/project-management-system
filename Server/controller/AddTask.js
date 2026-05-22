@@ -139,8 +139,7 @@ const updatetask = async (req, res) => {
             },
             { returnDocument: "after" }
         )
-        // 2026-05-08T00:00:00.000+00:00
-        // 2026-05-09T00:00:00.000+00:00
+   
 
         const NotificationFormatData = {
             userId: "userId", message: "A task deadline has been updated", isRead: false
