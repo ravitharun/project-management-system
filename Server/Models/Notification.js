@@ -11,13 +11,12 @@ const NotificationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    isRead: [
-        {
-            userid: { type: String },
-   
-
-        }
-    ],
+    // isRead: [
+    //     {
+    //         userid: { type: String },
+    //     }
+    // ],
+    isRead: { type: Boolean, default: false },
 
     date: {
         type: Date,

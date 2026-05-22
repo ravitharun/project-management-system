@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaChevronDown, FaUserPlus } from "react-icons/fa";
 import { MdOutlineClose } from "react-icons/md";
+import { instance } from "../services/apiservices";
+// import toast from "react-hot-toast";
+import { toast, ToastContainer } from "react-toastify";
 
 type ProjectIdProps = {
     projectsid: string;
@@ -11,7 +14,7 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
     const [open, setOpen] = useState(false);
 
     const [userid, setuserid] = useState<number[]>([])
-    const users = [
+    const [users, setusers] = useState<any[]>([
         {
             id: 1,
             name: "Ravi Tharun",
@@ -42,7 +45,24 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
             name: "Rahul Sharma",
             role: "Project Manager",
         },
-    ];
+    ]);
+
+
+    useEffect(() => {
+        const fetchMembers = async () => {
+            try {
+                const response = await instance.get("/api/Team")
+                console.log(response.data.message, 'team')
+                setusers(response.data.message)
+            } catch (error: any) {
+                console.log(error.message)
+
+
+            }
+        }
+        fetchMembers()
+
+    }, [])
 
     const addmembersIntoArray = (data: number) => {
 
@@ -57,17 +77,47 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
             return [...prev, data];
         });
     };
-    const AddMember = () => {
+    const AddMember = async () => {
+
+        console.log('members id', { userid, projectsid })
 
 
-        console.log('members id', userid)
+        if (userid.length == 0) {
+            return toast.info("More Than 1 Members are required to added in these project")
+        }
+
+        try {
+            const response = await instance.put("/api/ManageProject/AddMembers", {
+                data: { userid, projectsid }
+            })
+            console.log(response, 'response')
+            if (response.data.message == "Added") {
+                return toast.success("Added")
+            }
+        } catch (error: any) {
+            console.log(error.message)
+            if (error.status == 404) {
+                toast.info("More Than 1 Members are required to added in these project")
+            }
+
+        }
 
     }
     return (
         <>
             {/* Overlay */}
             <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
-
+                <ToastContainer position="top-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick={false}
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                ></ToastContainer>
                 {/* Popup */}
                 <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 relative animate-in fade-in zoom-in duration-200">
 
@@ -147,16 +197,16 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
                                                 <input
                                                     type="checkbox"
                                                     className="w-4 h-4 accent-blue-600"
-                                                    onClick={() => addmembersIntoArray(role.id)}
+                                                    onClick={() => addmembersIntoArray(role._id)}
                                                 />
 
                                                 <div className="flex flex-col">
                                                     <span className="text-sm font-medium text-gray-800">
-                                                        {role.name}
+                                                        {role.Username}-({role.userrole == "tl" ? "Team Leader" : role.userrole})
                                                     </span>
 
                                                     <span className="text-xs text-gray-500">
-                                                        {role.role}
+                                                        {!role.dept ? "No Dept" : role.dept}
                                                     </span>
                                                 </div>
                                             </label>
@@ -176,8 +226,9 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
                             </button>
 
                             <button
-                                className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition"
+                                className={`w-full bg-blue-600 text-white py-3 rounded-xl font-medium  transition ${userid.length == 0?'bg-green-100 hover:cursor-not-allowed':'hover:bg-blue-700'}`}
                                 onClick={AddMember}
+                                disabled={userid.length == 0}
                             >
                                 Add Member
                             </button>
