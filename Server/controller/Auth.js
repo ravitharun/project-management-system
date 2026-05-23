@@ -17,14 +17,15 @@ const AuthNewAccount = async (req, res) => {
 
         const result = await cloudinary.uploader.upload(req.file.path);
         const EmpId = GetEmpNameGenById(req.body.name)
-        console.log(EmpId,'EmpId')
+        console.log(EmpId, 'EmpId')
         const saveuser = await UserSchema({
-            userID:EmpId,
+            userID: EmpId,
             userProfile: result.secure_url,
             Username: req.body.name,
             userEmail: req.body.email,
             userPassword: haspassowrd,
-            userrole: req.body.role
+            userrole: req.body.role,
+            dept: req.body.dept
         })
         await saveuser.save()
         return res.status(201).json({ message: 'new user Created.' })

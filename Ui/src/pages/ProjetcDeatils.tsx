@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import TaskForm from "../Components/TaskForm";
 import ProjectDocuments from "../Components/ProjectDocuments";
 import TasksByProjectId from "../Components/TasksByProjectId";
+import AddMembers from "../Components/AddMembers";
 
 function ProjetcDeatils() {
     const data = useLocation().state.project;
@@ -29,6 +30,7 @@ function ProjetcDeatils() {
     console.log(data, 'data')
     const [ProjectInfo, setProjectInfo] = useState<any>([])
     const [Addtask, setAddtask] = useState<boolean>(false)
+    const [Addmemebers, setaddmembers] = useState<boolean>(false)
 
     const [Taskes, setTaskes] = useState<any[] | null>([])
 
@@ -41,6 +43,8 @@ function ProjetcDeatils() {
         data?.priority === "High"
             ? "bg-red-100 text-red-600"
             : "bg-blue-100 text-blue-600";
+
+
     const HandelFile = async (e: any) => {
         const fileFormdata = new FormData()
         const userinfo: any = {
@@ -102,6 +106,12 @@ function ProjetcDeatils() {
     const handelClose = () => {
         setAddtask((prev) => !prev)
     }
+    const handelAddMemebers = () => {
+        setaddmembers((prev) => !prev)
+    }
+
+
+
     const Data = getuserInfo ? JSON.parse(getuserInfo) : null
     const AddedBy: any = {
         name: Data.Username,
@@ -153,6 +163,16 @@ function ProjetcDeatils() {
                             }
                             classaName="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-md"
                             OnclickEvent={handelClose}
+                            type="button"
+                        />
+                        <Button
+                            Btnname={
+                                <span className="flex items-center gap-2">
+                                    <FaUsers /> Add Memebers
+                                </span>
+                            }
+                            classaName="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-md"
+                            OnclickEvent={handelAddMemebers}
                             type="button"
                         />
 
@@ -333,7 +353,15 @@ function ProjetcDeatils() {
                     </div>
                 </>}
 
-                
+                {Addmemebers && <>
+
+                    <div className="ml-10">
+
+                        <AddMembers onclose={handelAddMemebers} projectsid={data.projectId} ></AddMembers>
+                    </div>
+                </>}
+
+
             </main>
         </div>
     );

@@ -34,12 +34,13 @@ const AddTask = async (req, res) => {
             Taskstatus: TaskData.progress,
         })
         await AddAssignTask.save()
+        await client.del("Notificatons")
         const NotificationFormatData = {
-            userId: "userId", message: ` ${data.data.username} created a new project`, isRead: false
+            userId: "userId", message: ` ${TaskData.AddedBy.name} created a new Task`,
 
         }
         await NotificationSchema.create(NotificationFormatData)
-
+        console.log(`${TaskData.AddedBy.name} created a new project`, NotificationFormatData)
         io.emit("NewTask", {
             message: `Team update: New task added to project ${TaskData.projectid}`,
             taskAddedBy: `${TaskData.AddedBy.name} to ${TaskData.assignTo}`
@@ -119,6 +120,13 @@ const updatedProgress = async (req, res) => {
                 message: "Task Not Found"
             });
         }
+        await client.del("Notificatons")
+        const NotificationFormatData = {
+            userId: "userId", message: `projectId:  ${projectId} Updated the Progress`, isRead: []
+
+        }
+        console.log(NotificationFormatData, 'NotificationFormatData')
+        await NotificationSchema.create(NotificationFormatData)
 
         //  Get All Tasks Again
         const tasksByprojectId = await AssignTask.find({
