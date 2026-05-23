@@ -34,12 +34,13 @@ const AddTask = async (req, res) => {
             Taskstatus: TaskData.progress,
         })
         await AddAssignTask.save()
+        await client.del("Notificatons")
         const NotificationFormatData = {
-            userId: "userId", message: ` ${data.data.username} created a new project`, isRead: false
+            userId: "userId", message: ` ${TaskData.AddedBy.name} created a new Task`,
 
         }
         await NotificationSchema.create(NotificationFormatData)
-
+        console.log(`${TaskData.AddedBy.name} created a new project`, NotificationFormatData)
         io.emit("NewTask", {
             message: `Team update: New task added to project ${TaskData.projectid}`,
             taskAddedBy: `${TaskData.AddedBy.name} to ${TaskData.assignTo}`
@@ -86,80 +87,32 @@ const fetchTaskes = async (req, res) => {
 
 const updatedProgress = async (req, res) => {
     try {
-
-        await client.del("Projects");
-
-        const { projectId, num, ProjectIs } = req.query;
-
-        if (!ProjectIs) {
-            return res.status(404).json({
-                message: "Project Id is missing"
-            });
-        }
-
+        const { projectId, num } = req.query
+        console.log(typeof (num), 'num')
         if (!projectId) {
             return res.status(404).json({
                 message: "Task Id is missing"
             });
         }
 
-        // Update Current Task
-        const UpdateProgress = await AssignTask.findOneAndUpdate(
-            { _id: projectId },
-            {
-                TaskProgress: Number(num)
-            },
-            {
-                returnDocument: "after"
-            }
-        );
-
+        const UpdateProgress = await AssignTask.findByIdAndUpdate({ _id: projectId }, {
+            TaskProgress: num
+        }, {
+            new: true
+        })
+        //  UpdateProgress.TaskProgress=100
+        console.log(UpdateProgress, 'UpdateProgress')
         if (!UpdateProgress) {
-            return res.status(404).json({
-                message: "Task Not Found"
-            });
+            return res.status(404).json({ message: 'task Not Found' })
+
         }
 
-        //  Get All Tasks Again
-        const tasksByprojectId = await AssignTask.find({
-            ProjectID: ProjectIs
-        });
+        return res.status(200).json({ message: "Progresss Task Is updated..." })
 
-        //  Filter Completed Tasks
-        const completedTasks = tasksByprojectId.filter(
-            (task) => Number(task.TaskProgress) === 100
-        );
-
-        //  Calculate Main Progress
-        const MainProgressProject = Math.round(
-            (completedTasks.length / tasksByprojectId.length) * 100
-        );
-
-        console.log(MainProgressProject);
-
-        // Update Project Progress
-        await AddProject.findOneAndUpdate(
-            { projectId: ProjectIs },
-            {
-                progress: MainProgressProject
-            },
-            {
-                returnDocument: "after"
-            }
-        );
-
-        return res.status(200).json({
-            message: "Task Progress Updated",
-            progress: MainProgressProject
-        });
 
     } catch (error) {
+        return res.status(500).json({ message: "server Error" })
 
-        console.log(error.message);
-
-        return res.status(500).json({
-            message: "Server Error"
-        });
     }
 };
 

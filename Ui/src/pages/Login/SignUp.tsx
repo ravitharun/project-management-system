@@ -6,6 +6,7 @@ import Button from "../../Components/Button";
 import CustomToast from "../../Components/Toasts/CustomToast";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthNewAccount } from "../../services/AuthApi";
+import { departments } from "../../types/Dept";
 
 type ResponseType = {
     message: string;
@@ -21,6 +22,7 @@ function SiginUp() {
     const [responsetext, setresponsetext] = useState<ResponseType>(null);
     const [file, setfile] = useState<File | null>(null);
     const [profilePreview, setProfilePreview] = useState<string | null>(null);
+    const [dept, setdept] = useState<string>("")
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
@@ -43,7 +45,7 @@ function SiginUp() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!role || !email || !password || !name) {
+        if (!role || !email || !password || !name || !dept) {
             return setresponsetext({
                 message: "Please fill all fields",
                 types: "warning",
@@ -57,6 +59,7 @@ function SiginUp() {
         fromdata.append("name", name)
         fromdata.append("email", email)
         fromdata.append("password", password)
+        fromdata.append("dept", dept)
         // ✅ FIX HERE
         if (file) {
             fromdata.append("Profile", file);
@@ -181,7 +184,52 @@ function SiginUp() {
                                 </div>
                             </div>
 
-                            {/* NAME */}
+                            {/* Dept */}
+                            <div className="relative w-full">
+                                <label className="block mb-2 text-sm font-semibold text-gray-700">
+                                    Department
+                                </label>
+
+                                <div className="relative">
+                                    {/* Left Icon */}
+                                    <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+
+                                    {/* Dropdown */}
+                                    <select
+                                        onChange={(e) => setdept(e.target.value)}
+                                        className="
+                w-full
+                pl-11
+                pr-4
+                py-3
+                rounded-2xl
+                border
+                border-gray-300
+                bg-white
+                text-gray-700
+                shadow-sm
+                outline-none
+                transition-all
+                duration-200
+                focus:ring-2
+                focus:ring-blue-500
+                focus:border-blue-500
+                hover:border-blue-400
+                cursor-pointer
+            "
+                                    >
+                                        <option value="" disabled>Select Department</option>
+
+                                        {departments.map((dept, idx) => (
+                                            <option value={dept} key={idx}>
+                                                {dept}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                        
+                                </div>
+                            </div>
                             <div className="relative">
                                 <FaUser className="absolute top-3.5 left-3 text-gray-400" />
                                 <Input
