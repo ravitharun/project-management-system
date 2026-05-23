@@ -184,19 +184,51 @@ function SiginUp() {
                                 </div>
                             </div>
 
-                            {/* NAME */}
-                            <div className="relative">
-                                <FaUser className="absolute top-3.5 left-3 text-gray-400" />
-                                <select name="" id="" onChange={(e) => setdept(e.target.value)}>
+                            {/* Dept */}
+                            <div className="relative w-full">
+                                <label className="block mb-2 text-sm font-semibold text-gray-700">
+                                    Department
+                                </label>
 
+                                <div className="relative">
+                                    {/* Left Icon */}
+                                    <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
 
-                                    {departments.map((dept, idx) => (
-                                        <option value={dept} key={idx}>
+                                    {/* Dropdown */}
+                                    <select
+                                        onChange={(e) => setdept(e.target.value)}
+                                        className="
+                w-full
+                pl-11
+                pr-4
+                py-3
+                rounded-2xl
+                border
+                border-gray-300
+                bg-white
+                text-gray-700
+                shadow-sm
+                outline-none
+                transition-all
+                duration-200
+                focus:ring-2
+                focus:ring-blue-500
+                focus:border-blue-500
+                hover:border-blue-400
+                cursor-pointer
+            "
+                                    >
+                                        <option value="" disabled>Select Department</option>
 
-                                            {dept}
-                                        </option>
-                                    ))}
-                                </select>
+                                        {departments.map((dept, idx) => (
+                                            <option value={dept} key={idx}>
+                                                {dept}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                        
+                                </div>
                             </div>
                             <div className="relative">
                                 <FaUser className="absolute top-3.5 left-3 text-gray-400" />
