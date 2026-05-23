@@ -87,21 +87,34 @@ const fetchTaskes = async (req, res) => {
 
 const updatedProgress = async (req, res) => {
     try {
-        const { projectId, num } = req.query
-        console.log(typeof (num), 'num')
+
+        await client.del("Projects");
+
+        const { projectId, num, ProjectIs } = req.query;
+
+        if (!ProjectIs) {
+            return res.status(404).json({
+                message: "Project Id is missing"
+            });
+        }
+
         if (!projectId) {
             return res.status(404).json({
                 message: "Task Id is missing"
             });
         }
 
-        const UpdateProgress = await AssignTask.findByIdAndUpdate({ _id: projectId }, {
-            TaskProgress: num
-        }, {
-            new: true
-        })
-        //  UpdateProgress.TaskProgress=100
-        console.log(UpdateProgress, 'UpdateProgress')
+        // Update Current Task
+        const UpdateProgress = await AssignTask.findOneAndUpdate(
+            { _id: projectId },
+            {
+                TaskProgress: Number(num)
+            },
+            {
+                returnDocument: "after"
+            }
+        );
+
         if (!UpdateProgress) {
             return res.status(404).json({ message: 'task Not Found' })
 
