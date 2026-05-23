@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../Components/Navbar";
 import Button from "../Components/Button";
-// import { MdWork } from "react-icons/md";
 import {
     FaArrowLeft,
     FaUser,

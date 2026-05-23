@@ -4,6 +4,7 @@ const AssignTask = require("../Models/Task")
 const { getIO } = require("../scoket")
 const { v4: uuidv4 } = require('uuid');
 const NotificationSchema = require("../Models/Notification");
+const AddProject = require("../Models/Project");
 const { client } = require("../conifg/Redis");
 
 const AddTask = async (req, res) => {
@@ -56,50 +57,121 @@ const fetchTaskes = async (req, res) => {
     try {
 
         const { projectId } = req.query
-        console.log(projectId, 'projectId')
+        console.log(projectId, 'projectId ftech')
         if (!projectId) {
-            console.log("projectId")
             return res.status(404).json({ message: "Something Went Wrong." })
         }
         const fetchByProjectId = await AssignTask.find({ ProjectID: projectId })
+
         if (fetchByProjectId.length == 0) {
             return res.status(200).json({ message: "No Task Added in these Project.", status: true })
         }
 
+
         return res.status(200).json({ message: fetchByProjectId, status: true })
     } catch (error) {
+        console.log(error, 'err')
         return res.status(500).json({ message: "server Error.", status: false })
     }
 }
+
+
+
+
+
+
+
+
+
+
 const updatedProgress = async (req, res) => {
     try {
-        const { projectId, num } = req.query
-        console.log(typeof (num), 'num')
+
+        await client.del("Projects");
+
+        const { projectId, num, ProjectIs } = req.query;
+
+        if (!ProjectIs) {
+            return res.status(404).json({
+                message: "Project Id is missing"
+            });
+        }
+
         if (!projectId) {
-            console.log({ message: "task Id is missing .." })
-            return res.status(404).json({ message: "task Id is missing .." })
+            return res.status(404).json({
+                message: "Task Id is missing"
+            });
         }
 
-        const UpdateProgress = await AssignTask.findByIdAndUpdate({ _id: projectId }, {
-            TaskProgress: num
-        }, {
-            new: true
-        })
-        //  UpdateProgress.TaskProgress=100
-        console.log(UpdateProgress, 'UpdateProgress')
+        // Update Current Task
+        const UpdateProgress = await AssignTask.findOneAndUpdate(
+            { _id: projectId },
+            {
+                TaskProgress: Number(num)
+            },
+            {
+                returnDocument: "after"
+            }
+        );
+
         if (!UpdateProgress) {
-            return res.status(404).json({ message: 'task Not Found' })
-
+            return res.status(404).json({
+                message: "Task Not Found"
+            });
         }
 
-        return res.status(200).json({ message: "Progresss Task Is updated..." })
+        //  Get All Tasks Again
+        const tasksByprojectId = await AssignTask.find({
+            ProjectID: ProjectIs
+        });
 
+        //  Filter Completed Tasks
+        const completedTasks = tasksByprojectId.filter(
+            (task) => Number(task.TaskProgress) === 100
+        );
+
+        //  Calculate Main Progress
+        const MainProgressProject = Math.round(
+            (completedTasks.length / tasksByprojectId.length) * 100
+        );
+
+        console.log(MainProgressProject);
+
+        // Update Project Progress
+        await AddProject.findOneAndUpdate(
+            { projectId: ProjectIs },
+            {
+                progress: MainProgressProject
+            },
+            {
+                returnDocument: "after"
+            }
+        );
+
+        return res.status(200).json({
+            message: "Task Progress Updated",
+            progress: MainProgressProject
+        });
 
     } catch (error) {
-        return res.status(500).json({ message: "server Error" })
 
+        console.log(error.message);
+
+        return res.status(500).json({
+            message: "Server Error"
+        });
     }
-}
+};
+
+
+
+
+
+
+
+
+
+
 const fetchalltaskes = async (req, res) => {
     try {
 
@@ -139,7 +211,7 @@ const updatetask = async (req, res) => {
             },
             { returnDocument: "after" }
         )
-   
+
 
         const NotificationFormatData = {
             userId: "userId", message: "A task deadline has been updated", isRead: false
@@ -182,8 +254,8 @@ const DeleteTask = async (req, res) => {
             const NotificationFormatData = {
                 userId: "userId", message: `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`, isRead: false
             }
-                     await client.del("Notificatons")
-            
+            await client.del("Notificatons")
+
             await NotificationSchema.create(NotificationFormatData)
             io.emit("HandelDeleteUser", `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`)
             return res.status(200).json({ messaage: "task Deleted", status: true })
