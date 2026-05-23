@@ -101,7 +101,7 @@ function ProjectDocuments(ProjectInfo: any) {
                                             </a>
                                         </td>
                                         <td className="p-3">
-                                            <span>{file.addedBy[0].Empname}-{file.addedBy[0].EmpRole === 'tl' ? "Team Leader" : file.addedBy[0].EmpRole}</span>
+                                            {/* <span>{file.addedBy[0].Empname}-{file.addedBy[0].EmpRole === 'tl' ? "Team Leader" : file.addedBy[0].EmpRole}</span> */}
                                         </td>
                                     </tr>
                                 ))
