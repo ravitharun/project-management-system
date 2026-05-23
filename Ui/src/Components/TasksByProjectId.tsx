@@ -26,13 +26,13 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
 
 
     console.log(showProgressPoup)
-    const handelUpadateProgress = async (id: number, num: string) => {
-        console.log(num, 'num to update')
+    const handelUpadateProgress = async (id: number, num: string,prjid:number) => {
+        console.log(num,prjid, 'num to update')
 
         try {
             // http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=
 
-            const response = await axios.patch(`http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=${id}&num=${num}`)
+            const response = await axios.patch(`http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=${id}&num=${num}&ProjectIs=${prjid}`)
             console.log(response, 'response')
             toast.success(response.data.message)
         } catch (error: any) {
@@ -194,7 +194,7 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                                     <select
                                                         className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-400"
                                                         onChange={(e) =>
-                                                            handelUpadateProgress(task._id, e.target.value)
+                                                            handelUpadateProgress(task._id, e.target.value,task.ProjectID)
                                                         }
                                                     >
                                                         <option>Select Progress</option>
@@ -246,5 +246,4 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
         </>
     );
 }
-
 export default TasksByProjectId;
