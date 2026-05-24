@@ -33,10 +33,10 @@ function ProjetcDeatils() {
     const [ProjectInfo, setProjectInfo] = useState<any>([])
     const [Addtask, setAddtask] = useState<boolean>(false)
     const [Addmemebers, setaddmembers] = useState<boolean>(false)
-    const [ProjectStatus, setProjectStatus] = useState<string>("")
+    // const [ProjectStatus, setProjectStatus] = useState<string>("")
     // console.log(ProjectStatus,'ProjectStatus')
     const [Taskes, setTaskes] = useState<any[] | null>([])
-
+    // console.log(ProjectStatus)
     const statusColor =
         data?.status === "Completed"
             ? "bg-green-100 text-green-600"
@@ -61,7 +61,7 @@ function ProjetcDeatils() {
             console.log(error.message)
 
         }
-        setProjectStatus(status)
+        // setProjectStatus(status)
 
     }
     const HandelFile = async (e: any) => {
