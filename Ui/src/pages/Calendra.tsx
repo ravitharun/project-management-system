@@ -10,12 +10,21 @@ import Sidebar from "../Components/Navbar";
 import { fetchtaskApi, HandelDeleteTask } from "../services/taskApi";
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
+import ActionLoading from "../Components/ActionLoading";
 
 export default function ProjectCalendar() {
 
     const [tasks, setTasks] = useState<any[]>([]);
     const [poupAction, setpoupaction] = useState(false);
+    const [taskUpdateLoader, settaskUpdateLoader] = useState<boolean>(false)
+    // const [taskUpdateLoader, settaLoader] = useState<boolean>(false)
 
+
+    const [message, setmessage] = useState<{
+        title: string,
+        descp: string,
+        type: string
+    }>()
     const isSameDay = (a: Date, b: Date) =>
         a.getFullYear() === b.getFullYear() &&
         a.getMonth() === b.getMonth() &&
@@ -66,6 +75,8 @@ export default function ProjectCalendar() {
         console.log("New Date:", info.event.start);
 
         try {
+            settaskUpdateLoader(true)
+                        setmessage({ title: "Updating.", descp: "Updating the task ", type: "loading" })
 
             const updateTask = await axios.patch(
                 "http://localhost:5000/api/Task/taskUpdate",
@@ -80,12 +91,16 @@ export default function ProjectCalendar() {
 
             if (updateTask.data.message === "updated") {
                 toast.success("Task Updated");
+                settaskUpdateLoader(false)
             }
 
         } catch (error: any) {
 
             console.log(error.message);
             toast.error("Update Failed");
+        }
+        finally {
+            settaskUpdateLoader(false)
         }
     };
 
@@ -122,13 +137,20 @@ export default function ProjectCalendar() {
         }
 
         try {
+            settaskUpdateLoader(true)
+            setmessage({ title: "Deleting the tAsk", descp: "f", type: "delete" })
             const response = await HandelDeleteTask(TaskId)
             console.log(response)
+            settaskUpdateLoader(false)
         } catch (error: any) {
             toast.error(error.message)
 
         }
-     
+        finally {
+
+            settaskUpdateLoader(false)
+        }
+
 
     }
     return (
@@ -146,6 +168,9 @@ export default function ProjectCalendar() {
             // transition={Bounce}
 
             ></ToastContainer>
+
+
+            {taskUpdateLoader && <ActionLoading description={message?.descp} title={message?.title} type={message?.type} />}
             {/* Popup */}
             {
                 poupAction &&
