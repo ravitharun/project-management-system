@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 
 const NotificationSchema = new mongoose.Schema({
     userId: {
+        default: "userid",
         type: String,
         // required: true,
     },
