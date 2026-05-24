@@ -7,22 +7,17 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import Sidebar from "../Components/Navbar";
+import { instance } from "../services/apiservices";
+import { departments } from "../types/Dept";
+import { useremail } from "../Components/LocalStorage";
 
-type MemberType = {
-  name: string;
-  role: string;
-  department: string;
-  tasks: number;
-  completed: number;
-  progress: number;
-  status: string;
-};
+
 
 function Team() {
   const [view, setView] = useState<"table" | "card">("table");
 
-  const [members, setMembers] = useState<MemberType[]>([]);
-  const [filteredMembers, setFilteredMembers] = useState<MemberType[]>([]);
+  const [members, setMembers] = useState<any[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<any[]>([]);
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
@@ -30,56 +25,15 @@ function Team() {
   // ---------------- API CALL (SIMULATED) ----------------
   useEffect(() => {
     const fetchData = async () => {
-      const data: MemberType[] = [
-        {
-          name: "Ravi Kumar",
-          role: "Frontend Developer",
-          department: "UI",
-          tasks: 14,
-          completed: 10,
-          progress: 78,
-          status: "Active",
-        },
-        {
-          name: "John Mathew",
-          role: "Backend Developer",
-          department: "API",
-          tasks: 9,
-          completed: 5,
-          progress: 55,
-          status: "Idle",
-        },
-        {
-          name: "Sara Sharma",
-          role: "UI/UX Designer",
-          department: "Design",
-          tasks: 7,
-          completed: 7,
-          progress: 100,
-          status: "Active",
-        },
-        {
-          name: "Amit Verma",
-          role: "Full Stack Developer",
-          department: "Product",
-          tasks: 16,
-          completed: 11,
-          progress: 68,
-          status: "Active",
-        },
-        {
-          name: "Neha Reddy",
-          role: "QA Engineer",
-          department: "Testing",
-          tasks: 6,
-          completed: 4,
-          progress: 70,
-          status: "Idle",
-        },
-      ];
+      try {
+        const response = await instance.get("/api/Team")
+        console.log(response.data.message)
 
-      setMembers(data);
-      setFilteredMembers(data);
+        setMembers(response.data.message);
+        setFilteredMembers(response.data.message);
+      } catch (error: any) {
+        console.log(error.message)
+      }
     };
 
     fetchData();
@@ -91,15 +45,15 @@ function Team() {
     // SEARCH
     if (searchText) {
       data = data.filter((m) =>
-        m.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        m.role.toLowerCase().includes(searchText.toLowerCase())
+        m.Username.toLowerCase().includes(searchText.toLowerCase()) ||
+        m.userrole.toLowerCase().includes(searchText.toLowerCase())
       );
     }
 
     // FILTER
     if (dept !== "All") {
       data = data.filter(
-        (m) => m.department === dept || m.status === dept
+        (m) => m.dept === dept || m.status === dept
       );
     }
 
@@ -191,13 +145,9 @@ function Team() {
                 onChange={handleFilter}
               >
                 <option value="All">All</option>
-                <option value="UI">UI</option>
-                <option value="API">API</option>
-                <option value="Design">Design</option>
-                <option value="Product">Product</option>
-                <option value="Testing">Testing</option>
-                <option value="Active">Active</option>
-                <option value="Idle">Idle</option>
+                {departments.map((dept: string) => (
+                  <option value={dept}>{dept}</option>
+                ))}
               </select>
 
             </div>
@@ -215,85 +165,181 @@ function Team() {
                   <div>Status</div>
                 </div>
 
-                {filteredMembers.length == 0 ? <>
+                {
 
-                  <div className="flex flex-col items-center justify-center h-64 text-center p-6 border border-dashed border-gray-300 rounded-xl bg-gray-50">
 
-                    <svg
-                      className="w-14 h-14 text-gray-400 mb-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      viewBox="0 0 24 24"
+                  filteredMembers.map((m, i) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-6 items-center px-4 py-3 border-b hover:bg-gray-50 transition"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M16.5 9.4a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM3.75 20.25a8.25 8.25 0 0116.5 0"
-                      />
-                    </svg>
+                      {/* User */}
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-9 h-9">
+                          <img
+                            src={m?.userProfile || "/default-avatar.png"}
+                            alt={m?.Username}
+                            className="w-9 h-9 rounded-full object-cover border"
+                          />
+                          {!m?.userProfile && (
+                            <FaUserCircle className="absolute inset-0 m-auto text-gray-400 text-xl" />
+                          )}
+                        </div>
 
-                    <h2 className="text-lg font-semibold text-gray-700">
-                      No Team Members Found
-                    </h2>
+                        <span className="font-medium text-gray-800 truncate max-w-[120px]">
+                          {m?.Username}
+                        </span>
+                      </div>
 
-                    <p className="text-sm text-gray-500 mt-1">
-                      It looks like there are no team members available right now.
-                    </p>
+                      {/* Department */}
+                      <div className="text-gray-600 text-sm flex items-center gap-1">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                        {m?.dept || "No Dept"}
+                      </div>
 
-                    <button className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
-                      Add Member
-                    </button>
-                  </div>
-                </> : filteredMembers.map((m, i) => (
-                  <div key={i} className="grid grid-cols-6 p-4 border-b">
+                      {/* Tasks */}
+                      <div className="flex items-center gap-2 text-gray-700">
+                        <FaTasks className="text-gray-500 text-sm" />
+                        <span>{m?.tasks || 0}</span>
+                      </div>
 
-                    <div className="flex items-center gap-2">
-                      <FaUserCircle className="text-2xl text-gray-500" />
-                      {m.name}
+                      {/* Progress */}
+                      <div className="text-sm font-medium text-gray-700">
+                        {m?.progress || 0}%
+                      </div>
+
+                      {/* Heat / Activity */}
+                      <div
+                        className={`w-16 h-2 rounded-full ${getHeatColor(
+                          m?.tasks || 0
+                        )}`}
+                      ></div>
+
+                      {/* Status */}
+                      <div>
+                        <span
+                          className={`px-2 py-1 text-xs rounded-full font-medium ${m.isactive
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-200 text-gray-600"
+                            }`}
+                        >
+                          {m.isactive ? "Active" : "Idle"}
+                        </span>
+                      </div>
                     </div>
-
-                    <div>{m.department}</div>
-
-                    <div className="flex items-center gap-1">
-                      <FaTasks /> {m.tasks}
-                    </div>
-
-                    <div>{m.progress}%</div>
-
-                    <div className={`w-16 h-5 rounded ${getHeatColor(m.tasks)}`}></div>
-
-                    <div>{m.status}</div>
-
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
 
-            {/* ================= CARD VIEW ================= */}
+            {filteredMembers && filteredMembers.length == 0 &&
+
+              <>
+
+                <div className="flex flex-col items-center justify-center h-64 text-center p-6 border border-dashed border-gray-300 rounded-xl bg-gray-50">
+
+                  <svg
+                    className="w-14 h-14 text-gray-400 mb-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.5 9.4a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM3.75 20.25a8.25 8.25 0 0116.5 0"
+                    />
+                  </svg>
+
+                  <h2 className="text-lg font-semibold text-gray-700">
+                    No Team Members Found
+                  </h2>
+
+                  <p className="text-sm text-gray-500 mt-1">
+                    It looks like there are no team members available right now.
+                  </p>
+
+                  <button className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+                    Add Member
+                  </button>
+                </div>
+              </>}
+
+            {/* CARD view  */}
             {view === "card" && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
                 {filteredMembers.map((m, i) => (
-                  <div key={i} className="bg-white p-5 rounded-2xl shadow">
+                  <div
+                    key={m.id || i}
+                    className="relative bg-white p-5 rounded-2xl shadow hover:shadow-lg transition border"
+                  >
 
+                    <div className="absolute top-3 right-3 flex gap-2">
+
+                      {/* Role Badge */}
+                      <span className="px-2 py-1 text-[10px] rounded-full bg-blue-100 text-blue-700 font-medium">
+                        {m.userrole=="tl"?"team leader".toUpperCase():m.userrole.toUpperCase()}
+                      </span>
+
+                      {/* YOU badge */}
+                      {m.userEmail === useremail && (
+                        <span className="px-2 py-1 text-[10px] rounded-full bg-purple-100 text-purple-700 font-medium">
+                          You
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Header */}
                     <div className="flex items-center gap-3">
-                      <FaUserCircle className="text-5xl text-gray-400" />
+                      <div className="relative w-12 h-12">
+                        <img
+                          src={m.userProfile || "/default-avatar.png"}
+                          alt={m.Username}
+                          className="w-12 h-12 rounded-full object-cover border"
+                        />
+                      </div>
+
                       <div>
-                        <h2 className="font-bold">{m.name}</h2>
-                        <p className="text-sm text-gray-500">{m.role}</p>
+                        <h2 className="font-bold text-gray-800">{m.Username}</h2>
+                        <p className="text-sm text-gray-500">{m.userrole}</p>
                       </div>
                     </div>
 
-                    <p className="text-sm mt-3">
-                      Dept: {m.department}
+                    {/* Department */}
+                    <p className="text-sm mt-3 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                      {m.dept || "No Department"}
                     </p>
 
-                    <p className="text-sm">
-                      Tasks: {m.tasks} | Progress: {m.progress}%
+                    {/* Email */}
+                    <p className="text-xs text-gray-500 mt-1">
+                      {m.userEmail}
                     </p>
 
-                    <div className={`h-2 mt-3 rounded ${getHeatColor(m.tasks)}`}></div>
+                    {/* Tasks & Progress */}
+                    <p className="text-sm mt-2">
+                      Tasks: {m.tasks || 0} | Progress: {m.progress || 0}%
+                    </p>
+
+                    {/* Progress Bar */}
+                    <div className="w-full bg-gray-200 h-2 rounded-full mt-3">
+                      <div
+                        className={`h-2 rounded-full ${getHeatColor(m.tasks || 0)}`}
+                        style={{ width: `${m.progress || 0}%` }}
+                      />
+                    </div>
+
+                    {/* Status */}
+                    <div className="mt-3">
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full font-medium ${m.isactive
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-200 text-gray-600"
+                          }`}
+                      >
+                        {m.isactive ? "Active" : "Idle"}
+                      </span>
+                    </div>
 
                   </div>
                 ))}
@@ -301,8 +347,8 @@ function Team() {
             )}
 
           </div>
-        </main>
-      </div>
+        </main >
+      </div >
 
 
     </>

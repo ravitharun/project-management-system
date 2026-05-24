@@ -9,7 +9,7 @@ const FetchTeam = async (req, res) => {
 
         if (!TeamCache) {
 
-            const GetTeam = await UserSchema.find({}).select(["Username", "userEmail", "userProfile", "isactive", 'lastseen', "_id", "userrole", "userID","dept"])
+            const GetTeam = await UserSchema.find({},["Username", "userEmail", "userProfile", "isactive", 'lastseen', "_id", "userrole", "userID","dept"])
             console.log(GetTeam)
             if (GetTeam.length == 0) {
                 return res.status(404).json({ message: "No team Memebers Found." })
