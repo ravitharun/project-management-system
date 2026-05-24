@@ -10,6 +10,7 @@ import Sidebar from "../Components/Navbar";
 import { instance } from "../services/apiservices";
 import { departments } from "../types/Dept";
 import { useremail } from "../Components/LocalStorage";
+import { socket } from "../Scokets/ScoketConfig";
 
 
 
@@ -26,18 +27,75 @@ function Team() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await instance.get("/api/Team")
-        console.log(response.data.message)
+        const response = await instance.get("/api/Team");
+
+        console.log(response.data.message);
 
         setMembers(response.data.message);
         setFilteredMembers(response.data.message);
+
       } catch (error: any) {
-        console.log(error.message)
+        console.log(error.message);
       }
     };
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+
+    const handelTeamdata = (Teamdata: any) => {
+      console.log(Teamdata, 'Teamdata');
+
+      setMembers(Teamdata);
+      setFilteredMembers(Teamdata);
+    };
+    const handleOfflineUser = (data: any) => {
+
+      setMembers((prev: any) => {
+
+        const updated = prev.map((member: any) => {
+
+          if (
+            member.userEmail === data.userEmail
+          ) {
+            return {
+              ...member,
+              isactive: data.isactive,
+              lastseen: data.lastseen
+            };
+          }
+
+          return member;
+        });
+
+        // ✅ update filtered also
+        setFilteredMembers(updated);
+
+        return updated;
+      });
+
+    };
+    socket.on(
+      "offlineUser",
+      handleOfflineUser
+    );
+
+
+    socket.on("Teamdata", handelTeamdata);
+
+    return () => {
+      socket.off("Teamdata", handelTeamdata);
+      // socket.off("disconnect");
+      socket.off(
+        "offlineUser",
+        handleOfflineUser
+      );
+    };
+
+  }, []);
+  console.log(members, 'membersmembers')
+
 
   const applyFilters = (searchText: string, dept: string) => {
     let data = members;
@@ -168,7 +226,7 @@ function Team() {
                 {
 
 
-                  filteredMembers.map((m, i) => (
+                  filteredMembers?.map((m, i) => (
                     <div
                       key={i}
                       className="grid grid-cols-6 items-center px-4 py-3 border-b hover:bg-gray-50 transition"
@@ -200,7 +258,7 @@ function Team() {
                       {/* Tasks */}
                       <div className="flex items-center gap-2 text-gray-700">
                         <FaTasks className="text-gray-500 text-sm" />
-                        <span>{m?.tasks || 0}</span>
+                        <span>{m?.totalTask || 0}</span>
                       </div>
 
                       {/* Progress */}
@@ -278,7 +336,7 @@ function Team() {
 
                       {/* Role Badge */}
                       <span className="px-2 py-1 text-[10px] rounded-full bg-blue-100 text-blue-700 font-medium">
-                        {m.userrole=="tl"?"team leader".toUpperCase():m.userrole.toUpperCase()}
+                        {m.userrole == "tl" ? "team leader".toUpperCase() : m.userrole.toUpperCase()}
                       </span>
 
                       {/* YOU badge */}
@@ -318,7 +376,7 @@ function Team() {
 
                     {/* Tasks & Progress */}
                     <p className="text-sm mt-2">
-                      Tasks: {m.tasks || 0} | Progress: {m.progress || 0}%
+                      Tasks: {m.totalTask || 0} | Progress: {m.progress || 0}%
                     </p>
 
                     {/* Progress Bar */}

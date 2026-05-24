@@ -83,6 +83,11 @@ function AppRouter() {
             console.log("Connected:", socket.id);
         });
 
+        // const handelTeamdata = (Teamdata: any) => {
+        //     console.log(Teamdata, 'Teamdata');
+        // };
+
+        // socket.on("Teamdata", handelTeamdata);
         socket.on("disconnect", () => {
             console.log("Disconnected from server");
         });
@@ -97,6 +102,7 @@ function AppRouter() {
             socket.off("onlineUser", handleCheckuserOnline);
             socket.off("offlineUser", handleCheckuserOffline);
             socket.off("ProjectInfoUpload", handelProjectInfoUpload);
+            // socket.off("Teamdata", handelTeamdata);
             socket.off("connect");
             socket.off("disconnect");
         };
