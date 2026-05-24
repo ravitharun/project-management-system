@@ -129,8 +129,6 @@ function ProjetcDeatils() {
         setaddmembers((prev) => !prev)
     }
 
-
-
     const Data = getuserInfo ? JSON.parse(getuserInfo) : null
     const AddedBy: any = {
         name: Data.Username,
