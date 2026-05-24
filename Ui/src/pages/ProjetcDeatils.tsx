@@ -23,15 +23,18 @@ import TaskForm from "../Components/TaskForm";
 import ProjectDocuments from "../Components/ProjectDocuments";
 import TasksByProjectId from "../Components/TasksByProjectId";
 import AddMembers from "../Components/AddMembers";
+import { projectStatus } from "../types/ProjetcStatus";
 
 function ProjetcDeatils() {
     const data = useLocation().state.project;
+    const prjid = data.projectId
     const navigate = useNavigate();
     console.log(data, 'data')
     const [ProjectInfo, setProjectInfo] = useState<any>([])
     const [Addtask, setAddtask] = useState<boolean>(false)
     const [Addmemebers, setaddmembers] = useState<boolean>(false)
-
+    const [ProjectStatus, setProjectStatus] = useState<string>("")
+    // console.log(ProjectStatus,'ProjectStatus')
     const [Taskes, setTaskes] = useState<any[] | null>([])
 
     const statusColor =
@@ -44,7 +47,23 @@ function ProjetcDeatils() {
             ? "bg-red-100 text-red-600"
             : "bg-blue-100 text-blue-600";
 
+    const UpdateProjectsStatus = async (status: string) => {
+        const UpdateProjectStatus = {
+            status,
+            prjid
+        }
+        console.log(UpdateProjectStatus)
 
+        try {
+            const response = await instance.put("/api/ManageProject/UpdateProjectStatus", UpdateProjectStatus)
+            console.log(response.status)
+        } catch (error: any) {
+            console.log(error.message)
+
+        }
+        setProjectStatus(status)
+
+    }
     const HandelFile = async (e: any) => {
         const fileFormdata = new FormData()
         const userinfo: any = {
@@ -154,24 +173,28 @@ function ProjetcDeatils() {
                         </p>
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap items-center gap-3">
+
                         <Button
                             Btnname={
                                 <span className="flex items-center gap-2">
-                                    <FaPlus /> Add Task
+                                    <FaPlus />
+                                    Add Task
                                 </span>
                             }
-                            classaName="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-md"
+                            classaName="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-200"
                             OnclickEvent={handelClose}
                             type="button"
                         />
+
                         <Button
                             Btnname={
                                 <span className="flex items-center gap-2">
-                                    <FaUsers /> Add Memebers
+                                    <FaUsers />
+                                    Add Members
                                 </span>
                             }
-                            classaName="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-md"
+                            classaName="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-all duration-200"
                             OnclickEvent={handelAddMemebers}
                             type="button"
                         />
@@ -179,13 +202,28 @@ function ProjetcDeatils() {
                         <Button
                             Btnname={
                                 <span className="flex items-center gap-2">
-                                    <FaArrowLeft /> Back
+                                    <FaArrowLeft />
+                                    Back
                                 </span>
                             }
-                            classaName="bg-gray-800 hover:bg-black text-white px-4 py-2 rounded-xl"
+                            classaName="bg-gray-800 hover:bg-black text-white px-4 py-2 rounded-lg transition-all duration-200"
                             OnclickEvent={() => navigate("/Projects")}
                             type="button"
                         />
+
+                        <select
+                            className="border border-gray-300 px-4 py-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                            onChange={(e) => UpdateProjectsStatus(e.target.value)}
+                        >
+                            <option value="" disabled>Choose Project Status</option>
+
+                            {projectStatus.map((prj, idx) => (
+                                <option value={prj} key={idx} >
+                                    {prj}
+                                </option>
+                            ))}
+                        </select>
+
                     </div>
                 </div>
 
