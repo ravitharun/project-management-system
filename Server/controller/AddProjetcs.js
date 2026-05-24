@@ -124,4 +124,30 @@ const ManageMembersProject = async (req, res) => {
 
     }
 }
-module.exports = { CreateProjects, FetchProjects, ManageMembersProject }
+
+
+const UpdateProjectStatus = async (req, res) => {
+    try {
+        const io = getIO()
+        console.log(req.body.prjid, req.body.status)
+        const CheckProject = await AddProject.findOneAndUpdate({ projectId: req.body.prjid }, { status: req.body.status }, { returnDocument: "after" })
+        await client.del("Projects")
+        console.log(CheckProject, 'check')
+        if (!CheckProject) {
+            return res.status(404).json({ message: 'Based on the ProjectID Project is not found.' })
+        }
+
+        const Notification = {
+            message: `SomeOne has Updated the   project  Status Project: ${req.body.prjid} `
+        }
+        await NotificationSchema.create(Notification)
+        io.emit("handelprojectStatus", `SomeOne has Updated the   project  Status Project: ${req.body.prjid}`)
+        return res.status(200).json({ message: "Project Status Updated ." })
+
+    } catch (error) {
+        console.log(error.message)
+        return res.status(500).json({ message: "Server Error." })
+
+    }
+}
+module.exports = { CreateProjects, FetchProjects, ManageMembersProject, UpdateProjectStatus }
