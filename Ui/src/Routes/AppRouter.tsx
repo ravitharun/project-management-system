@@ -10,10 +10,13 @@ const Calendra = lazy(() => import("../pages/Calendra"))
 import { lazy, Suspense, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
 import { checkuser, useremail } from "../Components/LocalStorage";
-import toast, { Toaster } from 'react-hot-toast';
+// import toast, { Toaster } from 'react-hot-toast';
+
 import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
 import Notifications from "../pages/Notifications";
+import { ToastContainer ,toast} from "react-toastify";
+import Analytics from "../pages/Analytics";
 function AppRouter() {
     const navigate = useNavigate();
     useEffect(() => {
@@ -125,8 +128,19 @@ function AppRouter() {
 
     return (
         <>
-            <Toaster></Toaster>
-            <Suspense fallback={<Loader />}>
+        <ToastContainer position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            // transition={Bounce}
+
+            ></ToastContainer>            <Suspense fallback={<Loader />}>
                 <Routes>
 
                     <Route path="/" element={<App />} />
@@ -134,6 +148,7 @@ function AppRouter() {
                     <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
                     <Route path="/Tasks" element={<Task />} />
                     <Route path="/Notifications" element={<Notifications />} />
+                    <Route path="/Analytics" element={<Analytics />} />
                     <Route path="/Calendar" element={<Calendra />} />
                     <Route path="/Team" element={<Team />} />
                     <Route path="/Login" element={<Login />} />
