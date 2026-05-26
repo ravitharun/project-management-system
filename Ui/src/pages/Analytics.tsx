@@ -53,7 +53,7 @@ function Analytics() {
         "#8B5CF6", // purple
         "#06B6D4", // cyan
     ];
-
+console.log(COLORS,'COLORS')
 
     const radialData: any[] = [
         {
