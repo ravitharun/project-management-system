@@ -35,6 +35,8 @@ const AddTask = async (req, res) => {
         })
         await AddAssignTask.save()
         await client.del("Notificatons")
+                await client.del("Analytcs")
+        
         const NotificationFormatData = {
             userId: "userId", message: ` ${TaskData.AddedBy.name} created a new Task`,
 
@@ -184,6 +186,7 @@ const updatetask = async (req, res) => {
 
         }
         await client.del("Notificatons")
+        await client.del("Analytcs")
 
         await NotificationSchema.create(NotificationFormatData)
         io.emit("updateTaskdate", "A task deadline has been updated")
@@ -223,6 +226,8 @@ const DeleteTask = async (req, res) => {
             await client.del("Notificatons")
 
             await NotificationSchema.create(NotificationFormatData)
+                    await client.del("Analytcs")
+            
             io.emit("HandelDeleteUser", `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`)
             return res.status(200).json({ messaage: "task Deleted", status: true })
         }

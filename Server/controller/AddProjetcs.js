@@ -6,6 +6,7 @@ const { ProjetcId } = require("../Utils/EmpIDGenrator")
 const { client } = require("../conifg/Redis")
 const { json } = require("express")
 const NotificationSchema = require("../Models/Notification")
+const build = require("../service/buildAnalytics")
 const CreateProjects = async (req, res) => {
     try {
         const io = getIO()
@@ -50,6 +51,7 @@ const CreateProjects = async (req, res) => {
 
         }
         await client.del("Notificatons")
+        await client.del("Analytcs")
         await NotificationSchema.create(NotificationFormatData)
         io.emit(
             "AddedNewProject",
@@ -141,7 +143,11 @@ const UpdateProjectStatus = async (req, res) => {
             message: `SomeOne has Updated the   project  Status Project: ${req.body.prjid} `
         }
         await NotificationSchema.create(Notification)
+        await client.del("Analytcs")
+
         io.emit("handelprojectStatus", `SomeOne has Updated the   project  Status Project: ${req.body.prjid}`)
+        const data = await build();
+        io.emit("Analytics", data)
         return res.status(200).json({ message: "Project Status Updated ." })
 
     } catch (error) {
