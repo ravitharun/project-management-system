@@ -1,8 +1,10 @@
 import { instance } from "./apiservices"
 
-export const fetchProjects = () => {
+export const fetchProjects = async (Currentpage: number) => {
     try {
-        const response = instance.get("/api/ManageProject/Projects")
+        console.log(Currentpage,'page')
+        const response = await instance.get(`/api/ManageProject/Projects?page=${Currentpage}`)
+        console.log(response,'response')
         return response
 
     } catch (error) {

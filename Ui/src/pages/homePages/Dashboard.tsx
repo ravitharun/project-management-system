@@ -7,12 +7,35 @@ import {
     FaClock,
     FaUsers,
     FaMoneyBill,
+    FaChevronRight,
+    FaChevronLeft,
 } from "react-icons/fa";
 import TaskBox from "../../Components/TaskBox";
 import ProgressBar from "../../Components/ProgressBar";
 import RecentActivity from "../../Components/RecentActivity";
+import { useEffect, useState } from "react";
+import { fetchProjects } from "../../services/ProjetcApi";
 
 function Dashboard() {
+    const [page, setpage] = useState<number>(1)
+    const [totalpages, settotalPages] = useState<number>(1)
+    const [projects, setprojects] = useState<any[]>([])
+    useEffect(() => {
+        const FetchProjects = async () => {
+            try {
+                const response = await fetchProjects(page)
+                // console.log(response.data.data.totalPages==page, 'prj')
+                setprojects(response.data.data.projects)
+                settotalPages(response.data.data.totalPages)
+
+            } catch (error: any) {
+                console.log(error)
+
+            }
+        }
+        FetchProjects()
+    }, [page])
+
     return (
         <div className="flex h-screen bg-gray-100">
 
@@ -44,18 +67,47 @@ function Dashboard() {
 
                     {/* PROJECT STATUS */}
                     <div className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-                        <h2 className="font-bold text-lg mb-4 text-gray-800">
-                            Project Progress
-                        </h2>
 
-                        <ProgressBar name="E-Commerce App" percent={70} />
-                        <ProgressBar name="LMS System" percent={40} />
-                        <ProgressBar name="Portfolio Website" percent={90} />
+                        {/* Header with arrow */}
+                        <div className="flex items-center justify-between mb-4">
+
+                            <h2 className="font-bold text-lg text-gray-800">
+                                Project Progress
+                            </h2>
+
+                            <div className="flex items-center gap-3">
+
+                                {/* Prev */}
+                                <FaChevronLeft
+                                    onClick={() => setpage((prev) => Math.max(prev - 1, 1))}
+                                    className={`w-5 h-5 cursor-pointer transition
+        ${page === 1 ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:text-gray-900"}
+      `}
+                                />
+
+                                {/* Page Info (optional) */}
+                                <span className="text-sm text-gray-600">
+                                    {page} / {totalpages}
+                                </span>
+
+                                {/* Next */}
+                                <FaChevronRight
+                                    onClick={() => setpage((prev) => Math.min(prev + 1, totalpages))}
+                                    className={`w-5 h-5 cursor-pointer transition
+        ${page === totalpages ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:text-gray-900"}
+      `}
+                                />
+
+                            </div>
+                        </div>
+                        {projects.map((prj, idx) => (
+
+                            <ProgressBar name={prj.projectName} key={idx} percent={prj.progress} />
+                        ))}
+
                     </div>
 
-
                     <RecentActivity />
-
 
                 </div>
 
