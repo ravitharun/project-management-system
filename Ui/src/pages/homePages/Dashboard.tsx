@@ -30,12 +30,12 @@ function Dashboard() {
                 {/* TOP CARDS */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
 
-                    <Card title="Projects" value="12" icon={<FaProjectDiagram />} />
-                    <Card title="Tasks" value="48" icon={<FaTasks />} />
-                    <Card title="Completed" value="30" icon={<FaCheckCircle />} />
-                    <Card title="Pending" value="18" icon={<FaClock />} />
-                    <Card title="Team" value="5" icon={<FaUsers />} />
-                    <Card title="Budget" value="₹2L" icon={<FaMoneyBill />} />
+                    <Card title="Projects" value={12} icon={<FaProjectDiagram />} />
+                    <Card title="Tasks" value={12} icon={<FaTasks />} />
+                    <Card title="Completed" value={12} icon={<FaCheckCircle />} />
+                    <Card title="Pending" value={12} icon={<FaClock />} />
+                    <Card title="Team" value={12} icon={<FaUsers />} />
+                    <Card title="Budget" value={12} icon={<FaMoneyBill />} />
 
                 </div>
 
