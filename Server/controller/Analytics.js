@@ -10,7 +10,6 @@ const Analytics = async (req, res) => {
 
         // cache
         const AnalyticsCache = await client.get("Analytics");
-
         const month = [
             "jan",
             "feb",
