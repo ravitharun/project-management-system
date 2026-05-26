@@ -114,7 +114,6 @@ console.log(COLORS,'COLORS')
     // RealTime Analytics Viva Scokets 
     useEffect(() => {
         const handelAnalytics = (data: any) => {
-            alert(data, "emit");
 
             setStats(data);
             setProjectStatus(data.projectstatus);
@@ -235,7 +234,7 @@ console.log(COLORS,'COLORS')
                                     </div>
 
                                     <ResponsiveContainer width="100%" height={300}>
-                                        <BarChart data={Stats.projectprority}>
+                                        <BarChart data={Stats.projectpriority}>
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <XAxis dataKey="_id" />
                                             <YAxis />
@@ -276,7 +275,7 @@ console.log(COLORS,'COLORS')
                                     </div>
 
                                     <ResponsiveContainer width="100%" height={300}>
-                                        <AreaChart data={Stats.MothwiseBudget}>
+                                        <AreaChart data={Stats.MonthwiseBudget}>
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <XAxis dataKey="_id" />
                                             <YAxis />
@@ -322,7 +321,7 @@ console.log(COLORS,'COLORS')
                                     </div>
 
                                     <ResponsiveContainer width="100%" height={300}>
-                                        <BarChart data={Stats.PerfomanceAggre} layout="vertical">
+                                        <BarChart data={Stats.PerformanceAggre} layout="vertical">
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <XAxis type="number" />
                                             <YAxis dataKey="_id" type="category" />

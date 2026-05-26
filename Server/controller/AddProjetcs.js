@@ -51,7 +51,7 @@ const CreateProjects = async (req, res) => {
 
         }
         await client.del("Notificatons")
-        await client.del("Analytcs")
+        await client.del("Analytics")
         await NotificationSchema.create(NotificationFormatData)
         io.emit(
             "AddedNewProject",
@@ -143,7 +143,7 @@ const UpdateProjectStatus = async (req, res) => {
             message: `SomeOne has Updated the   project  Status Project: ${req.body.prjid} `
         }
         await NotificationSchema.create(Notification)
-        await client.del("Analytcs")
+        await client.del("Analytics")
 
         io.emit("handelprojectStatus", `SomeOne has Updated the   project  Status Project: ${req.body.prjid}`)
         const data = await build();
