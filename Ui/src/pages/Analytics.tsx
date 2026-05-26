@@ -34,43 +34,26 @@ import Sidebar from "../Components/Navbar"
 import Card from "../Components/Card";
 import { useEffect, useState } from "react";
 import { instance } from "../services/apiservices";
-import {  FaCheckCircle, FaMoneyBillWave, FaProjectDiagram, FaTasks } from "react-icons/fa";
+import { FaCheckCircle, FaMoneyBillWave, FaProjectDiagram, FaTasks } from "react-icons/fa";
+import { socket } from "../Scokets/ScoketConfig"
 
 function Analytics() {
 
     const [Stats, setStats] = useState<any>([])
 
+    const [ProjectStatus, setProjectStatus] = useState<any>([])
 
-    const pieData: any[] = [
-        { name: "Completed", value: 12 },
-        { name: "Pending", value: 7 },
-        { name: "In Progress", value: 5 },
+
+
+    const COLORS = [
+        "#3B82F6", // blue
+        "#10B981", // green
+        "#F59E0B", // yellow
+        "#EF4444", // red
+        "#8B5CF6", // purple
+        "#06B6D4", // cyan
     ];
 
-    const COLORS = ["#22c55e", "#eab308", "#8b5cf6"];
-
-    const priorityData: any[] = [
-        { name: "High", projects: 8 },
-        { name: "Medium", projects: 10 },
-        { name: "Low", projects: 6 },
-    ];
-
-    const monthlyData: any[] = [
-        { month: "Jan", projects: 4 },
-        { month: "Feb", projects: 6 },
-        { month: "Mar", projects: 8 },
-        { month: "Apr", projects: 5 },
-        { month: "May", projects: 10 },
-        { month: "Jun", projects: 7 },
-    ];
-
-    const budgetData: any[] = [
-        { month: "Jan", budget: 4000 },
-        { month: "Feb", budget: 7000 },
-        { month: "Mar", budget: 5000 },
-        { month: "Apr", budget: 9000 },
-        { month: "May", budget: 11000 },
-    ];
 
     const radialData: any[] = [
         {
@@ -86,7 +69,7 @@ function Analytics() {
         { name: "John", tasks: 10 },
     ];
 
-    const recentProjects :any[]= [
+    const recentProjects: any[] = [
         {
             name: "LMS Website",
             status: "Completed",
@@ -118,6 +101,7 @@ function Analytics() {
                 const response = await instance.get("/api/Analytcs/")
 
                 setStats(response.data.message)
+                setProjectStatus(response.data.message.projectstatus)
 
             } catch (error: any) {
                 console.log(error)
@@ -127,6 +111,22 @@ function Analytics() {
         FetchAna()
     }, [])
     console.log(Stats, 'Stats')
+    // RealTime Analytics Viva Scokets 
+    useEffect(() => {
+        const handelAnalytics = (data: any) => {
+            alert(data, "emit");
+
+            setStats(data);
+            setProjectStatus(data.projectstatus);
+        };
+
+        socket.on("Analytics", handelAnalytics);
+
+        return () => {
+            socket.off("Analytics", handelAnalytics);
+        };
+    }, []);
+
 
     return (
         <>
@@ -186,9 +186,9 @@ function Analytics() {
                                     value={Stats?.TotalRevenue?.toLocaleString() || 0}
                                 />
 
-                            
 
-                                {Stats?.projectstatus?.map((itm:any, idx:any) => (
+
+                                {Stats?.projectstatus?.map((itm: any, idx: any) => (
                                     <Card
                                         key={idx}
                                         icon={<FaCheckCircle className="text-red-500 text-2xl" />}
@@ -208,13 +208,14 @@ function Analytics() {
                                     <ResponsiveContainer width="100%" height={300}>
                                         <PieChart>
                                             <Pie
-                                                data={pieData}
-                                                dataKey="value"
+                                                data={ProjectStatus}
+                                                dataKey="total"
+                                                nameKey="_id"
                                                 outerRadius={110}
                                                 innerRadius={60}
                                                 paddingAngle={5}
                                             >
-                                                {pieData.map((index) => (
+                                                {ProjectStatus?.map((_: any, index: number) => (
                                                     <Cell
                                                         key={`cell-${index}`}
                                                         fill={COLORS[index % COLORS.length]}
@@ -234,12 +235,12 @@ function Analytics() {
                                     </div>
 
                                     <ResponsiveContainer width="100%" height={300}>
-                                        <BarChart data={priorityData}>
+                                        <BarChart data={Stats.projectprority}>
                                             <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="name" />
+                                            <XAxis dataKey="_id" />
                                             <YAxis />
                                             <Tooltip />
-                                            <Bar dataKey="projects" fill="#3b82f6" radius={[10, 10, 0, 0]} />
+                                            <Bar dataKey="total" fill="#3b82f6" radius={[10, 10, 0, 0]} />
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -253,14 +254,14 @@ function Analytics() {
                                     </div>
 
                                     <ResponsiveContainer width="100%" height={300}>
-                                        <LineChart data={monthlyData}>
+                                        <LineChart data={Stats.dataMonth}>
                                             <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="month" />
+                                            <XAxis dataKey="_id" />
                                             <YAxis />
                                             <Tooltip />
                                             <Line
                                                 type="monotone"
-                                                dataKey="projects"
+                                                dataKey="total"
                                                 stroke="#8b5cf6"
                                                 strokeWidth={4}
                                             />
@@ -275,14 +276,14 @@ function Analytics() {
                                     </div>
 
                                     <ResponsiveContainer width="100%" height={300}>
-                                        <AreaChart data={budgetData}>
+                                        <AreaChart data={Stats.MothwiseBudget}>
                                             <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="month" />
+                                            <XAxis dataKey="_id" />
                                             <YAxis />
                                             <Tooltip />
                                             <Area
                                                 type="monotone"
-                                                dataKey="budget"
+                                                dataKey="revenue"
                                                 stroke="#10b981"
                                                 fill="#6ee7b7"
                                             />
@@ -297,7 +298,7 @@ function Analytics() {
                                         <h2 className="text-xl font-semibold">Project Completion</h2>
                                         <CheckCircle2 className="text-blue-500" />
                                     </div>
-
+                                    <h1>it is dummy data</h1>
                                     <ResponsiveContainer width="100%" height={300}>
                                         <RadialBarChart
                                             cx="50%"
@@ -321,12 +322,12 @@ function Analytics() {
                                     </div>
 
                                     <ResponsiveContainer width="100%" height={300}>
-                                        <BarChart data={teamData} layout="vertical">
+                                        <BarChart data={Stats.PerfomanceAggre} layout="vertical">
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <XAxis type="number" />
-                                            <YAxis dataKey="name" type="category" />
+                                            <YAxis dataKey="_id" type="category" />
                                             <Tooltip />
-                                            <Bar dataKey="tasks" fill="#ec4899" radius={[0, 10, 10, 0]} />
+                                            <Bar dataKey="totaltask" fill="#ec4899" radius={[0, 10, 10, 0]} />
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -338,6 +339,7 @@ function Analytics() {
                                         <h2 className="text-xl font-semibold">Recent Activity</h2>
                                         <Activity className="text-orange-500" />
                                     </div>
+                                    <h1>it is dummy data</h1>
 
                                     <div className="space-y-4">
                                         {activities.map((item, index) => (
@@ -357,6 +359,7 @@ function Analytics() {
                                         <h2 className="text-xl font-semibold">Upcoming Deadlines</h2>
                                         <Clock3 className="text-red-500" />
                                     </div>
+                                    <h1>it is dummy data</h1>
 
                                     <div className="space-y-4">
                                         <div className="bg-red-50 p-4 rounded-2xl flex justify-between">
@@ -385,6 +388,7 @@ function Analytics() {
                             <div className="bg-white rounded-3xl shadow-md p-6 overflow-x-auto">
                                 <div className="flex items-center justify-between mb-6">
                                     <h2 className="text-xl font-semibold">Recent Projects</h2>
+                                    <h1>it is dummy data</h1>
 
                                     <button className="bg-blue-500 hover:bg-blue-600 transition text-white px-4 py-2 rounded-xl">
                                         View All

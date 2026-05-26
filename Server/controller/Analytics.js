@@ -1,19 +1,39 @@
-const { JsonWebTokenError } = require("jsonwebtoken");
 const { client } = require("../conifg/Redis");
 const project = require("../Models/Project");
 const task = require("../Models/Task");
 const Auth = require("../Models/Auth");
+const { getIO } = require("../scoket");
 
-const Analytcs = async (req, res) => {
+const Analytics = async (req, res) => {
     try {
-        const AnalytcsCache = await client.get("Analytcs")
-        const month = ["jan", 'feb', 'march', 'april', 'may', 'june', 'juily', 'agust', "sept", "oct", "nov", "dec"]
-        if (!AnalytcsCache) {
+        const io = getIO();
+
+        // cache
+        const AnalyticsCache = await client.get("Analytics");
+
+        const month = [
+            "jan",
+            "feb",
+            "march",
+            "april",
+            "may",
+            "june",
+            "juily",
+            "agust",
+            "sept",
+            "oct",
+            "nov",
+            "dec",
+        ];
+
+        // ================= CACHE MISS =================
+        if (!AnalyticsCache) {
 
             const FetchProjects = await project.countDocuments();
 
             const fetchTask = await task.countDocuments();
 
+            // task status
             const projectstatus = await task.aggregate([
                 {
                     $match: {
@@ -29,7 +49,9 @@ const Analytcs = async (req, res) => {
                     },
                 },
             ]);
-            const projectprority = await task.aggregate([
+
+            // task priority
+            const projectpriority = await task.aggregate([
                 {
                     $match: {
                         taskpriority: {
@@ -45,85 +67,114 @@ const Analytcs = async (req, res) => {
                 },
             ]);
 
-
+            // revenue
             const ProjectsRevenue = await project.find({});
 
             const TotalRevenue = ProjectsRevenue.reduce((acc, curr) => {
                 return acc + curr.budget.total;
             }, 0);
 
-
-
-
+            // monthwise projects
             const dataMonth = await project.aggregate([
                 {
                     $match: {
-                        month: { $in: month }
-                    }
-                }, {
-                    $group: {
-                        _id: "$month",
-                        total: { $sum: 1 }
-                    }
-                }
-            ])
-
-
-
-            const MothwiseBudget = await project.aggregate([
-                {
-                    $match: {
-                        month: { $in: month }
-                    }
-                }, {
-                    $group: {
-                        _id: '$month',
-                        revenue: { $sum: "$budget.total" }
-                    }
-                }
-            ])
-            const Perfomance = await Auth.find({}, ["userEmail", 'Username'])
-            const emails = Perfomance.map((email) => email.userEmail);
-            const PerfomanceAggre = await task.aggregate([
-                {
-
-                    $match: {
-                        assignToMember: { $in: emails }
+                        month: { $in: month },
                     },
                 },
-
                 {
+                    $group: {
+                        _id: "$month",
+                        total: { $sum: 1 },
+                    },
+                },
+            ]);
 
+            // monthwise revenue
+            const MonthwiseBudget = await project.aggregate([
+                {
+                    $match: {
+                        month: { $in: month },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$month",
+                        revenue: { $sum: "$budget.total" },
+                    },
+                },
+            ]);
+
+            // performance
+            const Performance = await Auth.find({}, ["userEmail", "Username"]);
+
+            const emails = Performance.map((email) => email.userEmail);
+
+            const PerformanceAggre = await task.aggregate([
+                {
+                    $match: {
+                        assignToMember: { $in: emails },
+                    },
+                },
+                {
                     $group: {
                         _id: "$assignToMember",
-                        totaltask: { $sum: 1 }
-                    }
+                        totaltask: { $sum: 1 },
+                    },
                 },
-            ])
+            ]);
 
-
-
-
+            // final data
             const Data = {
                 dataMonth,
-                PerfomanceAggre,
-                MothwiseBudget,
+                PerformanceAggre,
+                MonthwiseBudget,
                 FetchProjects,
                 fetchTask,
                 projectstatus,
-                projectprority,
+                projectpriority,
                 TotalRevenue,
-                // Perfomance
-            }
-            await client.setEx("Analytcs", 500, JSON.stringify(Data))
-            return res.status(200).json({ message: Data, status: true, DataFrom: "Set Cache" });
+            };
+
+            // save cache
+            await client.setEx(
+                "Analytics",
+                500,
+                JSON.stringify(Data)
+            );
+
+            console.log("Analytics emitted");
+
+            // socket emit
+            io.emit("Analytics", Data);
+
+            return res.status(200).json({
+                message: Data,
+                status: true,
+                DataFrom: "Set Cache",
+            });
         }
-        return res.status(200).json({ message: JSON.parse(AnalytcsCache), status: true, DataFrom: "Cache" });
+
+        // ================= CACHE HIT =================
+
+        const ParsedData = JSON.parse(AnalyticsCache);
+
+        console.log("Analytics emitted from cache");
+
+        io.emit("Analytics", ParsedData);
+
+        return res.status(200).json({
+            message: ParsedData,
+            status: true,
+            DataFrom: "Cache",
+        });
+
     } catch (error) {
         console.log(error.message);
+
         return res.status(500).json({
             message: "Server Error",
         });
     }
 };
-module.exports = Analytcs;
+
+module.exports = Analytics;
