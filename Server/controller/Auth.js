@@ -3,6 +3,7 @@ const UserSchema = require("../Models/Auth")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
 const { GetEmpNameGenById } = require("../Utils/EmpIDGenrator");
+const { client } = require("../conifg/Redis");
 const saltRounds = 10;
 const AuthNewAccount = async (req, res) => {
     try {
@@ -28,6 +29,8 @@ const AuthNewAccount = async (req, res) => {
             dept: req.body.dept
         })
         await saveuser.save()
+        await client.del("Analytcs")
+
         return res.status(201).json({ message: 'new user Created.' })
     } catch (error) {
         console.log(error)

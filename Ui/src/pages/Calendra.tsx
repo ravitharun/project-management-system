@@ -76,7 +76,7 @@ export default function ProjectCalendar() {
 
         try {
             settaskUpdateLoader(true)
-            setmessage({ title: "Updating.", descp: "Updating the task ", type: "loading" })
+                        setmessage({ title: "Updating.", descp: "Updating the task ", type: "loading" })
 
             const updateTask = await axios.patch(
                 "http://localhost:5000/api/Task/taskUpdate",
@@ -170,7 +170,7 @@ export default function ProjectCalendar() {
             ></ToastContainer>
 
 
-            {taskUpdateLoader && <ActionLoading title={message?.title} description={message?.descp} ActionType={message?.type} />}
+            {taskUpdateLoader && <ActionLoading description={message?.descp} title={message?.title} type={message?.type} />}
             {/* Popup */}
             {
                 poupAction &&

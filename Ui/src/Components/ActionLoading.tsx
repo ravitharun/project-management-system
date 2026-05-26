@@ -6,7 +6,7 @@ import {
     UploadCloud
 } from "lucide-react";
 
-type ActionTypes =
+type ActionType =
     | "loading"
     | "delete"
     | "save"
@@ -14,18 +14,18 @@ type ActionTypes =
     | "success";
 
 type ActionProps = {
-    title: string | undefined;
-    description: string | undefined;
-    ActionType: ActionTypes | string | undefined;
+    title: string;
+    description: string;
+    type: ActionType | string;
 };
 
 function ActionLoading({
     title,
     description,
-    ActionType,
+    type,
 }: ActionProps) {
 
-    const actionIcons: string | any = {
+    const actionIcons: Record<ActionType, any> = {
         loading: (
             <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
         ),
@@ -55,7 +55,7 @@ function ActionLoading({
                 <div className="flex flex-col items-center gap-4 text-center">
 
                     <div className="rounded-full bg-gray-100 p-4 shadow-inner">
-                        {actionIcons}
+                        {actionIcons[type]}
                     </div>
 
                     <div>
@@ -69,7 +69,7 @@ function ActionLoading({
                     </div>
 
                     {/* Loading Progress */}
-                    {ActionType === "loading" && (
+                    {type === "loading" && (
                         <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
                             <div className="h-full w-1/2 animate-pulse rounded-full bg-blue-500"></div>
                         </div>

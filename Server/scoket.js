@@ -37,6 +37,8 @@ const initSocket = async (server) => {
         // add socket id
         users[userId].push(socket.id);
         await client.del("Team")
+        await client.del("Analytcs")
+
 
         const user = await UserSchema.findOneAndUpdate(
           { userEmail: userId },
@@ -86,6 +88,8 @@ const initSocket = async (server) => {
 
             // delete old cache
             await client.del("Team");
+        await client.del("Analytcs")
+
 
             console.log(
               "🗑️ Team Cache Deleted"
