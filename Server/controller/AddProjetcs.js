@@ -67,27 +67,69 @@ const CreateProjects = async (req, res) => {
 
 const FetchProjects = async (req, res) => {
     try {
-        const GetCache = await client.get("Projects")
-        if (GetCache == null) {
-            console.log("no cache  Db set")
-            const GetProjects = await AddProject.find({})
-            console.log(GetProjects, 'fetch GetProjects')
-            if (GetProjects.length == 0) {
-                return res.status(404).json({ message: "No projects Found .." })
-            }
-            await client.setEx("Projects", 500, JSON.stringify(GetProjects))
-            return res.status(200).json({ data: JSON.stringify(GetProjects), status: true })
+        const { page = 1 } = req.query;
+        console.log(req.query, 'req.query')
+        const limit = 6;
+        const skip = (Number(page) - 1) * limit;
+
+        const cacheKey = `Projects:page:${page}`;
+
+        // 1. Check cache
+        const cachedData = await client.get(cacheKey);
+
+        // await client.del(cacheKey)
+
+
+        if (cachedData) {
+            console.log("Cache hit");
+
+            return res.status(200).json({
+                data: JSON.parse(cachedData),
+                status: true,
+            });
         }
-        console.log("GetCache is exits")
-        return res.status(200).json({ data: GetCache, status: true })
+
+        console.log("Cache miss - DB fetch");
+
+        // 2. Fetch projects from DB
+        const projects = await AddProject.find({})
+            .skip(skip)
+            .limit(limit);
+
+        if (projects.length === 0) {
+            return res.status(404).json({
+                message: "No projects Found",
+                status: false,
+            });
+        }
+
+        // 3. Total count for pagination
+        const totalCount = await AddProject.countDocuments();
+        const totalPages = Math.ceil(totalCount / limit);
+
+        // 4. Create response object
+        const responseData = {
+            projects,
+            currpage: Number(page),
+            totalPages,
+        };
+
+        // 5. Save to Redis cache (5 minutes)
+        await client.setEx(cacheKey, 300, JSON.stringify(responseData));
+
+        return res.status(200).json({
+            data: responseData,
+            status: true,
+        });
 
     } catch (error) {
-        console.log(error.message)
-        return res.status(500).json({ message: 'server error', status: false })
-
+        console.log(error.message);
+        return res.status(500).json({
+            message: "server error",
+            status: false,
+        });
     }
-}
-
+};
 
 const ManageMembersProject = async (req, res) => {
     try {

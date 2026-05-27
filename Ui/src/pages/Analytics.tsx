@@ -63,11 +63,7 @@ console.log(COLORS,'COLORS')
         },
     ];
 
-    const teamData: any[] = [
-        { name: "Ravi", tasks: 22 },
-        { name: "Alex", tasks: 16 },
-        { name: "John", tasks: 10 },
-    ];
+  
 
     const recentProjects: any[] = [
         {

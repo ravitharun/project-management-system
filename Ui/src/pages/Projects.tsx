@@ -25,29 +25,31 @@ import { useNavigate } from "react-router-dom";
 
 
 function Projects() {
-
+    const [Pages, settotalpage] = useState<number>(0)
+    const [Currentpage, setCurrentpage] = useState<number>(1)
     const [Projects, setprojects] = useState([])
     const Role: string = getuserInfo ? JSON.parse(getuserInfo)?.userrole : ""
     const requiredRoles: string[] = ["TeamLeader", "Manager", "tl"]
     const [Open, setopenform] = useState<boolean>(false)
 
-
-
-
     useEffect(() => {
         const FetchProjects = async () => {
             try {
-                const response = await fetchProjects()
-                console.log(JSON.parse(response.data.data), 'response')
-                setprojects(JSON.parse(response.data.data))
+                const response = await fetchProjects(Currentpage)
+                console.log(Currentpage, 'Currentpage')
+                console.log(response.data.data.projects, 'response.data.data')
+
+                setprojects(response.data.data.projects)
+                settotalpage(response.data.data.totalPages)
 
             } catch (error: any) {
+                console.log(error)
                 toast.error(error)
 
             }
         }
         FetchProjects()
-    }, [])
+    }, [Currentpage])
 
 
 
@@ -78,7 +80,7 @@ function Projects() {
                 <Sidebar page="Projects" />
 
                 {/* MAIN CONTENT */}
-                <main  className="flex-1 p-6 overflow-y-auto hide-scrollbar mt-10">
+                <main className="flex-1 p-6 overflow-y-auto hide-scrollbar mt-10">
 
                     {/* HEADER */}
                     <div className="flex justify-between items-center mb-6">
@@ -99,7 +101,7 @@ function Projects() {
                         <KpiCard title="Team Members" value="5" />
                     </div>
 
-               
+
 
                     {/* ================= ANALYTICS only for the Team Leaders Or Mangers can View these Analytics ================= */}
                     {!requiredRoles.includes(Role) ?
@@ -176,7 +178,7 @@ function Projects() {
 
 
                     }
-                         {/* SEARCH */}
+                    {/* SEARCH */}
                     <div className="flex flex-col md:flex-row gap-3 mb-6">
 
                         <div className="flex items-center bg-white px-3 py-2 rounded-lg shadow w-full">
@@ -249,7 +251,45 @@ function Projects() {
                                 </div>
                             </>
                         ))}
+
                     </div>
+
+                    <div className="flex items-center gap-2 mt-4">
+
+                        <button
+                            disabled={Currentpage === 1}
+                            onClick={() => setCurrentpage((p) => p - 1)}
+                            className="px-3 py-1 border rounded-md disabled:opacity-50"
+                        >
+                            Prev
+                        </button>
+
+                        {[...Array(Pages)].map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setCurrentpage(i + 1)}
+                                className={`px-3 py-1 rounded-md border transition
+        ${Currentpage === i + 1
+                                        ? "bg-blue-600 text-white border-blue-600"
+                                        : "hover:bg-gray-100"
+                                    }`}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+
+                        <button
+                            disabled={Currentpage === Pages}
+                            onClick={() => setCurrentpage((p) => p + 1)}
+                            className="px-3 py-1 border rounded-md disabled:opacity-50"
+                        >
+                            Next
+                        </button>
+
+                    </div>
+
+
+
                 </main>
             </div>
             {Open &&
