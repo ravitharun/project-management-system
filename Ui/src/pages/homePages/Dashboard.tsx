@@ -9,17 +9,40 @@ import {
     FaMoneyBill,
     FaChevronRight,
     FaChevronLeft,
+    FaSpinner,
+    FaArrowUp,
+    FaEquals,
+    FaArrowDown,
 } from "react-icons/fa";
 import TaskBox from "../../Components/TaskBox";
 import ProgressBar from "../../Components/ProgressBar";
 import RecentActivity from "../../Components/RecentActivity";
 import { useEffect, useState } from "react";
 import { fetchProjects } from "../../services/ProjetcApi";
+import { instance } from "../../services/apiservices";
 
 function Dashboard() {
     const [page, setpage] = useState<number>(1)
     const [totalpages, settotalPages] = useState<number>(1)
-    const [projects, setprojects] = useState<any[]>([])
+    const [projects, setprojects] = useState<any>([])
+
+const [status, setStatus] = useState<any>({});
+    useEffect(() => {
+        const FetchAna = async () => {
+            try {
+                const response = await instance.get("/api/Analytcs/")
+                console.log(response.data.message)
+                setStatus(response.data.message)
+                // setProjectStatus(response.data.message.projectstatus)
+
+            } catch (error: any) {
+                console.log(error)
+
+            }
+        }
+        FetchAna()
+    }, [])
+    console.log(status, 'status')
     useEffect(() => {
         const FetchProjects = async () => {
             try {
@@ -53,12 +76,42 @@ function Dashboard() {
                 {/* TOP CARDS */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
 
-                    <Card title="Projects" value={12} icon={<FaProjectDiagram />} />
-                    <Card title="Tasks" value={12} icon={<FaTasks />} />
+                    <Card title="Projects" value={status?.FetchProjects || 0} icon={<FaProjectDiagram />} />
+                    <Card title="Tasks" value={status?.fetchTask || 0} icon={<FaTasks />} />
                     <Card title="Completed" value={12} icon={<FaCheckCircle />} />
                     <Card title="Pending" value={12} icon={<FaClock />} />
-                    <Card title="Team" value={12} icon={<FaUsers />} />
-                    <Card title="Budget" value={12} icon={<FaMoneyBill />} />
+                    {status?.projectpriority?.map((prj: any, idx: number) => (
+                        <Card
+                            key={idx}
+                            title={prj?._id || 0}
+                            value={prj?.total || 0}
+                            icon={
+                                prj?._id === "Medium"
+                                    ? <FaEquals />
+                                    : prj?._id === "Low"
+                                        ? <FaArrowDown />
+                                        : <FaArrowUp />
+                            }
+                        />
+
+                    ))}
+
+                    {status?.projectstatus?.map((prj: any, idx: number) => (
+
+                        <Card
+                            title={prj._id}
+                            value={prj.total}
+                            icon={
+                                prj._id === 'In Progress'
+                                    ? <FaSpinner />
+                                    : prj._id === "completed"
+                                        ? <FaCheckCircle />
+                                        : <FaClock />
+                            }
+                            key={idx}
+                        />))}
+                    <Card title="Team" value={0} icon={<FaUsers />} />
+                    <Card title="Budget" value={status?.TotalRevenue?.toLocaleString() || 0} icon={<FaMoneyBill />} />
 
                 </div>
 
@@ -100,9 +153,9 @@ function Dashboard() {
 
                             </div>
                         </div>
-                        {projects.map((prj, idx) => (
+                        {projects.map((prj: any, idx: number) => (
 
-                            <ProgressBar name={prj.projectName} key={idx} percent={prj.progress} />
+                            <ProgressBar name={prj?.projectName || 0} key={idx} percent={prj?.progress || 0} />
                         ))}
 
                     </div>
