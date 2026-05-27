@@ -14,9 +14,9 @@ type ActionType =
     | "success";
 
 type ActionProps = {
-    title: string;
-    description: string;
-    type: ActionType | string;
+    title: string|any;
+    description: string|any;
+    type: ActionType | string|any;
 };
 
 function ActionLoading({
@@ -25,7 +25,7 @@ function ActionLoading({
     type,
 }: ActionProps) {
 
-    const actionIcons: Record<ActionType, any> = {
+    const actionIcons: any = {
         loading: (
             <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
         ),
@@ -55,7 +55,7 @@ function ActionLoading({
                 <div className="flex flex-col items-center gap-4 text-center">
 
                     <div className="rounded-full bg-gray-100 p-4 shadow-inner">
-                        {actionIcons[type]}
+                        {actionIcons}
                     </div>
 
                     <div>
