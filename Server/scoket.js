@@ -27,8 +27,7 @@ const initSocket = async (server) => {
           return;
         }
 
-        console.log("✅ Connected:", userId, socket.id);
-
+        console.log("Connected:", userId, socket.id);
         // initialize user array
         if (!users[userId]) {
           users[userId] = [];
