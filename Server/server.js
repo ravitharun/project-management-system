@@ -18,6 +18,7 @@ const TaskRouter = require("../Server/routes/TaskRouter");
 const NotificatonsRouter = require("./routes/NotificatonsRouter");
 const FetchTeamRouter = require("./routes/FetchTeamRouter");
 const AnalytcsRouter = require("./routes/AnalytcsRouter");
+const { SendAccountCreationEmail, SendWelcomEmail, taskAssiginedEmail } = require("./service/Email");
 // Middleware
 app.use(express.json());
 
@@ -50,6 +51,9 @@ const server = http.createServer(app);
 
 // Test server is Running
 app.get("/", (req, res) => {
+  SendAccountCreationEmail()
+  SendWelcomEmail()
+  taskAssiginedEmail()
   return res.status(200).json({ message: "Server Is Running..." })
 })
 
