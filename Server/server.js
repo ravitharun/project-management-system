@@ -48,7 +48,6 @@ client.connectRedis()
 // Create server
 const server = http.createServer(app);
 
-
 // Test server is Running
 app.get("/", (req, res) => {
   SendAccountCreationEmail()
