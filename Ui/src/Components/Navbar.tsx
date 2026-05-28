@@ -10,7 +10,6 @@ import {
     FaBell,
     FaBars,
     FaTimes,
-    FaUserLock,
     FaSignOutAlt,
     FaSignInAlt,
 } from "react-icons/fa";
@@ -119,7 +118,7 @@ function
                         >
 
 
-                            
+
                             <span className="text-lg">
                                 {Token ? <FaSignOutAlt /> : <FaSignInAlt />}
                             </span>

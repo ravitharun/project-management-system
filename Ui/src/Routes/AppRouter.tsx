@@ -9,7 +9,7 @@ const ProjetcDeatils = lazy(() => import("../pages/ProjetcDeatils"))
 const Calendra = lazy(() => import("../pages/Calendra"))
 import { lazy, Suspense, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
-import { checkuser, useremail, Usertoekn } from "../Components/LocalStorage";
+import {  useremail, Usertoekn } from "../Components/LocalStorage";
 // import toast, { Toaster } from 'react-hot-toast';
 
 import { formatProjectNotification } from "../utils/toastMessge";
