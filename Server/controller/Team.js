@@ -1,13 +1,13 @@
 
 
-const { client } = require("../conifg/Redis")
+const redis = require("../config/Ioredi")
 const UserSchema = require("../Models/Auth")
 const AssignTask = require("../Models/Task")
 const { getIO } = require("../scoket")
 const FetchTeam = async (req, res) => {
     try {
         const io = getIO()
-        const TeamCache = await client.get("Team")
+        const TeamCache = await redis.get("Team")
         console.log(TeamCache, 'TeamCache')
         if (!TeamCache) {
 
@@ -39,7 +39,7 @@ const FetchTeam = async (req, res) => {
                 ...member.toObject(),
                 totalTask: taskMap.get(member.userEmail) || 0
             }));
-            await client.setEx("Team", 500, JSON.stringify(newdata))
+            await redis.setex("Team", 500, JSON.stringify(newdata))
             io.emit("Teamdata", newdata)
             return res.status(200).json({ message: newdata, status: true, data: "SetCache" })
         }

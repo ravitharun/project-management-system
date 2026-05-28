@@ -5,7 +5,7 @@ const { getIO } = require("../scoket")
 const { v4: uuidv4 } = require('uuid');
 const NotificationSchema = require("../Models/Notification");
 const AddProject = require("../Models/Project");
-const { client } = require("../conifg/Redis");
+const redis  = require("../config/Ioredi");
 
 const AddTask = async (req, res) => {
     try {
@@ -34,8 +34,8 @@ const AddTask = async (req, res) => {
             Taskstatus: TaskData.progress,
         })
         await AddAssignTask.save()
-        await client.del("Notificatons")
-                await client.del("Analytcs")
+        await redis.del("Notificatons")
+                await redis.del("Analytcs")
         
         const NotificationFormatData = {
             userId: "userId", message: ` ${TaskData.AddedBy.name} created a new Task`,
@@ -90,7 +90,7 @@ const fetchTaskes = async (req, res) => {
 const updatedProgress = async (req, res) => {
     try {
 
-        await client.del("Projects");
+        await redis.del("Projects");
 
         const { projectId, num, ProjectIs } = req.query;
 
@@ -185,8 +185,8 @@ const updatetask = async (req, res) => {
             userId: "userId", message: "A task deadline has been updated", isRead: false
 
         }
-        await client.del("Notificatons")
-        await client.del("Analytcs")
+        await redis.del("Notificatons")
+        await redis.del("Analytcs")
 
         await NotificationSchema.create(NotificationFormatData)
         io.emit("updateTaskdate", "A task deadline has been updated")
@@ -223,10 +223,10 @@ const DeleteTask = async (req, res) => {
             const NotificationFormatData = {
                 userId: "userId", message: `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`, isRead: false
             }
-            await client.del("Notificatons")
+            await redis.del("Notificatons")
 
             await NotificationSchema.create(NotificationFormatData)
-                    await client.del("Analytcs")
+                    await redis.del("Analytcs")
             
             io.emit("HandelDeleteUser", `${getuserInfo | "User"},${UserRole | "Employee"} has deleted task`)
             return res.status(200).json({ messaage: "task Deleted", status: true })

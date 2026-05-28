@@ -1,9 +1,11 @@
-const cloudinary = require("../conifg/Clounadry")
+const cloudinary = require("../config/Clounadry")
 const UserSchema = require("../Models/Auth")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
 const { GetEmpNameGenById } = require("../Utils/EmpIDGenrator");
-const { client } = require("../conifg/Redis");
+const EmailQueue = require("../Queues/Producer");
+const redis = require("../config/Ioredi");
+// const EmailQueue = require("../service/Producer");
 const saltRounds = 10;
 const AuthNewAccount = async (req, res) => {
     try {
@@ -29,7 +31,15 @@ const AuthNewAccount = async (req, res) => {
             dept: req.body.dept
         })
         await saveuser.save()
-        await client.del("Analytcs")
+        await EmailQueue.add("SendWelcomeEmail", req.body.email, {
+            attempts: 3,
+
+            backoff: {
+                type: "fixed",
+                delay: 1000,
+            },
+        })
+        await redis.del("Analytcs")
 
         return res.status(201).json({ message: 'new user Created.' })
     } catch (error) {
@@ -62,6 +72,14 @@ const Login = async (req, res) => {
             data: userinfo
         }, 'secret', { expiresIn: '1h' });
         console.log(token, 'token')
+        await EmailQueue.add("SendWelcomEmail", email, {
+            attempts: 3,
+
+            backoff: {
+                type: "exponential",
+                delay: 3000,
+            },
+        })
         return res.status(200).json({ message: "userLogedin.", token: token, userinfo: isExits, status: true })
     } catch (error) {
         console.log(error)
