@@ -12,7 +12,7 @@ const initSocket = async (server) => {
 
   io = new Server(server, {
     cors: {
-      origin: ["http://localhost:5173", "https://taskora-system.netlify.app/"]
+      origin: ["http://localhost:5173", "https://taskora-system.netlify.app"]
     },
   });
 
