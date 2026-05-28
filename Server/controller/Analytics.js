@@ -1,4 +1,4 @@
-const { client } = require("../conifg/Redis");
+const  redis  = require("../config/Ioredi");
 const project = require("../Models/Project");
 const task = require("../Models/Task");
 const Auth = require("../Models/Auth");
@@ -9,7 +9,7 @@ const Analytics = async (req, res) => {
         const io = getIO();
 
         // cache
-        const AnalyticsCache = await client.get("Analytics");
+        const AnalyticsCache = await redis.get("Analytics");
         const month = [
             "jan",
             "feb",
@@ -135,7 +135,7 @@ const Analytics = async (req, res) => {
             };
 
             // save cache
-            await client.setEx(
+            await redis.setex(
                 "Analytics",
                 500,
                 JSON.stringify(Data)

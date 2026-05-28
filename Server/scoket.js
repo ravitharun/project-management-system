@@ -1,6 +1,6 @@
 // socket.js
 const UserSchema = require("../Server/Models/Auth");
-const { client } = require("./conifg/Redis");
+const redis = require("./config/Ioredi");
 
 let io;
 
@@ -35,8 +35,8 @@ const initSocket = async (server) => {
 
         // add socket id
         users[userId].push(socket.id);
-        await client.del("Team")
-        await client.del("Analytcs")
+        await redis.del("Team")
+        await redis.del("Analytcs")
 
 
         const user = await UserSchema.findOneAndUpdate(
@@ -86,8 +86,8 @@ const initSocket = async (server) => {
               );
 
             // delete old cache
-            await client.del("Team");
-        await client.del("Analytcs")
+            await redis.del("Team");
+            await redis.del("Analytcs")
 
 
             console.log(

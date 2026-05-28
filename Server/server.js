@@ -1,5 +1,4 @@
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -7,18 +6,17 @@ const http = require("http");
 const AuthRouter = require("./routes/AuthRoutes");
 const { initSocket } = require("./scoket");
 const cors = require("cors");
-const connectDb = require("./conifg/Db");
+const connectDb = require("./config/Db");
 const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator");
 const ProjectsRoute = require("./routes/HandelProjectRouter");
 const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
-const client = require("../Server/conifg/Redis");
 const TaskRotuer = require("../Server/routes/TaskRouter")
-const Connect = require("../Server/conifg/Redis");
 const TaskRouter = require("../Server/routes/TaskRouter");
 const NotificatonsRouter = require("./routes/NotificatonsRouter");
 const FetchTeamRouter = require("./routes/FetchTeamRouter");
 const AnalytcsRouter = require("./routes/AnalytcsRouter");
 const { SendAccountCreationEmail, SendWelcomEmail, taskAssiginedEmail } = require("./service/Email");
+const redis = require("./config/Ioredi");
 // Middleware
 app.use(express.json());
 
@@ -44,10 +42,15 @@ app.use("/api/Notificatons", NotificatonsRouter)
 app.use("/api/Team", FetchTeamRouter)
 app.use("/api/Analytcs", AnalytcsRouter)
 
-client.connectRedis()
+// client.connectRedis()
+
+
+redis.on("connect", () => {
+  console.log("Redis Connected");
+});
 // Create server
 const server = http.createServer(app);
-
+console.log(process.env.RESEND_API, 'process.env.RESEND_API')
 // Test server is Running
 app.get("/", (req, res) => {
   SendAccountCreationEmail()
