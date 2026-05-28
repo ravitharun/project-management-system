@@ -23,6 +23,7 @@ function
     const [open, setOpen] = useState(false);
     const [Bigscreen, setBigscreen] = useState(true);
 
+    console.log(Token, 'Token')
     const menuItems = [
         { name: "Dashboard", icon: <FaTachometerAlt />, href: "/" },
         { name: "Projects", icon: <FaProjectDiagram />, href: "/projects" },
@@ -109,8 +110,7 @@ function
                         </Link>
                     ))}
                     <div>
-
-                        <button onClick={checkuser}>{Token ? "Logout" : "Login"}</button>
+                        <button onClick={() => checkuser()}>{Token ? "Logout" : "Login"}</button>
                     </div>
                 </div>
                 {/* http://localhost:5000/api/Notificatons/Notificatons */}

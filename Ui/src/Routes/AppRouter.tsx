@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "../pages/Login/Login";
 import SiginUp from "../pages/Login/SignUp";
 const App = lazy(() => import("../App"))
@@ -9,7 +9,7 @@ const ProjetcDeatils = lazy(() => import("../pages/ProjetcDeatils"))
 const Calendra = lazy(() => import("../pages/Calendra"))
 import { lazy, Suspense, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
-import { checkuser, useremail } from "../Components/LocalStorage";
+import {  useremail } from "../Components/LocalStorage";
 // import toast, { Toaster } from 'react-hot-toast';
 
 import { formatProjectNotification } from "../utils/toastMessge";
@@ -18,7 +18,6 @@ import Notifications from "../pages/Notifications";
 import { ToastContainer ,toast} from "react-toastify";
 import Analytics from "../pages/Analytics";
 function AppRouter() {
-    const navigate = useNavigate();
     useEffect(() => {
 
         const handleCheckuserOnline = (data: any) => {
@@ -122,9 +121,7 @@ function AppRouter() {
     }, []);
 
 
-    useEffect(() => {
-        checkuser(navigate);
-    }, []);
+
 
     return (
         <>
