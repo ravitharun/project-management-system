@@ -50,13 +50,13 @@ redis.on("connect", () => {
 });
 // Create server
 const server = http.createServer(app);
-console.log(process.env.RESEND_API, 'process.env.RESEND_API')
 // Test server is Running
 app.get("/", (req, res) => {
   SendAccountCreationEmail()
   SendWelcomEmail()
+  console.log(SendWelcomEmail())
   taskAssiginedEmail()
-  return res.status(200).json({ message: "Server Is Running..." })
+  return res.status(200).json({ message: "Server Is Running...", email: SendWelcomEmail() })
 })
 
 // ✅ Initialize socket
