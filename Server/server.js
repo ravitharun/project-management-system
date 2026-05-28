@@ -23,8 +23,10 @@ app.use(express.json());
 
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
+const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localhost:27017/ProjectManagementWebsite'
 console.log(envStatusurl, 'envStatusurl')
 console.log(process.env.envStatus,'envStatus')
+console.log(Db,'Db In prod')
 
 app.use(cors({ origin: envStatusurl }));
 
