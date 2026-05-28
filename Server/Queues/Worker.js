@@ -10,6 +10,7 @@ const {
 } = require("../service/Email");
 
 const isProd = process.env.envStatus === "Prod";
+console.log(isProd,'isProd')
 
 const worker = new Worker(
     "EmailServices",

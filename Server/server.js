@@ -27,7 +27,8 @@ const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localho
 console.log(envStatusurl, 'envStatusurl')
 console.log(Db, 'Db In prod')
 console.log("=== ENV CONFIG ===");
-
+const isProd = process.env.envStatus === "Prod";
+console.log(isProd, 'isProd')
 console.log("PORT:", process.env.PORT);
 console.log("CLOUD_NAME:", process.env.CLOUD_NAME);
 console.log("CLOUD_KEY:", process.env.CLOUD_KEY ? "SET ✅" : "NOT SET ❌");
