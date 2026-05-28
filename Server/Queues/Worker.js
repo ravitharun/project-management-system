@@ -9,7 +9,7 @@ const {
     SendWelcomEmail,
 } = require("../service/Email");
 
-const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.envStatus === "Prod";
 
 const worker = new Worker(
     "EmailServices",
@@ -33,7 +33,7 @@ const worker = new Worker(
         }
     },
     {
-        connection: isProd
+        connection: isProd == 'Prod'
             ? redis
             : { host: "127.0.0.1", port: 6379 },
     }
