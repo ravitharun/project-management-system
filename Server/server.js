@@ -19,7 +19,11 @@ const { SendAccountCreationEmail, SendWelcomEmail, taskAssiginedEmail } = requir
 const redis = require("./config/Ioredi");
 // Middleware
 app.use(express.json());
+const fs = require("fs");
 
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
