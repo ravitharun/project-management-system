@@ -10,6 +10,9 @@ import {
     FaBell,
     FaBars,
     FaTimes,
+    FaUserLock,
+    FaSignOutAlt,
+    FaSignInAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { checkuser, Token } from "./LocalStorage";
@@ -109,8 +112,17 @@ function
                             </div>
                         </Link>
                     ))}
-                    <div>
-                        <button onClick={() => checkuser()}>{Token ? "Logout" : "Login"}</button>
+                    <div className="pt-3 border-t border-gray-700 mt-2">
+                        <button
+                            onClick={checkuser}
+                            className="flex items-center gap-3 p-3 w-full rounded-lg hover:bg-gray-800 transition"
+                        >
+                            <span className="text-lg">
+                                {Token ? <FaSignOutAlt /> : <FaSignInAlt />}
+                            </span>
+
+                            <span>{Token ? "Logout" : "Login"}</span>
+                        </button>
                     </div>
                 </div>
                 {/* http://localhost:5000/api/Notificatons/Notificatons */}
