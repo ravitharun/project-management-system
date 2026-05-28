@@ -1,5 +1,5 @@
 
-const cloudinary = require("../conifg/Clounadry")
+const cloudinary = require("../config/Clounadry")
 const ProjectFileUload = require("../Models/ProjectFile")
 const { getIO } = require("../scoket")
 const UploadFiles = async (req, res) => {

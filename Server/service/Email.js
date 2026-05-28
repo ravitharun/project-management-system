@@ -1,26 +1,18 @@
+
 const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API);
-
-/*
-========================================================
-ACCOUNT CREATION EMAIL
-========================================================
-DATA FORMAT
-
-{
-   email:"",
-   name:"",
-   password:""
+if (process.env.RESEND_API === undefined) {
+    console.log("process.env.RESEND_API === undefined")
 }
-*/
+
 
 const SendAccountCreationEmail = async (data) => {
     try {
 
         const response = await resend.emails.send({
-            from: "Taskora <taskoraSystem@resend.dev>",
-            to: data?.email||"tr565003@gmail.com",
+            from: "onboarding@resend.dev",
+            to: data?.email || "tr565003@gmail.com",
             subject: "Your Taskora Account Created Successfully",
             html: `
             <div style="font-family: Arial, sans-serif; padding:20px; background:#f4f4f4;">
@@ -85,26 +77,17 @@ const SendAccountCreationEmail = async (data) => {
 };
 
 
-/*
-========================================================
-WELCOME EMAIL
-========================================================
-DATA FORMAT
+// WELCOME EMAIL
 
-{
-   email:"",
-   name:""
-}
-*/
 
 const SendWelcomEmail = async (data) => {
 
     try {
 
         const response = await resend.emails.send({
-            from: "Taskora <taskoraSystem@resend.dev>",
-            to: data?.email||'tr565003@gmail.com',
-            subject: "Welcome To Taskora 🚀",
+            from: "Taskora <onboarding@resend.dev>",
+            to: data,
+            subject: "Welcome To Taskora ",
             html: `
             <div style="font-family: Arial, sans-serif; padding:20px; background:#f4f4f4;">
                 
@@ -160,31 +143,22 @@ const SendWelcomEmail = async (data) => {
             `,
         });
 
-        console.log("Welcome Email Sent", response);
+        console.log("Welcome Email Sent", response.error);
+        if (response.error) {
+
+            throw new Error(response.error.message);
+
+        }
+
 
     } catch (error) {
         console.log(error);
+        throw error
     }
 
 };
 
-
-/*
-========================================================
-TASK ASSIGNED EMAIL
-========================================================
-DATA FORMAT
-
-{
-    email:"",
-    employeeName:"",
-    taskTitle:"",
-    projectName:"",
-    deadline:"",
-    priority:"",
-    assignedBy:""
-}
-*/
+// TASK ASSIGNED EMAIL
 
 const taskAssiginedEmail = async (data) => {
 
@@ -192,8 +166,8 @@ const taskAssiginedEmail = async (data) => {
 
         const response = await resend.emails.send({
             from: "Taskora <taskoraSystem@resend.dev>",
-            to: data?.email||'tr565003@gmail.com',
-            subject: "New Task Assigned 📌",
+            to: data?.email || 'tr565003@gmail.com',
+            subject: "New Task Assigned ",
             html: `
             <div style="font-family: Arial, sans-serif; padding:20px; background:#f4f4f4;">
 
@@ -205,7 +179,7 @@ const taskAssiginedEmail = async (data) => {
 
                     <div style="padding:30px;">
 
-                        <h2>Hello ${data?.employeeName}, 👋</h2>
+                        <h2>Hello ${data?.employeeName}, </h2>
 
                         <p>
                             A new task has been assigned to you.

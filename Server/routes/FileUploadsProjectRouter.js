@@ -1,7 +1,7 @@
 const express = require("express")
 const { UploadFiles, FetchUploadFiles } = require("../controller/FileUploadProject")
 const AuthUserTokeen = require("../Middleware/AuthMiddleware")
-const { Pdfupload } = require("../conifg/mutler")
+const { Pdfupload } = require("../config/mutler")
 const FileUploadRouter = express.Router()
 FileUploadRouter.post("/upload",AuthUserTokeen,Pdfupload.single("uploadfile"),UploadFiles)
 

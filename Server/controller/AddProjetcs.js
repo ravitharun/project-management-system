@@ -3,7 +3,7 @@ const { Socket } = require("socket.io")
 const AddProject = require("../Models/Project")
 const { getIO } = require("../scoket")
 const { ProjetcId } = require("../Utils/EmpIDGenrator")
-const { client } = require("../conifg/Redis")
+const  redis  = require("../config/Ioredi")
 const { json } = require("express")
 const NotificationSchema = require("../Models/Notification")
 const build = require("../service/buildAnalytics")
@@ -16,7 +16,7 @@ const CreateProjects = async (req, res) => {
         // // projectId
         const tags = data.tags
         const teamMembers = data.teamMembers
-        const GetCache = await client.del("Projects")
+        const GetCache = await redis.del("Projects")
 
         const saveAddProject = await new AddProject({
             projectId: Id,
@@ -50,8 +50,8 @@ const CreateProjects = async (req, res) => {
             userId: "userId", message: `${data.data.username} created a new project`, isRead: false
 
         }
-        await client.del("Notificatons")
-        await client.del("Analytics")
+        await redis.del("Notificatons")
+        await redis.del("Analytics")
         await NotificationSchema.create(NotificationFormatData)
         io.emit(
             "AddedNewProject",
@@ -75,9 +75,9 @@ const FetchProjects = async (req, res) => {
         const cacheKey = `Projects:page:${page}`;
 
         // 1. Check cache
-        const cachedData = await client.get(cacheKey);
+        const cachedData = await redis.get(cacheKey);
 
-        // await client.del(cacheKey)
+        // await redis.del(cacheKey)
 
 
         if (cachedData) {
@@ -115,7 +115,7 @@ const FetchProjects = async (req, res) => {
         };
 
         // 5. Save to Redis cache (5 minutes)
-        await client.setEx(cacheKey, 300, JSON.stringify(responseData));
+        await redis.setex(cacheKey, 300, JSON.stringify(responseData));
 
         return res.status(200).json({
             data: responseData,
@@ -135,7 +135,7 @@ const ManageMembersProject = async (req, res) => {
     try {
         const io = getIO()
         const { data } = req.body
-        await client.DEL("Projects")
+        await redis.DEL("Projects")
         console.log(data.userid, data.projectsid)
         if (!data.projectsid) {
             return res.status(404).json({ message: "Something went Wrong" })
@@ -156,7 +156,7 @@ const ManageMembersProject = async (req, res) => {
             returnDocument: "after"
         })
 
-        await client.del("Notificatons")
+        await redis.del("Notificatons")
         await NotificationSchema.create(NotificationFormatData)
         io.emit(
             "AddProjectMembers",
@@ -175,7 +175,7 @@ const UpdateProjectStatus = async (req, res) => {
         const io = getIO()
         console.log(req.body.prjid, req.body.status)
         const CheckProject = await AddProject.findOneAndUpdate({ projectId: req.body.prjid }, { status: req.body.status }, { returnDocument: "after" })
-        await client.del("Projects")
+        await redis.del("Projects")
         console.log(CheckProject, 'check')
         if (!CheckProject) {
             return res.status(404).json({ message: 'Based on the ProjectID Project is not found.' })
@@ -185,7 +185,7 @@ const UpdateProjectStatus = async (req, res) => {
             message: `SomeOne has Updated the   project  Status Project: ${req.body.prjid} `
         }
         await NotificationSchema.create(Notification)
-        await client.del("Analytics")
+        await redis.del("Analytics")
 
         io.emit("handelprojectStatus", `SomeOne has Updated the   project  Status Project: ${req.body.prjid}`)
         const data = await build();
