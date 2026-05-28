@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
   SendWelcomEmail()
   console.log(SendWelcomEmail())
   taskAssiginedEmail()
-  return res.status(200).json({ message: "Server Is Running...", email: SendWelcomEmail() })
+  return res.status(200).json({ message: "Server Is Running...",  })
 })
 
 // ✅ Initialize socket
