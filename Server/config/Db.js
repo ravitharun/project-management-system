@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localhost:27017/ProjectManagementWebsite'
+const Db = process.env.Db
 console.log(Db,'Db')
 const connectDb = async () => {
     try {
