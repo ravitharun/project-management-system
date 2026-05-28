@@ -22,6 +22,7 @@ import AddTaskForm from "../Components/AddTaskForm";
 import { fetchProjects } from "../services/ProjetcApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { instance } from "../services/apiservices";
 
 
 function Projects() {
@@ -71,6 +72,24 @@ function Projects() {
         })
     }
 
+
+    const [stats, setStatus] = useState<any>({})
+    useEffect(() => {
+        const FetchAna = async () => {
+            try {
+                const response = await instance.get("/api/Analytcs/")
+                console.log(response.data.message, 'res')
+                setStatus(response.data.message)
+                // setProjectStatus(response.data.message.projectstatus)
+
+            } catch (error: any) {
+                console.log(error)
+
+            }
+        }
+        FetchAna()
+    }, [])
+
     return (
         <>
 
@@ -95,10 +114,18 @@ function Projects() {
 
                     {/* KPI CARDS */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                        <KpiCard title="Total Projects" value="12" />
-                        <KpiCard title="Active Tasks" value="48" />
-                        <KpiCard title="Completed" value="30" />
-                        <KpiCard title="Team Members" value="5" />
+
+                        {/* {stats.projectstatus} */}
+                        {/* {stats?.map((st, idx: number) => ( */}
+
+
+                        <KpiCard title='Total Projects' value={stats?.FetchProjects || 0} />
+                        <KpiCard title="Active Tasks" value={stats?.fetchTask || 0} />
+                        {stats.projectstatus?.map((prj:any, idx:number) => (
+
+                            <KpiCard title={prj?._id || 0} value={prj.total ||0} key={idx} />
+                        ))}
+                        {/* <KpiCard title="Team Members" value="5" /> */}
                     </div>
 
 

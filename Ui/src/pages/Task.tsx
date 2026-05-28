@@ -4,6 +4,8 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Sidebar from "../Components/Navbar";
+import Progress from "../Components/progress";
+import { isInDev } from "../Components/LocalStorage";
 
 /* ---------------- TYPES ---------------- */
 
@@ -60,28 +62,34 @@ function KanbanBoard() {
             [destCol]: destItems,
         });
     }
-
     return (
-        <div className="flex h-screen bg-gray-100">
-            <Sidebar page="Tasks" />
+        <>
 
-            <main className="flex-1 p-6 overflow-y-auto">
-                <div className="p-6 bg-gray-100 min-h-screen mt-10">
-                    <h1 className="text-3xl font-bold mb-6">Kanban Board</h1>
 
-                    <DndContext
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}
-                    >
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <Column title="To Do" col="todo" tasks={tasks.todo} />
-                            <Column title="In Progress" col="progress" tasks={tasks.progress} />
-                            <Column title="Done" col="done" tasks={tasks.done} />
-                        </div>
-                    </DndContext>
-                </div>
-            </main>
-        </div>
+            <div className="flex h-screen bg-gray-100">
+                <Sidebar page="Tasks" />
+
+                <main className="flex-1 p-6 overflow-y-auto">
+            {isInDev && <Progress />}
+
+                    <div className="p-6 bg-gray-100 min-h-screen mt-10">
+                        <h1 className="text-3xl font-bold mb-6">Kanban Board</h1>
+
+                        <DndContext
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <Column title="To Do" col="todo" tasks={tasks.todo} />
+                                <Column title="In Progress" col="progress" tasks={tasks.progress} />
+                                <Column title="Done" col="done" tasks={tasks.done} />
+                            </div>
+                        </DndContext>
+                    </div>
+                </main>
+            </div>
+        </>
+
     );
 }
 

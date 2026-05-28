@@ -20,13 +20,14 @@ import RecentActivity from "../../Components/RecentActivity";
 import { useEffect, useState } from "react";
 import { fetchProjects } from "../../services/ProjetcApi";
 import { instance } from "../../services/apiservices";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
     const [page, setpage] = useState<number>(1)
     const [totalpages, settotalPages] = useState<number>(1)
     const [projects, setprojects] = useState<any>([])
 
-const [status, setStatus] = useState<any>({});
+    const [status, setStatus] = useState<any>({});
     useEffect(() => {
         const FetchAna = async () => {
             try {
@@ -78,8 +79,8 @@ const [status, setStatus] = useState<any>({});
 
                     <Card title="Projects" value={status?.FetchProjects || 0} icon={<FaProjectDiagram />} />
                     <Card title="Tasks" value={status?.fetchTask || 0} icon={<FaTasks />} />
-                    <Card title="Completed" value={12} icon={<FaCheckCircle />} />
-                    <Card title="Pending" value={12} icon={<FaClock />} />
+                    <Card title="Completed" value={status?.completed || 12} icon={<FaCheckCircle />} />
+                    <Card title="Pending" value={status?.completed || 12} icon={<FaClock />} />
                     {status?.projectpriority?.map((prj: any, idx: number) => (
                         <Card
                             key={idx}
@@ -110,7 +111,7 @@ const [status, setStatus] = useState<any>({});
                             }
                             key={idx}
                         />))}
-                    <Card title="Team" value={0} icon={<FaUsers />} />
+                    <Card title="Team" value={status?.Team || 0} icon={<FaUsers />} />
                     <Card title="Budget" value={status?.TotalRevenue?.toLocaleString() || 0} icon={<FaMoneyBill />} />
 
                 </div>
@@ -127,36 +128,62 @@ const [status, setStatus] = useState<any>({});
                             <h2 className="font-bold text-lg text-gray-800">
                                 Project Progress
                             </h2>
+                            {projects.length === 0 ? "" :
+                                <div className="flex items-center gap-3">
 
-                            <div className="flex items-center gap-3">
-
-                                {/* Prev */}
-                                <FaChevronLeft
-                                    onClick={() => setpage((prev) => Math.max(prev - 1, 1))}
-                                    className={`w-5 h-5 cursor-pointer transition
+                                    {/* Prev */}
+                                    <FaChevronLeft
+                                        onClick={() => setpage((prev) => Math.max(prev - 1, 1))}
+                                        className={`w-5 h-5 cursor-pointer transition
         ${page === 1 ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:text-gray-900"}
       `}
-                                />
+                                    />
 
-                                {/* Page Info (optional) */}
-                                <span className="text-sm text-gray-600">
-                                    {page} / {totalpages}
-                                </span>
+                                    {/* Page Info (optional) */}
+                                    <span className="text-sm text-gray-600">
+                                        {page} / {totalpages}
+                                    </span>
 
-                                {/* Next */}
-                                <FaChevronRight
-                                    onClick={() => setpage((prev) => Math.min(prev + 1, totalpages))}
-                                    className={`w-5 h-5 cursor-pointer transition
+                                    {/* Next */}
+                                    <FaChevronRight
+                                        onClick={() => setpage((prev) => Math.min(prev + 1, totalpages))}
+                                        className={`w-5 h-5 cursor-pointer transition
         ${page === totalpages ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:text-gray-900"}
       `}
-                                />
+                                    />
 
-                            </div>
+                                </div>}
                         </div>
-                        {projects.map((prj: any, idx: number) => (
+                        {projects.length == 0 ?
 
-                            <ProgressBar name={prj?.projectName || 0} key={idx} percent={prj?.progress || 0} />
-                        ))}
+                            <>
+
+                                <div className="mt-25 flex flex-col items-center justify-center text-center py-10">
+
+                                    <div className="bg-blue-100 p-4 rounded-full shadow-md">
+                                        <FaProjectDiagram className="text-4xl text-blue-600" />
+                                    </div>
+
+                                    <h2 className="mt-4 text-lg font-semibold text-gray-700">
+                                        No Project Progress Found
+                                    </h2>
+                                    <Link to="/projects">
+
+                                        <p
+                                            className="text-sm text-gray-500 mt-1 cursor-pointer transition-all duration-300 hover:text-blue-500 hover:scale-105"
+                                            title="Create Projects"
+                                        >
+                                            Start creating projects to track progress here.
+                                        </p>
+                                    </Link>
+
+                                </div>
+
+                            </>
+                            : projects.map((prj: any, idx: number) => (
+
+                                <ProgressBar name={prj?.projectName || 0} key={idx} percent={prj?.progress || 0} />
+                            ))}
 
                     </div>
 
@@ -171,9 +198,18 @@ const [status, setStatus] = useState<any>({});
                     </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <TaskBox title="High Priority" count={5} />
-                        <TaskBox title="Medium Priority" count={10} />
-                        <TaskBox title="Low Priority" count={8} />
+                        {status?.projectpriority?.map((prj: any, idx: number) => (
+                            <TaskBox
+                                key={idx}
+                                title={prj?._id || 0}
+                                // value={prj?.total || 0}
+                                count={prj?.total || 0}
+                
+                            />
+
+                        ))}
+
+                        
                     </div>
                 </div>
 
