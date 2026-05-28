@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { fetchProjects } from "../../services/ProjetcApi";
 import { instance } from "../../services/apiservices";
 import { Link } from "react-router-dom";
+import ProjectsNotfound from "../../Components/ProjectsNotfound";
 
 function Dashboard() {
     const [page, setpage] = useState<number>(1)
@@ -129,6 +130,10 @@ function Dashboard() {
                                 Project Progress
                             </h2>
                             {projects.length === 0 ? "" :
+
+
+
+
                                 <div className="flex items-center gap-3">
 
                                     {/* Prev */}
@@ -152,32 +157,17 @@ function Dashboard() {
       `}
                                     />
 
-                                </div>}
+                                </div>
+
+
+
+
+                            }
                         </div>
                         {projects.length == 0 ?
-
                             <>
 
-                                <div className="mt-25 flex flex-col items-center justify-center text-center py-10">
-
-                                    <div className="bg-blue-100 p-4 rounded-full shadow-md">
-                                        <FaProjectDiagram className="text-4xl text-blue-600" />
-                                    </div>
-
-                                    <h2 className="mt-4 text-lg font-semibold text-gray-700">
-                                        No Project Progress Found
-                                    </h2>
-                                    <Link to="/projects">
-
-                                        <p
-                                            className="text-sm text-gray-500 mt-1 cursor-pointer transition-all duration-300 hover:text-blue-500 hover:scale-105"
-                                            title="Create Projects"
-                                        >
-                                            Start creating projects to track progress here.
-                                        </p>
-                                    </Link>
-
-                                </div>
+                                <ProjectsNotfound title="No Project Progress Found" message=" Start creating projects to track progress here." />
 
                             </>
                             : projects.map((prj: any, idx: number) => (
@@ -204,12 +194,12 @@ function Dashboard() {
                                 title={prj?._id || 0}
                                 // value={prj?.total || 0}
                                 count={prj?.total || 0}
-                
+
                             />
 
                         ))}
 
-                        
+
                     </div>
                 </div>
 

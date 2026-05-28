@@ -23,6 +23,7 @@ import { fetchProjects } from "../services/ProjetcApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { instance } from "../services/apiservices";
+import ProjectsNotfound from "../Components/ProjectsNotfound";
 
 
 function Projects() {
@@ -121,9 +122,9 @@ function Projects() {
 
                         <KpiCard title='Total Projects' value={stats?.FetchProjects || 0} />
                         <KpiCard title="Active Tasks" value={stats?.fetchTask || 0} />
-                        {stats.projectstatus?.map((prj:any, idx:number) => (
+                        {stats.projectstatus?.map((prj: any, idx: number) => (
 
-                            <KpiCard title={prj?._id || 0} value={prj.total ||0} key={idx} />
+                            <KpiCard title={prj?._id || 0} value={prj.total || 0} key={idx} />
                         ))}
                         {/* <KpiCard title="Team Members" value="5" /> */}
                     </div>
@@ -224,96 +225,105 @@ function Projects() {
                     {/* PROJECT CARDS */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                        {Projects?.map((p: any, i: any) => (
-                            <>
+                        {Projects.length == 0 ? <>
 
-                                <div
-                                    key={i}
-                                    className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition"
-                                    onClick={() => handelProjectDetaile(p)}
-                                >
 
-                                    <h2 className="text-xl font-bold text-gray-800">
-                                        {p?.projectName}
-                                    </h2>
+                            <div className="w-full h-[70vh] flex justify-center items-center">
+                                <ProjectsNotfound
+                                    title="No Project Progress Found"
+                                    message="Start creating projects to track progress here."
+                                />
+                            </div>                     </> : Projects?.map((p: any, i: any) => (
+                                <>
 
-                                    <p className="text-gray-500 text-sm mt-1">
-                                        {/* {p.?desc} */}
-                                        {p?.description}
-                                    </p>
-
-                                    <span className={`inline-block mt-3 px-3 py-1 text-xs rounded-full
-                ${p?.status === "Completed"
-                                            ? "bg-green-100 text-green-600"
-                                            : p?.status === "Active"
-                                                ? "bg-blue-100 text-blue-600"
-                                                : "bg-yellow-100 text-yellow-600"
-                                        }`}
+                                    <div
+                                        key={i}
+                                        className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition"
+                                        onClick={() => handelProjectDetaile(p)}
                                     >
-                                        {p?.status}
-                                    </span>
 
-                                    {/* PROGRESS */}
-                                    <div className="mt-4">
-                                        <div className="flex justify-between text-sm mb-1">
-                                            <span>Progress</span>
-                                            <span>{p?.progress}%</span>
-                                        </div>
+                                        <h2 className="text-xl font-bold text-gray-800">
+                                            {p?.projectName}
+                                        </h2>
 
-                                        <div className="w-full bg-gray-200 h-2 rounded-full">
-                                            <div
-                                                className="bg-blue-500 h-2 rounded-full"
-                                                style={{ width: `${p?.progress}%` }}
-                                            />
-                                        </div>
-                                    </div>
+                                        <p className="text-gray-500 text-sm mt-1">
+                                            {/* {p.?desc} */}
+                                            {p?.description}
+                                        </p>
 
-                                    {/* FOOTER */}
-                                    <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
-                                        <span className="flex items-center gap-1">
-                                            <FaUsers />{p?.totalMember || 0} members
+                                        <span className={`inline-block mt-3 px-3 py-1 text-xs rounded-full
+                ${p?.status === "Completed"
+                                                ? "bg-green-100 text-green-600"
+                                                : p?.status === "Active"
+                                                    ? "bg-blue-100 text-blue-600"
+                                                    : "bg-yellow-100 text-yellow-600"
+                                            }`}
+                                        >
+                                            {p?.status}
                                         </span>
-                                        <span>Due: {new Date(p?.endDate).toLocaleDateString()}</span>
+
+                                        {/* PROGRESS */}
+                                        <div className="mt-4">
+                                            <div className="flex justify-between text-sm mb-1">
+                                                <span>Progress</span>
+                                                <span>{p?.progress}%</span>
+                                            </div>
+
+                                            <div className="w-full bg-gray-200 h-2 rounded-full">
+                                                <div
+                                                    className="bg-blue-500 h-2 rounded-full"
+                                                    style={{ width: `${p?.progress}%` }}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* FOOTER */}
+                                        <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
+                                            <span className="flex items-center gap-1">
+                                                <FaUsers />{p?.totalMember || 0} members
+                                            </span>
+                                            <span>Due: {new Date(p?.endDate).toLocaleDateString()}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </>
-                        ))}
+                                </>
+                            ))}
 
                     </div>
+                    {Projects.length == 0 ? "" :
+                        <div className="flex items-center gap-2 mt-4">
 
-                    <div className="flex items-center gap-2 mt-4">
-
-                        <button
-                            disabled={Currentpage === 1}
-                            onClick={() => setCurrentpage((p) => p - 1)}
-                            className="px-3 py-1 border rounded-md disabled:opacity-50"
-                        >
-                            Prev
-                        </button>
-
-                        {[...Array(Pages)].map((_, i) => (
                             <button
-                                key={i}
-                                onClick={() => setCurrentpage(i + 1)}
-                                className={`px-3 py-1 rounded-md border transition
-        ${Currentpage === i + 1
-                                        ? "bg-blue-600 text-white border-blue-600"
-                                        : "hover:bg-gray-100"
-                                    }`}
+                                disabled={Currentpage === 1}
+                                onClick={() => setCurrentpage((p) => p - 1)}
+                                className="px-3 py-1 border rounded-md disabled:opacity-50"
                             >
-                                {i + 1}
+                                Prev
                             </button>
-                        ))}
 
-                        <button
-                            disabled={Currentpage === Pages}
-                            onClick={() => setCurrentpage((p) => p + 1)}
-                            className="px-3 py-1 border rounded-md disabled:opacity-50"
-                        >
-                            Next
-                        </button>
+                            {[...Array(Pages)].map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setCurrentpage(i + 1)}
+                                    className={`px-3 py-1 rounded-md border transition
+        ${Currentpage === i + 1
+                                            ? "bg-blue-600 text-white border-blue-600"
+                                            : "hover:bg-gray-100"
+                                        }`}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
 
-                    </div>
+                            <button
+                                disabled={Currentpage === Pages}
+                                onClick={() => setCurrentpage((p) => p + 1)}
+                                className="px-3 py-1 border rounded-md disabled:opacity-50"
+                            >
+                                Next
+                            </button>
+
+                        </div>
+                    }
 
 
 
