@@ -81,6 +81,10 @@ const SendAccountCreationEmail = async (data) => {
 
 
 const SendWelcomEmail = async (data) => {
+    if (!data?.to) {
+        console.log("To EmailId is required.")
+        return "To EmailId is required."
+    }
 
     try {
 
