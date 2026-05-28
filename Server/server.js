@@ -24,6 +24,7 @@ app.use(express.json());
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
 console.log(envStatusurl, 'envStatusurl')
+console.log(process.env.envStatus,'envStatus')
 
 app.use(cors({ origin: envStatusurl }));
 
