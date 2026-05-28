@@ -82,6 +82,7 @@ const SendAccountCreationEmail = async (data) => {
 
 const SendWelcomEmail = async (data) => {
     if (!data?.to) {
+        console.log("To EmailId is required.")
         return "To EmailId is required."
     }
 
@@ -89,7 +90,7 @@ const SendWelcomEmail = async (data) => {
 
         const response = await resend.emails.send({
             from: "Taskora <onboarding@resend.dev>",
-            to: data || 'tr565003@gmail.com',
+            to: data,
             subject: "Welcome To Taskora ",
             html: `
             <div style="font-family: Arial, sans-serif; padding:20px; background:#f4f4f4;">
