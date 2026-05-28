@@ -81,12 +81,15 @@ const SendAccountCreationEmail = async (data) => {
 
 
 const SendWelcomEmail = async (data) => {
+    if (!data?.to) {
+        return "To EmailId is required."
+    }
 
     try {
 
         const response = await resend.emails.send({
             from: "Taskora <onboarding@resend.dev>",
-            to: data,
+            to: data || 'tr565003@gmail.com',
             subject: "Welcome To Taskora ",
             html: `
             <div style="font-family: Arial, sans-serif; padding:20px; background:#f4f4f4;">
