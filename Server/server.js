@@ -76,10 +76,7 @@ redis.on("connect", () => {
 const server = http.createServer(app);
 // Test server is Running
 app.get("/", (req, res) => {
-  SendAccountCreationEmail()
-  SendWelcomEmail()
-  console.log(SendWelcomEmail())
-  taskAssiginedEmail()
+
   console.log("=== ENV CONFIG ===");
 
   console.log("PORT:", process.env.PORT);
