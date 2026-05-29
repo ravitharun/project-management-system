@@ -1,56 +1,56 @@
-# 📊 Project Management System
+# Project Management System
 
-A full-stack **Project Management Web Application** built using the **MERN stack (MongoDB, Express, React, Node.js)** with **Redis** for caching and performance optimization. This application helps teams manage projects, tasks, budgets, and analytics with real-time updates and role-based access control.
+A full-stack Project Management Web Application built using the MERN stack (MongoDB, Express, React, Node.js) with Redis for caching and performance optimization. This application helps teams manage projects, tasks, budgets, and analytics with real-time updates and role-based access control.
 
-**Repository:** [project-management-system](https://github.com/ravitharun/project-management-system)
+Repository: https://github.com/ravitharun/project-management-system
 
-## 🚀 Features
+## Features
 
-### 🔐 Authentication & Authorization
+### Authentication and Authorization
 - JWT-based authentication
 - Secure login and signup
-- Role-based access control:
+- Role-based access control
   - Employee
   - Team Leader
   - Manager
 
-### 📁 Project Management
+### Project Management
 - Create, update, and delete projects
 - Assign tasks to users
 - Track project progress
 - Manage multiple projects efficiently
 
-### ✅ Task Management
+### Task Management
 - Add and manage tasks
-- Update task status (Pending / In Progress / Completed)
+- Update task status (Pending, In Progress, Completed)
 - Calendar-based task visualization
 
-### 📅 Calendar Integration
+### Calendar Integration
 - Tasks displayed based on due dates
-- Easy visualization of deadlines using FullCalendar
+- Visualization of deadlines using FullCalendar
 
-### 💰 Budget Management
+### Budget Management
 - Set project budgets
 - Track and monitor expenses
 - Budget filtering (planned feature)
 
-### 📈 Analytics Dashboard
+### Analytics Dashboard
 - Project performance insights
 - Task completion statistics
 - Budget usage analytics
-- Role-based analytics (Employee / Team Leader / Manager)
-- Some features coming soon
+- Role-based analytics for Employee, Team Leader, and Manager
+- Additional features coming soon
 
-### 🔔 Real-time Notifications
+### Real-time Notifications
 - WebSocket (Socket.io) integration
 - Real-time task updates
 - Instant notifications for project changes
 
-### ⚡ Performance Optimization
+### Performance Optimization
 - Redis caching for faster responses
 - Improved scalability and performance
 
-## 🧑‍💻 Tech Stack
+## Tech Stack
 
 ### Frontend
 - React.js
@@ -63,29 +63,27 @@ A full-stack **Project Management Web Application** built using the **MERN stack
 - MongoDB
 - JWT Authentication
 
-### Real-time & Cache
+### Real-time and Cache
 - Socket.io (WebSockets)
 - Redis
 
-## 📌 Upcoming Features
+## Upcoming Features
 - Advanced analytics improvements
-- Email notifications
-- File upload system
 - AI-based task suggestions
 - Enhanced reporting dashboard
 
-## 🛠️ Installation
+## Installation
 
 ```bash
 # Clone repository
 git clone https://github.com/ravitharun/project-management-system.git
 
-# Move into backend folder
+# Backend setup
 cd Server
 npm install
 npm start
 
-# Move into frontend folder
+# Frontend setup
 cd Ui
 npm install
 npm start
