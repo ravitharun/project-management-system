@@ -1,7 +1,7 @@
 import type { RequestLogindata } from "../pages/Login/Login"
 import { instance } from "./apiservices"
 
-export const AuthNewAccount = async (fromdata: FormData) => {
+export const AuthNewAccount = async (fromdata: FormData | any) => {
     try {
         const response = await instance.post("/api/auth/register", fromdata, {
             headers: {
@@ -14,16 +14,17 @@ export const AuthNewAccount = async (fromdata: FormData) => {
         return error
     }
 }
-export const AuthLoginAccount = async ({ role, email, password }: RequestLogindata) => {
+export const AuthLoginAccount = async ({ email, password, type }: RequestLogindata | any) => {
+    console.log(email, 'email to server ')
     try {
         const response = await instance.get("/api/auth/Login", {
             params: {
-                role, email, password
+                email, password, type
             }
         })
         return response
     } catch (error: any) {
-        console.log(error,'err main')
+        console.log(error, 'err main')
         throw error
     }
 } 

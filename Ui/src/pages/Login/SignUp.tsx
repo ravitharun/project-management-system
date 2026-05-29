@@ -7,6 +7,8 @@ import CustomToast from "../../Components/Toasts/CustomToast";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthNewAccount } from "../../services/AuthApi";
 import { departments } from "../../types/Dept";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 type ResponseType = {
     message: string;
@@ -15,14 +17,14 @@ type ResponseType = {
 
 function SiginUp() {
     const navigate = useNavigate()
-    const [role, setrole] = useState("employee");
     const [email, setemail] = useState("");
     const [name, setname] = useState("");
     const [password, setpassword] = useState("");
     const [responsetext, setresponsetext] = useState<ResponseType>(null);
     const [file, setfile] = useState<File | null>(null);
     const [profilePreview, setProfilePreview] = useState<string | null>(null);
-    const [dept, setdept] = useState<string>("")
+    const provider = new GoogleAuthProvider();
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
@@ -45,53 +47,103 @@ function SiginUp() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!role || !email || !password || !name || !dept) {
+        if (!email || !password || !name) {
             return setresponsetext({
                 message: "Please fill all fields",
                 types: "warning",
             });
-            ;
-        }
-
-
-        const fromdata = new FormData()
-        fromdata.append("role", role)
-        fromdata.append("name", name)
-        fromdata.append("email", email)
-        fromdata.append("password", password)
-        fromdata.append("dept", dept)
-        // ✅ FIX HERE
-        if (file) {
-            fromdata.append("Profile", file);
         }
 
         try {
-            const response = await AuthNewAccount(fromdata)
-            console.log(response.status, 'response')
+
+
+            // ✅ FORM DATA
+            const fromdata = new FormData();
+
+            // fromdata.append("role", role);
+            fromdata.append("name", name);
+            fromdata.append("email", email);
+            fromdata.append("password", password);
+            // fromdata.append("dept", dept);
+
+           
+            if (file) {
+                fromdata.append("Profile", file);
+            }
+
+            // ✅ Backend API
+            const response = await AuthNewAccount(fromdata);
+
             if (response.status == 400) {
                 return setresponsetext({
-                    message: "Based  on the Email Account created By Some One. ",
+                    message: "Email already exists",
                     types: "warning",
                 });
             }
+
             if (response.data.message == "new user Created.") {
+
                 setresponsetext({
                     message: "Account created successfully 🎉",
                     types: "success",
                 });
+
                 setTimeout(() => {
-                    return navigate("/Login")
+                    navigate("/Login");
                 }, 2000);
             }
+
         } catch (error: any) {
+
+            console.log(error);
+
             return setresponsetext({
-                message: error,
+                message: error.message,
                 types: "failure",
             });
         }
+    };
+    const handleGoogleLogin = async () => {
+        try {
 
-        // response message 
+            const result = await signInWithPopup(
+                auth,
+                provider
+            );
+            console.log(result)
+            const userdata = {
+                firebaseUID: result.user.providerData[0].uid,
+                name: result.user.providerData[0].displayName,
+                email: result.user.providerData[0].email,
+                profile: result.user.providerData[0].photoURL,
+                token: result.user.accessToken,
+                logintype: result.providerId,
+                type: result.user.providerId
+            };
 
+            console.log(userdata, 'userdata');
+            const response = await AuthNewAccount(userdata);
+            console.log(response, 'response')
+            if (response.data.message == "new user Created.") {
+
+                setresponsetext({
+                    message: "Account created successfully 🎉",
+                    types: "success",
+                });
+
+                setTimeout(() => {
+                    navigate("/Login");
+                }, 2000);
+            }
+
+        } catch (error: any) {
+
+            setresponsetext({
+                message: error.message,
+                types: "failure",
+            });
+
+        }
     };
 
     return (
@@ -184,52 +236,7 @@ function SiginUp() {
                                 </div>
                             </div>
 
-                            {/* Dept */}
-                            <div className="relative w-full">
-                                <label className="block mb-2 text-sm font-semibold text-gray-700">
-                                    Department
-                                </label>
 
-                                <div className="relative">
-                                    {/* Left Icon */}
-                                    <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-
-                                    {/* Dropdown */}
-                                    <select
-                                        onChange={(e) => setdept(e.target.value)}
-                                        className="
-                w-full
-                pl-11
-                pr-4
-                py-3
-                rounded-2xl
-                border
-                border-gray-300
-                bg-white
-                text-gray-700
-                shadow-sm
-                outline-none
-                transition-all
-                duration-200
-                focus:ring-2
-                focus:ring-blue-500
-                focus:border-blue-500
-                hover:border-blue-400
-                cursor-pointer
-            "
-                                    >
-                                        <option value="" disabled>Select Department</option>
-
-                                        {departments.map((dept, idx) => (
-                                            <option value={dept} key={idx}>
-                                                {dept}
-                                            </option>
-                                        ))}
-                                    </select>
-
-                                        
-                                </div>
-                            </div>
                             <div className="relative">
                                 <FaUser className="absolute top-3.5 left-3 text-gray-400" />
                                 <Input
@@ -265,23 +272,6 @@ function SiginUp() {
                                 />
                             </div>
 
-                            {/* ROLE */}
-                            <div>
-                                <p className="text-sm mb-2">Select Role</p>
-                                <div className="grid grid-cols-3 gap-3">
-
-                                    {["employee", "tl", "manager"].map((r) => (
-                                        <div
-                                            key={r}
-                                            onClick={() => setrole(r)}
-                                            className={`p-3 text-center border rounded-lg cursor-pointer
-                                            ${role === r ? "bg-blue-600 text-white" : ""}`}
-                                        >
-                                            {r}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
 
                             <Button
                                 type="submit"
@@ -289,7 +279,13 @@ function SiginUp() {
                                 Btnname="Sign Up"
                             />
                         </form>
-
+                        <button
+                            onClick={handleGoogleLogin}
+                            type="button"
+                            className="w-full border py-2 rounded-lg mt-3 hover:bg-gray-100 transition"
+                        >
+                            Continue with Google
+                        </button>
                         <p className="text-center mt-6 text-sm">
                             Already have an account?{" "}
                             <Link to="/Login">
