@@ -89,11 +89,11 @@ npm install
 npm start
 ```
 
-## 👨‍💻 Author
+##  Author
 **Ravi Tharun**  
 Full Stack Developer (MERN)  
 [tharunravi672@gmail.com](mailto:tharunravi672@gmail.com)  
 7396994383
 
-## ⭐ Support
+##  Support
 If you like this project, give it a **star** on GitHub.
