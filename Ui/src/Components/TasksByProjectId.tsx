@@ -9,13 +9,34 @@ import {
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useState } from "react";
+import { socket } from "../Scokets/ScoketConfig"
+
+
+
 
 type propsProjectTask = {
     ProjectTask: any;
 };
 
 function TasksByProjectId({ ProjectTask }: propsProjectTask) {
-    // console.log(ProjectTask, "ProjectTask");
+
+
+    // useEffect(() => {
+
+    //     const handelcheck = (data: any) => {
+    //         alert(data.prjid);
+    //         console.log("data id", data);
+    //     }
+
+    //     socket.on("task_updated", handelcheck);
+
+    //     return () => {
+    //         socket.off("task_updated", handelcheck);
+    //     }
+
+    // }, []);
+
+
     const [showProgressPoup, setprogresspoup] = useState<boolean>(false)
 
     const [showid, setshowid] = useState<number>()
@@ -26,17 +47,19 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
 
 
     console.log(showProgressPoup)
-    const handelUpadateProgress = async (id: number, num: string,prjid:number) => {
-        console.log(num,prjid, 'num to update')
+    const handelUpadateProgress = async (id: number, num: string, prjid: number) => {
+        console.log(num, prjid, 'num to update')
 
         try {
             // http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=
 
             const response = await axios.patch(`http://localhost:5000/api/Task/TaskProgressUpdatet?projectId=${id}&num=${num}&ProjectIs=${prjid}`)
+            socket.emit("join_project", prjid)
+            socket.emit("task_updated", { prjid, num })
             console.log(response, 'response')
             toast.success(response.data.message)
         } catch (error: any) {
-
+            console.log("errpr", error.message)
             toast.error(error.message)
         }
 
@@ -194,7 +217,7 @@ function TasksByProjectId({ ProjectTask }: propsProjectTask) {
                                                     <select
                                                         className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-400"
                                                         onChange={(e) =>
-                                                            handelUpadateProgress(task._id, e.target.value,task.ProjectID)
+                                                            handelUpadateProgress(task._id, e.target.value, task.ProjectID)
                                                         }
                                                     >
                                                         <option>Select Progress</option>
