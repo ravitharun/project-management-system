@@ -1,14 +1,52 @@
+import { FaTasks } from "react-icons/fa";
+import { MdPendingActions } from "react-icons/md";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
+import { BsFlagFill } from "react-icons/bs";
 
-type TaskBoxProps = { title: string, count: number }
-export default function TaskBox({ title, count }:TaskBoxProps) {
+type TaskBoxProps = {
+  title: string;
+  count: number;
+};
+
+export default function TaskBox({ title, count }: TaskBoxProps) {
+
+  const getIcon = () => {
+    switch (title) {
+
+      case "High":
+        return <BsFlagFill className="text-2xl text-red-500" />;
+
+      case "Medium":
+        return <MdPendingActions className="text-2xl text-orange-500" />;
+
+      case "Low":
+        return <IoCheckmarkDoneCircle className="text-2xl text-green-500" />;
+
+      default:
+        return <FaTasks className="text-2xl text-blue-500" />;
+    }
+  };
+
   return (
-    <div className="p-5 border rounded-xl text-center bg-gray-50 hover:bg-white hover:shadow-md transition">
+    <div className="p-5 rounded-2xl bg-white shadow-sm hover:shadow-md transition-all duration-300">
 
-      <h3 className="text-gray-600 font-semibold">{title}</h3>
+      <div className="flex items-center justify-between">
 
-      <p className="text-3xl font-bold text-gray-800 mt-2">
-        {count}
-      </p>
+        <div>
+          <h3 className="text-sm text-gray-500 font-medium">
+            Task {title} Total
+          </h3>
+
+          <p className="text-3xl font-bold text-gray-800 mt-1">
+            {count}
+          </p>
+        </div>
+
+        <div>
+          {getIcon()}
+        </div>
+
+      </div>
 
     </div>
   );

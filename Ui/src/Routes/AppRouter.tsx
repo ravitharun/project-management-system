@@ -6,19 +6,22 @@ const Task = lazy(() => import("../pages/Task"))
 const Projects = lazy(() => import("../pages/Projects"))
 const Team = lazy(() => import("../pages/Team"))
 const ProjetcDeatils = lazy(() => import("../pages/ProjetcDeatils"))
+const Notifications = lazy(() => import("../pages/Notifications"))
+const Analytics = lazy(() => import("../pages/Analytics"))
+const Profile = lazy(() => import("../pages/Profile"))
 const Calendra = lazy(() => import("../pages/Calendra"))
 import { lazy, Suspense, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
-import { checkuser, useremail } from "../Components/LocalStorage";
-// import toast, { Toaster } from 'react-hot-toast';
+import { useremail, Usertoekn } from "../Components/LocalStorage";
 
 import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
-import Notifications from "../pages/Notifications";
-import { ToastContainer ,toast} from "react-toastify";
-import Analytics from "../pages/Analytics";
+import { ToastContainer, toast } from "react-toastify";
+
 function AppRouter() {
     const navigate = useNavigate();
+    const dev = import.meta.env.VITE_ENV
+    console.log(dev, 'dev')
     useEffect(() => {
 
         const handleCheckuserOnline = (data: any) => {
@@ -80,6 +83,10 @@ function AppRouter() {
 
             toast.success(data)
         }
+        const handelcheck = (task: any) => {
+            toast.info("Task updated:", task.prjid);
+
+        };
 
         socket.on("onlineUser", handleCheckuserOnline);
         socket.on("AddProjectMembers", handleAddProjectMembers);
@@ -89,23 +96,31 @@ function AppRouter() {
         socket.on("AddedNewProject", ToastNotify);
         socket.on("NewTask", handelTask);
         socket.on("updateTaskdate", handelupdateTaskdate)
+        const assignedProjects = ["Prj3145", "Prj99", "Prj45"];
 
-        socket.on("connect", () => {
-            console.log("Connected:", socket.id);
+        socket.on("task_updated", (data) => {
+
+            const isAllowed = assignedProjects.includes(data.prjid);
+
+            if (!isAllowed) return;
+
+            toast.success(`${data.prjid}: ${data.num}`);
         });
 
-        // const handelTeamdata = (Teamdata: any) => {
-        //     console.log(Teamdata, 'Teamdata');
-        // };
 
-        // socket.on("Teamdata", handelTeamdata);
+        socket.on("connect", () => {
+
+            console.log("CONNECTED:", socket.id);
+        });
         socket.on("disconnect", () => {
             console.log("Disconnected from server");
         });
         socket.on("ProjectInfoUpload", handelProjectInfoUpload)
 
         return () => {
+
             socket.off("NewTask", handelTask);
+            socket.off("task_updated", handelcheck);
             socket.off("handelprojectStatus", handelprojectStatus);
             socket.off("AddProjectMembers", handleAddProjectMembers);
             socket.off("HandelDeleteUser", HandelDeleteUser);
@@ -123,12 +138,12 @@ function AppRouter() {
 
 
     useEffect(() => {
-        checkuser(navigate);
+        Usertoekn(navigate, toast);
     }, []);
 
     return (
         <>
-        <ToastContainer position="top-center"
+            <ToastContainer position="top-center"
                 autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}
@@ -151,6 +166,7 @@ function AppRouter() {
                     <Route path="/Analytics" element={<Analytics />} />
                     <Route path="/Calendar" element={<Calendra />} />
                     <Route path="/Team" element={<Team />} />
+                    <Route path="/Profile" element={<Profile />} />
                     <Route path="/Login" element={<Login />} />
                     <Route path="/Signup" element={<SiginUp />} />
                 </Routes>
