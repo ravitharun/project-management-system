@@ -6,8 +6,7 @@ import Button from "../../Components/Button";
 import CustomToast from "../../Components/Toasts/CustomToast";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthNewAccount } from "../../services/AuthApi";
-import { departments } from "../../types/Dept";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {  GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 
 type ResponseType = {
@@ -111,12 +110,11 @@ function SiginUp() {
                 provider
             );
             console.log(result)
-            const userdata = {
+            const userdata :any= {
                 firebaseUID: result.user.providerData[0].uid,
                 name: result.user.providerData[0].displayName,
                 email: result.user.providerData[0].email,
                 profile: result.user.providerData[0].photoURL,
-                token: result.user.accessToken,
                 logintype: result.providerId,
                 type: result.user.providerId
             };

@@ -113,7 +113,6 @@ function Login() {
                             Login to continue
                         </p>
                     </div>
-
                     <form onSubmit={handleSubmit} className="space-y-4">
 
                         {/* EMAIL */}
