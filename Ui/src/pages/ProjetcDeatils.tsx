@@ -26,8 +26,8 @@ import AddMembers from "../Components/AddMembers";
 import { projectStatus } from "../types/ProjetcStatus";
 
 function ProjetcDeatils() {
-    const data = useLocation().state.project;
-    const prjid = data.projectId
+    const data = useLocation()?.state?.project;
+    const prjid = data?.projectId
     const navigate = useNavigate();
     console.log(data, 'data')
     const [ProjectInfo, setProjectInfo] = useState<any>([])

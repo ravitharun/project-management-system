@@ -4,7 +4,7 @@ const app = express();
 const http = require("http");
 
 const AuthRouter = require("./routes/AuthRoutes");
-const { initSocket } = require("./scoket");
+const { initSocket, getIO } = require("./scoket");
 const cors = require("cors");
 const connectDb = require("./config/Db");
 const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator");
@@ -28,27 +28,26 @@ if (!fs.existsSync("uploads")) {
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
 const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localhost:27017/ProjectManagementWebsite'
-console.log(envStatusurl, 'envStatusurl')
-console.log(Db, 'Db In prod')
-console.log("=== ENV CONFIG ===");
-const isProd = process.env.envStatus === "Prod";
-console.log(isProd, 'isProd')
-console.log("PORT:", process.env.PORT);
-console.log("CLOUD_NAME:", process.env.CLOUD_NAME);
-console.log("CLOUD_KEY:", process.env.CLOUD_KEY ? "SET ✅" : "NOT SET ❌");
-console.log("CLOUD_SECRET:", process.env.CLOUD_SECRET ? "SET ✅" : "NOT SET ❌");
+// console.log(envStatusurl, 'envStatusurl')
+// console.log(Db, 'Db In prod')
+// console.log("=== ENV CONFIG ===");
+// const isProd = process.env.envStatus === "Prod";
+// console.log(isProd, 'isProd')
+// console.log("PORT:", process.env.PORT);
+// console.log("CLOUD_NAME:", process.env.CLOUD_NAME);
+// console.log("CLOUD_KEY:", process.env.CLOUD_KEY ? "SET ✅" : "NOT SET ❌");
+// console.log("CLOUD_SECRET:", process.env.CLOUD_SECRET ? "SET ✅" : "NOT SET ❌");
 
-console.log("LiveUI:", process.env.LiveUI);
-console.log("envStatus:", process.env.envStatus);
+// console.log("LiveUI:", process.env.LiveUI);
+// console.log("envStatus:", process.env.envStatus);
 
-console.log("RESEND_API:", process.env.RESEND_API ? "SET ✅" : "NOT SET ❌");
+// console.log("RESEND_API:", process.env.RESEND_API ? "SET ✅" : "NOT SET ❌");
 
-console.log("REDIS_URL:", process.env.REDIS_URL ? "SET ✅" : "NOT SET ❌");
-console.log("REDIS_PORT:", process.env.REDIS_PORT);
+// console.log("REDIS_URL:", process.env.REDIS_URL ? "SET ✅" : "NOT SET ❌");
+// console.log("REDIS_PORT:", process.env.REDIS_PORT);
 
-console.log("Db:", process.env.Db ? "SET ✅" : "NOT SET ❌");
+// console.log("Db:", process.env.Db ? "SET ✅" : "NOT SET ❌");
 
-console.log("=== END ENV ===");
 app.use(cors({ origin: envStatusurl }));
 
 console.log("--------- check the id's -----")
@@ -76,25 +75,14 @@ redis.on("connect", () => {
 const server = http.createServer(app);
 // Test server is Running
 app.get("/", (req, res) => {
+  const io = getIO()
 
-  console.log("=== ENV CONFIG ===");
 
-  console.log("PORT:", process.env.PORT);
-  console.log("CLOUD_NAME:", process.env.CLOUD_NAME);
-  console.log("CLOUD_KEY:", process.env.CLOUD_KEY ? "SET ✅" : "NOT SET ❌");
-  console.log("CLOUD_SECRET:", process.env.CLOUD_SECRET ? "SET ✅" : "NOT SET ❌");
 
-  console.log("LiveUI:", process.env.LiveUI);
-  console.log("envStatus:", process.env.envStatus);
 
-  console.log("RESEND_API:", process.env.RESEND_API ? "SET ✅" : "NOT SET ❌");
 
-  console.log("REDIS_URL:", process.env.REDIS_URL ? "SET ✅" : "NOT SET ❌");
-  console.log("REDIS_PORT:", process.env.REDIS_PORT);
 
-  console.log("Db:", process.env.Db ? "SET ✅" : "NOT SET ❌");
 
-  console.log("=== END ENV ===");
   return res.status(200).json({ message: "Server Is Running...", })
 })
 
