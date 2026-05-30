@@ -9,31 +9,29 @@ const redis = require("../config/Ioredi");
 const saltRounds = 10;
 const AuthNewAccount = async (req, res) => {
     try {
-        console.log(req.body)
-        console.log(req.file)
+        console.log(req.body, 'bdy')
+        console.log(req.file, 'req.file')
         const isExits = await UserSchema.findOne({ userEmail: req.body.email })
         if (isExits) {
             console.log({ message: "Email is already exits." })
             return res.status(400).json({ message: "Email is already exits." })
         }
-        const haspassowrd = await bcrypt.hash(req.body.password, saltRounds,)
-
-        const result = await cloudinary.uploader.upload(req.file.path);
+        const haspassowrd = await bcrypt.hash(req.body.type === 'firebase' ? "" : req.body.password, saltRounds)
+        const result = req.body.type === 'firebase' ? "" : await cloudinary.uploader.upload(req.file.path);
         const EmpId = GetEmpNameGenById(req.body.name)
-        console.log(EmpId, 'EmpId')
         const saveuser = await UserSchema({
             userID: EmpId,
-            userProfile: result.secure_url,
+            userProfile: req.body.type === 'firebase' ? req.body.profile : result.secure_url,
             Username: req.body.name,
             userEmail: req.body.email,
             userPassword: haspassowrd,
-            userrole: req.body.role,
-            dept: req.body.dept
+            logintype: req.body.logintype,
+            type: req.body.type
         })
         await saveuser.save()
+        // Queues system
         await EmailQueue.add("SendWelcomeEmail", req.body.email, {
             attempts: 3,
-
             backoff: {
                 type: "fixed",
                 delay: 1000,
@@ -43,35 +41,40 @@ const AuthNewAccount = async (req, res) => {
 
         return res.status(201).json({ message: 'new user Created.' })
     } catch (error) {
-        console.log(error)
+        console.log(error.message, 'ere')
         return res.status(500).json({ message: error })
     }
 
 }
+
+
+
+
+
 const Login = async (req, res) => {
     try {
         // role, email, password
-        const { role, email, password } = req.query
+        const { role, email, password, type } = req.query
+        console.log(req.query, 'req.query')
+        console.log(req.query.type, 'req.query.type')
         const isExits = await UserSchema.findOne({ userEmail: email })
         if (!isExits) {
             console.log({ message: "Based on These Email User Not Found." })
             return res.status(400).json({ message: "Based on These Email User Not Found.", status: false })
         }
-        const haspassowrdComp = await bcrypt.compare(password, isExits.userPassword)
+        const haspassowrdComp = type === 'firebase' ? true : await bcrypt.compare(password, isExits.userPassword)
         if (!haspassowrdComp) {
             console.log({ message: "Password is incorrect." })
             return res.status(403).json({ message: "Password is incorrect.", status: false })
         }
-        if (isExits.userrole != role) {
 
-            console.log({ message: "Role is incorrect." })
-            return res.status(403).json({ message: "Role is incorrect." })
-        }
-        const userinfo = { role, email }
+        const userinfo = { email }
         const token = jwt.sign({
             data: userinfo
         }, 'secret', { expiresIn: '1h' });
         console.log(token, 'token')
+
+        // queues system
         await EmailQueue.add("SendWelcomEmail", email, {
             attempts: 3,
 
@@ -80,6 +83,8 @@ const Login = async (req, res) => {
                 delay: 3000,
             },
         })
+
+
         return res.status(200).json({ message: "userLogedin.", token: token, userinfo: isExits, status: true })
     } catch (error) {
         console.log(error)
