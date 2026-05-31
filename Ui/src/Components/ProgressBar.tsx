@@ -1,12 +1,27 @@
+import { useContext } from "react";
+import bgthemeContext from "../Context/ThemeContext";
 
 
 type ProgressBarProps = { name: string, percent: number }
 
 export default function ProgressBar({ name, percent }: ProgressBarProps) {
+  const context = useContext(bgthemeContext)
+  const { theme }: any = context;
   return (
     <div className="mb-4">
       <div className="flex justify-between text-sm mb-1 text-gray-700">
-        <span>{name}</span>
+        <span
+          className={`
+        text-sm font-medium tracking-wide
+        transition-colors duration-300
+        ${theme === "Dark"
+              ? "text-gray-300"
+              : "text-gray-700"
+            }
+    `}
+        >
+          {name}
+        </span>
         <span>{percent}%</span>
       </div>
 

@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
+
 import {
     FaTachometerAlt,
     FaTasks,
     FaUsers,
     FaCalendarAlt,
     FaChartLine,
-    FaUser,
     FaBell,
-    FaBars,
-    FaTimes,
     FaSignOutAlt,
     FaSignInAlt,
     FaLayerGroup,
@@ -20,20 +19,27 @@ import {
 import { Link } from "react-router-dom";
 import { checkuser, Token } from "./LocalStorage";
 import { toast } from "react-toastify";
+import SideBarContext from "../Context/SideBard";
+import bgthemeContext from "../Context/ThemeContext";
+import UserPanel from "./UserPanel";
 
 type Props = {
     page: string;
 };
 
+export type theme = "Dark" | "Ligth"
 function Sidebar({ page }: Props) {
 
     const [open, setOpen] = useState(false);
-    const [Bigscreen, setBigscreen] = useState(true);
+    const [isOpenPanelItems, setisOpenPanelItems] = useState<boolean>(false)
+    const [issidebaropen, setisSidebaropen] = useState<boolean>(false)
+    // const [Bigscreen, setBigscreen] = useState(true);
     const [openSpace, setOpenSpace] = useState(false);
     const [isworkspace, setisworkspace] = useState<boolean>(false)
+    console.log(isworkspace, 'isworkspace')
     const [hoveredId, setHoveredId] = useState<number | null>(null);
-    const [Workspacename, setWorkspacename] = useState<any>("")
 
+    // const [UserTheme, setusertheme] = useState<theme>('Dark')
     const menuItems = [
         { name: "Dashboard", icon: <FaTachometerAlt />, href: "/" },
         { name: "Space", icon: <FaLayerGroup />, href: "/projects" },
@@ -41,29 +47,23 @@ function Sidebar({ page }: Props) {
         { name: "Team", icon: <FaUsers />, href: "/Team" },
         { name: "Calendar", icon: <FaCalendarAlt />, href: "/Calendar" },
         { name: "Analytics", icon: <FaChartLine />, href: "/Analytics" },
-        { name: "Profile", icon: <FaUser />, href: "/Profile" },
     ];
-    // [
-    //         "Frontend Team",
-    //         "Devops Team",
-    //         "Backend Team",
-    //         "Design Team",
-    //     ]
     const [space, setSpace] = useState<string[]>([]);
     const handelpoupSpace = () => { setisworkspace((prev) => !prev) }
-    const handelSpace = (e?: any) => {
 
-        if (!Workspacename) {
-            return toast.error("required  to create the workspace")
-        }
+    const sidebar = useContext(SideBarContext);
+    sidebar?.setisSidebaropen(issidebaropen)
+    const context = useContext(bgthemeContext)
+    const { theme }: any = context;
+    // theme.settheme(UserTheme)
 
-        e?.stopPropagation();
+
+    // Sibar Fucntion open/close
+    const HandelOpenCloseSideBar = () => {
+        setisSidebaropen((prev) => !prev)
+    }
 
 
-        setSpace(prev => [...prev, Workspacename]);
-
-        toast.success("Workspace Created");
-    };
 
     const deleteWorkspace = (idx: number) => {
         setSpace(prev => prev.filter((_, i) => i !== idx));
@@ -71,25 +71,110 @@ function Sidebar({ page }: Props) {
     };
 
     return (
+
         <>
-            {/* ================= MOBILE TOP BAR ================= */}
+            {/* ================= NAVBAR ================= */}
 
-            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-gray-900 border-b border-gray-800 text-white flex items-center justify-between px-4 z-50">
+            <div
+                className={`
+        fixed top-0 left-0 right-0 h-16
+        flex items-center justify-between
+        px-4 z-50 border-b transition-all duration-300
 
-                <h1 className="font-bold text-base truncate">
-                    ProjectHub
-                </h1>
+        ${theme === "Dark"
+                        ? "bg-[#111827] border-gray-800 text-white"
+                        : "bg-white border-gray-200 text-gray-900 shadow-sm"
+                    }
+    `}
+            >
 
-                <button
-                    onClick={() => setOpen(true)}
-                    className="text-2xl"
-                >
-                    <FaBars />
-                </button>
+                {/* LEFT */}
+
+                <div className="flex items-center gap-3">
+
+                    {/* MOBILE MENU */}
+
+                    <button
+                        onClick={() => setOpen(true)}
+                        className={`
+                md:hidden
+                p-2 rounded-xl transition-all
+                ${theme === "Dark"
+                                ? "hover:bg-gray-800"
+                                : "hover:bg-gray-100"
+                            }
+            `}
+                    >
+                        <LuPanelLeftOpen className="text-2xl" />
+                    </button>
+
+                    {/* DESKTOP SIDEBAR */}
+
+                    <button
+                        onClick={HandelOpenCloseSideBar}
+                        className={`
+                hidden md:flex
+                p-2 rounded-xl transition-all
+                ${theme === "Dark"
+                                ? "hover:bg-gray-800"
+                                : "hover:bg-gray-100"
+                            }
+            `}
+                    >
+                        {issidebaropen ? (
+                            <LuPanelLeftClose className="text-2xl" title="Close The SideBar" />
+                        ) : (
+                            <LuPanelLeftOpen className="text-2xl" title="Open The SideBar" />
+                        )}
+                    </button>
+                    <Link to="/">
+                        <h1 className="font-bold text-lg tracking-wide">
+                            Taskaro
+                        </h1>
+                    </Link>
+
+                </div>
+
+                {/* RIGHT */}
+
+                <div className="flex items-center gap-3">
+
+                    <button
+                        className={`
+                p-2 rounded-xl relative transition-all
+                ${theme === "Dark"
+                                ? "hover:bg-gray-800"
+                                : "hover:bg-gray-100"
+                            }
+            `}
+                    >
+
+                        <FaBell className="text-lg" />
+
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-[10px] px-1.5 py-[1px] rounded-full">
+                            3
+                        </span>
+
+                    </button>
+
+                    <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center font-semibold text-white" onClick={() => setisOpenPanelItems((prev) => !prev)} onMouseEnter={() => setisOpenPanelItems(true)} >
+
+                        T
+                    </div>
+
+
+                    {isOpenPanelItems && <>
+
+
+
+                        <UserPanel ></UserPanel>
+                    </>}
+
+                </div>
 
             </div>
 
-            {/* ================= OVERLAY ================= */}
+            {/* ================= MOBILE OVERLAY ================= */}
 
             {open && (
                 <div
@@ -102,72 +187,54 @@ function Sidebar({ page }: Props) {
 
             <aside
                 className={`
-                fixed md:static top-0 left-0 h-screen bg-gray-900 text-white flex flex-col z-50
-                transition-transform duration-300 ease-in-out
-                ${Bigscreen
-                        ? "w-[290px] md:w-[320px]"
-                        : "w-[240px] md:w-[260px]"
+        fixed top-16 left-0
+        h-[calc(100vh-64px)]
+        flex flex-col
+        transition-all duration-300 z-50
+
+        ${theme === "Dark"
+                        ? "bg-[#111827] border-r border-gray-800 text-white"
+                        : "bg-white border-r border-gray-200 text-gray-900"
                     }
-                ${open
+
+        /* MOBILE */
+        w-[270px]
+
+        /* DESKTOP */
+        ${issidebaropen ? "md:w-[270px]" : "md:w-[85px]"}
+
+        ${open
                         ? "translate-x-0"
                         : "-translate-x-full md:translate-x-0"
                     }
-            `}
+    `}
             >
-
-                {/* ================= HEADER ================= */}
-
-                <div className="p-5 border-b border-gray-800 flex items-center justify-between">
-
-                    <h1 className="font-bold text-lg">
-                        ProjectHub
-                    </h1>
-
-                    <div className="flex items-center gap-3">
-
-                        <button
-                            onClick={() => setBigscreen(!Bigscreen)}
-                            className="hidden md:block text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded-md"
-                        >
-                            {Bigscreen ? "Shrink" : "Expand"}
-                        </button>
-
-                        <button
-                            className="md:hidden text-xl"
-                            onClick={() => setOpen(false)}
-                        >
-                            <FaTimes />
-                        </button>
-
-                    </div>
-
-                </div>
 
                 {/* ================= MENU ================= */}
 
-                <div className="flex-1 overflow-y-auto px-2 md:px-3 py-20 md:py-4 space-y-2">
+                <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2">
 
                     {menuItems.map((item, i) => (
 
-                        <div
-                            key={i}
-                            className="space-y-1"
-                            onMouseEnter={() => item.name === "Space" && setOpenSpace(true)}
-                            onMouseLeave={() => item.name === "Space" && setOpenSpace(false)}
-                        >
+                        <div key={i} className="space-y-1">
 
-                            {/* ================= PARENT ITEM ================= */}
+                            {/* MENU ITEM */}
 
                             <div
+                                title={item.name}
                                 className={`
-                                flex items-center justify-between gap-2
-                                p-2.5 md:p-3 rounded-xl cursor-pointer
-                                transition-all duration-200
-                                ${page === item.name
-                                        ? "bg-blue-600 shadow-lg"
-                                        : "hover:bg-gray-800"
+                        flex items-center justify-between
+                        gap-2 p-3 rounded-xl
+                        cursor-pointer transition-all duration-200
+                        
+
+                        ${page === item.name
+                                        ? "bg-blue-600 text-white shadow-lg"
+                                        : theme === "Dark"
+                                            ? "hover:bg-gray-800"
+                                            : "hover:bg-gray-100"
                                     }
-                            `}
+                    `}
                                 onClick={() => {
                                     if (item.name === "Space") {
                                         setOpenSpace(prev => !prev);
@@ -177,252 +244,243 @@ function Sidebar({ page }: Props) {
                                 }}
                             >
 
+                                {/* LEFT */}
+
                                 <Link
                                     to={item.name === "Space" ? "#" : item.href}
                                     className="flex items-center gap-3 flex-1 min-w-0"
                                 >
 
-                                    <span className="text-lg shrink-0">
+                                    <span className="text-xl shrink-0">
                                         {item.icon}
                                     </span>
 
-                                    <span
-                                        className={`truncate ${Bigscreen
-                                            ? "text-sm md:text-base"
-                                            : "text-xs md:text-sm"
-                                            }`}
-                                    >
-                                        {item.name}
-                                    </span>
+                                    {(issidebaropen || open) && (
+
+                                        <span className="truncate text-sm md:text-base font-medium">
+                                            {item.name}
+                                        </span>
+
+                                    )}
 
                                 </Link>
 
-                                {/* ================= SPACE ACTIONS ================= */}
+                                {/* SPACE ACTIONS */}
 
-                                {item.name === "Space" && (
+                                {(issidebaropen || open) && item.name === "Space" && (
 
                                     <div className="flex items-center gap-3">
 
-                                        {/* Create Workspace */}
-
-                                        <div
-                                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+                                        <FaPlus
+                                            className={`
+                                    cursor-pointer text-xs transition-all
+                                    ${theme === "Dark"
+                                                    ? "text-gray-300 hover:text-blue-400"
+                                                    : "text-gray-500 hover:text-blue-600"
+                                                }
+                                `}
                                             onClick={handelpoupSpace}
+                                        />
+
+                                        <span
+                                            className={`
+                                    text-sm
+                                    ${theme === "Dark"
+                                                    ? "text-gray-300"
+                                                    : "text-gray-500"
+                                                }
+                                `}
                                         >
 
-                                            <span className="hidden md:block">
-                                                Create
-                                            </span>
-
-                                            <FaPlus className="cursor-pointer text-xs hover:text-blue-400" />
-
-                                        </div>
-
-                                        <span className="text-gray-300 text-sm transition-transform duration-200">
                                             {openSpace
-                                                ? <FaArrowCircleDown className="text-base" />
-                                                : <FaArrowCircleRight className="text-base" />
+                                                ? <FaArrowCircleDown />
+                                                : <FaArrowCircleRight />
                                             }
+
                                         </span>
+
                                     </div>
+
                                 )}
 
                             </div>
 
-                            {/* ================= TREE ================= */}
+                            {/* ================= WORKSPACES ================= */}
 
-                            {item.name === "Space" && openSpace && (
+                            {(issidebaropen || open) &&
+                                item.name === "Space" &&
+                                openSpace && (
 
-                                <div className="ml-6 md:ml-10 mt-1 space-y-1 border-l border-gray-700 pl-3">
+                                    <div
+                                        className={`
+                                ml-8 mt-1 space-y-1 border-l pl-3
+                                ${theme === "Dark"
+                                                ? "border-gray-700"
+                                                : "border-gray-300"
+                                            }
+                            `}
+                                    >
 
-                                    {space.length == 0 ?
-                                        <>
-                                            <div className="flex flex-col items-center justify-center py-10 text-center">
-                                                <h2 className="text-lg font-semibold text-white">
-                                                    No Workspace Found
+                                        {space.length === 0 ? (
+
+                                            <div className="flex flex-col items-center justify-center py-8 text-center">
+
+                                                <h2
+                                                    className={`text-sm font-semibold ${theme === "Dark"
+                                                        ? "text-white"
+                                                        : "text-gray-900"
+                                                        }`}
+                                                >
+                                                    No Workspace
                                                 </h2>
 
-                                                <p className="text-sm text-gray-400 mt-1">
-                                                    Create your first workspace to get started.
+                                                <p
+                                                    className={`text-xs mt-1 ${theme === "Dark"
+                                                        ? "text-gray-400"
+                                                        : "text-gray-500"
+                                                        }`}
+                                                >
+                                                    Create your first workspace
                                                 </p>
 
                                                 <button
                                                     onClick={() => setisworkspace(true)}
-                                                    className="mt-4 bg-blue-600 hover:bg-blue-700 transition px-4 py-2 rounded-lg text-sm"
+                                                    className="mt-3 bg-blue-600 hover:bg-blue-700 transition px-3 py-2 rounded-lg text-sm text-white"
                                                 >
-                                                    Create Workspace
+                                                    Create
                                                 </button>
 
                                             </div>
 
-                                        </>
-                                        : space.map((itm, idx) => (
+                                        ) : (
 
-                                            <div
-                                                key={idx}
-                                                className="group flex items-center justify-between px-2 py-2 rounded-lg hover:bg-gray-800 transition"
-                                                onMouseEnter={() => setHoveredId(idx)}
-                                                onMouseLeave={() => setHoveredId(null)}
-                                            >
+                                            space.map((itm, idx) => (
 
-                                                {/* Workspace Name */}
+                                                <div
+                                                    key={idx}
+                                                    className={`
+                                            group flex items-center justify-between
+                                            px-2 py-2 rounded-lg transition-all
 
-                                                <div className="flex items-center gap-2 min-w-0">
+                                            ${theme === "Dark"
+                                                            ? "hover:bg-gray-800"
+                                                            : "hover:bg-gray-100"
+                                                        }
+                                        `}
+                                                    onMouseEnter={() => setHoveredId(idx)}
+                                                    onMouseLeave={() => setHoveredId(null)}
+                                                >
 
-                                                    {/* Workspace Icon */}
-                                                    <FaLayerGroup className="text-sm text-gray-400 shrink-0" />
+                                                    <div className="flex items-center gap-2 min-w-0">
 
-                                                    {/* Workspace Name */}
-                                                    <span className="text-sm text-gray-300 truncate">
-                                                        {itm}
-                                                    </span>
+                                                        <FaLayerGroup
+                                                            className={`
+                                                    text-sm shrink-0
+                                                    ${theme === "Dark"
+                                                                    ? "text-gray-400"
+                                                                    : "text-gray-500"
+                                                                }
+                                                `}
+                                                        />
+
+                                                        <span
+                                                            className={`
+                                                    text-sm truncate
+                                                    ${theme === "Dark"
+                                                                    ? "text-gray-300"
+                                                                    : "text-gray-700"
+                                                                }
+                                                `}
+                                                        >
+                                                            {itm}
+                                                        </span>
+
+                                                    </div>
+
+                                                    {hoveredId === idx && (
+
+                                                        <div className="flex gap-2 text-xs">
+
+                                                            <button
+                                                                className="text-blue-400 hover:text-blue-300"
+                                                                onClick={() => toast.info(`Edit ${itm}`)}
+                                                            >
+                                                                Edit
+                                                            </button>
+
+                                                            <button
+                                                                className="text-red-400 hover:text-red-300"
+                                                                onClick={() => deleteWorkspace(idx)}
+                                                            >
+                                                                Delete
+                                                            </button>
+
+                                                        </div>
+
+                                                    )}
 
                                                 </div>
 
-                                                {/* Actions */}
+                                            ))
 
-                                                {hoveredId === idx && (
+                                        )}
 
-                                                    <div className="hidden md:flex gap-2 text-xs">
+                                    </div>
 
-                                                        <button
-                                                            className="text-blue-400 hover:text-blue-200"
-                                                            onClick={() => toast.info(`Edit ${itm}`)}
-                                                        >
-                                                            Edit
-                                                        </button>
-
-                                                        <button
-                                                            className="text-red-400 hover:text-red-200"
-                                                            onClick={() => deleteWorkspace(idx)}
-                                                        >
-                                                            Delete
-                                                        </button>
-
-                                                    </div>
-                                                )}
-
-                                            </div>
-
-                                        ))}
-
-                                    <button
-                                        onClick={() => toast.success("Opening Workspaces")}
-                                        className="text-sm text-gray-400 hover:text-white text-left pt-1"
-                                    >
-                                        View Workspaces
-                                    </button>
-
-                                </div>
-
-                            )}
+                                )}
 
                         </div>
 
                     ))}
 
-                    {/* ================= AUTH ================= */}
-
-                    <div className="pt-3 border-t border-gray-700 mt-3">
-
-                        <button
-                            onClick={checkuser}
-                            className="flex items-center gap-3 p-3 w-full rounded-xl hover:bg-gray-800 transition"
-                        >
-
-                            <span className="text-lg">
-                                {Token
-                                    ? <FaSignOutAlt />
-                                    : <FaSignInAlt />
-                                }
-                            </span>
-
-                            <span className="text-sm md:text-base">
-                                {Token ? "Logout" : "Login"}
-                            </span>
-
-                        </button>
-
-                    </div>
-
                 </div>
 
                 {/* ================= FOOTER ================= */}
 
-                <div className="p-4 border-t border-gray-800">
+                <div
+                    className={`
+            p-3 border-t
+            ${theme === "Dark"
+                            ? "border-gray-800"
+                            : "border-gray-200"
+                        }
+        `}
+                >
 
-                    <Link to="/Notifications">
+                    <button
+                        onClick={checkuser}
+                        className={`
+                flex items-center gap-3
+                w-full p-3 rounded-xl
+                transition-all duration-300
 
-                        <div className="flex items-center justify-between bg-gray-800 hover:bg-gray-700 transition p-3 rounded-xl">
+                ${theme === "Dark"
+                                ? "hover:bg-gray-800"
+                                : "hover:bg-gray-100"
+                            }
+            `}
+                    >
 
-                            <span className="flex items-center gap-2 text-sm md:text-base">
-                                <FaBell />
-                                Notifications -{isworkspace ? "true open" : "o"}
+                        <span className="text-lg">
+                            {Token
+                                ? <FaSignOutAlt />
+                                : <FaSignInAlt />
+                            }
+                        </span>
+
+                        {(issidebaropen || open) && (
+
+                            <span className="text-sm font-medium">
+                                {Token ? "Logout" : "Login"}
                             </span>
 
-                            <span className="bg-red-500 text-xs px-2 py-1 rounded-full">
-                                3
-                            </span>
+                        )}
 
-                        </div>
-
-                    </Link>
+                    </button>
 
                 </div>
 
             </aside>
-            {isworkspace ?
-                <>
-                    {/* Overlay */}
-                    <div
-                        className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40"
-
-                    />
-
-                    {/* Popup */}
-                    <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
-
-                        <div className="w-full max-w-md bg-gray-900 text-white rounded-2xl shadow-2xl border border-gray-800 p-6 relative">
-
-                            {/* Close Button */}
-                            <button
-
-                                className="absolute top-4 right-4 text-gray-400 hover:text-white text-lg"
-                                onClick={handelpoupSpace}
-                            >
-                                ✕
-                            </button>
-
-                            {/* Heading */}
-                            <h2 className="text-xl font-semibold mb-5">
-                                Create Workspace
-                            </h2>
-
-                            {/* Input */}
-                            <div className="space-y-4">
-
-                                <input
-                                    type="text"
-                                    placeholder="Enter workspace name"
-                                    onChange={(e) => setWorkspacename(e.target.value)}
-                                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
-                                />
-
-                                {/* Submit Button */}
-                                <button
-                                    className="w-full bg-blue-600 hover:bg-blue-700 transition rounded-lg py-3 font-medium"
-                                    onClick={handelSpace}
-                                >
-                                    Create Workspace
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                </>
-                : ""}
         </>
     );
 }
