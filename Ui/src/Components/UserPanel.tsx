@@ -1,0 +1,266 @@
+import { useContext, useRef, useState } from "react"
+import {
+    FaUser,
+    FaMoon,
+    FaSun,
+    FaCog,
+    FaSignOutAlt
+} from "react-icons/fa"
+
+import bgthemeContext from "../Context/ThemeContext"
+
+export type theme = "Dark" | "Ligth"
+
+function UserPanel() {
+
+    const [IsopenTheme, setIsopenTheme] = useState<boolean>(false)
+
+    const context: any = useContext(bgthemeContext)
+    // console.log(theme
+    const { theme, settheme } = context;
+    const panelRef = useRef<HTMLDivElement | null>(null)
+
+    // close on outside click
+
+
+
+    return (
+        <>
+
+            <div
+                ref={panelRef}
+                className={`
+                    absolute top-14 right-0 w-[280px]
+                    rounded-2xl overflow-hidden
+                    border shadow-2xl z-50
+                    backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200
+                    ${theme === "Dark"
+                        ? "bg-[#111827]/95 border-gray-800 text-white"
+                        : "bg-white/95 border-gray-200 text-gray-900"
+                    }
+                `}
+            >
+
+                {/* HEADER */}
+
+                <div
+                    className={`
+                        px-5 py-4 border-b
+                        ${theme === "Dark"
+                            ? "border-gray-800"
+                            : "border-gray-200"
+                        }
+                    `}
+                >
+
+                    <div className="flex items-center gap-3">
+
+                        <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
+                            T
+                        </div>
+
+                        <div>
+                            <h2 className="font-semibold text-sm">
+                                Tharun Ravi
+                            </h2>
+
+                            <p
+                                className={`
+                                    text-xs
+                                    ${theme === "Dark"
+                                        ? "text-gray-400"
+                                        : "text-gray-500"
+                                    }
+                                `}
+                            >
+                                Frontend Developer
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {/* MENU ITEMS */}
+
+                <div className="p-2">
+
+                    {/* PROFILE */}
+
+                    <button
+                        className={`
+                            w-full flex items-center gap-3
+                            px-4 py-3 rounded-xl transition-all
+                            ${theme === "Dark"
+                                ? "hover:bg-gray-800"
+                                : "hover:bg-gray-100"
+                            }
+                        `}
+                    >
+
+                        <span className="text-lg">
+                            <FaUser />
+                        </span>
+
+                        <span className="text-sm font-medium">
+                            Profile
+                        </span>
+
+                    </button>
+
+                    {/* SETTINGS */}
+
+                    <button
+                        className={`
+                            w-full flex items-center gap-3
+                            px-4 py-3 rounded-xl transition-all
+                            ${theme === "Dark"
+                                ? "hover:bg-gray-800"
+                                : "hover:bg-gray-100"
+                            }
+                        `}
+                    >
+
+                        <span className="text-lg">
+                            <FaCog />
+                        </span>
+
+                        <span className="text-sm font-medium">
+                            Settings
+                        </span>
+
+                    </button>
+
+                    {/* THEME */}
+
+                    <div>
+
+                        <button
+                            onClick={() => setIsopenTheme((prev) => !prev)}
+                            className={`
+                                w-full flex items-center justify-between
+                                px-4 py-3 rounded-xl transition-all
+                                ${theme === "Dark"
+                                    ? "hover:bg-gray-800"
+                                    : "hover:bg-gray-100"
+                                }
+                            `}
+                        >
+
+                            <div className="flex items-center gap-3">
+
+                                <span className="text-lg">
+                                    {theme === "Dark"
+                                        ? <FaMoon />
+                                        : <FaSun />
+                                    }
+                                </span>
+
+                                <span className="text-sm font-medium">
+                                    Theme
+                                </span>
+
+                            </div>
+
+                            <span
+                                className={`
+                                    text-xs px-2 py-1 rounded-lg
+                                    ${theme === "Dark"
+                                        ? "bg-gray-700 text-gray-300"
+                                        : "bg-gray-200 text-gray-700"
+                                    }
+                                `}
+                            >
+                                {theme}
+                            </span>
+
+                        </button>
+
+                        {/* THEME OPTIONS */}
+
+                        {IsopenTheme && (
+
+                            <div className="mt-2 px-2 flex flex-col gap-2">
+
+                                {["Ligth", "Dark"].map((themes, idx) => (
+
+                                    <button
+                                        key={idx}
+                                        onClick={() => settheme(themes)}
+                                        className={`
+                                            flex items-center gap-3
+                                            px-4 py-3 rounded-xl transition-all
+                                            ${theme === themes
+                                                ? "bg-blue-600 text-white"
+                                                : theme === "Dark"
+                                                    ? "hover:bg-gray-800"
+                                                    : "hover:bg-gray-100"
+                                            }
+                                        `}
+                                    >
+
+                                        <span>
+                                            {themes === "Dark"
+                                                ? <FaMoon />
+                                                : <FaSun />
+                                            }
+                                        </span>
+
+                                        <span className="text-sm font-medium">
+                                            {themes}
+                                        </span>
+
+                                    </button>
+
+                                ))}
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+                </div>
+
+                {/* FOOTER */}
+
+                <div
+                    className={`
+                        p-2 border-t
+                        ${theme === "Dark"
+                            ? "border-gray-800"
+                            : "border-gray-200"
+                        }
+                    `}
+                >
+
+                    <button
+                        className={`
+                            w-full flex items-center gap-3
+                            px-4 py-3 rounded-xl text-red-500 transition-all
+                            ${theme === "Dark"
+                                ? "hover:bg-red-500/10"
+                                : "hover:bg-red-50"
+                            }
+                        `}
+                    >
+
+                        <span>
+                            <FaSignOutAlt />
+                        </span>
+
+                        <span className="text-sm font-medium">
+                            Logout
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </>
+    )
+}
+
+export default UserPanel
