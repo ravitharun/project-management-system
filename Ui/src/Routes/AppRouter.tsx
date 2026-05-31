@@ -18,6 +18,7 @@ import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
 
+
 function AppRouter() {
     const navigate = useNavigate();
     const dev = import.meta.env.VITE_ENV
@@ -155,7 +156,9 @@ function AppRouter() {
                 theme="colored"
             // transition={Bounce}
 
-            ></ToastContainer>            <Suspense fallback={<Loader />}>
+            ></ToastContainer>        
+            
+                <Suspense fallback={<Loader />}>
                 <Routes>
 
                     <Route path="/" element={<App />} />
