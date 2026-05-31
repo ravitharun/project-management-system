@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
-
+// import summaryTemplates from "./Summary-Templates/TemplatesUi"
 import {
     FaTachometerAlt,
     FaTasks,
@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import SideBarContext from "../Context/SideBard";
 import bgthemeContext from "../Context/ThemeContext";
 import UserPanel from "./UserPanel";
+import TemplatesUi from "./Summary-Templates/TemplatesUi";
 
 type Props = {
     page: string;
@@ -32,7 +33,7 @@ function Sidebar({ page }: Props) {
 
     const [open, setOpen] = useState(false);
     const [isOpenPanelItems, setisOpenPanelItems] = useState<boolean>(false)
-    const [issidebaropen, setisSidebaropen] = useState<boolean>(false)
+    const [issidebaropen, setisSidebaropen] = useState<boolean>(true)
     // const [Bigscreen, setBigscreen] = useState(true);
     const [openSpace, setOpenSpace] = useState(false);
     const [isworkspace, setisworkspace] = useState<boolean>(false)
@@ -236,6 +237,8 @@ function Sidebar({ page }: Props) {
                                     }
                     `}
                                 onClick={() => {
+                                    // setOpen(true)
+
                                     if (item.name === "Space") {
                                         setOpenSpace(prev => !prev);
                                     } else {
@@ -481,6 +484,11 @@ function Sidebar({ page }: Props) {
                 </div>
 
             </aside>
+            {isworkspace && <>
+
+
+                <TemplatesUi setisworkspace={setisworkspace}></TemplatesUi>
+            </>}
         </>
     );
 }

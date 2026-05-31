@@ -180,42 +180,53 @@ function UserPanel() {
 
                         {IsopenTheme && (
 
-                            <div className="mt-2 px-2 flex flex-col gap-2">
 
-                                {["Ligth", "Dark"].map((themes, idx) => (
-
-                                    <button
+                            <div className="mt-2 px-2 flex flex-col gap-3">
+                                {[
+                                    {
+                                        name: "Light",
+                                        img: "https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/light-mode.391a7bc2.svg",
+                                    },
+                                    {
+                                        name: "Dark",
+                                        img: "https://jira-frontend-bifrost.prod-east.frontend.public.atl-paas.net/assets/dark-mode.7b3d42a5.svg"
+                                    },
+                                ].map((themes, idx) => (
+                                    <label
                                         key={idx}
-                                        onClick={() => settheme(themes)}
+                                        onClick={() => settheme(themes.name)}
                                         className={`
-                                            flex items-center gap-3
-                                            px-4 py-3 rounded-xl transition-all
-                                            ${theme === themes
-                                                ? "bg-blue-600 text-white"
-                                                : theme === "Dark"
-                                                    ? "hover:bg-gray-800"
-                                                    : "hover:bg-gray-100"
+        flex items-center gap-4 cursor-pointer
+        px-4 py-3 rounded-xl transition-all
+        
+        ${theme === themes.name
+                                                ? "bg-blue-600 text-white border-blue-400"
+                                                : "hover:bg-gray-100 dark:hover:bg-gray-800"
                                             }
-                                        `}
+      `}
                                     >
+                                        {/* radio */}
+                                        <input
+                                            type="radio"
+                                            checked={theme === themes.name}
+                                            readOnly
+                                            className="accent-blue-500"
+                                        />
 
-                                        <span>
-                                            {themes === "Dark"
-                                                ? <FaMoon />
-                                                : <FaSun />
-                                            }
-                                        </span>
+                                        {/* IMAGE PREVIEW */}
+                                        <img
+                                            src={themes.img}
+                                            alt={themes.name}
+                                            className="w-12 h-12 rounded-lg object-cover border"
+                                        />
 
+                                        {/* TEXT */}
                                         <span className="text-sm font-medium">
-                                            {themes}
+                                            {themes.name}
                                         </span>
-
-                                    </button>
-
+                                    </label>
                                 ))}
-
                             </div>
-
                         )}
 
                     </div>

@@ -1,0 +1,159 @@
+[
+  {
+    "id": "scrum",
+    "name": "Scrum",
+    "badge": "Last created",
+    "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
+    "icon": "/Logo.png",
+    "product": "Taskaro",
+    "description": "Plan, track, and manage work across sprints with a structured agile workflow.",
+    "type": "agile",
+    "columns": [
+      {
+        "id": "backlog",
+        "name": "Backlog"
+      },
+      {
+        "id": "todo",
+        "name": "To Do"
+      },
+      {
+        "id": "inprogress",
+        "name": "In Progress"
+      },
+      {
+        "id": "review",
+        "name": "Review"
+      },
+      {
+        "id": "done",
+        "name": "Done"
+      }
+    ],
+    "features": [
+      "Sprint planning to organize work into fixed-length iterations",
+      "Backlog management to prioritize stories, bugs, and upcoming work",
+      "Timeline visibility for the bigger picture and dependency tracking",
+      "Structured delivery with regular sprint reviews and progress tracking"
+    ],
+    "detailedInfo": "Scrum is ideal for teams that deliver work in a regular cadence using sprints.\n\nHow it works:\n- Work is collected in a backlog\n- The team selects work for a sprint\n- Tasks move through the board during execution\n- Progress is reviewed at the end of each sprint\n\nBest for:\n- Product development\n- Agile software teams\n- Iterative feature delivery",
+    "defaultView": "Board",
+    "bestFor": [
+      "Product development",
+      "Engineering"
+    ],
+    "keyFeatures": [
+      "Sprints",
+      "Backlog",
+      "Timeline"
+    ],
+    "trackItems": [
+      "User stories",
+      "Bugs",
+      "Sprint tasks",
+      "Releases"
+    ]
+  },
+  {
+    "id": "kanban",
+    "name": "Kanban",
+    "badge": "Popular",
+    "image": "https://www.mobilelive.ca/wp-content/uploads/2022/08/Kanban_Image3.jpg",
+    "icon": "/Logo.png",
+    "product": "Taskaro",
+    "description": "Visualize and manage work with a continuous flow system built around board columns.",
+    "type": "agile",
+    "columns": [
+      {
+        "id": "todo",
+        "name": "To Do"
+      },
+      {
+        "id": "inprogress",
+        "name": "In Progress"
+      },
+      {
+        "id": "blocked",
+        "name": "Blocked"
+      },
+      {
+        "id": "done",
+        "name": "Done"
+      }
+    ],
+    "features": [
+      "Continuous delivery without fixed sprint cycles",
+      "Work in progress limits to expose bottlenecks early",
+      "Visual board workflow for easy task movement and visibility",
+      "Cycle time tracking to measure delivery speed"
+    ],
+    "detailedInfo": "Kanban is designed for teams that need a flexible and continuous workflow.\n\nHow it works:\n- Tasks are added to the board backlog or queue\n- Work moves steadily from left to right\n- WIP limits help reduce overload\n- Tasks are completed continuously instead of in sprint batches\n\nBest for:\n- Support teams\n- Operations work\n- Maintenance and ongoing delivery",
+    "defaultView": "Board",
+    "bestFor": [
+      "Operations",
+      "Support"
+    ],
+    "keyFeatures": [
+      "Continuous flow",
+      "WIP limits",
+      "Cycle time"
+    ],
+    "trackItems": [
+      "Support tickets",
+      "Maintenance tasks",
+      "Requests",
+      "Operational work"
+    ]
+  },
+  {
+    "id": "event-calendar",
+    "name": "Event calendar",
+    "badge": "Recommended",
+    "image": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=80",
+    "icon": "/Logo.png",
+    "product": "Taskaro",
+    "description": "Plan, organize, and track all your important activities in one centralized visual calendar.",
+    "type": "calendar",
+    "columns": [
+      {
+        "id": "planned",
+        "name": "Planned"
+      },
+      {
+        "id": "scheduled",
+        "name": "Scheduled"
+      },
+      {
+        "id": "inprogress",
+        "name": "In Progress"
+      },
+      {
+        "id": "completed",
+        "name": "Completed"
+      }
+    ],
+    "features": [
+      "Calendar view to see work by day, week, or month",
+      "Timeline view to track milestones and overlapping schedules",
+      "Board view to manage event progress across stages",
+      "List view to review and update all planned activities quickly"
+    ],
+    "detailedInfo": "The event calendar template helps teams organize and manage events of any size in one place.\n\nHow it works:\n- Add meetings, launches, campaigns, or internal events\n- Schedule them on a shared visual calendar\n- Track progress and changes across supporting views\n- Keep deadlines, owners, and milestones visible to everyone\n\nBest for:\n- Marketing teams\n- Project planning\n- Company events and launches",
+    "defaultView": "Calendar",
+    "bestFor": [
+      "Project management",
+      "Marketing"
+    ],
+    "keyFeatures": [
+      "Task planning",
+      "Prioritization",
+      "Pipeline management"
+    ],
+    "trackItems": [
+      "Campaign launches",
+      "Client meetings",
+      "Team events",
+      "Deadlines"
+    ]
+  }
+]
