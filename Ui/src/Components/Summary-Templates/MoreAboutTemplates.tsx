@@ -2,14 +2,19 @@ import { IoClose } from "react-icons/io5";
 import { FaCheckCircle, FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineViewTimeline, MdViewKanban } from "react-icons/md";
 import { BsListUl } from "react-icons/bs";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import bgthemeContext from "../../Context/ThemeContext";
 
-
+import TemplateSpace from "./TemplateSpace"
 function MoreAboutTemplates({ templates, settemplates }: any) {
-
+    console.log(templates, 'templates')
+    const [templatesChoosed, SettemplatesChoosed] = useState<boolean>(false)
     const context = useContext(bgthemeContext)
     const { theme }: any = context
+
+
+
+    const templatename = templates.id || "scrum"
 
     return (
         <>
@@ -152,7 +157,7 @@ function MoreAboutTemplates({ templates, settemplates }: any) {
 
                                     </div>
 
-                                    <button className="mt-6 bg-[#0C66E4] hover:bg-[#0055CC] text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg transition">
+                                    <button className="mt-6 bg-[#0C66E4] hover:bg-[#0055CC] text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg transition" onClick={() => SettemplatesChoosed(true)}>
                                         Use this template
                                     </button>
 
@@ -616,7 +621,7 @@ function MoreAboutTemplates({ templates, settemplates }: any) {
                                 />
 
                                 <div className="px-1">
-                                    <button className="w-full bg-[#0C66E4] hover:bg-[#0055CC] text-white text-[14px] font-semibold py-3 rounded-xl transition-all duration-200">
+                                    <button className="w-full bg-[#0C66E4] hover:bg-[#0055CC] text-white text-[14px] font-semibold py-3 rounded-xl transition-all duration-200" onClick={() => SettemplatesChoosed(true)}>
                                         Use this template
                                     </button>
                                 </div>
@@ -634,6 +639,10 @@ function MoreAboutTemplates({ templates, settemplates }: any) {
                 </div>
 
             </div>
+            {templatesChoosed && <>
+
+                <TemplateSpace SettemplatesChoosed={SettemplatesChoosed} templatename={templatename} templates={templates} />
+            </>}
         </>
 
 
