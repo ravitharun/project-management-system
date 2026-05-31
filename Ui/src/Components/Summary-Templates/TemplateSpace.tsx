@@ -10,7 +10,46 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const [type, settypeForm] = useState("workspaceform")
     const { theme }: any = context
     const [currpage, setcurrpage] = useState<number>(1)
+    const [Statuses, setStatuses] = useState<string[]>(templates?.workspaceSetup?.statuses)
+    const [WorkTypes, setWorkTypes] = useState<string[]>(templates?.columns)
+    // console.log(templates?.columns,'templates?.columns')
+    // console.log(templates?.workspaceSetup?.statuses,'templates?.workspaceSetup?.statuses')
+
+    console.log(Statuses)
+    const handelAddinputsWorktypes = () => {
+        setWorkTypes([...WorkTypes, ""])
+    }
+
+
+    const handelAddinputs = () => {
+        setStatuses([
+            ...Statuses,
+            ""
+        ])
+    }
+
+
+    const handelInputdata = (e: any, id: number) => {
+        const inputdata = [...Statuses]
+        inputdata[id] = e.target.value
+        setStatuses(inputdata)
+    }
+
+
+    const handelGetWorktypes = (e: any, id: number) => {
+        const Worktyp = [...WorkTypes]
+        Worktyp[id] = e.target.value
+        setWorkTypes(Worktyp)
+
+    }
+
     const FormPage: number = 3;
+
+    const submit = () => {
+
+        const data = { templates,Statuses,WorkTypes}
+        console.log(data)
+    }
     return (
 
         <div
@@ -240,6 +279,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                             onClick={() => {
                                                 settypeForm("CreateWorkspace")
                                                 setcurrpage(currpage + 1)
+                                                submit
                                             }}
                                         >
                                             Continue
@@ -265,7 +305,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                             </h4>
 
                                             <div className="grid grid-cols-2 gap-3">
-                                                {templates?.columns?.map((item: any, idx: number) => (
+                                                {/* {templates?.columns?.map((item: any, idx: number) => (
                                                     <div
                                                         key={idx}
                                                         className={`h-[50px] rounded-2xl border flex items-center px-4
@@ -285,14 +325,16 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                                                 }`}
                                                         />
                                                     </div>
+                                                ))} */}
+
+                                                {WorkTypes.map((inp: any, idx: number) => (
+                                                    <input type="text" value={inp.name} key={idx} onChange={(e) => handelGetWorktypes(e, idx)} />
                                                 ))}
                                             </div>
 
                                             <button
                                                 className="mt-4 text-sm text-blue-500 font-medium"
-                                                onClick={() =>
-                                                    toast.success("Adding Another Work Type")
-                                                }
+                                                onClick={handelAddinputsWorktypes}
                                             >
                                                 + Add Another
                                             </button>
@@ -312,36 +354,23 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                             </h4>
 
                                             <div className="flex flex-wrap gap-3">
-                                                {templates?.workspaceSetup?.statuses?.map(
-                                                    (item: string, idx: number) => (
-                                                        <div
+                                                {Statuses.map((inp: any, idx: number) => (
+                                                    <>
+
+                                                        <input
                                                             key={idx}
-                                                            className={`px-4 h-[42px] rounded-xl flex items-center
-                                                    ${theme === "Dark"
-                                                                    ? "bg-[#1e293b]"
-                                                                    : "bg-[#F4F5F7]"
-                                                                }`}
-                                                        >
-                                                            <input
-                                                                type="text"
-                                                                value={item}
-                                                                readOnly
-                                                                className={`bg-transparent outline-none text-sm font-medium w-full
-                                                        ${theme === "Dark"
-                                                                        ? "text-white"
-                                                                        : "text-[#172B4D]"
-                                                                    }`}
-                                                            />
-                                                        </div>
-                                                    )
-                                                )}
+                                                            type="text"
+                                                            value={inp}
+                                                            className="text-red-500"
+                                                            onChange={(e) => handelInputdata(e, idx)}
+                                                        />
+                                                    </>
+                                                ))}
                                             </div>
 
                                             <button
                                                 className="mt-4 text-sm text-blue-500 font-medium"
-                                                onClick={() =>
-                                                    toast.info("Adding Statuses")
-                                                }
+                                                onClick={handelAddinputs}
                                             >
                                                 + Add Status
                                             </button>
@@ -367,8 +396,9 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                             <button
                                                 className="flex-1 h-[50px] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold"
                                                 onClick={() => {
-                                                    settypeForm("CreatingWorkspace")
+                                                    // settypeForm("CreatingWorkspace")
                                                     setcurrpage(currpage + 1)
+                                                    submit()
                                                 }}
                                             >
                                                 Continue
