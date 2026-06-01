@@ -53,7 +53,6 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const handelCheckinputs = () => {
 
         if (!workspaceName) {
-            console.log("TO create Your workspace workspaceNameName is required.")
             return seterror("TO create Your workspace workspaceNameName is required.")
         }
 
