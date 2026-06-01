@@ -2,7 +2,7 @@ import { IoClose } from "react-icons/io5";
 import { FaCheckCircle, FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineViewTimeline, MdViewKanban } from "react-icons/md";
 import { BsListUl } from "react-icons/bs";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import bgthemeContext from "../../Context/ThemeContext";
 
 import TemplateSpace from "./TemplateSpace"
@@ -11,12 +11,7 @@ function MoreAboutTemplates({ templates, settemplates }: any) {
     const [templatesChoosed, SettemplatesChoosed] = useState<boolean>(false)
     const context = useContext(bgthemeContext)
     const { theme }: any = context
-
-function MoreAboutTemplates({ templates, settemplates }: any) {
-
-    const context = useContext(bgthemeContext)
-    const { theme }: any = context
-
+    const templatename=templates.id
     return (
         <>
 
