@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import bgthemeContext from "../../Context/ThemeContext"
 import { IoClose } from "react-icons/io5"
-import { getuserInfo, useremail } from "../LocalStorage"
+import {  useremail } from "../LocalStorage"
 
 function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
@@ -12,7 +12,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const [currpage, setcurrpage] = useState<number>(1)
     const [Statuses, setStatuses] = useState<string[]>(templates?.workspaceSetup?.statuses)
     const [WorkTypes, setWorkTypes] = useState<string[]>(templates?.columns)
-    const [workspaceName, setworkspaceName] = useState(null)
+    const [workspaceName, setworkspaceName] = useState<string>("")
     const [workspaceDescription, setworkspaceDescription] = useState("")
 
     const [error, seterror] = useState("")
@@ -53,7 +53,6 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const handelCheckinputs = () => {
 
         if (!workspaceName) {
-            console.log("TO create Your workspace workspaceNameName is required.")
             return seterror("TO create Your workspace workspaceNameName is required.")
         }
 
@@ -323,7 +322,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                             />
                                         </div>
                                         <button
-                                            className={`w-full h-[52px] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold ${!workspaceName  ? "cursor-not-allowed" : "cursor-pointer"}`}
+                                            className={`w-full h-[52px] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold ${!workspaceName ? "cursor-not-allowed" : "cursor-pointer"}`}
                                             // disabled={!workspaceName ? true : false}
                                             onClick={handelCheckinputs}
                                         >
