@@ -11,7 +11,10 @@ function MoreAboutTemplates({ templates, settemplates }: any) {
     const [templatesChoosed, SettemplatesChoosed] = useState<boolean>(false)
     const context = useContext(bgthemeContext)
     const { theme }: any = context
-    const templatename=templates.id
+    const templatename = templates?.name || "name"
+
+
+
     return (
         <>
 
