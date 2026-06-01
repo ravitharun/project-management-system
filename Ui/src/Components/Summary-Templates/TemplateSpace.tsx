@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import bgthemeContext from "../../Context/ThemeContext"
 import { IoClose } from "react-icons/io5"
-import { toast } from "react-toastify"
+import { getuserInfo, useremail } from "../LocalStorage"
 
 function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
@@ -12,8 +12,11 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const [currpage, setcurrpage] = useState<number>(1)
     const [Statuses, setStatuses] = useState<string[]>(templates?.workspaceSetup?.statuses)
     const [WorkTypes, setWorkTypes] = useState<string[]>(templates?.columns)
-    // console.log(templates?.columns,'templates?.columns')
-    // console.log(templates?.workspaceSetup?.statuses,'templates?.workspaceSetup?.statuses')
+    const [workspaceName, setworkspaceName] = useState(null)
+    const [workspaceDescription, setworkspaceDescription] = useState("")
+
+    const [error, seterror] = useState("")
+    console.log(error, 'error')
 
     console.log(Statuses)
     const handelAddinputsWorktypes = () => {
@@ -45,20 +48,40 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
     const FormPage: number = 3;
 
+
+
+    const handelCheckinputs = () => {
+
+        if (!workspaceName) {
+            console.log("TO create Your workspace workspaceNameName is required.")
+            return seterror("TO create Your workspace workspaceNameName is required.")
+        }
+
+
+        settypeForm("CreateWorkspace")
+        setcurrpage(currpage + 1)
+        // handelCheckinputs()   
+    }
+
+
     const submit = () => {
-        // const addNew = templatecls
+
         const updatedData = {
             ...templates,
-            role: "Frontend Developer"
+            workspaceName: workspaceName,
+            workspaceDescription: workspaceDescription,
+            createby: {
+                userEmail: useremail
+            }
         }
-        console.log(templates.workspaceSetup.workTypes != WorkTypes, 'WorkTypes')
+        console.log(updatedData, 'updatedData')
 
         if (templates.workspaceSetup.statuses != Statuses) {
             return updatedData.workspaceSetup.statuses = Statuses
             // console.log("updated with new Statsu")
         }
         if (templates.workspaceSetup.workTypes != WorkTypes) {
-          return   updatedData.workspaceSetup.workTypes = WorkTypes
+            return updatedData.workspaceSetup.workTypes = WorkTypes
             // console.log("updated with new workTypes")
 
         }
@@ -254,18 +277,26 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                                         : "text-[#344563]"
                                                     }`}
                                             >
-                                                Workspace Name
+                                                Workspace Name <span className="text-red-500">*</span>
                                             </label>
 
                                             <input
                                                 type="text"
                                                 placeholder="Taskaro Workspace"
                                                 className={`w-full h-[52px] px-4 rounded-2xl border outline-none
-                                        ${theme === "Dark"
+                                        ${theme == "Dark"
                                                         ? "bg-[#1e293b] border-white/10 text-white placeholder:text-gray-500"
                                                         : "bg-[#FAFBFC] border-[#DFE1E6] text-[#172B4D]"
                                                     }`}
+                                                onChange={(e) => setworkspaceName(e.target.value)}
                                             />
+
+
+                                            {error && <>
+
+
+                                                <span className="text-red-500">{error}</span>
+                                            </>}
                                         </div>
 
                                         <div>
@@ -287,16 +318,14 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                                         ? "bg-[#1e293b] border-white/10 text-white placeholder:text-gray-500"
                                                         : "bg-[#FAFBFC] border-[#DFE1E6] text-[#172B4D]"
                                                     }`}
+                                                onChange={(e) => setworkspaceDescription(e.target.value)}
+
                                             />
                                         </div>
-
                                         <button
-                                            className="w-full h-[52px] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-                                            onClick={() => {
-                                                settypeForm("CreateWorkspace")
-                                                setcurrpage(currpage + 1)
-                                                submit
-                                            }}
+                                            className={`w-full h-[52px] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold ${!workspaceName  ? "cursor-not-allowed" : "cursor-pointer"}`}
+                                            // disabled={!workspaceName ? true : false}
+                                            onClick={handelCheckinputs}
                                         >
                                             Continue
                                         </button>
@@ -321,30 +350,22 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                             </h4>
 
                                             <div className="grid grid-cols-2 gap-3">
-                                                {/* {templates?.columns?.map((item: any, idx: number) => (
-                                                    <div
-                                                        key={idx}
-                                                        className={`h-[50px] rounded-2xl border flex items-center px-4
-                                                ${theme === "Dark"
-                                                                ? "bg-[#1e293b] border-white/10"
-                                                                : "bg-[#FAFBFC] border-[#DFE1E6]"
-                                                            }`}
-                                                    >
-                                                        <input
-                                                            type="text"
-                                                            value={item?.name}
-                                                            readOnly
-                                                            className={`bg-transparent outline-none w-full text-sm font-medium
-                                                    ${theme === "Dark"
-                                                                    ? "text-white"
-                                                                    : "text-[#172B4D]"
-                                                                }`}
-                                                        />
-                                                    </div>
-                                                ))} */}
 
                                                 {WorkTypes.map((inp: any, idx: number) => (
-                                                    <input type="text" value={inp.name} key={idx} onChange={(e) => handelGetWorktypes(e, idx)} />
+                                                    <input
+                                                        type="text"
+                                                        value={inp.name}
+                                                        key={idx}
+                                                        onChange={(e) => handelGetWorktypes(e, idx)}
+                                                        className={`
+            w-full h-[48px] px-4 rounded-xl border outline-none
+            transition-all duration-200 mb-3
+            ${theme === "Dark"
+                                                                ? "bg-[#111827] border-[#374151] text-white placeholder:text-gray-400 focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/30"
+                                                                : "bg-white border-[#D0D7DE] text-[#172B4D] placeholder:text-gray-400 focus:border-[#0C66E4] focus:ring-2 focus:ring-[#0C66E4]/20"
+                                                            }
+        `}
+                                                    />
                                                 ))}
                                             </div>
 
@@ -371,16 +392,20 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
                                             <div className="flex flex-wrap gap-3">
                                                 {Statuses.map((inp: any, idx: number) => (
-                                                    <>
-
-                                                        <input
-                                                            key={idx}
-                                                            type="text"
-                                                            value={inp}
-                                                            className="text-red-500"
-                                                            onChange={(e) => handelInputdata(e, idx)}
-                                                        />
-                                                    </>
+                                                    <input
+                                                        key={idx}
+                                                        type="text"
+                                                        value={inp}
+                                                        onChange={(e) => handelInputdata(e, idx)}
+                                                        className={`
+            w-full h-[48px] px-4 rounded-xl border outline-none
+            transition-all duration-200 mb-3
+            ${theme === "Dark"
+                                                                ? "bg-[#111827] border-[#374151] text-white placeholder:text-gray-400 focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/30"
+                                                                : "bg-white border-[#D0D7DE] text-[#172B4D] placeholder:text-gray-400 focus:border-[#0C66E4] focus:ring-2 focus:ring-[#0C66E4]/20"
+                                                            }
+        `}
+                                                    />
                                                 ))}
                                             </div>
 
@@ -485,13 +510,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
                         {templatename?.toLowerCase() === "scrum" && (
                             <div className="flex gap-4 scale-[0.88]">
-                                {[
-                                    "Backlog",
-                                    "To Do",
-                                    "In Progress",
-                                    "Review",
-                                    "Done"
-                                ].map((item, idx) => (
+                                {templates?.workspaceSetup?.workTypes.map((item: any, idx: number) => (
                                     <div
                                         key={idx}
                                         className={`w-[150px] rounded-3xl p-4
