@@ -53,7 +53,6 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const handelCheckinputs = () => {
 
         if (!workspaceName) {
-            console.log("TO create Your workspace workspaceNameName is required.")
             return seterror("TO create Your workspace workspaceNameName is required.")
         }
 
@@ -323,7 +322,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                             />
                                         </div>
                                         <button
-                                            className={`w-full h-[52px] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold ${!workspaceName  ? "cursor-not-allowed" : "cursor-pointer"}`}
+                                            className={`w-full h-[52px] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold ${!workspaceName ? "cursor-not-allowed" : "cursor-pointer"}`}
                                             // disabled={!workspaceName ? true : false}
                                             onClick={handelCheckinputs}
                                         >

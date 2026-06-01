@@ -68,7 +68,9 @@ function Dashboard() {
     console.log(sidebar?.issidebaropen, 'sidebar')
     const context = useContext(bgthemeContext)
     const { theme }: any = context;
-  
+    // const handelinput = () => {
+    //     console.log(inputs)
+    // }
     return (
         <>
 
