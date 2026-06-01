@@ -46,9 +46,25 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const FormPage: number = 3;
 
     const submit = () => {
+        // const addNew = templatecls
+        const updatedData = {
+            ...templates,
+            role: "Frontend Developer"
+        }
+        console.log(templates.workspaceSetup.workTypes != WorkTypes, 'WorkTypes')
 
-        const data = { templates,Statuses,WorkTypes}
-        console.log(data)
+        if (templates.workspaceSetup.statuses != Statuses) {
+            return updatedData.workspaceSetup.statuses = Statuses
+            // console.log("updated with new Statsu")
+        }
+        if (templates.workspaceSetup.workTypes != WorkTypes) {
+          return   updatedData.workspaceSetup.workTypes = WorkTypes
+            // console.log("updated with new workTypes")
+
+        }
+
+        console.log(updatedData)
+
     }
     return (
 
@@ -397,11 +413,11 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                                 className="flex-1 h-[50px] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold"
                                                 onClick={() => {
                                                     // settypeForm("CreatingWorkspace")
-                                                    setcurrpage(currpage + 1)
+                                                    // setcurrpage(currpage + 1)
                                                     submit()
                                                 }}
                                             >
-                                                Continue
+                                                Submit
                                             </button>
                                         </div>
                                     </div>
