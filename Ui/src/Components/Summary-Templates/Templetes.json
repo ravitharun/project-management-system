@@ -8,6 +8,36 @@
     "product": "Taskaro",
     "description": "Plan, track, and manage work across sprints with a structured agile workflow.",
     "type": "agile",
+    "workspaceSetup": {
+      "title": "Let’s set up your Scrum space",
+      "description": "These form the building blocks of your space. You can change these settings later.",
+      "workTypes": [
+        "Task",
+        "Story",
+        "Feature",
+        "Bug"
+      ],
+      "statuses": [
+        "Backlog",
+        "To Do",
+        "In Progress",
+        "In Review",
+        "Done"
+      ],
+      "views": [
+        "Board",
+        "List",
+        "Pages",
+        "Forms",
+        "Development",
+        "Summary",
+        "Timeline",
+        "Reports",
+        "Backlog",
+        "Calendar",
+        "Goals"
+      ]
+    },
     "columns": [
       {
         "id": "backlog",
@@ -23,7 +53,7 @@
       },
       {
         "id": "review",
-        "name": "Review"
+        "name": "In Review"
       },
       {
         "id": "done",
@@ -63,6 +93,33 @@
     "product": "Taskaro",
     "description": "Visualize and manage work with a continuous flow system built around board columns.",
     "type": "agile",
+    "workspaceSetup": {
+      "title": "Let’s set up your Kanban space",
+      "description": "These form the building blocks of your space. You can change these settings later.",
+      "workTypes": [
+        "Task",
+        "Bug",
+        "Request",
+        "Issue"
+      ],
+      "statuses": [
+        "To Do",
+        "In Progress",
+        "Blocked",
+        "Done"
+      ],
+      "views": [
+        "Board",
+        "List",
+        "Pages",
+        "Forms",
+        "Development",
+        "Summary",
+        "Timeline",
+        "Reports",
+        "Calendar"
+      ]
+    },
     "columns": [
       {
         "id": "todo",
@@ -114,6 +171,32 @@
     "product": "Taskaro",
     "description": "Plan, organize, and track all your important activities in one centralized visual calendar.",
     "type": "calendar",
+    "workspaceSetup": {
+      "title": "Let’s set up your Event Calendar space",
+      "description": "These form the building blocks of your space. You can change these settings later.",
+      "workTypes": [
+        "Event",
+        "Meeting",
+        "Campaign",
+        "Launch"
+      ],
+      "statuses": [
+        "Planned",
+        "Scheduled",
+        "In Progress",
+        "Completed"
+      ],
+      "views": [
+        "Calendar",
+        "Board",
+        "List",
+        "Timeline",
+        "Pages",
+        "Forms",
+        "Reports",
+        "Goals"
+      ]
+    },
     "columns": [
       {
         "id": "planned",

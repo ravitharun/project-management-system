@@ -26,6 +26,8 @@ import bgthemeContext from "../../Context/ThemeContext";
 
 
 function Dashboard() {
+   
+
     const [page, setpage] = useState<number>(1)
     const [totalpages, settotalPages] = useState<number>(1)
     const [projects, setprojects] = useState<any>([])
@@ -66,6 +68,9 @@ function Dashboard() {
     console.log(sidebar?.issidebaropen, 'sidebar')
     const context = useContext(bgthemeContext)
     const { theme }: any = context;
+    const handelinput = () => {
+        console.log(inputs)
+    }
     return (
         <>
 
@@ -551,6 +556,7 @@ function Dashboard() {
                                     ))}
 
                                 </div>
+                                
 
                             </div>
 
@@ -561,6 +567,7 @@ function Dashboard() {
                 </div >
 
             </div >
+
         </>
     );
 }
