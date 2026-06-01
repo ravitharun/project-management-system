@@ -12,7 +12,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const [currpage, setcurrpage] = useState<number>(1)
     const [Statuses, setStatuses] = useState<string[]>(templates?.workspaceSetup?.statuses)
     const [WorkTypes, setWorkTypes] = useState<string[]>(templates?.columns)
-    const [workspaceName, setworkspaceName] = useState<string>('')
+    const [workspaceName, setworkspaceName] = useState<string>("")
     const [workspaceDescription, setworkspaceDescription] = useState("")
 
     const [error, seterror] = useState("")
