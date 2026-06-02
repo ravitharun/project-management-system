@@ -20,6 +20,7 @@ const redis = require("./config/Ioredi");
 // Middleware
 app.use(express.json());
 const fs = require("fs");
+const CreateWorkSpaceRouter = require("./routes/CreateWorkSpace");
 
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
@@ -64,7 +65,7 @@ app.use("/api/Task", TaskRouter)
 app.use("/api/Notificatons", NotificatonsRouter)
 app.use("/api/Team", FetchTeamRouter)
 app.use("/api/Analytcs", AnalytcsRouter)
-
+app.use("/api/WorkSpace",CreateWorkSpaceRouter)
 // client.connectRedis()
 
 
