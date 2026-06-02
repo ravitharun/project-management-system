@@ -15,7 +15,7 @@ import {
     FaArrowCircleDown,
     FaArrowCircleRight,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { checkuser, Token } from "./LocalStorage";
 import SideBarContext from "../Context/SideBard";
 import bgthemeContext from "../Context/ThemeContext";
@@ -85,8 +85,20 @@ function Sidebar({ page }: Props) {
     const HandelOpenCloseSideBar = () => {
         setisSidebaropen((prev) => !prev);
     };
+    const navigate = useNavigate()
+    const handleProjectSetting = (CreatedWorkSpace: any) => {
 
+        console.log(CreatedWorkSpace)
 
+        if (!CreatedWorkSpace) {
+            return
+        }
+        return navigate("/projectSettings", {
+            state: {
+                CreatedWorkSpace
+            }
+        })
+    }
 
     return (
         <>
@@ -293,15 +305,14 @@ function Sidebar({ page }: Props) {
                                                             : "hover:bg-gray-100"
                                                         }
                           `}
-                                                 
+
                                                 >
                                                     {/* LEFT SIDE */}
                                                     <div className="flex items-center gap-2 min-w-0">
-                                                        <FaLayerGroup
-                                                            className={`text-sm shrink-0 ${theme === "Dark"
-                                                                ? "text-gray-400"
-                                                                : "text-gray-500"
-                                                                }`}
+                                                        <img
+                                                            src={itm?.workspaceicon?.img}
+                                                            alt="not found"
+                                                            className="w-5 h-5 rounded object-cover shrink-0"
                                                         />
                                                         <span
                                                             className={`text-sm truncate ${theme === "Dark"
@@ -314,13 +325,13 @@ function Sidebar({ page }: Props) {
                                                     </div>
 
                                                     <div className="flex gap-2 text-xs">
-                                                        <CiMenuKebab fontSize={19}   onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setopenProjects(
-                                                            openproject === itm?._id ? null : itm?._id
-                                                        );
-                                                        SetBackground(false);
-                                                    }} />
+                                                        <CiMenuKebab fontSize={19} onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setopenProjects(
+                                                                openproject === itm?._id ? null : itm?._id
+                                                            );
+                                                            SetBackground(false);
+                                                        }} />
                                                     </div>
 
                                                     {/* ================= MENU ================= */}
@@ -372,6 +383,9 @@ function Sidebar({ page }: Props) {
                                                                         : "hover:bg-blue-200 hover:text-black"
                                                                     }
 `}
+
+
+                                                                onClick={() => handleProjectSetting(itm)}
                                                             >
                                                                 <FaGear className="text-sm" />
                                                                 Project Settings

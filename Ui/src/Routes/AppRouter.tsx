@@ -10,6 +10,7 @@ const Notifications = lazy(() => import("../pages/Notifications"))
 const Analytics = lazy(() => import("../pages/Analytics"))
 const Profile = lazy(() => import("../pages/Profile"))
 const Calendra = lazy(() => import("../pages/Calendra"))
+const ProjectSettings = lazy(() => import("../Components/ProjectSettings"))
 import { lazy, Suspense, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
 import { useremail, Usertoekn } from "../Components/LocalStorage";
@@ -164,6 +165,7 @@ function AppRouter() {
                     <Route path="/" element={<App />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
+                    <Route path="/projectSettings" element={<ProjectSettings />} />
                     <Route path="/Tasks" element={<Task />} />
                     <Route path="/Notifications" element={<Notifications />} />
                     <Route path="/Analytics" element={<Analytics />} />
