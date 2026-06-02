@@ -1,24 +1,23 @@
 import { useContext, useState } from "react"
 import bgthemeContext from "../../Context/ThemeContext"
 import { IoClose } from "react-icons/io5"
-import {  useremail } from "../LocalStorage"
+import { useremail } from "../LocalStorage"
+import { instance } from "../../services/apiservices"
 
 function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
-    // const templatename = "kanban"
     const context = useContext(bgthemeContext)
     const [type, settypeForm] = useState("workspaceform")
     const { theme }: any = context
     const [currpage, setcurrpage] = useState<number>(1)
+
     const [Statuses, setStatuses] = useState<string[]>(templates?.workspaceSetup?.statuses)
     const [WorkTypes, setWorkTypes] = useState<string[]>(templates?.columns)
     const [workspaceName, setworkspaceName] = useState<string>("")
     const [workspaceDescription, setworkspaceDescription] = useState("")
-
     const [error, seterror] = useState("")
-    console.log(error, 'error')
 
-    console.log(Statuses)
+
     const handelAddinputsWorktypes = () => {
         setWorkTypes([...WorkTypes, ""])
     }
@@ -63,7 +62,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     }
 
 
-    const submit = () => {
+    const submit = async () => {
 
         const updatedData = {
             ...templates,
@@ -73,7 +72,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                 userEmail: useremail
             }
         }
-        console.log(updatedData, 'updatedData')
+
 
         if (templates.workspaceSetup.statuses != Statuses) {
             return updatedData.workspaceSetup.statuses = Statuses
@@ -85,7 +84,26 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
         }
 
-        console.log(updatedData)
+
+
+        try {
+         
+            const response = await instance.post("/api/WorkSpace/create", { updatedData })
+            console.log(response.data.message)
+            if (response.data.message == response.data.message) {
+                // settypeForm("CreatingWorkspace")
+
+                setTimeout(() => {
+                    setcurrpage(FormPage)
+                    settypeForm("Created")
+
+                }, 2500);
+            }
+        } catch (error: any) {
+            console.log(error.message)
+
+        }
+       
 
     }
     return (
@@ -492,6 +510,58 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                         </button>
                                     </div>
                                 )}
+                                {type === "Created" && (
+                                    <div className="flex flex-col items-center justify-center py-12">
+
+                                        <div className="relative">
+                                            <div className="absolute w-10 h-10 bg-green-500 rounded-full animate-ping opacity-40"></div>
+
+                                            <div className="relative w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                                <svg
+                                                    className="w-6 h-6 text-white"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                    strokeWidth={3}
+                                                >
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        {/* Title */}
+                                        <h3
+                                            className={`mt-8 text-2xl font-bold transition-all duration-300
+            ${theme === "Dark" ? "text-white" : "text-[#172B4D]"}`}
+                                        >
+                                            Workspace Created Successfully
+                                        </h3>
+
+                                        {/* Description */}
+                                        <p
+                                            className={`mt-3 text-center max-w-[340px] leading-7
+            ${theme === "Dark" ? "text-gray-400" : "text-gray-500"}`}
+                                        >
+                                            Your workspace is ready. You can now start creating projects, managing tasks, and collaborating with your team.
+                                        </p>
+
+                                        {/* Button */}
+                                        <button
+                                            className={`mt-8 h-[48px] px-8 rounded-2xl font-semibold transition
+            ${theme === "Dark"
+                                                    ? "bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20"
+                                                    : "bg-green-50 text-green-700 border border-green-200 hover:bg-green-100"
+                                                }`}
+                                            onClick={() => {
+
+                                                SettemplatesChoosed(false)
+                                             
+                                            }}
+                                        >
+                                            Go Back
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -525,7 +595,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                                     : "text-[#172B4D]"
                                                 }`}
                                         >
-                                            {item}
+                                            {item.name || item}
                                         </h4>
 
                                         <div className="space-y-3">
