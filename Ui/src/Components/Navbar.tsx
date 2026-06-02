@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
+import { CiMenuKebab } from "react-icons/ci";
 // import summaryTemplates from "./Summary-Templates/TemplatesUi"
 import {
     FaTachometerAlt,
@@ -18,11 +19,12 @@ import {
 
 import { Link } from "react-router-dom";
 import { checkuser, Token } from "./LocalStorage";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import SideBarContext from "../Context/SideBard";
 import bgthemeContext from "../Context/ThemeContext";
 import UserPanel from "./UserPanel";
 import TemplatesUi from "./Summary-Templates/TemplatesUi";
+import { fetchworkspace } from "../services/Workspaceapi";
 
 type Props = {
     page: string;
@@ -49,14 +51,33 @@ function Sidebar({ page }: Props) {
         { name: "Calendar", icon: <FaCalendarAlt />, href: "/Calendar" },
         { name: "Analytics", icon: <FaChartLine />, href: "/Analytics" },
     ];
-    const [space, setSpace] = useState<string[]>([]);
+    // const [space, setSpace] = useState<string[]>([]);
     const handelpoupSpace = () => { setisworkspace((prev) => !prev) }
 
     const sidebar = useContext(SideBarContext);
     sidebar?.setisSidebaropen(issidebaropen)
     const context = useContext(bgthemeContext)
     const { theme }: any = context;
-    // theme.settheme(UserTheme)
+    // fetchworkspace
+
+
+    const [Workspace, setworkspace] = useState<any[]>([])
+
+    useEffect(() => {
+        const Fetchapi = async () => {
+
+            try {
+
+                const response = await fetchworkspace()
+                console.log(response.data.data, 'response')
+                setworkspace(response.data.data)
+            } catch (error: any) {
+                console.log(error)
+
+            }
+        }
+        Fetchapi()
+    }, [])
 
 
     // Sibar Fucntion open/close
@@ -66,11 +87,25 @@ function Sidebar({ page }: Props) {
 
 
 
-    const deleteWorkspace = (idx: number) => {
-        setSpace(prev => prev.filter((_, i) => i !== idx));
-        toast.success("Workspace Deleted");
-    };
+    // const deleteWorkspace = (idx: number) => {
+    //     setSpace(prev => prev.filter((_, i) => i !== idx));
+    //     toast.success("Workspace Deleted");
+    // };
 
+    const [openproject, setopenProjects] = useState(false)
+    // const navigate = useNavigate()
+    const handelMenuOpen = (id: number) => {
+
+        if (!id) {
+            return
+        }
+
+
+        // navigate("/workspace/edit")
+        setopenProjects(true)
+        console.log(id, 'id')
+
+    }
     return (
 
         <>
@@ -324,7 +359,7 @@ function Sidebar({ page }: Props) {
                             `}
                                     >
 
-                                        {space.length === 0 ? (
+                                        {Workspace.length === 0 ? (
 
                                             <div className="flex flex-col items-center justify-center py-8 text-center">
 
@@ -357,7 +392,7 @@ function Sidebar({ page }: Props) {
 
                                         ) : (
 
-                                            space.map((itm, idx) => (
+                                            Workspace.map((itm: any, idx: number) => (
 
                                                 <div
                                                     key={idx}
@@ -394,8 +429,9 @@ function Sidebar({ page }: Props) {
                                                                     : "text-gray-700"
                                                                 }
                                                 `}
+
                                                         >
-                                                            {itm}
+                                                            {itm?.workspaceSetup?.workspaceName}
                                                         </span>
 
                                                     </div>
@@ -404,24 +440,12 @@ function Sidebar({ page }: Props) {
 
                                                         <div className="flex gap-2 text-xs">
 
-                                                            <button
-                                                                className="text-blue-400 hover:text-blue-300"
-                                                                onClick={() => toast.info(`Edit ${itm}`)}
-                                                            >
-                                                                Edit
-                                                            </button>
-
-                                                            <button
-                                                                className="text-red-400 hover:text-red-300"
-                                                                onClick={() => deleteWorkspace(idx)}
-                                                            >
-                                                                Delete
-                                                            </button>
-
+                                                            <CiMenuKebab onClick={() => handelMenuOpen(itm?._id)} />
                                                         </div>
-
                                                     )}
-
+                                                        {openproject && <>
+                                                        <button onClick={()=>setopenProjects(false)}>Close</button>
+                                                        </>}
                                                 </div>
 
                                             ))
