@@ -3,8 +3,8 @@ const Workspace = require("../Models/Workspace")
 const CreateWorkSpace = async (req, res) => {
     try {
         const { updatedData } = req.body
-        console.log(updatedData.detailedInfo, 'updatedData')
-            ;
+        console.log(updatedData, 'updatedData')
+        // return "hi"
         const saveWorkspace = new Workspace({
             ...updatedData,
             // detailedInfo: updatedData?.detailedInfo,
@@ -27,7 +27,7 @@ const CreateWorkSpace = async (req, res) => {
     }
 }
 
-const FetchWorkspace = async(req, res) => {
+const FetchWorkspace = async (req, res) => {
     try {
         const { useremail } = req.query
         console.log(useremail, 'useremail')
@@ -37,11 +37,11 @@ const FetchWorkspace = async(req, res) => {
         }
 
         const FetchWorkspace = await Workspace.find({ "workspaceSetup.createby.userEmail": useremail })
-        console.log(FetchWorkspace,'FetchWorkspace')
+        console.log(FetchWorkspace, 'FetchWorkspace')
         return res.status(200).json({ data: FetchWorkspace })
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({ message: "server Error" })
     }
 }
-module.exports = {CreateWorkSpace,FetchWorkspace}
+module.exports = { CreateWorkSpace, FetchWorkspace }

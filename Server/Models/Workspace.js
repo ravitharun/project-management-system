@@ -48,6 +48,14 @@ const WorkspaceSchema = new mongoose.Schema({
         id: { type: String, required: true },
         name: { type: String, required: true }
     }],
+    workspaceicon: {
+        id: { type: String, required: true },
+        name: { type: String, default: "Icon name" },
+        img: { type: String, required: true },
+    }
+    ,
+    Spacebackground: { type: String },
+
 
 
     workspaceSetup: workspaceSetupSchema
