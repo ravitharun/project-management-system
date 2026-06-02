@@ -35,6 +35,7 @@ const workspaceSetupSchema = new mongoose.Schema({
 
 const WorkspaceSchema = new mongoose.Schema({
     workspaceIcon: { type: String },
+    workspaceBackground: { type: String, default: "https://picsum.photos/id/1015/600/400" },
     defaultView: { type: String, required: true },
     id: { type: String, required: true },
     name: { type: String, required: true },
