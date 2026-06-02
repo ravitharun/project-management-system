@@ -3,9 +3,9 @@ import bgthemeContext from "../../Context/ThemeContext"
 import { IoClose } from "react-icons/io5"
 import { useremail } from "../LocalStorage"
 import { instance } from "../../services/apiservices"
+import { WorkSpaceIcon } from "../../types/workspaceIcon"
 
 function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
-
     const context = useContext(bgthemeContext)
     const [type, settypeForm] = useState("workspaceform")
     const { theme }: any = context
@@ -67,6 +67,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
         const updatedData = {
             ...templates,
             workspaceName: workspaceName,
+            workspaceicon:WorkSpaceIcon[0],
             workspaceDescription: workspaceDescription,
             createby: {
                 userEmail: useremail
@@ -87,7 +88,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
 
         try {
-         
+
             const response = await instance.post("/api/WorkSpace/create", { updatedData })
             console.log(response.data.message)
             if (response.data.message == response.data.message) {
@@ -103,7 +104,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
             console.log(error.message)
 
         }
-       
+
 
     }
     return (
@@ -555,7 +556,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                                             onClick={() => {
 
                                                 SettemplatesChoosed(false)
-                                             
+
                                             }}
                                         >
                                             Go Back

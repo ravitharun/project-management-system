@@ -3,8 +3,8 @@ const Workspace = require("../Models/Workspace")
 const CreateWorkSpace = async (req, res) => {
     try {
         const { updatedData } = req.body
-        console.log(updatedData.detailedInfo, 'updatedData')
-            ;
+        console.log(updatedData, 'updatedData')
+        console.log(updatedData?.workspaceBackground, 'workspaceBackground')
         const saveWorkspace = new Workspace({
             ...updatedData,
             // detailedInfo: updatedData?.detailedInfo,
@@ -27,7 +27,7 @@ const CreateWorkSpace = async (req, res) => {
     }
 }
 
-const FetchWorkspace = async(req, res) => {
+const FetchWorkspace = async (req, res) => {
     try {
         const { useremail } = req.query
         console.log(useremail, 'useremail')
@@ -37,11 +37,37 @@ const FetchWorkspace = async(req, res) => {
         }
 
         const FetchWorkspace = await Workspace.find({ "workspaceSetup.createby.userEmail": useremail })
-        console.log(FetchWorkspace,'FetchWorkspace')
+        console.log(FetchWorkspace, 'FetchWorkspace')
         return res.status(200).json({ data: FetchWorkspace })
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({ message: "server Error" })
     }
 }
-module.exports = {CreateWorkSpace,FetchWorkspace}
+
+
+
+const updateBackgroundspace = async (req, res) => {
+    try {
+        const { selectedImg, id } = req.body
+        console.log(req.body, 'req.query');
+
+        if (!selectedImg) {
+            return res.status(404).json({ message: "SomeThing Went Wrong." })
+        }
+
+        const isexitisWorkspace = await Workspace.findById({ _id: id })
+        if (!isexitisWorkspace) {
+            return res.status(404).json({ message: "The Workspace iS not exitis." })
+
+        }
+        const UpdateSetWorkspaceBackground = await Workspace.findByIdAndUpdate({ _id: id }, { workspaceBackground: selectedImg }, { returnDocument: "after" })
+        console.log(UpdateSetWorkspaceBackground, 'UpdateSetWorkspaceBackground')
+        res.status(200).json({ message: "Updated the workspaceBackground." })
+    } catch (error) {
+        console.log(error.message, 'err')
+
+        res.status(500).json({ message: "server Error" })
+    }
+}
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace }
