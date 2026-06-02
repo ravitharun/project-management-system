@@ -201,7 +201,7 @@ function UserPanel() {
         
         ${theme === themes.name
                                                 ? "bg-blue-600 text-white border-blue-400"
-                                                : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                : "hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-white"
                                             }
       `}
                                     >
@@ -221,7 +221,7 @@ function UserPanel() {
                                         />
 
                                         {/* TEXT */}
-                                        <span className="text-sm font-medium">
+                                        <span className={`text-sm font-medium`}>
                                             {themes.name}
                                         </span>
                                     </label>
