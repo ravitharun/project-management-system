@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify"
 function WorkspacePanel({ SetBackground, id }: any) {
     // console.log({ SetBackground, id })
     const themecontext = useContext(bgthemeContext)
-    const { theme } = themecontext
+    const { theme }:any = themecontext
     const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
     const images = [
