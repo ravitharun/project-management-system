@@ -509,7 +509,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
 
                         {templatename?.toLowerCase() === "scrum" && (
                             <div className="flex gap-4 scale-[0.88]">
-                                {templates?.workspaceSetup?.workTypes.map((item: any, idx: number) => (
+                                {templates?.workspaceSetup?.workTypes.map(( idx: number) => (
                                     <div
                                         key={idx}
                                         className={`w-[150px] rounded-3xl p-4
