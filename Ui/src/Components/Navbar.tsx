@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 import WorkspaceMenu from "./WorkspaceMenu";
 // import WorkspaceProvider from "../Provider/WorkspaceProvider";
 import WorkspaceData from "../Context/workspaceData";
+import CreatedspaceData from "../Context/CreatedWorkspace";
 
 type Props = {
     page: string;
@@ -48,10 +49,11 @@ function Sidebar({ page }: Props) {
     const [Workspace, setworkspace] = useState<any[]>([]);
     const sidebar = useContext(SideBarContext);
     const context = useContext(bgthemeContext);
-
+    const CreatedSpaceJson = useContext(CreatedspaceData)
     const workSpaceData = useContext(WorkspaceData)
-    const {  setwork }: any = workSpaceData
+    const { setwork }: any = workSpaceData
     const { theme }: any = context || {};
+    const { setspacejson }: any = CreatedSpaceJson
 
     const userPanelRef = useRef<HTMLDivElement | null>(null);
     const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
@@ -81,6 +83,7 @@ function Sidebar({ page }: Props) {
                 const response = await fetchworkspace();
                 console.log(response, 'response')
                 setworkspace(response?.data?.data || []);
+                setspacejson(response?.data?.data || []);
             } catch (error: any) {
                 console.log(error);
             }
