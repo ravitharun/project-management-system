@@ -1,8 +1,8 @@
 export const WorkSpaceIcon = [
     {
-        id: 1,
-        name: "Project Overview",
-        img: "https://cdn-icons-png.flaticon.com/512/1828/1828765.png",
+        id: 2,
+    name: "Team Collaboration",
+    img: "https://cdn-icons-png.flaticon.com/512/921/921347.png",
     },
     {
         id: 2,
