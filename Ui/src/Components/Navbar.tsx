@@ -25,6 +25,8 @@ import { fetchworkspace } from "../services/Workspaceapi";
 import { IoClose } from "react-icons/io5";
 import { FaGear } from "react-icons/fa6";
 import SetWork from "./SetWork";
+import { instance } from "../services/apiservices";
+import { toast } from "react-toastify";
 
 type Props = {
     page: string;
@@ -71,6 +73,7 @@ function Sidebar({ page }: Props) {
         const Fetchapi = async () => {
             try {
                 const response = await fetchworkspace();
+                console.log(response, 'response')
                 setworkspace(response?.data?.data || []);
             } catch (error: any) {
                 console.log(error);
@@ -98,6 +101,21 @@ function Sidebar({ page }: Props) {
                 CreatedWorkSpace
             }
         })
+    }
+
+
+
+    // handelDeleteWorkspace
+    const handelDeleteWorkspace = async (id: number) => {
+        try {
+            const response = await instance.delete("/api/Workspace/DeleteWorkspace", { params: { workspaceid: id } })
+            if (response.status == 200) {
+                return toast.info("Workspace deleted successfully");
+            }
+        } catch (error: any) {
+            console.log(error.message)
+
+        }
     }
 
     return (
@@ -310,7 +328,7 @@ function Sidebar({ page }: Props) {
                                                     {/* LEFT SIDE */}
                                                     <div className="flex items-center gap-2 min-w-0">
                                                         <img
-                                                            src={itm?.workspaceicon?.img}
+                                                            src={itm?.icon}
                                                             alt="not found"
                                                             className="w-5 h-5 rounded object-cover shrink-0"
                                                         />
@@ -399,6 +417,10 @@ function Sidebar({ page }: Props) {
                                                                 className="w-full flex items-center gap-3 px-4 py-2.5 text-sm
             text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20
             transition"
+
+
+
+                                                                onClick={() => handelDeleteWorkspace(itm._id)}
                                                             >
                                                                 🗑️ Delete
                                                             </button>

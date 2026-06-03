@@ -1,14 +1,41 @@
 import { IoClose } from "react-icons/io5"
 import { WorkSpaceIcon } from "../types/workspaceIcon"
 import { useState } from "react"
+import { instance } from "../services/apiservices"
+import { toast } from "react-toastify"
 
 function Chooseicon({
     selectedIcon,
     theme,
-    close
+    close,
+    id
 }: any) {
     const [choosed, setchoosed] = useState("")
+    const handleUpdateIcon = async () => {
+        console.log(choosed, id)
 
+
+
+        const data = {
+            choosed,
+            id
+        }
+
+
+        try {
+            const response = await instance.patch("/api/workspace/updateSpaceIcon", { data: data })
+
+
+            console.log(response.status)
+            if (response.status == 200) {
+                return toast.success("Workspace icons updated successfully");
+            }
+
+        } catch (error: any) {
+            console.log(error.messsage)
+
+        }
+    }
     return (
 
         <>
@@ -173,6 +200,7 @@ ${choosed == itm.img && "shadow-lg shadow-blue-500/20 border-2 border-green-900"
 
                         <button
                             className="px-4 py-2 rounded-xl text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white transition"
+                            onClick={() => handleUpdateIcon()}
                         >
                             Save Icon
                         </button>

@@ -70,4 +70,55 @@ const updateBackgroundspace = async (req, res) => {
         res.status(500).json({ message: "server Error" })
     }
 }
-module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace }
+
+
+
+const handelupdateSpaceIcon = async (req, res) => {
+    try {
+        const { data } = req.body
+        console.log(data, 'data')
+        if (!data) {
+            return res.status(404).json({ message: "Data is empty" })
+        }
+
+        const isexitisWorkspace = await Workspace.findById({ _id: data.id })
+        if (!isexitisWorkspace) {
+            return res.status(404).json({ message: "NO workspace is Found  to Updte the workspace Icon " })
+        }
+
+
+        const UpdateSetWorkspaceIcon = await Workspace.findByIdAndUpdate({ _id: data.id }, { icon: data.choosed }, { returnDocument: "after" })
+        console.log(UpdateSetWorkspaceIcon, 'UpdateSetWorkspaceIcon')
+        res.status(200).json({ message: "Updated the UpdateSetWorkspaceIcon." })
+
+
+    } catch (error) {
+
+        res.status(500).json({ message: "server Error" })
+    }
+}
+
+
+// DeleteWorkspace
+const DeleteWorkspace = async (req, res) => {
+    try {
+        const { workspaceid } = req.query
+        console.log(workspaceid, 'workspaceid')
+        if (!workspaceid) { return res.status(404).json({ message: "Workspace ID is missing." }) }
+        const isexitisWorkspace = await Workspace.findById({ _id: data.id })
+
+        if (!isexitisWorkspace) {
+            return res.status(404).json({ message: "NO workspace is Found  to Updated  the workspace Icon " })
+        }
+        const resposeDelete = await Workspace.findByIdAndDelete({ id: workspaceid })
+
+        return res.status(200).json({ message: "Workspace removed successfully" });
+    } catch (error) {
+
+        console.log(error.message,'err')
+
+        return res.status(500).json({ message: "server error" })
+
+    }
+}
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon,DeleteWorkspace }
