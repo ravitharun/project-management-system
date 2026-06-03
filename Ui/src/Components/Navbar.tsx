@@ -50,7 +50,7 @@ function Sidebar({ page }: Props) {
     const context = useContext(bgthemeContext);
 
     const workSpaceData = useContext(WorkspaceData)
-    const { work, setwork }: any = workSpaceData
+    const {  setwork }: any = workSpaceData
     const { theme }: any = context || {};
 
     const userPanelRef = useRef<HTMLDivElement | null>(null);
