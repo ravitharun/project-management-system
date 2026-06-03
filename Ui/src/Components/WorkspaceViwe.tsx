@@ -7,7 +7,6 @@ import {
 } from "react-icons/fi";
 import WorkspaceData from "../Context/workspaceData";
 import { useremail } from "./LocalStorage";
-import { toast } from "react-toastify";
 
 function WorkspaceViwe({ theme, SpaceJson }: any) {
     const workSpaceData = useContext(WorkspaceData)
