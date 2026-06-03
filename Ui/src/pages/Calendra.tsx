@@ -11,9 +11,10 @@ import { fetchtaskApi, HandelDeleteTask } from "../services/taskApi";
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
 import ActionLoading from "../Components/ActionLoading";
+import Progress from "../Components/progress";
 
 export default function ProjectCalendar() {
-
+    const In = true
     const [tasks, setTasks] = useState<any[]>([]);
     const [poupAction, setpoupaction] = useState(false);
     const [taskUpdateLoader, settaskUpdateLoader] = useState<boolean>(false)
@@ -76,7 +77,7 @@ export default function ProjectCalendar() {
 
         try {
             settaskUpdateLoader(true)
-                        setmessage({ title: "Updating.", descp: "Updating the task ", type: "loading" })
+            setmessage({ title: "Updating.", descp: "Updating the task ", type: "loading" })
 
             const updateTask = await axios.patch(
                 "http://localhost:5000/api/Task/taskUpdate",
@@ -155,6 +156,7 @@ export default function ProjectCalendar() {
     }
     return (
         <>
+            {In && <Progress />}
             <ToastContainer position="top-center"
                 autoClose={5000}
                 hideProgressBar={false}

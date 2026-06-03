@@ -33,6 +33,14 @@ const workspaceSetupSchema = new mongoose.Schema({
     }
 });
 
+
+
+const starUsser = new mongoose.Schema([{
+    userEmail: { type: String, required: true, default: false },
+    userName: { type: String, default: "username" },
+
+}], { timestamps: true })
+
 const WorkspaceSchema = new mongoose.Schema({
     workspaceIcon: { type: String },
     workspaceBackground: { type: String, default: "https://picsum.photos/id/1015/600/400" },
@@ -56,7 +64,7 @@ const WorkspaceSchema = new mongoose.Schema({
     }
     ,
     Spacebackground: { type: String },
-
+    isStaredUsers: starUsser,
 
 
     workspaceSetup: workspaceSetupSchema
@@ -65,3 +73,5 @@ const WorkspaceSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Workspace", WorkspaceSchema);
+
+

@@ -11,6 +11,7 @@ import { instance } from "../services/apiservices";
 import { departments } from "../types/Dept";
 import { useremail } from "../Components/LocalStorage";
 import { socket } from "../Scokets/ScoketConfig";
+import Progress from "../Components/progress";
 
 
 
@@ -19,6 +20,7 @@ function Team() {
 
   const [members, setMembers] = useState<any[]>([]);
   const [filteredMembers, setFilteredMembers] = useState<any[]>([]);
+  const In = true
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
@@ -142,6 +144,10 @@ function Team() {
 
   return (
     <>
+      {In && <>
+
+        <Progress></Progress>
+      </>}
       <div className="flex h-screen bg-gray-100">
         <Sidebar page="Team" />
 
