@@ -87,8 +87,8 @@ function ViewWorkspace({ theme }: any) {
           {/* QUICK STATS */}
           <div className="flex gap-4 mt-4 text-xs opacity-70">
             <span>Total: {tasks.length}</span>
-            <span>In Progress: {tasks.filter(t => t.status === "In Progress").length}</span>
-            <span>Done: {tasks.filter(t => t.status === "Done").length}</span>
+            <span>In Progress: {tasks.filter((t:any) => t.status === "In Progress").length}</span>
+            <span>Done: {tasks.filter((t:any) => t.status === "Done").length}</span>
           </div>
 
           {/* BOARD */}
