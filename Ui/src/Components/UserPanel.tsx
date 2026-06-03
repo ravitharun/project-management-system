@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa"
 
 import bgthemeContext from "../Context/ThemeContext"
+import { getuserInfo } from "./LocalStorage"
 
 export type theme = "Dark" | "Ligth"
 
@@ -19,9 +20,9 @@ function UserPanel() {
     // console.log(theme
     const { theme, settheme } = context;
     const panelRef = useRef<HTMLDivElement | null>(null)
+    // userProfile,userEmail,Username
 
-    // close on outside click
-
+    const profile = JSON.parse(getuserInfo).userProfile
 
 
     return (
@@ -56,12 +57,12 @@ function UserPanel() {
                     <div className="flex items-center gap-3">
 
                         <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
-                            T
+                            <img src={profile} alt="" />
                         </div>
 
                         <div>
                             <h2 className="font-semibold text-sm">
-                                Tharun Ravi
+                               {JSON.parse(getuserInfo).Username}
                             </h2>
 
                             <p
@@ -73,7 +74,7 @@ function UserPanel() {
                                     }
                                 `}
                             >
-                                Frontend Developer
+                                        {JSON.parse(getuserInfo).userEmail}
                             </p>
                         </div>
 

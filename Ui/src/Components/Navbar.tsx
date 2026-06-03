@@ -17,7 +17,7 @@ import {
     FaArrowCircleRight,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { checkuser, Token } from "./LocalStorage";
+import { checkuser, getuserInfo, Token } from "./LocalStorage";
 import SideBarContext from "../Context/SideBard";
 import bgthemeContext from "../Context/ThemeContext";
 import UserPanel from "./UserPanel";
@@ -129,7 +129,7 @@ function Sidebar({ page }: Props) {
 
         }
     }
-
+console.log(JSON.parse(getuserInfo)?.userProfile)
     return (
         <>
             {/* ================= NAVBAR ================= */}
@@ -191,11 +191,11 @@ function Sidebar({ page }: Props) {
 
                     <div ref={userPanelRef} className="relative">
                         <div
-                            className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center font-semibold text-white cursor-pointer"
+                            className="w-9 h-9 rounded-full  flex items-center justify-center font-semibold text-white cursor-pointer"
                             onClick={() => setisOpenPanelItems((prev) => !prev)}
                             onMouseEnter={() => setisOpenPanelItems(true)}
                         >
-                            T
+                            <img src={JSON.parse(getuserInfo)?.userProfile} alt={JSON.parse(getuserInfo)?.Username} title={JSON.parse(getuserInfo).Username} />
                         </div>
 
                         {isOpenPanelItems && (
