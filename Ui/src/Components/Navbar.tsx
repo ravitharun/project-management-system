@@ -27,6 +27,7 @@ import { FaGear } from "react-icons/fa6";
 import SetWork from "./SetWork";
 import { instance } from "../services/apiservices";
 import { toast } from "react-toastify";
+import WorkspaceMenu from "./WorkspaceMenu";
 
 type Props = {
     page: string;
@@ -343,13 +344,7 @@ function Sidebar({ page }: Props) {
                                                     </div>
 
                                                     <div className="flex gap-2 text-xs">
-                                                        <CiMenuKebab fontSize={19} onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            setopenProjects(
-                                                                openproject === itm?._id ? null : itm?._id
-                                                            );
-                                                            SetBackground(false);
-                                                        }} />
+                                                        <WorkspaceMenu setopenProjects={ setopenProjects} SetBackground={SetBackground} openproject={openproject} itm={itm}/>
                                                     </div>
 
                                                     {/* ================= MENU ================= */}
