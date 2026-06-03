@@ -13,6 +13,9 @@ function ProjectSettings() {
     const [close, setclose] = useState(false)
 
     const data = state?.CreatedWorkSpace
+    if(!data){
+        return window.location.href="/"
+    }
 
     const themeContext = useContext(bgthemeContext)
     const { theme }: any = themeContext
@@ -22,7 +25,7 @@ function ProjectSettings() {
         <>
 
 
-            {close && <Chooseicon  close={setclose} theme={theme} selectedIcon={data?.workspaceicon?.img}/>}
+            {close && <Chooseicon  close={setclose} theme={theme} selectedIcon={data?.workspaceicon?.img} id={data._id}/>}
             <div
                 className={`
                 min-h-screen w-full transition-all duration-300
