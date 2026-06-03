@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa"
 
 import bgthemeContext from "../Context/ThemeContext"
-import { getuserInfo } from "./LocalStorage"
+import { checkuser, getuserInfo } from "./LocalStorage"
 
 export type theme = "Dark" | "Ligth"
 
@@ -261,7 +261,7 @@ function UserPanel() {
                             <FaSignOutAlt />
                         </span>
 
-                        <span className="text-sm font-medium">
+                        <span className="text-sm font-medium" onClick={checkuser}>
                             Logout
                         </span>
 
