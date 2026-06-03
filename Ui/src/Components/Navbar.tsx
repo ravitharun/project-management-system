@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
-import { CiMenuKebab } from "react-icons/ci";
+// import { CiMenuKebab } from "react-icons/ci";
+
 import {
     FaTachometerAlt,
     FaTasks,
@@ -28,6 +29,8 @@ import SetWork from "./SetWork";
 import { instance } from "../services/apiservices";
 import { toast } from "react-toastify";
 import WorkspaceMenu from "./WorkspaceMenu";
+// import WorkspaceProvider from "../Provider/WorkspaceProvider";
+import WorkspaceData from "../Context/workspaceData";
 
 type Props = {
     page: string;
@@ -39,13 +42,15 @@ function Sidebar({ page }: Props) {
     const [open, setOpen] = useState(false);
     const [isOpenPanelItems, setisOpenPanelItems] = useState<boolean>(false);
     const [issidebaropen, setisSidebaropen] = useState<boolean>(true);
-    const [openSpace, setOpenSpace] = useState(false);
+    const [openSpace, setOpenSpace] = useState(true);
     const [isworkspace, setisworkspace] = useState<boolean>(false);
     const [isSetBackground, SetBackground] = useState<boolean>(false);
     const [Workspace, setworkspace] = useState<any[]>([]);
-
     const sidebar = useContext(SideBarContext);
     const context = useContext(bgthemeContext);
+
+    const workSpaceData = useContext(WorkspaceData)
+    const { work, setwork }: any = workSpaceData
     const { theme }: any = context || {};
 
     const userPanelRef = useRef<HTMLDivElement | null>(null);
@@ -104,7 +109,10 @@ function Sidebar({ page }: Props) {
         })
     }
 
-
+    // setSelectSpace
+    const handelSelectSpace = (data: any) => {
+        setwork(data)
+    }
 
     // handelDeleteWorkspace
     const handelDeleteWorkspace = async (id: number) => {
@@ -324,6 +332,7 @@ function Sidebar({ page }: Props) {
                                                             : "hover:bg-gray-100"
                                                         }
                           `}
+                                                    onClick={() => handelSelectSpace(itm)}
 
                                                 >
                                                     {/* LEFT SIDE */}
@@ -338,13 +347,16 @@ function Sidebar({ page }: Props) {
                                                                 ? "text-gray-300"
                                                                 : "text-gray-700"
                                                                 }`}
+
+
+
                                                         >
                                                             {itm?.workspaceSetup?.workspaceName}
                                                         </span>
                                                     </div>
 
                                                     <div className="flex gap-2 text-xs">
-                                                        <WorkspaceMenu setopenProjects={ setopenProjects} SetBackground={SetBackground} openproject={openproject} itm={itm}/>
+                                                        <WorkspaceMenu setopenProjects={setopenProjects} SetBackground={SetBackground} openproject={openproject} itm={itm} />
                                                     </div>
 
                                                     {/* ================= MENU ================= */}

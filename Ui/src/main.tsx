@@ -5,24 +5,26 @@ import AppRouter from "./Routes/AppRouter.tsx";
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "./Provider/SidebarProvider.tsx";
 import ThemeProvider from "./Provider/ThemeProvider.tsx";
+import WorkspaceProvider from "./Provider/WorkspaceProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
+    <WorkspaceProvider>
+        <UserProvider>
+            <ThemeProvider>
 
-    <UserProvider>
-        <ThemeProvider>
 
+                <BrowserRouter>
 
-            <BrowserRouter>
+                    <FeatMaintenance>
 
-                <FeatMaintenance>
+                        <AppRouter />
 
-                    <AppRouter />
+                    </FeatMaintenance>
 
-                </FeatMaintenance>
+                </BrowserRouter>
+            </ThemeProvider>
 
-            </BrowserRouter>
-        </ThemeProvider>
-
-    </UserProvider>
+        </UserProvider>
+    </WorkspaceProvider>
 
 );
