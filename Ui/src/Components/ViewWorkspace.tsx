@@ -1,9 +1,13 @@
 import { useContext, useState } from "react";
 import WorkspaceData from "../Context/workspaceData";
 import WorkspaceViwe from "./WorkspaceViwe";
+import CreatedspaceData from "../Context/CreatedWorkspace";
 
 function ViewWorkspace({ theme }: any) {
   const workspaceProvider = useContext(WorkspaceData);
+  const CreatedSpaceJson = useContext(CreatedspaceData)
+  const { SpaceJson }:any = CreatedSpaceJson
+
   const { work }: any = workspaceProvider;
 
   const workspace = work;
@@ -42,18 +46,16 @@ function ViewWorkspace({ theme }: any) {
   return (
     <>
       {work?.length == 0 ? (
-        <WorkspaceViwe theme={theme} />
+        <WorkspaceViwe theme={theme} SpaceJson={SpaceJson} />
       ) : (
         <div
-          className={`min-h-screen p-4 md:p-6 ${
-            theme === "Dark" ? "bg-gray-950 text-white" : "bg-gray-100 text-black"
-          }`}
+          className={`min-h-screen p-4 md:p-6 ${theme === "Dark" ? "bg-gray-950 text-white" : "bg-gray-100 text-black"
+            }`}
         >
           {/* TOP BAR */}
           <div
-            className={`flex flex-col md:flex-row md:items-center md:justify-between gap-3 p-4 rounded-md ${
-              theme === "Dark" ? "bg-gray-900" : "bg-white"
-            }`}
+            className={`flex flex-col md:flex-row md:items-center md:justify-between gap-3 p-4 rounded-md ${theme === "Dark" ? "bg-gray-900" : "bg-white"
+              }`}
           >
             <div className="flex items-center gap-3">
               <img
@@ -76,19 +78,18 @@ function ViewWorkspace({ theme }: any) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search tasks..."
-              className={`px-3 py-2 text-sm rounded-md border outline-none ${
-                theme === "Dark"
-                  ? "bg-gray-800 border-gray-700"
-                  : "bg-white border-gray-300"
-              }`}
+              className={`px-3 py-2 text-sm rounded-md border outline-none ${theme === "Dark"
+                ? "bg-gray-800 border-gray-700"
+                : "bg-white border-gray-300"
+                }`}
             />
           </div>
 
           {/* QUICK STATS */}
           <div className="flex gap-4 mt-4 text-xs opacity-70">
             <span>Total: {tasks.length}</span>
-            <span>In Progress: {tasks.filter((t:any) => t.status === "In Progress").length}</span>
-            <span>Done: {tasks.filter((t:any) => t.status === "Done").length}</span>
+            <span>In Progress: {tasks.filter((t: any) => t.status === "In Progress").length}</span>
+            <span>Done: {tasks.filter((t: any) => t.status === "Done").length}</span>
           </div>
 
           {/* BOARD */}
@@ -114,11 +115,10 @@ function ViewWorkspace({ theme }: any) {
                     {colTasks.map((task: any) => (
                       <div
                         key={task.id}
-                        className={`p-2 text-sm border-l-2 ${
-                          theme === "Dark"
-                            ? "border-gray-700 bg-gray-900"
-                            : "border-gray-300 bg-white"
-                        }`}
+                        className={`p-2 text-sm border-l-2 ${theme === "Dark"
+                          ? "border-gray-700 bg-gray-900"
+                          : "border-gray-300 bg-white"
+                          }`}
                       >
                         <div className="flex justify-between items-center">
                           <span>{task.title}</span>

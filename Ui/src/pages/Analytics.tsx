@@ -36,6 +36,7 @@ import { useEffect, useState } from "react";
 import { instance } from "../services/apiservices";
 import { FaCheckCircle, FaMoneyBillWave, FaProjectDiagram, FaTasks } from "react-icons/fa";
 import { socket } from "../Scokets/ScoketConfig"
+import Progress from "../Components/progress";
 
 function Analytics() {
 
@@ -43,7 +44,7 @@ function Analytics() {
 
     const [ProjectStatus, setProjectStatus] = useState<any>([])
 
-
+    const In = true
 
     const COLORS = [
         "#3B82F6", // blue
@@ -53,7 +54,7 @@ function Analytics() {
         "#8B5CF6", // purple
         "#06B6D4", // cyan
     ];
-console.log(COLORS,'COLORS')
+    console.log(COLORS, 'COLORS')
 
     const radialData: any[] = [
         {
@@ -63,7 +64,7 @@ console.log(COLORS,'COLORS')
         },
     ];
 
-  
+
 
     const recentProjects: any[] = [
         {
@@ -125,6 +126,7 @@ console.log(COLORS,'COLORS')
 
     return (
         <>
+            {In && <Progress />}
 
 
 

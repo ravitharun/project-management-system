@@ -6,25 +6,30 @@ import { BrowserRouter } from "react-router-dom";
 import UserProvider from "./Provider/SidebarProvider.tsx";
 import ThemeProvider from "./Provider/ThemeProvider.tsx";
 import WorkspaceProvider from "./Provider/WorkspaceProvider.tsx";
+import WrokspaceJson from "./Provider/WrokspaceJson.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <WorkspaceProvider>
-        <UserProvider>
-            <ThemeProvider>
+
+        <WrokspaceJson>
+            <UserProvider>
+                <ThemeProvider>
 
 
-                <BrowserRouter>
+                    <BrowserRouter>
 
-                    <FeatMaintenance>
+                        <FeatMaintenance>
 
-                        <AppRouter />
+                            <AppRouter />
 
-                    </FeatMaintenance>
+                        </FeatMaintenance>
 
-                </BrowserRouter>
-            </ThemeProvider>
+                    </BrowserRouter>
+                </ThemeProvider>
 
-        </UserProvider>
+            </UserProvider>
+        </WrokspaceJson>
     </WorkspaceProvider>
+
 
 );
