@@ -1,4 +1,4 @@
-                <!-- <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2">
+                <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2">
                     {menuItems.map((item, i) => (
                         <div key={i} className="space-y-1">
                             {/* MENU ITEM */}
@@ -234,4 +234,4 @@
                 {StarMenu && <>
 
                     <StartMenuList setStarMenu={setStarMenu}></StartMenuList>
-                </>} -->
+                </>}
