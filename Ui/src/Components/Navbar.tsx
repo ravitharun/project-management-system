@@ -14,7 +14,7 @@ import {
     FaPlus,
     FaArrowCircleDown,
     FaArrowCircleRight,
-    FaHome,
+
     FaUserCircle,
     FaArrowCircleLeft,
 } from "react-icons/fa";
@@ -135,7 +135,7 @@ function Sidebar({ page }: Props) {
     }
     console.log(JSON.parse(getuserInfo)?.userProfile)
     return (
-        <>
+      <>
             {/* ================= NAVBAR ================= */}
             <div
                 className={`
@@ -326,35 +326,6 @@ function Sidebar({ page }: Props) {
                                                 </span>
                                             </div>
                                         )}
-
-                                        {(issidebaropen || open) && item.name === "Star" && (
-                                            <span
-                                                className={`
-                                    text-sm
-
-                                    ${theme === "Dark"
-                                                        ? "text-gray-400"
-                                                        : "text-gray-500"
-                                                    }
-                                `}
-                                            >
-                                                {StarMenu
-                                                    ? <FaArrowCircleLeft />
-                                                    : <FaArrowCircleRight />
-                                                }
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {/* ================= WORKSPACE UI ================= */}
-                                    {(issidebaropen || open) &&
-                                        item.name === "Space" &&
-                                        openSpace && (
-
-                                            <div
-                                                className={`
-                                    ml-8 mt-1 space-y-1 border-l pl-3
-
 
                                         {(issidebaropen || open) && item.name === "Star" && (
                                             <span
@@ -614,7 +585,10 @@ function Sidebar({ page }: Props) {
                             />
                         </div>
                     )}
-                </div>
+                
+                
+                
+                    </div>
 
                 {/* ================= FOOTER ================= */}
                 <div
