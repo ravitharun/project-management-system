@@ -1,4 +1,4 @@
-export const getuserInfo: string | null = localStorage.getItem("userinfo")
+export const getuserInfo: string | null | any = localStorage.getItem("userinfo")
 export const Token: string | null = localStorage.getItem("LoginToken")
 export const useremail: string | null = getuserInfo ? JSON.parse(getuserInfo).userEmail : null
 
