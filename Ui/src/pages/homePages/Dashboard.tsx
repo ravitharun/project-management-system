@@ -4,65 +4,44 @@ import bgthemeContext from "../../Context/ThemeContext";
 import Sidebar from "../../Components/Navbar";
 import ViewWorkspace from "../../Components/ViewWorkspace";
 
-
-
 function Dashboard() {
     const sidebar = useContext(SideBarContext);
-    console.log(sidebar?.issidebaropen, 'sidebar')
-    const context = useContext(bgthemeContext)
+    const context = useContext(bgthemeContext);
+
     const { theme }: any = context;
+
     return (
-        <>
+        <div
+            className={`
+                min-h-screen w-full overflow-hidden
+                ${theme === "Dark"
+                    ? "bg-[#020817]"
+                    : "bg-[#f4f6fb]"
+                }
+            `}
+        >
+            {/* SIDEBAR */}
+            <Sidebar page="Dashboard" />
 
-            {/* ligth */}
-            <div className={`${theme == "Dark" ? "bg-[#0b1120]" : "bg-[#f3f3f4]"}  overflow-x-hidden
-    overflow-y-auto mt-5`}>
+            {/* MAIN */}
+            <div
+                className={`
+                    transition-all duration-300
+                    min-h-screen w-full
+                    pt-[72px]
 
+                    ${sidebar?.issidebaropen
+                        ? "md:ml-[260px]"
+                        : "md:ml-[88px]"
+                    }
+                `}
+            >
 
-
-                {/* ================= SIDEBAR ================= */}
-
-                <Sidebar page="Dashboard" />
-
-                {/* ================= MAIN WRAPPER ================= */}
-
-                <div
-                    className={`
-        transition-all duration-300
-        pt-16 min-h-screen
-
-        ${sidebar?.issidebaropen
-                            ? "md:ml-[270px]"
-                            : "md:ml-[88px]"
-                        }
-    `}
-                >
-
-
-
-
-                    {/* ================= CONTENT ================= */}
-
-                    <main className="p-4 md:p-8">
-
-                        <ViewWorkspace theme={theme}></ViewWorkspace>
-
-                    </main>
-
-                </div >
-
-            </div >
-
-
-        </>
+<main className="flex-1 overflow-hidden">
+    <ViewWorkspace theme={theme} />
+</main>            </div>
+        </div>
     );
 }
 
 export default Dashboard;
-
-
-
-
-
-
-
