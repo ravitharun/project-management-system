@@ -25,12 +25,12 @@
         "Done"
       ],
       "views": [
+        "Summary",
         "Board",
         "List",
         "Pages",
         "Forms",
         "Development",
-        "Summary",
         "Timeline",
         "Reports",
         "Backlog",
@@ -109,12 +109,12 @@
         "Done"
       ],
       "views": [
+        "Summary",
         "Board",
         "List",
         "Pages",
         "Forms",
         "Development",
-        "Summary",
         "Timeline",
         "Reports",
         "Calendar"
@@ -187,6 +187,7 @@
         "Completed"
       ],
       "views": [
+        "Summary",
         "Calendar",
         "Board",
         "List",
