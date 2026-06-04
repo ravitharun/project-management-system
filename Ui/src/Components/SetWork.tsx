@@ -5,7 +5,7 @@ import { instance } from "../services/apiservices"
 import { toast, ToastContainer } from "react-toastify"
 
 function WorkspacePanel({ SetBackground, id }: any) {
-    // console.log({ SetBackground, id })
+    console.log({ SetBackground, id })
     const themecontext = useContext(bgthemeContext)
     const { theme }:any = themecontext
     const [selectedImg, setSelectedImg] = useState<string | null>(null)
@@ -55,7 +55,7 @@ function WorkspacePanel({ SetBackground, id }: any) {
     return (
         <>
             {/* ================= BACKDROP ================= */}
-            {/* {SetBackground} */}
+   
             <ToastContainer
                 theme="light"
                 position="top-center"
