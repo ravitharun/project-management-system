@@ -3,7 +3,6 @@ import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
 // import { CiMenuKebab } from "react-icons/ci";
 
 import {
-    FaTachometerAlt,
     FaTasks,
     FaUsers,
     FaCalendarAlt,
@@ -26,17 +25,16 @@ import bgthemeContext from "../Context/ThemeContext";
 import UserPanel from "./UserPanel";
 import TemplatesUi from "./Summary-Templates/TemplatesUi";
 import { fetchworkspace } from "../services/Workspaceapi";
-import { IoClose } from "react-icons/io5";
-import { FaGear } from "react-icons/fa6";
 import SetWork from "./SetWork";
 import { instance } from "../services/apiservices";
 import { toast } from "react-toastify";
 import WorkspaceMenu from "./WorkspaceMenu";
-// import WorkspaceProvider from "../Provider/WorkspaceProvider";
 import WorkspaceData from "../Context/workspaceData";
 import CreatedspaceData from "../Context/CreatedWorkspace";
 import { CiStar } from "react-icons/ci";
 import StartMenuList from "./StartMenuList";
+import { IoClose } from "react-icons/io5";
+import { FaGear } from "react-icons/fa6";
 
 type Props = {
     page: string;
@@ -278,7 +276,7 @@ function Sidebar({ page }: Props) {
 
                                         {/* LEFT */}
                                         <Link
-                                            to={item.name === "Space" ? "#" : item.href}
+                                            to={item.name === "Space" ? "/" : item.href || "/"}
                                             className="flex items-center gap-3 flex-1 min-w-0"
                                         >
                                             <span className="text-xl shrink-0">
@@ -328,6 +326,35 @@ function Sidebar({ page }: Props) {
                                                 </span>
                                             </div>
                                         )}
+
+                                        {(issidebaropen || open) && item.name === "Star" && (
+                                            <span
+                                                className={`
+                                    text-sm
+
+                                    ${theme === "Dark"
+                                                        ? "text-gray-400"
+                                                        : "text-gray-500"
+                                                    }
+                                `}
+                                            >
+                                                {StarMenu
+                                                    ? <FaArrowCircleLeft />
+                                                    : <FaArrowCircleRight />
+                                                }
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {/* ================= WORKSPACE UI ================= */}
+                                    {(issidebaropen || open) &&
+                                        item.name === "Space" &&
+                                        openSpace && (
+
+                                            <div
+                                                className={`
+                                    ml-8 mt-1 space-y-1 border-l pl-3
+
 
                                         {(issidebaropen || open) && item.name === "Star" && (
                                             <span
@@ -475,7 +502,88 @@ function Sidebar({ page }: Props) {
                                                                 >
 
                                                                     {/* YOUR EXISTING MENU */}
+                                                                    <div
+                                                                        ref={workspaceMenuRef}
+                                                                        className={`
+            fixed top-24 left-[290px] md:left-[320px]
+            w-64 z-[999]
+            rounded-xl border shadow-2xl py-2 overflow-hidden
+            transition-all duration-200
 
+            ${theme === "Dark"
+                                                                                ? "bg-[#111827] border-gray-800 text-white"
+                                                                                : "bg-white border-gray-200 text-gray-900 shadow-lg"
+                                                                            }
+        `}
+                                                                        onClick={(e) => e.stopPropagation()}
+                                                                    >
+
+                                                                        {/* SET BACKGROUND */}
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                setSelectedWorkspace(itm);
+                                                                                SetBackground(true);
+                                                                            }}
+                                                                            className={`
+    w-full flex items-center gap-3 px-4 py-2.5 text-sm
+    rounded-xl transition-all duration-200 hover:cursor-pointer
+
+    ${theme === "Dark"
+                                                                                    ? "hover:bg-[#1e293b] hover:text-white"
+                                                                                    : "hover:bg-blue-200 hover:text-black"
+                                                                                }
+`}
+                                                                        >
+                                                                            <span className="text-base">🖼️</span>
+                                                                            Set Space Background
+                                                                        </button>
+
+                                                                        {/* SETTINGS */}
+                                                                        <button
+                                                                            className={`
+    w-full flex items-center gap-3 px-4 py-2.5 text-sm
+    rounded-xl transition-all duration-200 hover:cursor-pointer
+
+    ${theme === "Dark"
+                                                                                    ? "hover:bg-[#1e293b] hover:text-white"
+                                                                                    : "hover:bg-blue-200 hover:text-black"
+                                                                                }
+`}
+
+
+                                                                            onClick={() => handleProjectSetting(itm)}
+                                                                        >
+                                                                            <FaGear className="text-sm" />
+                                                                            Project Settings
+                                                                        </button>
+
+                                                                        {/* DIVIDER */}
+                                                                        <div className="my-1 border-t border-gray-200 dark:border-gray-700" />
+
+                                                                        {/* DELETE */}
+                                                                        <button
+                                                                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm
+            text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20
+            transition"
+
+
+
+                                                                            onClick={() => handelDeleteWorkspace(itm._id)}
+                                                                        >
+                                                                            🗑️ Delete
+                                                                        </button>
+
+                                                                        {/* CLOSE */}
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                setopenProjects(null);
+                                                                                SetBackground(false);
+                                                                            }}
+                                                                            className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:hover:text-white"
+                                                                        >
+                                                                            <IoClose size={16} />
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             )}
                                                         </div>
