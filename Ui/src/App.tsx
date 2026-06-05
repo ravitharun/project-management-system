@@ -1,8 +1,10 @@
 import { useContext } from "react";
+
 import SideBarContext from "./Context/SideBard";
 import bgthemeContext from "./Context/ThemeContext";
 import Sidebar from "./Components/Navbar";
 import ViewWorkspace from "./Components/ViewWorkspace";
+
 
 
 
@@ -42,7 +44,9 @@ function App() {
           <main className=" w-full overflow-y-auto">
 
             <ViewWorkspace theme={theme} />
+     
           </main>            </div>
+            
       </div>
     </>
   )

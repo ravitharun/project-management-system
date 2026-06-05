@@ -2,20 +2,19 @@ import { useContext, useRef, useState } from "react";
 import WorkspaceData from "../Context/workspaceData";
 import WorkspaceViwe from "./WorkspaceViwe";
 import CreatedspaceData from "../Context/CreatedWorkspace";
-import { CgMaximizeAlt } from "react-icons/cg";
-import { PiDotsThreeBold } from "react-icons/pi";
+
 import SetWork from "../Components/SetWork";
-import { FaGear } from "react-icons/fa6";
+
 import { useNavigate } from "react-router-dom";
-import { FaUsers } from "react-icons/fa";
-import { CiShare1 } from "react-icons/ci";
+
+import MinAndMaxWorkspaceView from "./MinAndMaxWorkspaceview";
 
 
 function ViewWorkspace({ theme }: any) {
   const workspaceProvider = useContext(WorkspaceData);
   const CreatedSpaceJson = useContext(CreatedspaceData);
-
-  const [CurrentView, setCurrentView] = useState<string>("Summary");
+  const [ismaxAndMin, setMaxAndMin] = useState<boolean>(false)
+  const [CurrentView, setCurrentView] = useState<string>("Board");
 
   const [isSetBackground, SetBackground] = useState<boolean>(false);
   const [openProject, setOpenProject] = useState<string | null>(null);
@@ -72,14 +71,14 @@ function ViewWorkspace({ theme }: any) {
         priority: "Low",
       },
     ];
-
+  console.log(tasks, columns, tasks, 'Dummytasks')
 
   const priorityColor = (p: string) => {
     if (p === "High") return "bg-red-500";
     if (p === "Medium") return "bg-yellow-500";
     return "bg-green-500";
   };
-
+  console.log(priorityColor, 'priorityColor')
   const handleProjectSetting = (CreatedWorkSpace: any) => {
     if (!CreatedWorkSpace) return;
 
@@ -95,6 +94,12 @@ function ViewWorkspace({ theme }: any) {
   }
 
 
+  const handelMaximizeAndMinPoup = () => {
+    setMaxAndMin((prev) => !prev)
+
+  }
+
+
   return (
 
     <>
@@ -106,542 +111,24 @@ function ViewWorkspace({ theme }: any) {
           theme={theme}
         />
       )}
-      <div
-        className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
-          ? "bg-[#0b1020] text-white"
-          : "bg-[#f5f7fb] text-black"
-          }`}
-      >
-        {/* BACKGROUND */}
-        {workspace?.workspaceBackground && (
-          <>
-            <img
-              src={workspace.workspaceBackground}
-              alt="workspace-bg"
-              className="
-            absolute inset-0
-            w-full h-full
-            object-cover
-            // opacity-[]
-            scale-105
-          "
-            />
+      {ismaxAndMin ?
+        <>
 
-            <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
-          </>
-        )}
+          <MinAndMaxWorkspaceView handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+            setCurrentView
+          } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView>
 
-        {/* CONTENT */}
-        <div className="relative z-10 p-3 md:p-5 space-y-4">
+        </>
 
 
-          {/* HEADER */}
-         <button
-  onClick={() => setwork([])}
-  className="
-    px-3 py-1.5
-    text-xs font-medium
-    rounded-full
-    transition-all duration-200
-    bg-blue-500 text-white
-    hover:bg-blue-600
-    active:scale-95
-    shadow-sm
-  "
->
-  Reset to For You
-</button>
-
-          <div
-            className={`
-
-    w-fit
-    min-w-[950px]
-
-    max-w-[720px]
-
-    rounded-[20px]
-    px-3 py-2.5
-
-    border-none
-    shadow-none
-    outline-none
-    ring-0
-
-   
-  `}
-          >
-            <div
-              className="
-      flex items-center
-      justify-between
-      gap-5
-    "
-            >
-              {/* LEFT */}
-              <div
-                className="
-        flex items-center
-        gap-3
-        min-w-0
-        flex-1
-      "
-              >
-                {/* ICON */}
-                <div
-                  className={`
-          relative
-          w-[42px] h-[42px]
-          rounded-[14px]
-          overflow-hidden
-          shrink-0
-          border
-
-          ${theme === "Dark"
-                      ? "bg-white/[0.05] border-white/10"
-                      : "bg-gray-100 border-gray-200"
-                    }
-        `}
-                >
-                  <img
-                    src={workspace?.workspaceicon?.img}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-
-                  <div
-                    className="
-            absolute bottom-[3px] right-[3px]
-            w-2 h-2
-            rounded-full
-            bg-green-500
-          "
-                  />
-                </div>
-
-                {/* CONTENT */}
-                <div className="min-w-0">
-
-                  {/* TITLE */}
-                  <div className="flex items-center gap-2 min-w-0">
-
-                    <h1
-                      className="
-              text-[15px]
-              md:text-[16px]
-              font-semibold
-              truncate
-              max-w-[180px]
-            "
-                    >
-                      {workspace?.name}
-                    </h1>
-
-                    {/* USERS */}
-                    <button
-                      className={`
-              w-8 h-8
-              rounded-[10px]
-              border
-              flex items-center justify-center
-              text-[11px]
-              shrink-0
-              transition-all
-
-              ${theme === "Dark"
-                          ? "bg-white/[0.04] border-white/10 hover:bg-white/[0.08]"
-                          : "bg-gray-100 border-gray-200 hover:bg-gray-200"
-                        }
-            `}
-                    >
-                      <FaUsers fontSize={20}></FaUsers>
-                    </button>
-
-                    {/* MENU */}
-                    <button
-                      onClick={() =>
-                        setOpenProject(
-                          openProject === workspace._id
-                            ? null
-                            : workspace._id
-                        )
-                      }
-                      className={`
-              w-8 h-8
-              rounded-[10px]
-              border
-              flex items-center justify-center
-              text-[14px]
-              shrink-0
-              transition-all
-
-              ${theme === "Dark"
-                          ? "bg-white/[0.04] border-white/10 hover:bg-white/[0.08]"
-                          : "bg-gray-100 border-gray-200 hover:bg-gray-200"
-                        }
-            `}
-                    >
-                      {/* <Famenu/> */}
-                      <PiDotsThreeBold fontSize={20} />
-                    </button>
-                  </div>
-
-                  {/* DESCRIPTION */}
-                  <p
-                    className={` mt-0.5
-            text-[12px]
-            opacity-60
-            truncate
-            max-w-[260px]
-            
-            
-            
-             ${theme === "Dark"
-                        ? "text-white"
-                        : "text-shadow-black"
-                      }`}
-                  >
-                    {workspace?.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* RIGHT SIDE ACTIONS */}
-              <div className="flex items-center gap-2 shrink-0">
-
-                {/* SHARE */}
-                <button
-                  className={`
-          w-8 h-8
-          rounded-[10px]
-          border
-          flex items-center justify-center
-          text-[12px]
-          transition-all
-
-          ${theme === "Dark"
-                      ? "bg-white/[0.04] border-white/10 hover:bg-white/[0.08]"
-                      : "bg-gray-100 border-gray-200 hover:bg-gray-200"
-                    }
-        `}
-                >
-                  <CiShare1 fontSize={20}></CiShare1>
-                </button>
-
-                {/* MAXIMIZE */}
-                <button
-                  className={`
-          w-8 h-8
-          rounded-[10px]
-          border
-          flex items-center justify-center
-          text-[12px]
-          transition-all
-
-          ${theme === "Dark"
-                      ? "bg-white/[0.04] border-white/10 hover:bg-white/[0.08]"
-                      : "bg-gray-100 border-gray-200 hover:bg-gray-200"
-                    }
-        `}
-                >
-                  <CgMaximizeAlt fontSize={20}></CgMaximizeAlt>
-                </button>
-              </div>
-            </div>
-          </div>
 
 
-          {/* MENU */}
-          {openProject === workspace?._id && (
-            <div
-              ref={workspaceMenuRef}
-              className={`
-            fixed top-24 right-5
-            w-[250px]
-            z-[999]
-            rounded-[22px]
-            border
-            p-2
-            shadow-2xl
-            backdrop-blur-2xl
+        :
 
-            ${theme === "Dark"
-                  ? "bg-[#111827]/95 border-white/10 text-white"
-                  : "bg-white/95 border-gray-200 text-black"
-                }
-          `}
-            >
-              <button
-                onClick={() => SetBackground(true)}
-                className={`
-              w-full
-              flex items-center gap-3
-              px-4 py-3
-              rounded-xl
-              text-[13px]
-              transition-all
-
-              ${theme === "Dark"
-                    ? "hover:bg-white/10"
-                    : "hover:bg-gray-100"
-                  }
-            `}
-              >
-                🖼️ Set Space Background
-              </button>
-
-              <button
-                onClick={() => handleProjectSetting(workspace)}
-                className={`
-              w-full
-              flex items-center gap-3
-              px-4 py-3
-              rounded-xl
-              text-[13px]
-              transition-all
-
-              ${theme === "Dark"
-                    ? "hover:bg-white/10"
-                    : "hover:bg-gray-100"
-                  }
-            `}
-              >
-                <FaGear />
-                Project Settings
-              </button>
-
-              <div className="my-2 border-t border-white/10" />
-
-              <button
-                className="
-              w-full
-              flex items-center gap-3
-              px-4 py-3
-              rounded-xl
-              text-[13px]
-              text-red-500
-              hover:bg-red-500/10
-            "
-              >
-                🗑️ Delete
-              </button>
-            </div>
-          )}
-
-          {/* ================================================= */}
-          {/* VIEWS */}
-          {/* ================================================= */}
-          <div
-            className={`
-              max-w-max
-          rounded-[20px]
-          border
-          p-2
-          flex items-center gap-2
-          overflow-x-auto
-          scrollbar-hide
-
-          ${theme === "Dark"
-                ? "bg-white/[0.04] border-white/10"
-                : "bg-white/80 border-gray-200"
-              }
-        `}
-          >
-            {workspace?.workspaceSetup?.views?.map(
-              (view: any, idx: number) => {
-                const active = CurrentView === view;
-
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentView(view)}
-                    className={`
-                  px-4 py-2.5
-                  rounded-xl
-                  text-[13px]
-                  whitespace-nowrap
-                  transition-all
-
-                  ${active
-                        ? theme === "Dark"
-                          ? "bg-white text-black"
-                          : "bg-black text-white"
-                        : "opacity-60 hover:opacity-100"
-                      }
-                `}
-                  >
-                    {view}
-                  </button>
-                );
-              }
-            )}
-          </div>
-
-          {/* ================================================= */}
-          {/* BOARD */}
-          {/* ================================================= */}
-          <div className="overflow-x-auto pb-4 scrollbar-hide">
-
-            <div className="flex gap-4 min-w-max">
-
-              {(workspace?.template === "Scrum"
-                ? ["Backlog", "Sprint", "Review", "Done"]
-                : columns
-              ).map((col: string) => {
-                const colTasks = tasks.filter(
-                  (t: any) => t.status === col
-                );
-
-                return (
-                  <div
-                    key={col}
-                    className={`
-                  w-[290px]
-                  h-[78vh]
-                  rounded-[26px]
-                  border
-                  p-3
-                  flex flex-col
-                  backdrop-blur-xl
-
-                  ${theme === "Dark"
-                        ? "bg-white/[0.04] border-white/10"
-                        : "bg-white/80 border-gray-200"
-                      }
-                `}
-                  >
-                    {/* HEADER */}
-                    <div className="flex items-center justify-between mb-4">
-
-                      <div>
-                        <h2 className="font-medium text-[13px]">
-                          {col}
-                        </h2>
-
-                        <p className="text-[10px] opacity-50 mt-0.5">
-                          {colTasks.length} Tasks
-                        </p>
-                      </div>
-
-                      <button
-                        className={`
-                      w-9 h-9
-                      rounded-xl
-                      flex items-center justify-center
-                      text-sm
-
-                      ${theme === "Dark"
-                            ? "bg-white/10"
-                            : "bg-black/[0.04]"
-                          }
-                    `}
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    {/* TASKS */}
-                    <div className="flex-1 overflow-y-auto space-y-3 pr-1 custom-scrollbar">
-
-                      {colTasks.map((task: any) => (
-                        <div
-                          key={task.id}
-                          className={`
-                        rounded-[20px]
-                        p-3
-                        border
-                        transition-all duration-200
-                        hover:-translate-y-1
-
-                        ${theme === "Dark"
-                              ? "bg-black/20 border-white/10 hover:bg-white/[0.05]"
-                              : "bg-white border-gray-100"
-                            }
-                      `}
-                        >
-                          <div className="flex items-start justify-between gap-2">
-
-                            <div className="min-w-0">
-                              <h3
-                                className="
-                              text-[13px]
-                              font-medium
-                              truncate
-                            "
-                              >
-                                {task.title}
-                              </h3>
-
-                              <p
-                                className="
-                              text-[11px]
-                              opacity-60
-                              mt-1
-                              line-clamp-2
-                            "
-                              >
-                                {task.description || "No description"}
-                              </p>
-                            </div>
-
-                            <span
-                              className={`w-2 h-2 rounded-full mt-1 shrink-0 ${priorityColor(
-                                task.priority
-                              )}`}
-                            />
-                          </div>
-
-                          <div className="flex items-center justify-between mt-4">
-
-                            <span
-                              className={`
-                            px-2 py-1
-                            rounded-full
-                            text-[10px]
-
-                            ${theme === "Dark"
-                                  ? "bg-white/10"
-                                  : "bg-black/[0.04]"
-                                }
-                          `}
-                            >
-                              {task.priority}
-                            </span>
-
-                            <p className="text-[10px] opacity-40">
-                              #{task.id}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-
-                      {colTasks.length === 0 && (
-                        <div
-                          className={`
-                        rounded-[20px]
-                        border-2 border-dashed
-                        p-6
-                        text-center
-                        text-[11px]
-                        opacity-40
-
-                        ${theme === "Dark"
-                              ? "border-white/10"
-                              : "border-gray-300"
-                            }
-                      `}
-                        >
-                          Drop tasks here
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
+        <MinAndMaxWorkspaceView handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+          setCurrentView
+        } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView>
+      }
     </>
   );
 }
