@@ -1,157 +1,378 @@
-  <div className="flex gap-4 min-w-max">
+ {!ismaxAndMin && (
+        <div
+          className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
+              ? "bg-[#0b1020] text-white"
+              : "bg-[#f5f7fb] text-black"
+            }`}
+        >
+          {/* BACKGROUND */}
+          {workspace?.workspaceBackground && (
+            <>
+              <img
+                src={workspace.workspaceBackground}
+                alt="workspace-bg"
+                className="
+            absolute inset-0
+            w-full h-full
+            object-cover
+            scale-105
+          "
+              />
 
-              {(workspace?.template === "Scrum"
-                ? ["Backlog", "Sprint", "Review", "Done"]
-                : columns
-              ).map((col: string) => {
-                const colTasks = tasks.filter(
-                  (t: any) => t.status === col
-                );
+              <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+            </>
+          )}
 
-                return (
+          {/* CONTENT */}
+          <div className="relative z-10 p-3 md:p-5 space-y-4">
+
+            {/* HEADER */}
+            <div
+              className={`
+          w-200
+          rounded-[22px]
+          px-4 py-3
+          backdrop-blur-xl
+          border
+
+          ${theme === "Dark"
+                  ? "bg-white/[0.04] border-white/10"
+                  : "bg-white/80 border-gray-200"
+                }
+        `}
+            >
+              <div className="flex items-center justify-between gap-5">
+
+                {/* LEFT */}
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+
+                  {/* ICON */}
                   <div
-                    key={col}
                     className={`
-                  w-[290px]
-                  h-[78vh]
-                  rounded-[26px]
-                  border
-                  p-3
-                  flex flex-col
-                  backdrop-blur-xl
+                relative
+                w-[45px]
+                h-[45px]
+                rounded-[14px]
+                overflow-hidden
+                shrink-0
+                border
 
-                  ${theme === "Dark"
-                        ? "bg-white/[0.04] border-white/10"
-                        : "bg-white/80 border-gray-200"
+                ${theme === "Dark"
+                        ? "bg-white/[0.05] border-white/10"
+                        : "bg-gray-100 border-gray-200"
                       }
-                `}
+              `}
                   >
-                    {/* HEADER */}
-                    <div className="flex items-center justify-between mb-4">
+                    <img
+                      src={workspace?.workspaceicon?.img}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
 
-                      <div>
-                        <h2 className="font-medium text-[13px]">
-                          {col}
-                        </h2>
+                    <div
+                      className="
+                  absolute bottom-[3px] right-[3px]
+                  w-2.5 h-2.5
+                  rounded-full
+                  bg-green-500
+                "
+                    />
+                  </div>
 
-                        <p className="text-[10px] opacity-50 mt-0.5">
-                          {colTasks.length} Tasks
-                        </p>
-                      </div>
+                  {/* TEXT */}
+                  <div className="min-w-0">
+
+                    <div className="flex items-center gap-2">
+
+                      <h1
+                        className="
+                    text-[15px]
+                    md:text-[17px]
+                    font-semibold
+                    truncate
+                  "
+                      >
+                        {workspace?.name}
+                      </h1>
 
                       <button
                         className={`
-                      w-9 h-9
-                      rounded-xl
-                      flex items-center justify-center
-                      text-sm
+                    w-8 h-8
+                    rounded-[10px]
+                    border
+                    flex items-center justify-center
 
-                      ${theme === "Dark"
-                            ? "bg-white/10"
-                            : "bg-black/[0.04]"
+                    ${theme === "Dark"
+                            ? "bg-white/[0.04] border-white/10"
+                            : "bg-gray-100 border-gray-200"
                           }
-                    `}
+                  `}
                       >
-                        +
+                        <FaUsers fontSize={18} />
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          setOpenProject(
+                            openProject === workspace._id
+                              ? null
+                              : workspace._id
+                          )
+                        }
+                        className={`
+                    w-8 h-8
+                    rounded-[10px]
+                    border
+                    flex items-center justify-center
+
+                    ${theme === "Dark"
+                            ? "bg-white/[0.04] border-white/10"
+                            : "bg-gray-100 border-gray-200"
+                          }
+                  `}
+                      >
+                        <PiDotsThreeBold fontSize={18} />
                       </button>
                     </div>
 
-                    {/* TASKS */}
-                    <div className="flex-1 overflow-y-auto space-y-3 pr-1 custom-scrollbar">
-
-                      {colTasks.map((task: any) => (
-                        <div
-                          key={task.id}
-                          className={`
-                        rounded-[20px]
-                        p-3
-                        border
-                        transition-all duration-200
-                        hover:-translate-y-1
-
-                        ${theme === "Dark"
-                              ? "bg-black/20 border-white/10 hover:bg-white/[0.05]"
-                              : "bg-white border-gray-100"
-                            }
-                      `}
-                        >
-                          <div className="flex items-start justify-between gap-2">
-
-                            <div className="min-w-0">
-                              <h3
-                                className="
-                              text-[13px]
-                              font-medium
-                              truncate
-                            "
-                              >
-                                {task.title}
-                              </h3>
-
-                              <p
-                                className="
-                              text-[11px]
-                              opacity-60
-                              mt-1
-                              line-clamp-2
-                            "
-                              >
-                                {task.description || "No description"}
-                              </p>
-                            </div>
-
-                            <span
-                              className={`w-2 h-2 rounded-full mt-1 shrink-0 ${priorityColor(
-                                task.priority
-                              )}`}
-                            />
-                          </div>
-
-                          <div className="flex items-center justify-between mt-4">
-
-                            <span
-                              className={`
-                            px-2 py-1
-                            rounded-full
-                            text-[10px]
-
-                            ${theme === "Dark"
-                                  ? "bg-white/10"
-                                  : "bg-black/[0.04]"
-                                }
-                          `}
-                            >
-                              {task.priority}
-                            </span>
-
-                            <p className="text-[10px] opacity-40">
-                              #{task.id}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-
-                      {colTasks.length === 0 && (
-                        <div
-                          className={`
-                        rounded-[20px]
-                        border-2 border-dashed
-                        p-6
-                        text-center
-                        text-[11px]
-                        opacity-40
-
-                        ${theme === "Dark"
-                              ? "border-white/10"
-                              : "border-gray-300"
-                            }
-                      `}
-                        >
-                          Drop tasks here
-                        </div>
-                      )}
-                    </div>
+                    <p
+                      className="
+                  text-[12px]
+                  opacity-70
+                  truncate
+                  max-w-[350px]
+                  mt-0.5
+                "
+                    >
+                      {workspace?.description}
+                    </p>
                   </div>
-                );
-              })}
+                </div>
+
+                {/* RIGHT */}
+                <div className="flex items-center gap-2 shrink-0">
+
+                  <button
+                    onClick={() => setwork([])}
+                    className="
+                px-3 py-2
+                rounded-xl
+                bg-blue-500
+                hover:bg-blue-600
+                text-white
+                text-xs
+                transition-all
+              "
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    className={`
+                w-8 h-8
+                rounded-[10px]
+                border
+                flex items-center justify-center
+
+                ${theme === "Dark"
+                        ? "bg-white/[0.04] border-white/10"
+                        : "bg-gray-100 border-gray-200"
+                      }
+              `}
+                  >
+                    <CiShare1 fontSize={18} />
+                  </button>
+
+                  {/* MAXIMIZE */}
+                  <button
+                    onClick={handelMaximizeAndMinPoup}
+                    className={`
+                w-8 h-8
+                rounded-[10px]
+                border
+                flex items-center justify-center
+
+                ${theme === "Dark"
+                        ? "bg-white/[0.04] border-white/10"
+                        : "bg-gray-100 border-gray-200"
+                      }
+              `}
+                  >
+                    <CgMaximizeAlt fontSize={18} />
+                  </button>
+                </div>
+              </div>
             </div>
+
+            {/* MENU */}
+            {openProject === workspace?._id && (
+              <div
+                ref={workspaceMenuRef}
+                className={`
+            fixed top-24 right-5
+            w-[250px]
+            z-[999]
+            rounded-[22px]
+            border
+            p-2
+            shadow-2xl
+            backdrop-blur-2xl
+
+            ${theme === "Dark"
+                    ? "bg-[#111827]/95 border-white/10 text-white"
+                    : "bg-white/95 border-gray-200 text-black"
+                  }
+          `}
+              >
+                <button
+                  onClick={() => SetBackground(true)}
+                  className={`
+              w-full
+              flex items-center gap-3
+              px-4 py-3
+              rounded-xl
+              text-[13px]
+
+              ${theme === "Dark"
+                      ? "hover:bg-white/10"
+                      : "hover:bg-gray-100"
+                    }
+            `}
+                >
+                  🖼️ Set Space Background
+                </button>
+
+                <button
+                  onClick={() => handleProjectSetting(workspace)}
+                  className={`
+              w-full
+              flex items-center gap-3
+              px-4 py-3
+              rounded-xl
+              text-[13px]
+
+              ${theme === "Dark"
+                      ? "hover:bg-white/10"
+                      : "hover:bg-gray-100"
+                    }
+            `}
+                >
+                  <FaGear />
+                  Project Settings
+                </button>
+
+                <div className="my-2 border-t border-white/10" />
+
+                <button
+                  className="
+              w-full
+              flex items-center gap-3
+              px-4 py-3
+              rounded-xl
+              text-[13px]
+              text-red-500
+              hover:bg-red-500/10
+            "
+                >
+                  🗑️ Delete
+                </button>
+              </div>
+            )}
+
+            {/* VIEWS */}
+            <div
+              className={`
+          max-w-max
+          rounded-[20px]
+          border
+          p-2
+          flex items-center gap-2
+          overflow-x-auto
+          scrollbar-hide
+
+          ${theme === "Dark"
+                  ? "bg-white/[0.04] border-white/10"
+                  : "bg-white/80 border-gray-200"
+                }
+        `}
+            >
+              {workspace?.workspaceSetup?.views?.map(
+                (view, idx) => {
+                  const active = CurrentView === view;
+
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentView(view)}
+                      className={`
+                  px-4 py-2.5
+                  rounded-xl
+                  text-[13px]
+                  whitespace-nowrap
+                  transition-all
+
+                  ${active
+                          ? theme === "Dark"
+                            ? "bg-white text-black"
+                            : "bg-black text-white"
+                          : "opacity-60 hover:opacity-100"
+                        }
+                `}
+                    >
+                      {view}
+                    </button>
+                  );
+                }
+              )}
+            </div>
+
+            {/* BOARD */}
+            <div className="overflow-x-auto pb-4 scrollbar-hide">
+
+              {CurrentView == "Summary" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Timeline" &&
+                <SpaceTimeLine />
+              }
+
+              {CurrentView == "Development" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Forms" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "List" &&
+                <SpaceList />
+              }
+
+              {CurrentView == "Pages" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Reports" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Backlog" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Calendar" &&
+                <MyCalendar theme={theme} />
+              }
+
+              {CurrentView == "Goals" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Board" &&
+                <Board theme={theme} work={work} />
+              }
+            </div>
+          </div>
+        </div>
+      )}

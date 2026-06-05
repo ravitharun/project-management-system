@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @keyframes zoomOutModal {
   0% {
@@ -90,4 +91,21 @@ body #root {
 
 .animate-flow {
   animation: flow 2s linear infinite;
+}
+
+
+
+.flexlayout__tab_toolbar {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.flexlayout__tab_toolbar_button {
+  display: flex !important;
+  opacity: 1 !important;
+}
+
+.flexlayout__tabset_header {
+  background: white !important;
 }

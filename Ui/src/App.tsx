@@ -7,6 +7,7 @@ import ViewWorkspace from "./Components/ViewWorkspace";
 
 
 
+
 function App() {
   const sidebar = useContext(SideBarContext);
   const context = useContext(bgthemeContext);
@@ -43,8 +44,9 @@ function App() {
           <main className=" w-full overflow-y-auto">
 
             <ViewWorkspace theme={theme} />
-            {/* <MyCalendar theme=""></MyCalendar> */}
+     
           </main>            </div>
+            
       </div>
     </>
   )
