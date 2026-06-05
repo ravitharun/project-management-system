@@ -15,7 +15,7 @@ function ViewWorkspace({ theme }: any) {
   const CreatedSpaceJson = useContext(CreatedspaceData);
 
   const [CurrentView, setCurrentView] = useState<string>("Summary");
-  const [search, setSearch] = useState();
+
   const [isSetBackground, SetBackground] = useState<boolean>(false);
   const [openProject, setOpenProject] = useState<string | null>(null);
 
@@ -71,9 +71,7 @@ function ViewWorkspace({ theme }: any) {
         priority: "Low",
       },
     ];
-  const filtered = tasks.filter((t: any) =>
-    t.title.toLowerCase().includes(search?.toLowerCase())
-  );
+
 
   const priorityColor = (p: string) => {
     if (p === "High") return "bg-red-500";
@@ -473,7 +471,7 @@ function ViewWorkspace({ theme }: any) {
                 ? ["Backlog", "Sprint", "Review", "Done"]
                 : columns
               ).map((col: string) => {
-                const colTasks = filtered.filter(
+                const colTasks = tasks.filter(
                   (t: any) => t.status === col
                 );
 
