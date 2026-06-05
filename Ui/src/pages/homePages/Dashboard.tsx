@@ -37,9 +37,11 @@ function Dashboard() {
                 `}
             >
 
-<main className="flex-1 overflow-hidden">
-    <ViewWorkspace theme={theme} />
-</main>            </div>
+                {/* <main className="flex-1 overflow-hidden"> */}
+                <main className=" w-full overflow-y-auto">
+
+                    <ViewWorkspace theme={theme} />
+                </main>            </div>
         </div>
     );
 }
