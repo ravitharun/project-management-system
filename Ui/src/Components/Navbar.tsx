@@ -197,7 +197,7 @@ function Sidebar({ page }: Props) {
                         <div
                             className="w-9 h-9 rounded-full  flex items-center justify-center font-semibold text-white cursor-pointer"
                             onClick={() => setisOpenPanelItems((prev) => !prev)}
-                            onMouseEnter={() => setisOpenPanelItems(true)}
+                            // onMouseEnter={() => setisOpenPanelItems(true)}
                         >
                             <img src={JSON.parse(getuserInfo)?.userProfile} alt={JSON.parse(getuserInfo)?.Username} title={JSON.parse(getuserInfo).Username} />
                         </div>

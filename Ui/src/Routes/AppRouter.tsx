@@ -14,7 +14,6 @@ const ProjectSettings = lazy(() => import("../Components/ProjectSettings"))
 import { lazy, Suspense, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
 import { useremail, Usertoekn } from "../Components/LocalStorage";
-
 import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
@@ -157,12 +156,13 @@ function AppRouter() {
                 theme="colored"
             // transition={Bounce}
 
-            ></ToastContainer>        
-            
-                <Suspense fallback={<Loader />}>
+            ></ToastContainer>
+
+            <Suspense fallback={<Loader />}>
                 <Routes>
 
                     <Route path="/" element={<App />} />
+                    {/* <Route path="/foru" element={<ViewWorkspace />} /> */}
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
                     <Route path="/projectSettings" element={<ProjectSettings />} />
