@@ -9,13 +9,17 @@ import { FaGear } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { FaUsers } from "react-icons/fa";
 import { CiShare1 } from "react-icons/ci";
+import Board from "./Board";
+import SpaceList from "./SpaceList";
+import SpaceTimeLine from "./SpaceTimeLine";
+import MyCalendar from "../pages/Calendra";
 
 
 function ViewWorkspace({ theme }: any) {
   const workspaceProvider = useContext(WorkspaceData);
   const CreatedSpaceJson = useContext(CreatedspaceData);
 
-  const [CurrentView, setCurrentView] = useState<string>("Summary");
+  const [CurrentView, setCurrentView] = useState<string>("Board");
 
   const [isSetBackground, SetBackground] = useState<boolean>(false);
   const [openProject, setOpenProject] = useState<string | null>(null);
@@ -72,14 +76,14 @@ function ViewWorkspace({ theme }: any) {
         priority: "Low",
       },
     ];
-
+  console.log(tasks, columns, tasks, 'Dummytasks')
 
   const priorityColor = (p: string) => {
     if (p === "High") return "bg-red-500";
     if (p === "Medium") return "bg-yellow-500";
     return "bg-green-500";
   };
-
+  console.log(priorityColor, 'priorityColor')
   const handleProjectSetting = (CreatedWorkSpace: any) => {
     if (!CreatedWorkSpace) return;
 
@@ -136,9 +140,9 @@ function ViewWorkspace({ theme }: any) {
 
 
           {/* HEADER */}
-         <button
-  onClick={() => setwork([])}
-  className="
+          <button
+            onClick={() => setwork([])}
+            className="
     px-3 py-1.5
     text-xs font-medium
     rounded-full
@@ -148,9 +152,9 @@ function ViewWorkspace({ theme }: any) {
     active:scale-95
     shadow-sm
   "
->
-  Reset to For You
-</button>
+          >
+            Reset to For You
+          </button>
 
           <div
             className={`
@@ -477,168 +481,57 @@ function ViewWorkspace({ theme }: any) {
             )}
           </div>
 
-          {/* ================================================= */}
           {/* BOARD */}
-          {/* ================================================= */}
+
           <div className="overflow-x-auto pb-4 scrollbar-hide">
+            {CurrentView == "Summary" &&
 
-            <div className="flex gap-4 min-w-max">
+              <h1>{CurrentView} View Adding Soon</h1>
+            }
+            {CurrentView == "Timeline" &&
 
-              {(workspace?.template === "Scrum"
-                ? ["Backlog", "Sprint", "Review", "Done"]
-                : columns
-              ).map((col: string) => {
-                const colTasks = tasks.filter(
-                  (t: any) => t.status === col
-                );
+              <SpaceTimeLine />
+            }
+            {CurrentView == "Development" &&
 
-                return (
-                  <div
-                    key={col}
-                    className={`
-                  w-[290px]
-                  h-[78vh]
-                  rounded-[26px]
-                  border
-                  p-3
-                  flex flex-col
-                  backdrop-blur-xl
+              <h1>{CurrentView} View Adding Soon</h1>
+            }
+            {CurrentView == "Forms" &&
 
-                  ${theme === "Dark"
-                        ? "bg-white/[0.04] border-white/10"
-                        : "bg-white/80 border-gray-200"
-                      }
-                `}
-                  >
-                    {/* HEADER */}
-                    <div className="flex items-center justify-between mb-4">
+              <h1>{CurrentView} View Adding Soon</h1>
+            }
+            {CurrentView == "List" &&
 
-                      <div>
-                        <h2 className="font-medium text-[13px]">
-                          {col}
-                        </h2>
+              <SpaceList />
+            }
+            {CurrentView == "Pages" &&
 
-                        <p className="text-[10px] opacity-50 mt-0.5">
-                          {colTasks.length} Tasks
-                        </p>
-                      </div>
+              <h1>{CurrentView} View Adding Soon</h1>
+            }
+            {CurrentView == "Reports" &&
 
-                      <button
-                        className={`
-                      w-9 h-9
-                      rounded-xl
-                      flex items-center justify-center
-                      text-sm
+              <h1>{CurrentView} View Adding Soon</h1>
+            }
+            {CurrentView == "Backlog" &&
 
-                      ${theme === "Dark"
-                            ? "bg-white/10"
-                            : "bg-black/[0.04]"
-                          }
-                    `}
-                      >
-                        +
-                      </button>
-                    </div>
+              <h1>{CurrentView} View Adding Soon</h1>
+            }
+            {CurrentView == "Calendar" &&
 
-                    {/* TASKS */}
-                    <div className="flex-1 overflow-y-auto space-y-3 pr-1 custom-scrollbar">
+              // <h1>{CurrentView} View Adding Soon</h1>
+              <MyCalendar theme={theme}></MyCalendar>
+            }
+            {CurrentView == "Goals" &&
 
-                      {colTasks.map((task: any) => (
-                        <div
-                          key={task.id}
-                          className={`
-                        rounded-[20px]
-                        p-3
-                        border
-                        transition-all duration-200
-                        hover:-translate-y-1
+              <h1>{CurrentView} View Adding Soon</h1>
+            }
 
-                        ${theme === "Dark"
-                              ? "bg-black/20 border-white/10 hover:bg-white/[0.05]"
-                              : "bg-white border-gray-100"
-                            }
-                      `}
-                        >
-                          <div className="flex items-start justify-between gap-2">
 
-                            <div className="min-w-0">
-                              <h3
-                                className="
-                              text-[13px]
-                              font-medium
-                              truncate
-                            "
-                              >
-                                {task.title}
-                              </h3>
+            {CurrentView == "Board" &&
 
-                              <p
-                                className="
-                              text-[11px]
-                              opacity-60
-                              mt-1
-                              line-clamp-2
-                            "
-                              >
-                                {task.description || "No description"}
-                              </p>
-                            </div>
+              <Board theme={theme} work={work}></Board>
+            }
 
-                            <span
-                              className={`w-2 h-2 rounded-full mt-1 shrink-0 ${priorityColor(
-                                task.priority
-                              )}`}
-                            />
-                          </div>
-
-                          <div className="flex items-center justify-between mt-4">
-
-                            <span
-                              className={`
-                            px-2 py-1
-                            rounded-full
-                            text-[10px]
-
-                            ${theme === "Dark"
-                                  ? "bg-white/10"
-                                  : "bg-black/[0.04]"
-                                }
-                          `}
-                            >
-                              {task.priority}
-                            </span>
-
-                            <p className="text-[10px] opacity-40">
-                              #{task.id}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-
-                      {colTasks.length === 0 && (
-                        <div
-                          className={`
-                        rounded-[20px]
-                        border-2 border-dashed
-                        p-6
-                        text-center
-                        text-[11px]
-                        opacity-40
-
-                        ${theme === "Dark"
-                              ? "border-white/10"
-                              : "border-gray-300"
-                            }
-                      `}
-                        >
-                          Drop tasks here
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
+
 import Login from "../pages/Login/Login";
 import SiginUp from "../pages/Login/SignUp";
 const App = lazy(() => import("../App"))
