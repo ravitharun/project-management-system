@@ -149,12 +149,8 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
             </button>
           </div>
           {/* ================= SPACES ================= */}
-          <div className="
-      mt-8
-  w-full
-  flex
-  justify-center
-    ">
+          {/* ================= SPACES ================= */}
+          <div className="mt-8 w-full space-y-4">
 
             {SpaceJson.map((w: any, i: number) => (
 
@@ -162,18 +158,19 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
                 key={i}
                 onMouseEnter={() => setid(i)}
                 onMouseLeave={() => setid(null)}
+                onClick={() => setwork(w)}
                 className={`
-            w-[820px]
-            rounded-[20px]
-            p-4
-            transition-all duration-300
-            cursor-pointer
+        w-full max-w-[820px] mx-auto
+        rounded-[20px]
+        p-4
+        transition-all duration-300
+        cursor-pointer
 
-            ${theme === "Dark"
+        ${theme === "Dark"
                     ? "bg-white/[0.04] hover:bg-white/[0.06]"
                     : "bg-white hover:bg-gray-50"
                   }
-          `}
+      `}
               >
 
                 <div className="
