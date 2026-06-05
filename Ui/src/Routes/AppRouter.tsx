@@ -18,7 +18,7 @@ import { useremail, Usertoekn } from "../Components/LocalStorage";
 import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
-import Layout from "../Components/Layout";
+
 
 
 function AppRouter() {
@@ -164,7 +164,7 @@ function AppRouter() {
                 <Routes>
 
                     <Route path="/" element={<App />} />
-                    <Route path="/layout" element={<Layout />} />
+
                     {/* <Route path="/foru" element={<ViewWorkspace />} /> */}
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
