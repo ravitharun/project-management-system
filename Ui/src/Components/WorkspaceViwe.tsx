@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import {
   FiStar,
   FiEye,
-  FiSearch,
+
 } from "react-icons/fi";
 
 import WorkspaceData from "../Context/workspaceData";
