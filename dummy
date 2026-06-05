@@ -1,275 +1,378 @@
- <div
-        className={`
-    min-h-screen
-    w-full
-    px-3 md:px-5
-    py-4
+ {!ismaxAndMin && (
+        <div
+          className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
+              ? "bg-[#0b1020] text-white"
+              : "bg-[#f5f7fb] text-black"
+            }`}
+        >
+          {/* BACKGROUND */}
+          {workspace?.workspaceBackground && (
+            <>
+              <img
+                src={workspace.workspaceBackground}
+                alt="workspace-bg"
+                className="
+            absolute inset-0
+            w-full h-full
+            object-cover
+            scale-105
+          "
+              />
 
-    ${theme === "Dark"
-            ? "bg-[#0B1120] text-white"
-            : "bg-[#F5F7FB] text-gray-900"
-          }
-  `}
-      >
+              <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+            </>
+          )}
 
-        {/* ================= CONTAINER ================= */}
-        <div className="max-w-[1050px]  ">
+          {/* CONTENT */}
+          <div className="relative z-10 p-3 md:p-5 space-y-4">
 
-          {/* ================= HEADER ================= */}
-          <div className="text-center ">
-
-            <h1 className="
-        text-2xl md:text-3xl
-        font-bold
-        tracking-tight
-      ">
-              Your Workspaces
-            </h1>
-
-            <p
+            {/* HEADER */}
+            <div
               className={`
-          mt-2
-          text-[12px]
+          w-200
+          rounded-[22px]
+          px-4 py-3
+          backdrop-blur-xl
+          border
 
           ${theme === "Dark"
-                  ? "text-gray-400"
-                  : "text-gray-500"
+                  ? "bg-white/[0.04] border-white/10"
+                  : "bg-white/80 border-gray-200"
                 }
         `}
             >
-              Manage your teams, projects, and collaboration spaces
-            </p>
-          </div>
+              <div className="flex items-center justify-between gap-5">
 
-          {/* ================= FILTERS ================= */}
-          <div className="
-  mt-8
-  w-full
-  flex
-  justify-center
-">
+                {/* LEFT */}
+                <div className="flex items-center gap-3 min-w-0 flex-1">
 
-            <div className="
-    flex
-    flex-wrap
-    gap-2.5
-    max-w-[820px]
-  ">
+                  {/* ICON */}
+                  <div
+                    className={`
+                relative
+                w-[45px]
+                h-[45px]
+                rounded-[14px]
+                overflow-hidden
+                shrink-0
+                border
 
-              {filters.map((f, i) => (
+                ${theme === "Dark"
+                        ? "bg-white/[0.05] border-white/10"
+                        : "bg-gray-100 border-gray-200"
+                      }
+              `}
+                  >
+                    <img
+                      src={workspace?.workspaceicon?.img}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
 
-                <button
-                  key={i}
-                  onClick={() => settype(f)}
-                  className={`
-          min-w-[125px]
-          h-[42px]
-          px-4
-          rounded-[16px]
-          text-[12px]
-          font-medium
-          transition-all duration-300
-
-          ${type === f
-                      ? `
-              bg-blue-600
-              text-white
-              scale-[1.02]
-            `
-                      : theme === "Dark"
-                        ? `
-                bg-white/[0.05]
-                text-gray-300
-                hover:bg-white/[0.08]
-              `
-                        : `
-                bg-white
-                text-gray-700
-                hover:bg-gray-100
-              `
-                    }
-        `}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* ================= BUTTON ================= */}
-          <div className="
-  mt-8
-  w-full
-  flex
-  justify-center
-">
-            <button
-              className="
-      h-[44px]
-      px-5
-      rounded-[16px]
-      bg-blue-600
-      hover:bg-blue-700
-      text-white
-      text-[13px]
-      font-medium
-      transition-all duration-300
-    "
-            >
-              + Create Workspace
-            </button>
-          </div>
-          {/* ================= SPACES ================= */}
-          <div className="
-      mt-8
-  w-full
-  flex
-  justify-center
-    ">
-
-            {SpaceJson.map((w: any, i: number) => (
-
-              <div
-                key={i}
-                onMouseEnter={() => setid(i)}
-                onMouseLeave={() => setid(null)}
-                className={`
-            w-[820px]
-            rounded-[20px]
-            p-4
-            transition-all duration-300
-            cursor-pointer
-
-            ${theme === "Dark"
-                    ? "bg-white/[0.04] hover:bg-white/[0.06]"
-                    : "bg-white hover:bg-gray-50"
-                  }
-          `}
-              >
-
-                <div className="
-            flex
-            items-center
-            justify-between
-            gap-4
-          ">
-
-                  {/* LEFT */}
-                  <div className="
-              flex
-              items-center
-              gap-3
-              min-w-0
-              flex-1
-            ">
-
-                    {/* ICON */}
                     <div
-                      className={`
-                  w-12 h-12
-                  rounded-[14px]
-                  flex items-center justify-center
-                  shrink-0
+                      className="
+                  absolute bottom-[3px] right-[3px]
+                  w-2.5 h-2.5
+                  rounded-full
+                  bg-green-500
+                "
+                    />
+                  </div>
 
-                  ${theme === "Dark"
-                          ? "bg-white/[0.06]"
-                          : "bg-gray-100"
-                        }
-                `}
-                    >
-                      <img
-                        src={w?.workspaceicon?.img}
-                        alt="workspace"
-                        className="w-7 h-7 object-contain"
-                      />
-                    </div>
+                  {/* TEXT */}
+                  <div className="min-w-0">
 
-                    {/* INFO */}
-                    <div className="min-w-0">
+                    <div className="flex items-center gap-2">
 
-                      <h3 className="
-                  text-[14px]
-                  font-semibold
-                  truncate
-                ">
-                        {w?.workspaceSetup?.workspaceName}
-                      </h3>
+                      <h1
+                        className="
+                    text-[15px]
+                    md:text-[17px]
+                    font-semibold
+                    truncate
+                  "
+                      >
+                        {workspace?.name}
+                      </h1>
 
-                      <p
+                      <button
                         className={`
-                    mt-1
-                    text-[11px]
+                    w-8 h-8
+                    rounded-[10px]
+                    border
+                    flex items-center justify-center
 
                     ${theme === "Dark"
-                            ? "text-gray-400"
-                            : "text-gray-500"
+                            ? "bg-white/[0.04] border-white/10"
+                            : "bg-gray-100 border-gray-200"
                           }
                   `}
                       >
-                        {w?.workspaceSetup?.createby?.userName || "User"} • Team Lead
-                      </p>
+                        <FaUsers fontSize={18} />
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          setOpenProject(
+                            openProject === workspace._id
+                              ? null
+                              : workspace._id
+                          )
+                        }
+                        className={`
+                    w-8 h-8
+                    rounded-[10px]
+                    border
+                    flex items-center justify-center
+
+                    ${theme === "Dark"
+                            ? "bg-white/[0.04] border-white/10"
+                            : "bg-gray-100 border-gray-200"
+                          }
+                  `}
+                      >
+                        <PiDotsThreeBold fontSize={18} />
+                      </button>
                     </div>
+
+                    <p
+                      className="
+                  text-[12px]
+                  opacity-70
+                  truncate
+                  max-w-[350px]
+                  mt-0.5
+                "
+                    >
+                      {workspace?.description}
+                    </p>
                   </div>
-
-                  {/* ACTIONS */}
-                  {id === i && <div className="
-              flex
-              items-center
-              gap-2
-            ">
-
-                    {/* STAR */}
-                    <button
-                      className={`
-                  w-9 h-9
-                  rounded-[12px]
-                  flex items-center justify-center
-                  transition-all
-
-                  ${w?.isStaredUsers?.userEmail === useremail
-                          ? "bg-yellow-400 text-white"
-                          : theme === "Dark"
-                            ? "bg-white/[0.06] text-gray-300"
-                            : "bg-gray-100 text-gray-600"
-                        }
-                `}
-                    >
-                      <FiStar
-                        className={`text-[14px] ${w?.isStaredUsers?.userEmail === useremail
-                          ? "fill-current"
-                          : ""
-                          }`}
-                      />
-                    </button>
-
-                    {/* VIEW */}
-                    <button
-                      onClick={() => setwork(w)}
-                      className={`
-                  w-9 h-9
-                  rounded-[12px]
-                  flex items-center justify-center
-                  transition-all
-
-                  ${theme === "Dark"
-                          ? "bg-white/[0.06] text-gray-300 hover:bg-blue-600 hover:text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white"
-                        }
-                `}
-                    >
-                      <FiEye className="text-[14px]" />
-                    </button>
-                  </div>}
                 </div>
 
+                {/* RIGHT */}
+                <div className="flex items-center gap-2 shrink-0">
+
+                  <button
+                    onClick={() => setwork([])}
+                    className="
+                px-3 py-2
+                rounded-xl
+                bg-blue-500
+                hover:bg-blue-600
+                text-white
+                text-xs
+                transition-all
+              "
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    className={`
+                w-8 h-8
+                rounded-[10px]
+                border
+                flex items-center justify-center
+
+                ${theme === "Dark"
+                        ? "bg-white/[0.04] border-white/10"
+                        : "bg-gray-100 border-gray-200"
+                      }
+              `}
+                  >
+                    <CiShare1 fontSize={18} />
+                  </button>
+
+                  {/* MAXIMIZE */}
+                  <button
+                    onClick={handelMaximizeAndMinPoup}
+                    className={`
+                w-8 h-8
+                rounded-[10px]
+                border
+                flex items-center justify-center
+
+                ${theme === "Dark"
+                        ? "bg-white/[0.04] border-white/10"
+                        : "bg-gray-100 border-gray-200"
+                      }
+              `}
+                  >
+                    <CgMaximizeAlt fontSize={18} />
+                  </button>
+                </div>
               </div>
+            </div>
 
+            {/* MENU */}
+            {openProject === workspace?._id && (
+              <div
+                ref={workspaceMenuRef}
+                className={`
+            fixed top-24 right-5
+            w-[250px]
+            z-[999]
+            rounded-[22px]
+            border
+            p-2
+            shadow-2xl
+            backdrop-blur-2xl
 
+            ${theme === "Dark"
+                    ? "bg-[#111827]/95 border-white/10 text-white"
+                    : "bg-white/95 border-gray-200 text-black"
+                  }
+          `}
+              >
+                <button
+                  onClick={() => SetBackground(true)}
+                  className={`
+              w-full
+              flex items-center gap-3
+              px-4 py-3
+              rounded-xl
+              text-[13px]
 
+              ${theme === "Dark"
+                      ? "hover:bg-white/10"
+                      : "hover:bg-gray-100"
+                    }
+            `}
+                >
+                  🖼️ Set Space Background
+                </button>
 
-            ))}
-            {/* ACTIONS */}
+                <button
+                  onClick={() => handleProjectSetting(workspace)}
+                  className={`
+              w-full
+              flex items-center gap-3
+              px-4 py-3
+              rounded-xl
+              text-[13px]
 
+              ${theme === "Dark"
+                      ? "hover:bg-white/10"
+                      : "hover:bg-gray-100"
+                    }
+            `}
+                >
+                  <FaGear />
+                  Project Settings
+                </button>
+
+                <div className="my-2 border-t border-white/10" />
+
+                <button
+                  className="
+              w-full
+              flex items-center gap-3
+              px-4 py-3
+              rounded-xl
+              text-[13px]
+              text-red-500
+              hover:bg-red-500/10
+            "
+                >
+                  🗑️ Delete
+                </button>
+              </div>
+            )}
+
+            {/* VIEWS */}
+            <div
+              className={`
+          max-w-max
+          rounded-[20px]
+          border
+          p-2
+          flex items-center gap-2
+          overflow-x-auto
+          scrollbar-hide
+
+          ${theme === "Dark"
+                  ? "bg-white/[0.04] border-white/10"
+                  : "bg-white/80 border-gray-200"
+                }
+        `}
+            >
+              {workspace?.workspaceSetup?.views?.map(
+                (view, idx) => {
+                  const active = CurrentView === view;
+
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentView(view)}
+                      className={`
+                  px-4 py-2.5
+                  rounded-xl
+                  text-[13px]
+                  whitespace-nowrap
+                  transition-all
+
+                  ${active
+                          ? theme === "Dark"
+                            ? "bg-white text-black"
+                            : "bg-black text-white"
+                          : "opacity-60 hover:opacity-100"
+                        }
+                `}
+                    >
+                      {view}
+                    </button>
+                  );
+                }
+              )}
+            </div>
+
+            {/* BOARD */}
+            <div className="overflow-x-auto pb-4 scrollbar-hide">
+
+              {CurrentView == "Summary" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Timeline" &&
+                <SpaceTimeLine />
+              }
+
+              {CurrentView == "Development" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Forms" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "List" &&
+                <SpaceList />
+              }
+
+              {CurrentView == "Pages" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Reports" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Backlog" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Calendar" &&
+                <MyCalendar theme={theme} />
+              }
+
+              {CurrentView == "Goals" &&
+                <h1>{CurrentView} View Adding Soon</h1>
+              }
+
+              {CurrentView == "Board" &&
+                <Board theme={theme} work={work} />
+              }
+            </div>
           </div>
         </div>
-      </div>
+      )}
