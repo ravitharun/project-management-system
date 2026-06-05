@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUsers } from "react-icons/fa";
 import { CiShare1 } from "react-icons/ci";
 
+
 function ViewWorkspace({ theme }: any) {
   const workspaceProvider = useContext(WorkspaceData);
   const CreatedSpaceJson = useContext(CreatedspaceData);
@@ -22,7 +23,7 @@ function ViewWorkspace({ theme }: any) {
   const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
 
   const { SpaceJson }: any = CreatedSpaceJson;
-  const { work }: any = workspaceProvider;
+  const { work, setwork }: any = workspaceProvider;
 
   const workspace = work;
 
@@ -93,9 +94,11 @@ function ViewWorkspace({ theme }: any) {
     return <WorkspaceViwe theme={theme} SpaceJson={SpaceJson} />;
   }
 
+
   return (
 
     <>
+
       {isSetBackground && (
         <SetWork
           SetBackground={SetBackground}
@@ -103,7 +106,6 @@ function ViewWorkspace({ theme }: any) {
           theme={theme}
         />
       )}
-
       <div
         className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
           ? "bg-[#0b1020] text-white"
@@ -134,6 +136,21 @@ function ViewWorkspace({ theme }: any) {
 
 
           {/* HEADER */}
+         <button
+  onClick={() => setwork([])}
+  className="
+    px-3 py-1.5
+    text-xs font-medium
+    rounded-full
+    transition-all duration-200
+    bg-blue-500 text-white
+    hover:bg-blue-600
+    active:scale-95
+    shadow-sm
+  "
+>
+  Reset to For You
+</button>
 
           <div
             className={`
