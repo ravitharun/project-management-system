@@ -29,466 +29,276 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
     <>
       <div
         className={`
-          min-h-screen
-          w-full
-          px-3 md:px-5
-          py-5
-          transition-all duration-300
+    min-h-screen
+    w-full
+    px-3 md:px-5
+    py-4
 
-          ${theme === "Dark"
+    ${theme === "Dark"
             ? "bg-[#0B1120] text-white"
             : "bg-[#F5F7FB] text-gray-900"
           }
-        `}
+  `}
       >
 
         {/* ================= CONTAINER ================= */}
-        <div className="max-w-[1350px] mx-auto space-y-5">
+        <div className="max-w-[1050px]  ">
 
           {/* ================= HEADER ================= */}
-          <div className="
-            flex flex-col lg:flex-row
-            lg:items-center
-            lg:justify-between
-            gap-4
-          ">
+          <div className="text-center ">
 
-            {/* LEFT */}
-            <div>
+            <h1 className="
+        text-2xl md:text-3xl
+        font-bold
+        tracking-tight
+      ">
+              Your Workspaces
+            </h1>
 
-              <h1 className="
-                text-2xl md:text-3xl
-                font-bold
-                tracking-tight
-              ">
-                Your Workspaces
-              </h1>
+            <p
+              className={`
+          mt-2
+          text-[12px]
 
-              <p
-                className={`
-                  mt-2
-                  text-[13px]
-
-                  ${theme === "Dark"
-                    ? "text-gray-400"
-                    : "text-gray-500"
-                  }
-                `}
-              >
-                Manage your teams, projects, and collaboration spaces
-              </p>
-            </div>
-
-            {/* RIGHT */}
-            <div className="
-              flex flex-col sm:flex-row
-              gap-3
-              w-full lg:w-auto
-            ">
-
-              {/* SEARCH */}
-              <div
-                className={`
-                  flex items-center gap-3
-                  h-[44px]
-                  px-4
-                  rounded-[18px]
-                  min-w-0
-                  w-full sm:w-[240px]
-                  backdrop-blur-xl
-                  border
-
-                  ${theme === "Dark"
-                    ? "bg-white/[0.05] border-white/10"
-                    : "bg-white border-gray-200"
-                  }
-                `}
-              >
-                <FiSearch
-                  className={`
-                    text-sm shrink-0
-
-                    ${theme === "Dark"
-                      ? "text-gray-400"
-                      : "text-gray-500"
-                    }
-                  `}
-                />
-
-                <input
-                  type="text"
-                  placeholder="Search workspace..."
-                  className={`
-                    bg-transparent
-                    outline-none
-                    text-[13px]
-                    w-full
-                    min-w-0
-
-                    ${theme === "Dark"
-                      ? "placeholder:text-gray-500"
-                      : "placeholder:text-gray-400"
-                    }
-                  `}
-                />
-              </div>
-
-              {/* BUTTON */}
-              <button
-                className="
-                  h-[44px]
-                  px-4
-                  rounded-[18px]
-                  text-[13px]
-                  font-medium
-                  whitespace-nowrap
-                  bg-blue-600
-                  hover:bg-blue-700
-                  text-white
-                  transition-all
-                  hover:scale-[1.02]
-                "
-              >
-                + Create Workspace
-              </button>
-            </div>
+          ${theme === "Dark"
+                  ? "text-gray-400"
+                  : "text-gray-500"
+                }
+        `}
+            >
+              Manage your teams, projects, and collaboration spaces
+            </p>
           </div>
 
           {/* ================= FILTERS ================= */}
           <div className="
-            flex items-center
-            gap-2
-            overflow-x-auto
-            scrollbar-hide
-            pb-1
-          ">
+  mt-8
+  w-full
+  flex
+  justify-center
+">
 
-            {filters.map((f, i) => (
+            <div className="
+    flex
+    flex-wrap
+    gap-2.5
+    max-w-[820px]
+  ">
 
-              <button
-                key={i}
-                onClick={() => settype(f)}
-                className={`
-                  px-4 py-2
-                  rounded-full
-                  text-[12px]
-                  font-medium
-                  whitespace-nowrap
-                  transition-all duration-200
-                  border
+              {filters.map((f, i) => (
 
-                  ${type === f
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : theme === "Dark"
-                      ? "bg-white/[0.05] border-white/10 text-gray-300 hover:bg-white/[0.08]"
-                      : "bg-white border-gray-200 text-gray-600 hover:bg-gray-100"
-                  }
-                `}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
+                <button
+                  key={i}
+                  onClick={() => settype(f)}
+                  className={`
+          min-w-[125px]
+          h-[42px]
+          px-4
+          rounded-[16px]
+          text-[12px]
+          font-medium
+          transition-all duration-300
 
-          {/* ================= SECTION HEADER ================= */}
-          <div className="
-            flex items-center
-            justify-between
-            gap-3
-            flex-wrap
-          ">
-
-            <div>
-
-              <h2 className="
-                text-lg
-                font-semibold
-              ">
-                Recommended Spaces
-              </h2>
-
-              <p
-                className={`
-                  text-[13px]
-                  mt-1
-
-                  ${theme === "Dark"
-                    ? "text-gray-400"
-                    : "text-gray-500"
-                  }
-                `}
-              >
-                Continue collaborating with your team
-              </p>
+          ${type === f
+                      ? `
+              bg-blue-600
+              text-white
+              scale-[1.02]
+            `
+                      : theme === "Dark"
+                        ? `
+                bg-white/[0.05]
+                text-gray-300
+                hover:bg-white/[0.08]
+              `
+                        : `
+                bg-white
+                text-gray-700
+                hover:bg-gray-100
+              `
+                    }
+        `}
+                >
+                  {f}
+                </button>
+              ))}
             </div>
-
-            <span
-              className={`
-                text-[13px]
-                font-medium
-                shrink-0
-
-                ${theme === "Dark"
-                  ? "text-blue-400"
-                  : "text-blue-600"
-                }
-              `}
-            >
-              {SpaceJson.length} Spaces
-            </span>
           </div>
 
-          {/* ================= WORKSPACE GRID ================= */}
+          {/* ================= BUTTON ================= */}
           <div className="
-            grid
-            grid-cols-1
-            lg:grid-cols-2
+  mt-8
+  w-full
+  flex
+  justify-center
+">
+            <button
+              className="
+      h-[44px]
+      px-5
+      rounded-[16px]
+      bg-blue-600
+      hover:bg-blue-700
+      text-white
+      text-[13px]
+      font-medium
+      transition-all duration-300
+    "
+            >
+              + Create Workspace
+            </button>
+          </div>
+          {/* ================= SPACES ================= */}
+          <div className="
+      mt-8
+  w-full
+  flex
+  justify-center
+    ">
+
+            {SpaceJson.map((w: any, i: number) => (
+
+              <div
+                key={i}
+                onMouseEnter={() => setid(i)}
+                onMouseLeave={() => setid(null)}
+                className={`
+            w-[820px]
+            rounded-[20px]
+            p-4
+            transition-all duration-300
+            cursor-pointer
+
+            ${theme === "Dark"
+                    ? "bg-white/[0.04] hover:bg-white/[0.06]"
+                    : "bg-white hover:bg-gray-50"
+                  }
+          `}
+              >
+
+                <div className="
+            flex
+            items-center
+            justify-between
             gap-4
           ">
 
-            {SpaceJson.length === 0 ? (
-
-              <div
-                className={`
-                  col-span-full
-                  h-[240px]
-                  rounded-[28px]
-                  border
-                  flex flex-col
-                  items-center
-                  justify-center
-                  text-center
-                  p-6
-
-                  ${theme === "Dark"
-                    ? "bg-white/[0.04] border-white/10 text-gray-400"
-                    : "bg-white border-gray-200 text-gray-500"
-                  }
-                `}
-              >
-                <div className="text-5xl mb-4">
-                  📂
-                </div>
-
-                <h3 className="font-semibold text-lg">
-                  No Workspaces Found
-                </h3>
-
-                <p className="text-sm mt-2 opacity-70">
-                  Try changing filters or create a new workspace
-                </p>
-              </div>
-
-            ) : (
-
-              SpaceJson.map((w: any, i: number) => (
-
-                <div
-                  key={i}
-                  onMouseEnter={() => setid(i)}
-                  onMouseLeave={() => setid(null)}
-                  className={`
-                    group
-                    relative
-                    overflow-hidden
-                    rounded-[28px]
-                    border
-                    p-4
-                    transition-all duration-300
-                    cursor-pointer
-
-                    ${theme === "Dark"
-                      ? "bg-white/[0.04] border-white/10 hover:bg-white/[0.06]"
-                      : "bg-white border-gray-200 hover:border-blue-300 hover:shadow-lg"
-                    }
-                  `}
-                >
-
+                  {/* LEFT */}
                   <div className="
-                    flex items-start
-                    justify-between
-                    gap-4
-                  ">
+              flex
+              items-center
+              gap-3
+              min-w-0
+              flex-1
+            ">
 
-                    {/* LEFT */}
-                    <div className="
-                      flex items-start
-                      gap-4
-                      min-w-0
-                      flex-1
-                    ">
-
-                      {/* ICON */}
-                      <div
-                        className={`
-                          w-14 h-14
-                          rounded-[18px]
-                          flex items-center justify-center
-                          shrink-0
-
-                          ${theme === "Dark"
-                            ? "bg-white/[0.06]"
-                            : "bg-gray-100"
-                          }
-                        `}
-                      >
-                        <img
-                          src={w?.workspaceicon?.img}
-                          alt="workspace"
-                          className="w-8 h-8 object-contain"
-                        />
-                      </div>
-
-                      {/* INFO */}
-                      <div className="
-                        min-w-0
-                        flex-1
-                      ">
-
-                        <h3 className="
-                          font-semibold
-                          text-[15px]
-                          truncate
-                        ">
-                          {w?.workspaceSetup?.workspaceName}
-                        </h3>
-
-                        <p
-                          className={`
-                            text-[12px]
-                            truncate
-                            mt-1
-
-                            ${theme === "Dark"
-                              ? "text-gray-400"
-                              : "text-gray-500"
-                            }
-                          `}
-                        >
-                          {w?.workspaceSetup?.createby?.userName || "User"} • Team Lead
-                        </p>
-
-                        {/* TAGS */}
-                        <div className="
-                          flex items-center
-                          gap-2
-                          mt-3
-                          flex-wrap
-                        ">
-
-                          <span
-                            className={`
-                              px-2.5 py-1
-                              rounded-full
-                              text-[10px]
-                              font-medium
-
-                              ${theme === "Dark"
-                                ? "bg-white/[0.06] text-gray-300"
-                                : "bg-gray-100 text-gray-600"
-                              }
-                            `}
-                          >
-                            Active
-                          </span>
-
-                          <span
-                            className={`
-                              px-2.5 py-1
-                              rounded-full
-                              text-[10px]
-                              font-medium
-
-                              ${theme === "Dark"
-                                ? "bg-blue-500/10 text-blue-400"
-                                : "bg-blue-50 text-blue-600"
-                              }
-                            `}
-                          >
-                            Workspace
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* ACTIONS */}
+                    {/* ICON */}
                     <div
                       className={`
-                        flex items-center
-                        gap-2
-                        shrink-0
-                        transition-all duration-300
+                  w-12 h-12
+                  rounded-[14px]
+                  flex items-center justify-center
+                  shrink-0
 
-                        ${id === i
-                          ? "opacity-100 translate-x-0"
-                          : "opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                  ${theme === "Dark"
+                          ? "bg-white/[0.06]"
+                          : "bg-gray-100"
                         }
-                      `}
+                `}
                     >
+                      <img
+                        src={w?.workspaceicon?.img}
+                        alt="workspace"
+                        className="w-7 h-7 object-contain"
+                      />
+                    </div>
 
-                      {/* STAR */}
-                      <button
+                    {/* INFO */}
+                    <div className="min-w-0">
+
+                      <h3 className="
+                  text-[14px]
+                  font-semibold
+                  truncate
+                ">
+                        {w?.workspaceSetup?.workspaceName}
+                      </h3>
+
+                      <p
                         className={`
-                          w-10 h-10
-                          rounded-[14px]
-                          flex items-center justify-center
-                          transition-all duration-200
+                    mt-1
+                    text-[11px]
 
-                          ${w?.isStaredUsers?.userEmail === useremail
-                            ? "bg-yellow-400 text-white"
-                            : theme === "Dark"
-                              ? "bg-white/[0.06] text-gray-400 hover:text-yellow-400"
-                              : "bg-gray-100 text-gray-500 hover:text-yellow-500"
+                    ${theme === "Dark"
+                            ? "text-gray-400"
+                            : "text-gray-500"
                           }
-                        `}
+                  `}
                       >
-                        <FiStar
-                          className={
-                            w?.isStaredUsers?.userEmail === useremail
-                              ? "fill-current"
-                              : ""
-                          }
-                        />
-                      </button>
-
-                      {/* VIEW */}
-                      <button
-                        onClick={() => setwork(w)}
-                        className={`
-                          w-10 h-10
-                          rounded-[14px]
-                          flex items-center justify-center
-                          transition-all duration-200
-
-                          ${theme === "Dark"
-                            ? "bg-white/[0.06] text-gray-300 hover:bg-blue-600 hover:text-white"
-                            : "bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white"
-                          }
-                        `}
-                      >
-                        <FiEye />
-                      </button>
+                        {w?.workspaceSetup?.createby?.userName || "User"} • Team Lead
+                      </p>
                     </div>
                   </div>
+
+                  {/* ACTIONS */}
+                  {id === i && <div className="
+              flex
+              items-center
+              gap-2
+            ">
+
+                    {/* STAR */}
+                    <button
+                      className={`
+                  w-9 h-9
+                  rounded-[12px]
+                  flex items-center justify-center
+                  transition-all
+
+                  ${w?.isStaredUsers?.userEmail === useremail
+                          ? "bg-yellow-400 text-white"
+                          : theme === "Dark"
+                            ? "bg-white/[0.06] text-gray-300"
+                            : "bg-gray-100 text-gray-600"
+                        }
+                `}
+                    >
+                      <FiStar
+                        className={`text-[14px] ${w?.isStaredUsers?.userEmail === useremail
+                          ? "fill-current"
+                          : ""
+                          }`}
+                      />
+                    </button>
+
+                    {/* VIEW */}
+                    <button
+                      onClick={() => setwork(w)}
+                      className={`
+                  w-9 h-9
+                  rounded-[12px]
+                  flex items-center justify-center
+                  transition-all
+
+                  ${theme === "Dark"
+                          ? "bg-white/[0.06] text-gray-300 hover:bg-blue-600 hover:text-white"
+                          : "bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white"
+                        }
+                `}
+                    >
+                      <FiEye className="text-[14px]" />
+                    </button>
+                  </div>}
                 </div>
-              ))
-            )}
-          </div>
 
-          {/* ================= FOOTER ================= */}
-          <div
-            className={`
-              text-center
-              pt-2
-              text-[12px]
+              </div>
 
-              ${theme === "Dark"
-                ? "text-gray-500"
-                : "text-gray-400"
-              }
-            `}
-          >
-            Explore all workspaces and collaborate efficiently
+
+
+
+            ))}
+            {/* ACTIONS */}
+
           </div>
         </div>
       </div>
