@@ -12,17 +12,18 @@ const Analytics = lazy(() => import("../pages/Analytics"))
 const Profile = lazy(() => import("../pages/Profile"))
 const Calendra = lazy(() => import("../pages/Calendra"))
 const ProjectSettings = lazy(() => import("../Components/ProjectSettings"))
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useContext, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
 import { useremail, Usertoekn } from "../Components/LocalStorage";
 import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
-
-
+import bgthemeContext from "../Context/ThemeContext";
 
 function AppRouter() {
     const navigate = useNavigate();
+    const ContextTheme = useContext(bgthemeContext)
+    const { theme } = ContextTheme
     const dev = import.meta.env.VITE_ENV
     console.log(dev, 'dev')
     useEffect(() => {
@@ -160,7 +161,7 @@ function AppRouter() {
 
             ></ToastContainer>
 
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<Loader theme={theme} />}>
                 <Routes>
 
                     <Route path="/" element={<App />} />
