@@ -246,9 +246,8 @@ function MinAndMaxWorkspaceView({ handelMaximizeAndMinPoup, theme, work, workspa
                     }
               `}
                 >
-                  <CiShare1 fontSize={20} />
+                  <CiShare1 fontSize={20}  title="press Key s"/>
                 </button>
-
                 {/* MAX / MIN */}
                 <button
                   onClick={handelMaximizeAndMinPoup}
@@ -267,9 +266,9 @@ function MinAndMaxWorkspaceView({ handelMaximizeAndMinPoup, theme, work, workspa
               `}
                 >
                   {ismaxAndMin ? (
-                    <TbMinimize fontSize={18} />
+                    <TbMinimize fontSize={18} title="press I or i" />
                   ) : (
-                    <CgMaximizeAlt fontSize={20} />
+                    <CgMaximizeAlt fontSize={20} title="press Shift" />
                   )}
                 </button>
               </div>

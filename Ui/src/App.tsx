@@ -9,6 +9,7 @@ import ViewWorkspace from "./Components/ViewWorkspace";
 
 
 function App() {
+
   const sidebar = useContext(SideBarContext);
   const context = useContext(bgthemeContext);
 
@@ -17,12 +18,12 @@ function App() {
     <>
       <div
         className={`
-                min-h-screen w-full overflow-hidden
-                ${theme === "Dark"
+          min-h-screen w-full overflow-hidden
+          ${theme === "Dark"
             ? "bg-[#020817]"
             : "bg-[#f4f6fb]"
           }
-            `}
+          `}
       >
         {/* SIDEBAR */}
         <Sidebar page="For You" />
@@ -30,23 +31,24 @@ function App() {
         {/* MAIN */}
         <div
           className={`
-                    transition-all duration-300
-                    min-h-screen w-full
-                    pt-[72px]
-
-                    ${sidebar?.issidebaropen
+            transition-all duration-300
+            min-h-screen w-full
+            pt-[72px]
+            
+            ${sidebar?.issidebaropen
               ? "md:ml-[260px]"
               : "md:ml-[88px]"
             }
-                `}
+            `}
         >
           {/* <main className="flex-1 overflow-hidden"> */}
           <main className=" w-full overflow-y-auto">
 
             <ViewWorkspace theme={theme} />
-     
+       
+
           </main>            </div>
-            
+
       </div>
     </>
   )

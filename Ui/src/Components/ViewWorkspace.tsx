@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import WorkspaceData from "../Context/workspaceData";
 import WorkspaceViwe from "./WorkspaceViwe";
 import CreatedspaceData from "../Context/CreatedWorkspace";
@@ -25,7 +25,25 @@ function ViewWorkspace({ theme }: any) {
   const { work, setwork }: any = workspaceProvider;
 
   const workspace = work;
+  useEffect(() => {
 
+    const handleKeyDown = (e:any) => {
+      if (e.key === "Shift") {
+        return setMaxAndMin(true);
+      }
+      else if (e.key === 'i' || e.key == "I") {
+
+        return setMaxAndMin(false);
+      }
+      else if(e.key=="m"){return  }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   const navigate = useNavigate();
 
   const columns =
@@ -98,6 +116,7 @@ function ViewWorkspace({ theme }: any) {
     setMaxAndMin((prev) => !prev)
 
   }
+
 
 
   return (

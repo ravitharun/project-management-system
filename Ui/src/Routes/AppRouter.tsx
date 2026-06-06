@@ -23,7 +23,7 @@ import bgthemeContext from "../Context/ThemeContext";
 function AppRouter() {
     const navigate = useNavigate();
     const ContextTheme = useContext(bgthemeContext)
-    const { theme } = ContextTheme
+    const { theme }:any = ContextTheme
     const dev = import.meta.env.VITE_ENV
     console.log(dev, 'dev')
     useEffect(() => {
