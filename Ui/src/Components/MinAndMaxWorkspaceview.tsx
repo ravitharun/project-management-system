@@ -8,17 +8,10 @@ import { FaGear } from "react-icons/fa6";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { CgMaximizeAlt } from "react-icons/cg";
 import { TbMinimize } from "react-icons/tb";
-function MinAndMaxWorkspaceView({ handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
-  console.log(ismaxAndMin)
-  const HandelShare = async (id: number) => {
-    const shareData: any = {
-      title: "Taskaro Workspace",
-      text: "Join my Taskaro workspace and collaborate on projects, tasks, and productivity in one place.",
-      url: `${import.meta.env.VITE_Ui_API}/?id=${id}`,
-    };
-    await navigator.share(shareData);
 
-  }
+function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
+  console.log("normalApp page ui")
+
   return (
     <>
       <div
