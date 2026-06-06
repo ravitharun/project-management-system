@@ -100,7 +100,9 @@ function AddProjectForm({ onclick }: Props) {
 
     try {
       const response = await instance.post("/api/ManageProject/Create", { data: formattedData })
-      console.log(response.data.message)
+      // console.log(response.data.message)
+
+      return response
 
     } catch (error: any) {
       toast.error(error)

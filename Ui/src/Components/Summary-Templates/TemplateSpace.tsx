@@ -101,7 +101,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                 }, 2500);
             }
         } catch (error: any) {
-            console.log(error.message)
+               console.error(error.message)
 
         }
 

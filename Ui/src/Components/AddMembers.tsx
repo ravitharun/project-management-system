@@ -52,10 +52,10 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
         const fetchMembers = async () => {
             try {
                 const response = await instance.get("/api/Team")
-                console.log(response.data.message, 'team')
+
                 setusers(response.data.message)
             } catch (error: any) {
-                console.log(error.message)
+                   console.error(error.message)
 
 
             }
@@ -79,7 +79,7 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
     };
     const AddMember = async () => {
 
-        console.log('members id', { userid, projectsid })
+
 
 
         if (userid.length == 0) {
@@ -90,12 +90,11 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
             const response = await instance.put("/api/ManageProject/AddMembers", {
                 data: { userid, projectsid }
             })
-            console.log(response, 'response')
             if (response.data.message == "Added") {
                 return toast.success("Added")
             }
         } catch (error: any) {
-            console.log(error.message)
+               console.error(error.message)
             if (error.status == 404) {
                 toast.info("More Than 1 Members are required to added in these project")
             }

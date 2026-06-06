@@ -209,7 +209,7 @@ ${url}/shared/ViewWorkspace?id=${id}`,
       {ismaxAndMin ?
         <>
 
-          {SpaceJsonView.length == 0 ?
+          {SpaceJsonView?.length == 0 ?
             <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
               setCurrentView
             } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> : <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
@@ -228,7 +228,7 @@ ${url}/shared/ViewWorkspace?id=${id}`,
         <>
 
 
-          {SpaceJsonView.length == 0 ?
+          {SpaceJsonView?.length == 0 ?
             <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
               setCurrentView
             } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> : <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={

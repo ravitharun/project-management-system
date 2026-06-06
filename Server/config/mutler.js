@@ -19,6 +19,14 @@ const fileFilter = (req, file, cb) => {
     cb(new Error("Only images allowed"), false);
   }
 };
+// Upload Custom Backgrounf Image 
+const BackgroundfileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only images allowed"), false);
+  }
+};
 
 // PDF filter
 const PdffileFilter = (req, file, cb) => {
@@ -41,5 +49,10 @@ const Pdfupload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: PdffileFilter
 });
+const uploadWorkspaceWallpaper = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: BackgroundfileFilter
+});
 
-module.exports = { upload, Pdfupload };
+module.exports = { upload, Pdfupload ,uploadWorkspaceWallpaper};
