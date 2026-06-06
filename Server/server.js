@@ -76,6 +76,10 @@ redis.on("connect", () => {
 const server = http.createServer(app);
 // Test server is Running
 app.get("/", (req, res) => {
+
+
+  const{id}=req.query
+
   const io = getIO()
 
 
@@ -84,7 +88,7 @@ app.get("/", (req, res) => {
 
 
 
-  return res.status(200).json({ message: "Server Is Running...", })
+  return res.status(200).json({ message: `Server Is Running... ${id}` })
 })
 
 // ✅ Initialize socket
