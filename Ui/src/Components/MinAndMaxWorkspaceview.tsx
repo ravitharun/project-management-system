@@ -10,12 +10,21 @@ import { CgMaximizeAlt } from "react-icons/cg";
 import { TbMinimize } from "react-icons/tb";
 function MinAndMaxWorkspaceView({ handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
   console.log(ismaxAndMin)
+  const HandelShare = async (id: number) => {
+    const shareData: any = {
+      title: "Taskaro Workspace",
+      text: "Join my Taskaro workspace and collaborate on projects, tasks, and productivity in one place.",
+      url: `${import.meta.env.VITE_Ui_API}/?id=${id}`,
+    };
+    await navigator.share(shareData);
+
+  }
   return (
     <>
       <div
         className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
-            ? "bg-[#0b1020] text-white"
-            : "bg-[#f5f7fb] text-black"
+          ? "bg-[#0b1020] text-white"
+          : "bg-[#f5f7fb] text-black"
           }`}
 
         style={{
@@ -246,7 +255,7 @@ function MinAndMaxWorkspaceView({ handelMaximizeAndMinPoup, theme, work, workspa
                     }
               `}
                 >
-                  <CiShare1 fontSize={20}  title="press Key s"/>
+                  <CiShare1 fontSize={20} title="press Key s" onClick={() => HandelShare(work._id)} />
                 </button>
                 {/* MAX / MIN */}
                 <button
