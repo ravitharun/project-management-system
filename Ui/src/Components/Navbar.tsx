@@ -89,7 +89,7 @@ function Sidebar({ page }: Props) {
                 setworkspace(response?.data?.data || []);
                 setspacejson(response?.data?.data || []);
             } catch (error: any) {
-                console.log(error);
+                console.error(error);
             }
         };
 
@@ -129,7 +129,7 @@ function Sidebar({ page }: Props) {
                 return toast.info("Workspace deleted successfully");
             }
         } catch (error: any) {
-            console.log(error.message)
+               console.error(error.message)
 
         }
     }
