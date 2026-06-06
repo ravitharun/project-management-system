@@ -58,7 +58,7 @@ function ProjetcDeatils() {
             const response = await instance.put("/api/ManageProject/UpdateProjectStatus", UpdateProjectStatus)
             console.log(response.status)
         } catch (error: any) {
-            console.log(error.message)
+               console.error(error.message)
 
         }
         // setProjectStatus(status)
@@ -113,7 +113,7 @@ function ProjetcDeatils() {
                 setProjectInfo(response.data.data)
                 console.log(response.data.data, 'response.data.data')
             } catch (error: any) {
-                console.log(error.message)
+                   console.error(error.message)
                 toast.error(error)
 
 

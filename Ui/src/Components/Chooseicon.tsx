@@ -26,13 +26,13 @@ function Chooseicon({
             const response = await instance.patch("/api/workspace/updateSpaceIcon", { data: data })
 
 
-            console.log(response.status)
+
             if (response.status == 200) {
                 return toast.success("Workspace icons updated successfully");
             }
 
         } catch (error: any) {
-            console.log(error.messsage)
+   console.error(error.message)
 
         }
     }

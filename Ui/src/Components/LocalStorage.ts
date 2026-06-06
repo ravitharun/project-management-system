@@ -1,12 +1,11 @@
 export const getuserInfo: string | null | any = localStorage.getItem("userinfo")
 export const Token: string | null = localStorage.getItem("LoginToken")
-export const useremail: string | null = getuserInfo ? JSON.parse(getuserInfo).userEmail : null
+export const useremail: string | null | any = getuserInfo ? JSON.parse(getuserInfo).userEmail : null
 
 export const isInDev: boolean = true
 
 
 export const Usertoekn = (navigate: any, toast: any) => {
-    // console.log(Token,'TokenToken')
     if (!Token) {
         toast.info("Login First To view Dashboard.")
         return navigate("/login")
@@ -21,6 +20,6 @@ export const checkuser = () => {
 
         return window.location.href = "/login"
     }
-    console.log(window.location, 'loc')
+
     return window.location.href = "/"
 };
