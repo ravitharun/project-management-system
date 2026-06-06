@@ -19,6 +19,7 @@ import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
 import bgthemeContext from "../Context/ThemeContext";
+import Shareview from "../Components/Shareview";
 
 function AppRouter() {
     const navigate = useNavigate();
@@ -157,8 +158,6 @@ function AppRouter() {
                 draggable
                 pauseOnHover
                 theme="colored"
-            // transition={Bounce}
-
             ></ToastContainer>
 
             <Suspense fallback={<Loader theme={theme} />}>
@@ -166,7 +165,8 @@ function AppRouter() {
 
                     <Route path="/" element={<App />} />
 
-                    {/* <Route path="/foru" element={<ViewWorkspace />} /> */}
+                    {/* <Route path="shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} /> */}
+                    <Route path="/shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
                     <Route path="/projectSettings" element={<ProjectSettings />} />
