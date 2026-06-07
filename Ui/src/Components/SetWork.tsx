@@ -4,6 +4,8 @@ import { useContext, useState } from "react"
 import { instance } from "../services/apiservices"
 import { toast, ToastContainer } from "react-toastify"
 import { useremail } from "./LocalStorage"
+import { allowedtype } from "../types/CustomUploadFormat"
+import UploadingLoader from "./UploadingLoader"
 
 function WorkspacePanel({ SetBackground, id }: any) {
 
@@ -26,7 +28,7 @@ function WorkspacePanel({ SetBackground, id }: any) {
 
     const saveBackgroundWorksapce = async () => {
         try {
-        
+
 
             if (!selectedImg) {
 
@@ -52,16 +54,16 @@ function WorkspacePanel({ SetBackground, id }: any) {
 
     const handelUploadCustomBgFile = async (e: any) => {
         const formdata = new FormData()
-        const allowedtype = ["image/png", 'image/jpng']
         const file = e.target.files[0];
+        if (!file) {
+            return toast.info("Custom background file upload is required.");
+        }
         if (!allowedtype.includes(file.type)) { return toast.info("Only PNG and JPEG image formats are allowed.") }
         if (file.size > 5 * 1024 * 1024) {
             return toast.info(`File size must be less than 5MB. Uploaded file size: ${(file.size / (1024 * 1024)).toFixed(2)} MB`)
         }
 
-        if (!file) {
-            return toast.info("Custom background file upload is required.");
-        }
+
 
         formdata.append("CustomUopload", file)
         formdata.append("updateSapceid", id)
@@ -99,29 +101,7 @@ function WorkspacePanel({ SetBackground, id }: any) {
     return (
         <>
             {isuploading && (
-                <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm">
-
-                    <div className="bg-white dark:bg-[#111827] px-8 py-6 rounded-3xl shadow-2xl flex flex-col items-center gap-4 min-w-[260px]">
-
-                        {/* Loader */}
-                        <div className="relative w-16 h-16">
-                            <div className="absolute inset-0 rounded-full border-4 border-gray-300"></div>
-
-                            <div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"></div>
-                        </div>
-
-                        {/* Text */}
-                        <div className="text-center">
-                            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-                                Uploading Background
-                            </h2>
-
-                            <p className="text-sm text-gray-500 mt-1">
-                                Please wait while we upload your wallpaper...
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <UploadingLoader type=" Updating Workspace Background " useCase="Wallpaper" />
             )}
             {/* ================= BACKDROP ================= */}
 

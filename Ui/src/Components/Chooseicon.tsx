@@ -3,16 +3,20 @@ import { WorkSpaceIcon } from "../types/workspaceIcon"
 import { useState } from "react"
 import { instance } from "../services/apiservices"
 import { toast } from "react-toastify"
+import { useremail } from "./LocalStorage"
+import { allowedtype } from "../types/CustomUploadFormat"
+import UploadingLoader from "./UploadingLoader"
 
 function Chooseicon({
-    selectedIcon,
     theme,
     close,
     id
 }: any) {
     const [choosed, setchoosed] = useState("")
+
+
+    const [isuploading, setisuploading] = useState<boolean>(false)
     const handleUpdateIcon = async () => {
-        console.log(choosed, id)
 
 
 
@@ -32,183 +36,363 @@ function Chooseicon({
             }
 
         } catch (error: any) {
-   console.error(error.message)
+            console.error(error.message)
 
         }
+
+    }
+
+
+
+
+    // /HandelUploadCustomUpload
+    const HandelUploadCustomUpload = async (e: any) => {
+        const file: any = e.target.files[0]
+
+        if (!file) {
+
+            return toast.info("fiel is rewuired.")
+
+
+        }
+        if (!allowedtype.includes(file.type)) { return toast.info("Only PNG and JPEG image formats are allowed.") }
+        if (file.size > 5 * 1024 * 1024) {
+            return toast.info(`File size must be less than 5MB. Uploaded file size: ${(file.size / (1024 * 1024)).toFixed(2)} MB`)
+        }
+
+
+
+        const formdata = new FormData()
+        formdata.append("CustomUploadIcon", file)
+        formdata.append("AddedBy", useremail)
+        formdata.append("workspaceSpaceId", id)
+        try {
+            setisuploading(true);
+
+            const responseUpload = await instance.put(
+                "/api/WorkSpace/CustomUopload/Icon",
+                formdata,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            console.log(responseUpload, "responseUpload");
+            if(responseUpload?.status==200){
+                return toast.success(responseUpload?.data.message)
+            }
+
+        } catch (error: any) {
+
+            // console.error(error?.response?.data?.status, "error");
+            if (error?.response?.status == 400) {
+
+                return toast.info(error?.response?.data?.message)
+            }
+
+        } finally {
+            setisuploading(false);
+        }
+
+
     }
     return (
 
+
         <>
+            <>
+                {isuploading && (
+                    <UploadingLoader
+                        type="Uploading Custom Workspace Icon"
+                        useCase="Icon"
+                    />
+                )}
 
+                <div className="fixed inset-0 z-[200] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
 
-            <div className="fixed inset-0 z-[200] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-
-                <div
-                    className={`
-                    w-full max-w-2xl max-h-[70vh]
-                    rounded-3xl shadow-2xl border
-                    overflow-hidden flex flex-col
-
-                    ${theme === "Dark"
-                            ? "bg-[#111827] border-gray-800 text-white"
-                            : "bg-white border-gray-200 text-black"
-                        }
-                `}
-                >
-
-                    {/* ================= HEADER ================= */}
                     <div
                         className={`
-                        flex items-center justify-between px-5 py-4 border-b shrink-0
+                w-full max-w-2xl max-h-[85vh]
+                rounded-3xl shadow-2xl border
+                overflow-hidden flex flex-col
 
-                        ${theme === "Dark"
-                                ? "border-gray-800"
-                                : "border-gray-200"
+                ${theme === "Dark"
+                                ? "bg-[#111827] border-gray-800 text-white"
+                                : "bg-white border-gray-200 text-black"
                             }
-                    `}
+            `}
                     >
 
-                        <div>
-                            <h2 className="text-lg font-semibold">
-                                Choose Workspace Icon
-                            </h2>
-
-                            <p
-                                className={`
-                                text-sm mt-1
-                                ${theme === "Dark"
-                                        ? "text-gray-400"
-                                        : "text-gray-500"
-                                    }
-                            `}
-                            >
-                                Select an icon for your workspace
-                            </p>
-                        </div>
-
-                        <button
-                            onClick={() => close(false)}
+                        {/* ================= HEADER ================= */}
+                        <div
                             className={`
-                            p-2 rounded-xl transition
+                    flex items-center justify-between px-6 py-5 border-b shrink-0
+
+                    ${theme === "Dark"
+                                    ? "border-gray-800 bg-[#0f172a]"
+                                    : "border-gray-200 bg-gray-50"
+                                }
+                `}
+                        >
+
+                            <div>
+                                <h2 className="text-xl font-semibold">
+                                    Choose Workspace Icon
+                                </h2>
+
+                                <p
+                                    className={`
+                            text-sm mt-1
 
                             ${theme === "Dark"
-                                    ? "hover:bg-[#1e293b]"
-                                    : "hover:bg-gray-100"
-                                }
+                                            ? "text-gray-400"
+                                            : "text-gray-500"
+                                        }
                         `}
-                        >
-                            <IoClose size={20} />
-                        </button>
-                    </div>
+                                >
+                                    Select or upload an icon for your workspace
+                                </p>
+                            </div>
 
-                    {/* ================= BODY ================= */}
-                    <div className="p-5 overflow-y-auto flex-1">
+                            <button
+                                onClick={() => close(false)}
+                                className={`
+                        p-2 rounded-xl transition-all duration-200
 
-                        <div className="grid grid-cols-4 gap-4">
+                        ${theme === "Dark"
+                                        ? "hover:bg-[#1e293b]"
+                                        : "hover:bg-gray-200"
+                                    }
+                    `}
+                            >
+                                <IoClose size={22} />
+                            </button>
+                        </div>
 
-                            {WorkSpaceIcon.map((itm: any) => (
+                        {/* ================= BODY ================= */}
+                        <div className="flex-1 overflow-y-auto p-6 space-y-8">
 
-                                <div
-                                    key={itm.id}
+                            {/* ================= ICON GRID ================= */}
+                            <div>
+
+                                <h3
                                     className={`
+                            text-sm font-semibold mb-4 uppercase tracking-wide
+
+                            ${theme === "Dark"
+                                            ? "text-gray-400"
+                                            : "text-gray-500"
+                                        }
+                        `}
+                                >
+                                    Workspace Icons
+                                </h3>
+
+                                <div className="grid grid-cols-4 gap-4">
+
+                                    {WorkSpaceIcon.map((itm: any) => (
+
+                                        <div
+                                            key={itm.id}
+                                            onClick={() => setchoosed(itm.img)}
+                                            className={`
                                     relative flex flex-col items-center justify-center
                                     p-4 rounded-2xl cursor-pointer border
-                                    transition-all duration-200 group
-${choosed == itm.img && "shadow-lg shadow-blue-500/20 border-2 border-green-900"}
-                                    ${selectedIcon === itm?.img
-                                            ? "border-blue-500 shadow-lg shadow-blue-500/20"
-                                            : theme === "Dark"
-                                                ? "border-gray-800 hover:border-gray-600 hover:bg-[#1e293b]"
-                                                : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"
-                                        }
+                                    transition-all duration-300 group
+
+                                    ${choosed === itm.img
+                                                    ? "border-blue-500 shadow-lg shadow-blue-500/20 scale-[1.03]"
+                                                    : theme === "Dark"
+                                                        ? "border-gray-800 hover:border-gray-600 hover:bg-[#1e293b]"
+                                                        : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"
+                                                }
                                 `}
-                                    onClick={() => setchoosed(itm.img)}
+                                        >
+
+                                            {/* ICON BOX */}
+                                            <div
+                                                className={`
+                                        w-16 h-16 rounded-2xl
+                                        flex items-center justify-center
+                                        overflow-hidden transition-all
+
+                                        ${theme === "Dark"
+                                                        ? "bg-[#0f172a]"
+                                                        : "bg-gray-100"
+                                                    }
+                                    `}
+                                            >
+                                                <img
+                                                    src={itm?.img}
+                                                    alt={itm?.name}
+                                                    className="w-9 h-9 object-contain group-hover:scale-110 transition duration-300"
+                                                />
+                                            </div>
+
+                                            {/* NAME */}
+                                            <p
+                                                className={`
+                                        text-[12px] text-center mt-3 font-medium line-clamp-2
+
+                                        ${theme === "Dark"
+                                                        ? "text-gray-300"
+                                                        : "text-gray-700"
+                                                    }
+                                    `}
+                                            >
+                                                {itm?.name}
+                                            </p>
+
+                                            {/* SELECTED BADGE */}
+                                            {choosed === itm.img && (
+                                                <div className="absolute top-2 right-2">
+                                                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-[11px]">
+                                                        ✓
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                        </div>
+                                    ))}
+
+                                </div>
+                            </div>
+
+                            {/* ================= UPLOAD SECTION ================= */}
+                            <div
+                                className={`
+                        rounded-3xl border p-5 transition-all duration-300
+
+                        ${theme === "Dark"
+                                        ? "bg-[#0f172a] border-gray-800"
+                                        : "bg-gray-50 border-gray-200"
+                                    }
+                    `}
+                            >
+
+                                {/* TITLE */}
+                                <div className="mb-5">
+
+                                    <h3 className="text-lg font-semibold">
+                                        Upload Custom Icon
+                                    </h3>
+
+                                    <p
+                                        className={`
+                                text-sm mt-1
+
+                                ${theme === "Dark"
+                                                ? "text-gray-400"
+                                                : "text-gray-500"
+                                            }
+                            `}
+                                    >
+                                        PNG, JPG or SVG supported
+                                    </p>
+                                </div>
+
+                                {/* DROP AREA */}
+                                <label
+                                    htmlFor="UploadCustomIcon"
+                                    className={`
+                            group cursor-pointer flex flex-col items-center justify-center
+                            border-2 border-dashed rounded-3xl p-10
+                            transition-all duration-300 hover:scale-[1.01]
+
+                            ${theme === "Dark"
+                                            ? "border-gray-700 hover:border-blue-500 bg-[#111827]"
+                                            : "border-gray-300 hover:border-blue-500 bg-white"
+                                        }
+                        `}
                                 >
-                                    <div>
-                                        {/* {selectedIcon == itm?.img ? "true" : "false"} */}
-                                    </div>
+
                                     {/* ICON */}
                                     <div
                                         className={`
-                                        w-14 h-14 rounded-2xl
-                                        flex items-center justify-center
-                                        overflow-hidden transition
+                                w-20 h-20 rounded-full
+                                flex items-center justify-center mb-5
+                                transition-all duration-300
 
-                                        ${theme === "Dark"
-                                                ? "bg-[#0f172a]"
-                                                : "bg-gray-100"
+                                ${theme === "Dark"
+                                                ? "bg-[#1e293b]"
+                                                : "bg-blue-100"
                                             }
-                                    `}
+                            `}
                                     >
-                                        <img
-                                            src={itm?.img}
-                                            alt={itm?.name}
-                                            className="w-8 h-8 object-contain group-hover:scale-110 transition duration-300"
-                                        />
+                                        <span className="text-4xl">📤</span>
                                     </div>
 
-                                    {/* NAME */}
-                                    <p
-                                        className={`
-                                        text-[11px] text-center mt-3 font-medium line-clamp-2
-
-                                        ${theme === "Dark"
-                                                ? "text-gray-300"
-                                                : "text-gray-700"
-                                            }
-                                    `}
-                                    >
-                                        {itm?.name}
+                                    {/* TEXT */}
+                                    <p className="text-base font-semibold text-center">
+                                        Click to Upload Icon
                                     </p>
 
-                                    {/* SELECTED BADGE */}
-                                    {selectedIcon?.id === itm?.id && (
-                                        <div className="absolute top-2 right-2 w-3 h-3 rounded-full bg-blue-500" />
-                                    )}
+                                    <span
+                                        className={`
+                                text-sm mt-2 text-center
 
-                                </div>
-                            ))}
+                                ${theme === "Dark"
+                                                ? "text-gray-400"
+                                                : "text-gray-500"
+                                            }
+                            `}
+                                    >
+                                        Drag & Drop your file here
+                                    </span>
+
+                                    {/* INPUT */}
+                                    <input
+                                        type="file"
+                                        name="CustomIcon"
+                                        id="UploadCustomIcon"
+                                        onChange={HandelUploadCustomUpload}
+                                        className="hidden"
+                                    />
+                                </label>
+                            </div>
 
                         </div>
-                    </div>
 
-                    {/* ================= FOOTER ================= */}
-                    <div
-                        className={`
-                        flex justify-end gap-3 px-5 py-4 border-t shrink-0
+                        {/* ================= FOOTER ================= */}
+                        <div
+                            className={`
+                    flex justify-end gap-3 px-6 py-5 border-t shrink-0
+
+                    ${theme === "Dark"
+                                    ? "border-gray-800 bg-[#0f172a]"
+                                    : "border-gray-200 bg-gray-50"
+                                }
+                `}
+                        >
+
+                            <button
+                                onClick={() => close(false)}
+                                className={`
+                        px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
 
                         ${theme === "Dark"
-                                ? "border-gray-800 bg-[#0b1220]"
-                                : "border-gray-200 bg-gray-50"
-                            }
+                                        ? "bg-[#1e293b] hover:bg-[#263244]"
+                                        : "bg-gray-200 hover:bg-gray-300"
+                                    }
                     `}
-                    >
+                            >
+                                Cancel
+                            </button>
 
-                        <button
-                            onClick={() => close(false)}
-                            className={`
-                            px-4 py-2 rounded-xl text-sm font-medium transition
+                            <button
+                                onClick={() => handleUpdateIcon()}
+                                className="px-5 py-2.5 rounded-xl text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white transition-all duration-200 shadow-lg shadow-blue-500/20"
+                            >
+                                Save Icon
+                            </button>
 
-                            ${theme === "Dark"
-                                    ? "bg-[#1e293b] hover:bg-[#263244]"
-                                    : "bg-gray-200 hover:bg-gray-300"
-                                }
-                        `}
-                        >
-                            Cancel
-                        </button>
-
-                        <button
-                            className="px-4 py-2 rounded-xl text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white transition"
-                            onClick={() => handleUpdateIcon()}
-                        >
-                            Save Icon
-                        </button>
+                        </div>
 
                     </div>
-
                 </div>
-            </div>
+            </>
         </>
     )
 }
