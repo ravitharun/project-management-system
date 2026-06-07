@@ -149,4 +149,30 @@ const handelCustomUoploadBackground = async (req, res) => {
         return res.status(500).json({ message: "Server Error" })
     }
 }
-module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground }
+
+const handelCustomUoploadIcon = async (req, res) => {
+    try {
+
+        console.log(req.file)
+        console.log(req.body.AddedBy, 'by')
+        console.log(req.body.workspaceSpaceId)
+        if (!req.body.workspaceSpaceId || !req.body.AddedBy) {
+            return res.status(404).json({ message: "SomeThing went Wrong." })
+        }
+        const Uploaded_url = await cloudinary.uploader.upload(req.file.path)
+        const isExitSpaceId = await Workspace.findByIdAndUpdate({ _id: req.body.workspaceSpaceId }, { icon: Uploaded_url?.secure_url }, { returnDocument: "after" })
+        console.log(Uploaded_url?.secure_url, 'Uploaded_url')
+        return res.status(200).json({ message: "Uploaded", Uploaded_url })
+    } catch (error) {
+        console.log(error.message, 'err')
+
+        if (error.name === "CastError") {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Workspace Id",
+            });
+        }
+        return res.status(500).json({ message: "Server Error" })
+    }
+}
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon }
