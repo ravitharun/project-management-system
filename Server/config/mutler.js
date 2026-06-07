@@ -27,6 +27,14 @@ const BackgroundfileFilter = (req, file, cb) => {
     cb(new Error("Only images allowed"), false);
   }
 };
+// Upload Custom workspace Icon Image 
+const WorkspaceIconfileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only images allowed"), false);
+  }
+};
 
 // PDF filter
 const PdffileFilter = (req, file, cb) => {
@@ -54,5 +62,13 @@ const uploadWorkspaceWallpaper = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: BackgroundfileFilter
 });
+const uploadWorkspaceIcon = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: WorkspaceIconfileFilter
+});
 
-module.exports = { upload, Pdfupload ,uploadWorkspaceWallpaper};
+
+
+
+module.exports = { upload, Pdfupload ,uploadWorkspaceWallpaper,uploadWorkspaceIcon};
