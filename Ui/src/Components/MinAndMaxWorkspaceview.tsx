@@ -10,7 +10,8 @@ import { CgMaximizeAlt } from "react-icons/cg";
 import { TbMinimize } from "react-icons/tb";
 
 function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
-  console.log("normalApp page ui")
+  console.log("normalApp page uis")
+  console.log(workspace?.icon,'workspace?.icon')
 
   return (
     <>
@@ -130,7 +131,7 @@ function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, w
               `}
                 >
                   <img
-                    src={workspace?.workspaceicon?.img}
+                    src={work?.icon}
                     alt=""
                     className="w-full h-full object-cover"
                   />
@@ -454,7 +455,7 @@ function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, w
                   minWidth: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <SpaceList />
+                <SpaceList  />
               </div>
             )}
 
