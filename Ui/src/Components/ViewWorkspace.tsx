@@ -16,7 +16,9 @@ import axios from "axios";
 
 
 
-function ViewWorkspace({ theme }: any) {
+
+function ViewWorkspace({theme}:any) {
+
   const workspaceProvider = useContext(WorkspaceData);
   const CreatedSpaceJson = useContext(CreatedspaceData);
   const CreatedSharespaceView = useContext(SharespaceView);
@@ -33,8 +35,7 @@ function ViewWorkspace({ theme }: any) {
   const { work, setwork }: any = workspaceProvider;
   const { SpaceJsonView, setSpaceJsonView }: any = CreatedSharespaceView;
 
-  // const { id } = useParams();
-  // console.log(id, '')
+
   const workspace = work
 
   const HandelShare = async (id: number) => {
@@ -56,6 +57,8 @@ ${url}/shared/ViewWorkspace?id=${id}`,
       console.log(error);
     }
   };
+
+
   const navigate = useNavigate();
 
 
@@ -132,7 +135,7 @@ ${url}/shared/ViewWorkspace?id=${id}`,
     ];
 
   const tasks =
-    SpaceJsonView || workspace?.tasks || [
+    SpaceJsonView?.tasks || workspace?.tasks || [
       {
         id: 1,
         title: "Setup project structure",

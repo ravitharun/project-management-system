@@ -1,7 +1,7 @@
 
-function SpaceTimeLine() {
+function SpaceTimeLine({theme}:any) {
   return (
-    <div>SpaceTimeLine</div>
+    <div>SpaceTimeLine-{theme}</div>
   )
 }
 

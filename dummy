@@ -1,378 +1,415 @@
- {!ismaxAndMin && (
-        <div
-          className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
-              ? "bg-[#0b1020] text-white"
-              : "bg-[#f5f7fb] text-black"
-            }`}
-        >
-          {/* BACKGROUND */}
-          {workspace?.workspaceBackground && (
-            <>
-              <img
-                src={workspace.workspaceBackground}
-                alt="workspace-bg"
-                className="
-            absolute inset-0
-            w-full h-full
-            object-cover
-            scale-105
-          "
-              />
-
-              <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
-            </>
-          )}
-
-          {/* CONTENT */}
-          <div className="relative z-10 p-3 md:p-5 space-y-4">
-
-            {/* HEADER */}
-            <div
-              className={`
-          w-200
-          rounded-[22px]
-          px-4 py-3
-          backdrop-blur-xl
-          border
-
-          ${theme === "Dark"
-                  ? "bg-white/[0.04] border-white/10"
-                  : "bg-white/80 border-gray-200"
-                }
-        `}
-            >
-              <div className="flex items-center justify-between gap-5">
-
-                {/* LEFT */}
-                <div className="flex items-center gap-3 min-w-0 flex-1">
-
-                  {/* ICON */}
-                  <div
+      <div
                     className={`
-                relative
-                w-[45px]
-                h-[45px]
-                rounded-[14px]
-                overflow-hidden
-                shrink-0
-                border
+    w-500 max-w-[1000px]
+    rounded-[28px] border overflow-hidden
+    flex flex-col lg:flex-row
+    shadow-[0_10px_40px_rgba(0,0,0,0.06)]
 
-                ${theme === "Dark"
-                        ? "bg-white/[0.05] border-white/10"
-                        : "bg-gray-100 border-gray-200"
-                      }
-              `}
-                  >
-                    <img
-                      src={workspace?.workspaceicon?.img}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-
-                    <div
-                      className="
-                  absolute bottom-[3px] right-[3px]
-                  w-2.5 h-2.5
-                  rounded-full
-                  bg-green-500
-                "
-                    />
-                  </div>
-
-                  {/* TEXT */}
-                  <div className="min-w-0">
-
-                    <div className="flex items-center gap-2">
-
-                      <h1
-                        className="
-                    text-[15px]
-                    md:text-[17px]
-                    font-semibold
-                    truncate
-                  "
-                      >
-                        {workspace?.name}
-                      </h1>
-
-                      <button
-                        className={`
-                    w-8 h-8
-                    rounded-[10px]
-                    border
-                    flex items-center justify-center
-
-                    ${theme === "Dark"
-                            ? "bg-white/[0.04] border-white/10"
-                            : "bg-gray-100 border-gray-200"
-                          }
-                  `}
-                      >
-                        <FaUsers fontSize={18} />
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          setOpenProject(
-                            openProject === workspace._id
-                              ? null
-                              : workspace._id
-                          )
+    ${theme === "Dark"
+                            ? "bg-[#0f172a] border-white/10"
+                            : "bg-white border-gray-200"
                         }
+  `}
+                >
+                    {/* ================= LEFT PANEL ================= */}
+                    <div
                         className={`
-                    w-8 h-8
-                    rounded-[10px]
-                    border
-                    flex items-center justify-center
+      w-full lg:w-[350px] xl:w-[380px]
+      h-[560px] overflow-y-auto lg:border-r shrink-0
 
+      ${theme === "Dark"
+                                ? "bg-[#0b1220] border-white/10"
+                                : "bg-gray-50/80 border-gray-200"
+                            }
+    `}
+                    >
+                        {/* Header */}
+                        <div
+                            className={`
+        sticky top-0 z-10 px-5 py-4 border-b backdrop-blur-md
+        ${theme === "Dark"
+                                    ? "bg-[#0b1220]/95 border-white/10"
+                                    : "bg-white/90 border-gray-200"
+                                }
+      `}
+                        >
+                            <div className="flex items-center justify-between gap-3">
+                                <div className="min-w-0">
+                                    <h2
+                                        className={`
+              text-sm font-semibold tracking-tight
+              ${theme === "Dark" ? "text-white" : "text-gray-900"}
+            `}
+                                    >
+                                        Workspaces
+                                    </h2>
+                                    <p
+                                        className={`
+              text-xs mt-1 truncate
+              ${theme === "Dark" ? "text-gray-400" : "text-gray-500"}
+            `}
+                                    >
+                                        Manage active project spaces
+                                    </p>
+                                </div>
+
+                                <button
+                                    className={`
+            h-9 px-3.5 rounded-xl text-xs font-medium transition-all shrink-0
+            ${theme === "Dark"
+                                            ? "bg-white/10 text-white hover:bg-white/15"
+                                            : "bg-gray-900 text-white hover:bg-black"
+                                        }
+          `}
+                                >
+                                    + New
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* List */}
+                        <div className="p-3 sm:p-4 space-y-3">
+                            {TaskListView.map((itm, index) => (
+                                <div
+                                    key={itm.id}
+                                    className={`
+            rounded-2xl border p-4 cursor-pointer transition-all duration-200
+            hover:-translate-y-0.5
+
+            ${index === 0
+                                            ? theme === "Dark"
+                                                ? "bg-[#111c2e] border-blue-500/30 shadow-[0_0_0_1px_rgba(59,130,246,0.15)]"
+                                                : "bg-blue-50 border-blue-200"
+                                            : theme === "Dark"
+                                                ? "bg-white/[0.03] border-white/10 hover:bg-white/[0.05]"
+                                                : "bg-white border-gray-200 hover:bg-gray-50"
+                                        }
+          `}
+                                >
+                                    <div className="flex items-start gap-3">
+                                        {/* Icon */}
+                                        <div
+                                            className={`
+                w-11 h-11 rounded-2xl shrink-0
+                flex items-center justify-center text-base
+                ${index === 0
+                                                    ? "bg-gradient-to-br from-blue-500 to-cyan-400 text-white"
+                                                    : theme === "Dark"
+                                                        ? "bg-[#1e293b] text-gray-200"
+                                                        : "bg-gray-100 text-gray-700"
+                                                }
+              `}
+                                        >
+                                            📁
+                                        </div>
+
+                                        {/* Content */}
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-start justify-between gap-2">
+                                                <div className="min-w-0">
+                                                    <h3
+                                                        className={`
+                      text-sm font-semibold leading-5 truncate
+                      ${theme === "Dark" ? "text-white" : "text-gray-900"}
+                    `}
+                                                    >
+                                                        {itm.title}
+                                                    </h3>
+                                                    <p
+                                                        className={`
+                      text-xs mt-1 line-clamp-2 leading-5
+                      ${theme === "Dark" ? "text-gray-400" : "text-gray-500"}
+                    `}
+                                                    >
+                                                        {itm.desc}
+                                                    </p>
+                                                </div>
+
+                                                <span
+                                                    className={`
+                    text-[10px] px-2.5 py-1 rounded-full whitespace-nowrap shrink-0
                     ${theme === "Dark"
-                            ? "bg-white/[0.04] border-white/10"
-                            : "bg-gray-100 border-gray-200"
-                          }
+                                                            ? "bg-green-500/15 text-green-400"
+                                                            : "bg-green-100 text-green-700"
+                                                        }
                   `}
-                      >
-                        <PiDotsThreeBold fontSize={18} />
-                      </button>
+                                                >
+                                                    Active
+                                                </span>
+                                            </div>
+
+                                            <div className="flex flex-wrap items-center gap-2 mt-3">
+                                                <span
+                                                    className={`
+                    text-[10px] px-2.5 py-1 rounded-full
+                    ${theme === "Dark"
+                                                            ? "bg-white/5 text-gray-300"
+                                                            : "bg-gray-100 text-gray-600"
+                                                        }
+                  `}
+                                                >
+                                                    React
+                                                </span>
+                                                <span
+                                                    className={`
+                    text-[10px] px-2.5 py-1 rounded-full
+                    ${theme === "Dark"
+                                                            ? "bg-white/5 text-gray-300"
+                                                            : "bg-gray-100 text-gray-600"
+                                                        }
+                  `}
+                                                >
+                                                    Tailwind
+                                                </span>
+                                                <span
+                                                    className={`
+                    text-[10px] px-2.5 py-1 rounded-full
+                    ${theme === "Dark"
+                                                            ? "bg-blue-500/10 text-blue-400"
+                                                            : "bg-blue-100 text-blue-700"
+                                                        }
+                  `}
+                                                >
+                                                    UI
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
-                    <p
-                      className="
-                  text-[12px]
-                  opacity-70
-                  truncate
-                  max-w-[350px]
-                  mt-0.5
-                "
+                    {/* ================= RIGHT PANEL ================= */}
+                    <div
+                        className={`
+      flex-1 min-w-0 h-[560px] overflow-y-auto p-4 sm:p-5 lg:p-6
+      ${theme === "Dark" ? "bg-[#111827]" : "bg-white"}
+    `}
                     >
-                      {workspace?.description}
-                    </p>
-                  </div>
-                </div>
+                        <div
+                            className={`
+        rounded-[24px] border p-5 sm:p-6 h-full
+        ${theme === "Dark"
+                                    ? "border-white/10 bg-white/[0.03]"
+                                    : "border-gray-200 bg-gray-50/50"
+                                }
+      `}
+                        >
+                            {/* Top */}
+                            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
+                                <div className="flex items-start gap-4 min-w-0">
+                                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-gradient-to-br from-blue-500 to-cyan-400 text-white">
+                                        📁
+                                    </div>
 
-                {/* RIGHT */}
-                <div className="flex items-center gap-2 shrink-0">
-
-                  <button
-                    onClick={() => setwork([])}
-                    className="
-                px-3 py-2
-                rounded-xl
-                bg-blue-500
-                hover:bg-blue-600
-                text-white
-                text-xs
-                transition-all
-              "
-                  >
-                    Reset
-                  </button>
-
-                  <button
-                    className={`
-                w-8 h-8
-                rounded-[10px]
-                border
-                flex items-center justify-center
-
-                ${theme === "Dark"
-                        ? "bg-white/[0.04] border-white/10"
-                        : "bg-gray-100 border-gray-200"
-                      }
+                                    <div className="min-w-0">
+                                        <h2
+                                            className={`
+                text-xl font-semibold tracking-tight truncate
+                ${theme === "Dark" ? "text-white" : "text-gray-900"}
               `}
-                  >
-                    <CiShare1 fontSize={18} />
-                  </button>
-
-                  {/* MAXIMIZE */}
-                  <button
-                    onClick={handelMaximizeAndMinPoup}
-                    className={`
-                w-8 h-8
-                rounded-[10px]
-                border
-                flex items-center justify-center
-
-                ${theme === "Dark"
-                        ? "bg-white/[0.04] border-white/10"
-                        : "bg-gray-100 border-gray-200"
-                      }
+                                        >
+                                            Frontend Dashboard
+                                        </h2>
+                                        <p
+                                            className={`
+                text-sm mt-1
+                ${theme === "Dark" ? "text-gray-400" : "text-gray-500"}
               `}
-                  >
-                    <CgMaximizeAlt fontSize={18} />
-                  </button>
-                </div>
-              </div>
-            </div>
+                                        >
+                                            React Workspace Management
+                                        </p>
 
-            {/* MENU */}
-            {openProject === workspace?._id && (
-              <div
-                ref={workspaceMenuRef}
-                className={`
-            fixed top-24 right-5
-            w-[250px]
-            z-[999]
-            rounded-[22px]
-            border
-            p-2
-            shadow-2xl
-            backdrop-blur-2xl
-
-            ${theme === "Dark"
-                    ? "bg-[#111827]/95 border-white/10 text-white"
-                    : "bg-white/95 border-gray-200 text-black"
-                  }
-          `}
-              >
-                <button
-                  onClick={() => SetBackground(true)}
-                  className={`
-              w-full
-              flex items-center gap-3
-              px-4 py-3
-              rounded-xl
-              text-[13px]
-
-              ${theme === "Dark"
-                      ? "hover:bg-white/10"
-                      : "hover:bg-gray-100"
-                    }
-            `}
-                >
-                  🖼️ Set Space Background
-                </button>
-
-                <button
-                  onClick={() => handleProjectSetting(workspace)}
-                  className={`
-              w-full
-              flex items-center gap-3
-              px-4 py-3
-              rounded-xl
-              text-[13px]
-
-              ${theme === "Dark"
-                      ? "hover:bg-white/10"
-                      : "hover:bg-gray-100"
-                    }
-            `}
-                >
-                  <FaGear />
-                  Project Settings
-                </button>
-
-                <div className="my-2 border-t border-white/10" />
-
-                <button
-                  className="
-              w-full
-              flex items-center gap-3
-              px-4 py-3
-              rounded-xl
-              text-[13px]
-              text-red-500
-              hover:bg-red-500/10
-            "
-                >
-                  🗑️ Delete
-                </button>
-              </div>
-            )}
-
-            {/* VIEWS */}
-            <div
-              className={`
-          max-w-max
-          rounded-[20px]
-          border
-          p-2
-          flex items-center gap-2
-          overflow-x-auto
-          scrollbar-hide
-
-          ${theme === "Dark"
-                  ? "bg-white/[0.04] border-white/10"
-                  : "bg-white/80 border-gray-200"
-                }
-        `}
-            >
-              {workspace?.workspaceSetup?.views?.map(
-                (view, idx) => {
-                  const active = CurrentView === view;
-
-                  return (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentView(view)}
-                      className={`
-                  px-4 py-2.5
-                  rounded-xl
-                  text-[13px]
-                  whitespace-nowrap
-                  transition-all
-
-                  ${active
-                          ? theme === "Dark"
-                            ? "bg-white text-black"
-                            : "bg-black text-white"
-                          : "opacity-60 hover:opacity-100"
-                        }
+                                        <div className="flex flex-wrap items-center gap-2 mt-3">
+                                            <span
+                                                className={`
+                  text-xs px-3 py-1.5 rounded-full
+                  ${theme === "Dark"
+                                                        ? "bg-blue-500/15 text-blue-400"
+                                                        : "bg-blue-100 text-blue-700"
+                                                    }
                 `}
-                    >
-                      {view}
-                    </button>
-                  );
-                }
-              )}
-            </div>
+                                            >
+                                                In Progress
+                                            </span>
+                                            <span
+                                                className={`
+                  text-xs px-3 py-1.5 rounded-full
+                  ${theme === "Dark"
+                                                        ? "bg-green-500/15 text-green-400"
+                                                        : "bg-green-100 text-green-700"
+                                                    }
+                `}
+                                            >
+                                                Synced
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 
-            {/* BOARD */}
-            <div className="overflow-x-auto pb-4 scrollbar-hide">
+                                <button
+                                    className={`
+            h-10 px-4 rounded-xl text-sm font-medium transition-all shrink-0
+            ${theme === "Dark"
+                                            ? "bg-white/10 text-white hover:bg-white/15"
+                                            : "bg-gray-900 text-white hover:bg-black"
+                                        }
+          `}
+                                >
+                                    Open Workspace
+                                </button>
+                            </div>
 
-              {CurrentView == "Summary" &&
-                <h1>{CurrentView} View Adding Soon</h1>
-              }
+                            {/* Stats */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
+                                {[
+                                    { label: "Modules", value: "12", sub: "UI components" },
+                                    { label: "Tasks", value: "48", sub: "8 pending today" },
+                                    { label: "Team", value: "06", sub: "2 active now" },
+                                ].map((stat) => (
+                                    <div
+                                        key={stat.label}
+                                        className={`
+              rounded-2xl border p-4
+              ${theme === "Dark"
+                                                ? "border-white/10 bg-white/[0.03]"
+                                                : "border-gray-200 bg-white"
+                                            }
+            `}
+                                    >
+                                        <p className={`text-xs ${theme === "Dark" ? "text-gray-400" : "text-gray-500"}`}>
+                                            {stat.label}
+                                        </p>
+                                        <h3
+                                            className={`
+                text-2xl font-semibold mt-2
+                ${theme === "Dark" ? "text-white" : "text-gray-900"}
+              `}
+                                        >
+                                            {stat.value}
+                                        </h3>
+                                        <p className={`text-xs mt-1 ${theme === "Dark" ? "text-gray-500" : "text-gray-500"}`}>
+                                            {stat.sub}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
 
-              {CurrentView == "Timeline" &&
-                <SpaceTimeLine />
-              }
+                            {/* Description + Overview */}
+                            <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 mt-6">
+                                <div
+                                    className={`
+            xl:col-span-3 rounded-2xl border p-4
+            ${theme === "Dark"
+                                            ? "border-white/10 bg-white/[0.02]"
+                                            : "border-gray-200 bg-white"
+                                        }
+          `}
+                                >
+                                    <h3
+                                        className={`
+              text-sm font-semibold mb-2
+              ${theme === "Dark" ? "text-white" : "text-gray-900"}
+            `}
+                                    >
+                                        Description
+                                    </h3>
+                                    <p
+                                        className={`
+              text-sm leading-7
+              ${theme === "Dark" ? "text-gray-400" : "text-gray-600"}
+            `}
+                                    >
+                                        This workspace contains frontend dashboard modules, realtime socket
+                                        integration, responsive layouts, reusable UI blocks, and collaboration
+                                        tools built using React and Tailwind CSS for fast product iteration.
+                                    </p>
+                                </div>
 
-              {CurrentView == "Development" &&
-                <h1>{CurrentView} View Adding Soon</h1>
-              }
+                                <div
+                                    className={`
+            xl:col-span-2 rounded-2xl border p-4
+            ${theme === "Dark"
+                                            ? "border-white/10 bg-white/[0.02]"
+                                            : "border-gray-200 bg-white"
+                                        }
+          `}
+                                >
+                                    <h3
+                                        className={`
+              text-sm font-semibold mb-3
+              ${theme === "Dark" ? "text-white" : "text-gray-900"}
+            `}
+                                    >
+                                        Overview
+                                    </h3>
 
-              {CurrentView == "Forms" &&
-                <h1>{CurrentView} View Adding Soon</h1>
-              }
+                                    <div className="space-y-3">
+                                        {[
+                                            ["Framework", "React + Tailwind"],
+                                            ["Realtime", "Socket enabled"],
+                                            ["Status", "Production ready"],
+                                        ].map(([label, value]) => (
+                                            <div key={label} className="flex items-center justify-between gap-3">
+                                                <span className={`text-xs ${theme === "Dark" ? "text-gray-400" : "text-gray-500"}`}>
+                                                    {label}
+                                                </span>
+                                                <span className={`text-sm font-medium ${theme === "Dark" ? "text-white" : "text-gray-900"}`}>
+                                                    {value}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
 
-              {CurrentView == "List" &&
-                <SpaceList />
-              }
+                            {/* Activity */}
+                            <div className="mt-6">
+                                <h3
+                                    className={`
+            text-sm font-semibold mb-3
+            ${theme === "Dark" ? "text-white" : "text-gray-900"}
+          `}
+                                >
+                                    Recent Activity
+                                </h3>
 
-              {CurrentView == "Pages" &&
-                <h1>{CurrentView} View Adding Soon</h1>
-              }
+                                <div className="space-y-3">
+                                    {[
+                                        { title: "Socket integration updated", time: "2 hours ago" },
+                                        { title: "Dashboard widgets improved", time: "Yesterday" },
+                                        { title: "Responsive issues fixed", time: "Mobile view" },
+                                    ].map((item, i) => (
+                                        <div
+                                            key={i}
+                                            className={`
+                flex items-start justify-between gap-3 rounded-2xl border px-4 py-3
+                ${theme === "Dark"
+                                                    ? "border-white/10 bg-white/[0.02]"
+                                                    : "border-gray-200 bg-white"
+                                                }
+              `}
+                                        >
+                                            <div className="flex items-start gap-3 min-w-0">
+                                                <div className="w-2.5 h-2.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
+                                                <div className="min-w-0">
+                                                    <p className={`text-sm font-medium ${theme === "Dark" ? "text-gray-200" : "text-gray-800"}`}>
+                                                        {item.title}
+                                                    </p>
+                                                    <p className={`text-xs mt-1 ${theme === "Dark" ? "text-gray-500" : "text-gray-500"}`}>
+                                                        Workspace activity update
+                                                    </p>
+                                                </div>
+                                            </div>
 
-              {CurrentView == "Reports" &&
-                <h1>{CurrentView} View Adding Soon</h1>
-              }
-
-              {CurrentView == "Backlog" &&
-                <h1>{CurrentView} View Adding Soon</h1>
-              }
-
-              {CurrentView == "Calendar" &&
-                <MyCalendar theme={theme} />
-              }
-
-              {CurrentView == "Goals" &&
-                <h1>{CurrentView} View Adding Soon</h1>
-              }
-
-              {CurrentView == "Board" &&
-                <Board theme={theme} work={work} />
-              }
-            </div>
-          </div>
-        </div>
-      )}
+                                            <span className={`text-xs whitespace-nowrap shrink-0 ${theme === "Dark" ? "text-gray-500" : "text-gray-500"}`}>
+                                                {item.time}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

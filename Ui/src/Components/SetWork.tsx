@@ -101,7 +101,7 @@ function WorkspacePanel({ SetBackground, id }: any) {
     return (
         <>
             {isuploading && (
-                <UploadingLoader type=" Updating Workspace Background " useCase="Wallpaper" />
+                <UploadingLoader type=" Updating Workspace Background  " useCase="Wallpaper" />
             )}
             {/* ================= BACKDROP ================= */}
 
