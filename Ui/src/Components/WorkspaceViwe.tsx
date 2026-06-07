@@ -204,7 +204,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
                 `}
                     >
                       <img
-                        src={w?.workspaceicon?.img}
+                        src={w?.icon}
                         alt="workspace"
                         className="w-7 h-7 object-contain"
                       />

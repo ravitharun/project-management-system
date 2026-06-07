@@ -134,7 +134,7 @@ function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, th
               `}
                                 >
                                     <img
-                                        src={workspace?.workspaceicon?.img}
+                                        src={workspace?.icon}
                                         alt=""
                                         className="w-full h-full object-cover"
                                     />
