@@ -99,6 +99,7 @@ Planned analytics features include:
 ### Frontend
 
 - React.js
+- TypeScript
 - Context API
 - Tailwind CSS
 - FullCalendar
