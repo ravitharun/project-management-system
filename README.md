@@ -1,71 +1,66 @@
-````md
 # Project Management System
 
-A modern full-stack Project Management Application inspired by enterprise collaboration tools like Jira, built using the MERN Stack (MongoDB, Express.js, React.js, Node.js) with Redis caching, Rate Limiting, and WebSocket-based real-time communication.
+A modern full-stack **Project Management System** inspired by enterprise collaboration tools like Jira, built using the MERN stack — MongoDB, Express.js, React.js, and Node.js — with Redis caching, rate limiting, and Socket.io-based real-time communication.
 
-The platform is designed to help teams efficiently manage projects, workflows, tasks, collaboration, analytics, and productivity in real time. The application is actively evolving with new enterprise-level features, scalability improvements, and advanced workflow management systems.
+This platform helps teams manage projects, workflows, tasks, collaboration, analytics, and productivity in real time. It is actively evolving with enterprise-level features, workflow improvements, and scalability enhancements.
 
-Repository: https://github.com/ravitharun/project-management-system
+## Repository
+
+[GitHub Repository](https://github.com/ravitharun/project-management-system)
 
 ---
 
-# Current Features
+## Features
 
-## Authentication & Authorization
+### Authentication & Authorization
 
 - JWT-based secure authentication
-- Secure login and signup system
+- Secure user signup and login
 - Protected API routes
-- Middleware-based authentication handling
+- Middleware-based authentication and authorization handling
 
----
-
-# Workspace & Project Management
+### Workspace & Project Management
 
 - Create and manage workspaces
 - Create, update, and delete spaces
 - Workspace sharing functionality
-- Multi-project management support
+- Support for multiple projects
 - Team-based collaboration system
 - Task progress tracking
-- Users can select workspace types such as:
+- Multiple workspace types:
   - Scrum Workspace
   - Kanban Workspace
-  - Event-Calendar Workspace
+  - Event Calendar Workspace
 
----
-
-# Task Management System
+### Task Management System
 
 - Create and assign tasks to team members
-- Task priority management
-- Dynamic task status workflow
+- Manage task priorities
+- Dynamic task workflow with statuses:
   - Pending
   - In Progress
   - Completed
   - Custom Status
-- Task comments and replies system
+- Task comments and replies
 - Real-time task updates
-- Calendar and Timeline-based task visualization
-- Drag-and-drop task management support
+- Calendar and timeline-based task visualization
+- Drag-and-drop task management
 - Custom workspace background upload
 - Custom workspace icon upload
 
----
-
-# Real-Time Collaboration
+### Real-Time Collaboration
 
 - WebSocket integration using Socket.io
 - Real-time notifications
 - Live task and project updates
 - Instant collaboration support
-- Real-time comments system (currently under development)
+- Real-time comments system *(currently under development)*
 
----
-
-# Analytics Dashboard
+### Analytics Dashboard
 
 > Analytics dashboard features are currently under development.
+
+Planned analytics features include:
 
 - Project progress analytics
 - Task completion tracking
@@ -74,40 +69,34 @@ Repository: https://github.com/ravitharun/project-management-system
 - Role-based dashboard analytics
 - Dynamic data visualization
 
----
+### Resource Management
 
-# Resource Management
+- Upload and manage workspace resources
+- Centralized resource handling inside workspaces
 
-- Upload and manage resources inside workspaces
-- Centralized workspace resource handling
+### Performance & Scalability
 
----
-
-# Performance & Scalability
-
-- Redis caching for optimized performance
-- Rate limiting implementation for server protection
+- Redis caching for performance optimization
+- Rate limiting for API and server protection
 - Global error handling middleware
 - Optimized API response handling
 - Scalable backend architecture
 
----
-
-# UI/UX Features
+### UI/UX Features
 
 - Responsive modern dashboard UI
-- Dark/Light mode support
+- Dark and light mode support
 - Dynamic filtering systems
 - Reusable component architecture
 - Advanced AG Grid table management
-- Timeline and Calendar visualization
+- Timeline and calendar visualization
 - Interactive user experience design
 
 ---
 
-# Tech Stack
+## Tech Stack
 
-## Frontend
+### Frontend
 
 - React.js
 - Context API
@@ -115,7 +104,7 @@ Repository: https://github.com/ravitharun/project-management-system
 - FullCalendar
 - AG Grid
 
-## Backend
+### Backend
 
 - Node.js
 - Express.js
@@ -123,22 +112,22 @@ Repository: https://github.com/ravitharun/project-management-system
 - Mongoose
 - JWT Authentication
 
-## Real-Time & Performance
+### Real-Time & Performance
 
 - Socket.io
 - Redis
 - Express Rate Limiter
 
-## DevOps & Architecture
+### DevOps & Architecture
 
-- NGINX (planned deployment architecture)
-- REST API Architecture
+- NGINX *(planned deployment architecture)*
+- REST API architecture
 - Middleware-based backend structure
 - CI/CD workflow integration
 
 ---
 
-# Upcoming Features
+## Upcoming Features
 
 The application is actively evolving with enterprise-level features currently under development:
 
@@ -148,58 +137,65 @@ The application is actively evolving with enterprise-level features currently un
 - Advanced reporting dashboard
 - File upload and attachment system
 - Team chat system
-- Notification centre improvements
+- Notification center improvements
 - Advanced workspace permission system
-- Project timeline & Gantt chart improvements
+- Project timeline and Gantt chart improvements
 - Email notification services
 - Docker deployment support
 - Microservices migration architecture
 
 ---
 
-# Features Partially Implemented
+## Partially Implemented Features
 
 - Kanban drag-and-drop board UI completed
-- Activity logs system completed with Schema, Controller, and Routing implementation
-- CI/CD YAML configuration added for Server and UI deployment setup
+- Activity logs system completed with schema, controller, and routing implementation
+- CI/CD YAML configuration added for server and UI deployment setup
 - Email service configuration completed, business logic integration pending
 
 ---
 
-# Installation
+## Installation
+
+### 1. Clone the repository
 
 ```bash
-# Clone repository
 git clone https://github.com/ravitharun/project-management-system.git
+cd project-management-system
+```
 
-# Backend Setup
+### 2. Backend setup
+
+```bash
 cd Server
 npm install
 npm start
+```
 
-# Frontend Setup
+### 3. Frontend setup
+
+Open a new terminal:
+
+```bash
 cd Ui
 npm install
 npm start
-````
+```
 
 ---
 
-# Author
+## Author
 
-**Ravi Tharun**
+**Ravi Tharun**  
 Full Stack MERN Developer
 
-Email: [tharunravi672@gmail.com](mailto:tharunravi672@gmail.com)
-Phone: 7396994383
+- Email: [tharunravi672@gmail.com](mailto:tharunravi672@gmail.com)
+- Phone: 7396994383
 
 ---
 
-# Support
+## Support
 
 If you like this project, consider giving it a ⭐ on GitHub.
 
 New enterprise-level features and improvements are actively being developed.
-
-```
-```
