@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import { instance } from "../services/apiservices";
 import toast from "react-hot-toast";
-import { getuserInfo } from "./LocalStorage";
+import { checkuser, getuserInfo } from "./LocalStorage";
 import { validateProject } from "../types/errortype";
 
 type Props = {
@@ -105,7 +105,11 @@ function AddProjectForm({ onclick }: Props) {
       return response
 
     } catch (error: any) {
-      toast.error(error)
+      if (error.response.status == 401) {
+        return checkuser()
+        // redirect("")
+
+      }
 
     }
   };
