@@ -23,6 +23,8 @@ const fs = require("fs");
 const CreateWorkSpaceRouter = require("./routes/CreateWorkSpace");
 const Workspace = require("./Models/Workspace");
 const WorkSpaceTaskRouter = require("./routes/WorkSpaceTask_router");
+const limiter = require("./RateLimiter");
+const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
@@ -39,9 +41,10 @@ console.log("--------- check the id's -----")
 console.log("Task id :" + TaskId("Task"))
 console.log("emp id : " + GetEmpNameGenById(""))
 console.log("Project id : " + ProjetcId())
-
+app.use(limiter)
 // /api/ProjectfileUploads/upload
 // Routes
+
 app.use("/api/auth", AuthRouter);
 app.use("/api/ManageProject", ProjectsRoute);
 app.use("/api/ProjectfileUpload", FileUploadRouter)
@@ -80,7 +83,7 @@ app.get("/workspace/share", async (req, res) => {
     console.log({
       success: true,
       data: spaceresponse,
-    },'heytharun')
+    }, 'heytharun')
     return res.status(200).json({
       data: spaceresponse,
     });
@@ -95,6 +98,33 @@ app.get("/workspace/share", async (req, res) => {
   }
 
 });
+
+// app.get("/username", async (req, res, next) => {
+//   try {
+
+//     const username = "";
+
+//     if (!username) {
+
+//       const error = new Error("Username Is required.");
+
+//       error.status = 404;
+
+//       return next(error);
+//     }
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Username Found"
+//     });
+
+//   } catch (error) {
+
+//     next(error);
+
+//   }
+// });
+
 
 // ✅ Initialize socket
 initSocket(server);
