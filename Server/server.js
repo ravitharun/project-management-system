@@ -22,6 +22,7 @@ app.use(express.json());
 const fs = require("fs");
 const CreateWorkSpaceRouter = require("./routes/CreateWorkSpace");
 const Workspace = require("./Models/Workspace");
+const WorkSpaceTaskRouter = require("./routes/WorkSpaceTask_router");
 
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
@@ -49,6 +50,7 @@ app.use("/api/Notificatons", NotificatonsRouter)
 app.use("/api/Team", FetchTeamRouter)
 app.use("/api/Analytcs", AnalytcsRouter)
 app.use("/api/WorkSpace", CreateWorkSpaceRouter)
+app.use("/api/Task", WorkSpaceTaskRouter)
 // client.connectRedis()
 
 
