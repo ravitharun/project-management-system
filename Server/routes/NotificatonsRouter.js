@@ -1,7 +1,8 @@
 const express=require("express")
 const NotificatonsRouter=express.Router()
 const Notificatons=require("../controller/Notification")
-NotificatonsRouter.get("/",Notificatons)
+const AuthTokenVerification = require("../Middleware/AuthMiddleware")
+NotificatonsRouter.get("/",AuthTokenVerification,Notificatons)
 
 
 module.exports=NotificatonsRouter

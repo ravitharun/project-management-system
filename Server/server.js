@@ -25,6 +25,7 @@ const Workspace = require("./Models/Workspace");
 const WorkSpaceTaskRouter = require("./routes/WorkSpaceTask_router");
 const limiter = require("./RateLimiter");
 const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
+const AuthTokenVerification = require("./Middleware/AuthMiddleware");
 
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
@@ -99,31 +100,31 @@ app.get("/workspace/share", async (req, res) => {
 
 });
 
-// app.get("/username", async (req, res, next) => {
-//   try {
+app.get("/username", AuthTokenVerification, async (req, res, next) => {
+  try {
 
-//     const username = "";
+    const username = "thaun";
 
-//     if (!username) {
+    if (!username) {
 
-//       const error = new Error("Username Is required.");
+      const error = new Error("Username Is required.");
 
-//       error.status = 404;
+      error.status = 404;
 
-//       return next(error);
-//     }
+      return next(error);
+    }
 
-//     return res.status(200).json({
-//       success: true,
-//       message: "Username Found"
-//     });
+    return res.status(200).json({
+      success: true,
+      message: "Username Found"
+    });
 
-//   } catch (error) {
+  } catch (error) {
 
-//     next(error);
+    next(error);
 
-//   }
-// });
+  }
+});
 
 
 // ✅ Initialize socket

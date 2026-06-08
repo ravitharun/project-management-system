@@ -1,5 +1,6 @@
 const express = require("express")
 const AnalytcsRouter = express.Router()
 const Analytcs = require("../controller/Analytics")
-AnalytcsRouter.get("/", Analytcs)
+const AuthTokenVerification = require("../Middleware/AuthMiddleware")
+AnalytcsRouter.get("/", AuthTokenVerification,Analytcs)
 module.exports = AnalytcsRouter
