@@ -61,6 +61,7 @@ function Sidebar({ page }: Props) {
     const userPanelRef = useRef<HTMLDivElement | null>(null);
     const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
     // const backgroundPanelRef = useRef<HTMLDivElement | null>(null);
+    // const redirect = useNavigate()
     const [StarMenu, setStarMenu] = useState<boolean>(false)
     const menuItems = [
         { name: "For You", icon: <FaUserCircle />, href: "/" },
@@ -89,7 +90,12 @@ function Sidebar({ page }: Props) {
                 setworkspace(response?.data?.data || []);
                 setspacejson(response?.data?.data || []);
             } catch (error: any) {
-                console.error(error);
+                console.error(error.response.status, 'err nav');
+                if (error.response.status == 401) {
+                    checkuser()
+                    // redirect("")
+
+                }
             }
         };
 
@@ -129,13 +135,13 @@ function Sidebar({ page }: Props) {
                 return toast.info("Workspace deleted successfully");
             }
         } catch (error: any) {
-               console.error(error.message)
+            console.error(error.message)
 
         }
     }
     console.log(JSON.parse(getuserInfo)?.userProfile)
     return (
-      <>
+        <>
             {/* ================= NAVBAR ================= */}
             <div
                 className={`
@@ -197,7 +203,7 @@ function Sidebar({ page }: Props) {
                         <div
                             className="w-9 h-9 rounded-full  flex items-center justify-center font-semibold text-white cursor-pointer"
                             onClick={() => setisOpenPanelItems((prev) => !prev)}
-                            // onMouseEnter={() => setisOpenPanelItems(true)}
+                        // onMouseEnter={() => setisOpenPanelItems(true)}
                         >
                             <img src={JSON.parse(getuserInfo)?.userProfile} alt={JSON.parse(getuserInfo)?.Username} title={JSON.parse(getuserInfo).Username} />
                         </div>
@@ -585,10 +591,10 @@ function Sidebar({ page }: Props) {
                             />
                         </div>
                     )}
-                
-                
-                
-                    </div>
+
+
+
+                </div>
 
                 {/* ================= FOOTER ================= */}
                 <div
