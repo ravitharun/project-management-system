@@ -10,7 +10,7 @@ const ProjetcDeatils = lazy(() => import("../pages/ProjetcDeatils"))
 const Notifications = lazy(() => import("../pages/Notifications"))
 const Analytics = lazy(() => import("../pages/Analytics"))
 const Profile = lazy(() => import("../pages/Profile"))
-const Calendra = lazy(() => import("../pages/Calendra"))
+const Calendra = lazy(() => import("../Components/Task/TaskCalendar/Calendra"))
 const ProjectSettings = lazy(() => import("../Components/ProjectSettings"))
 import { lazy, Suspense, useContext, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";

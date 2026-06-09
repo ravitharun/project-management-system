@@ -5,8 +5,8 @@ import { FaGear } from "react-icons/fa6";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { TbMinimize } from "react-icons/tb";
 import SpaceTimeLine from "../SpaceTimeLine";
-import SpaceList from "../SpaceList";
-import MyCalendar from "../../pages/Calendra";
+import SpaceList from "../Task/TaskList/SpaceList";
+import MyCalendar from "../Task/TaskCalendar/Calendra";
 import Board from "../Board";
 
 

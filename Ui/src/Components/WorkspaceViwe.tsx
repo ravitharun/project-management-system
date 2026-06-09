@@ -27,6 +27,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
 
   return (
     <>
+    {/* <ViewProfileCard></ViewProfileCard> */}
       <div
         className={`
     min-h-screen

@@ -237,7 +237,7 @@ function Sidebar({ page }: Props) {
           flex flex-col transition-all duration-300 z-50
           ${theme === "Dark"
                         ? "bg-[#111827] border-r border-gray-800 text-white"
-                        : "bg-white border-r border-gray-200 text-gray-900"
+                        : "bg-[#FBFBFB] border-r border-gray-200 text-gray-900"
                     }
           w-[270px]
           ${issidebaropen ? "md:w-[270px]" : "md:w-[85px]"}

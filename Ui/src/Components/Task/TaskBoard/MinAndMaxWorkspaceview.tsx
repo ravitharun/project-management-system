@@ -1,8 +1,8 @@
 import { CiShare1 } from "react-icons/ci";
-import MyCalendar from "../pages/Calendra";
-import Board from "./Board";
-import SpaceList from "./SpaceList";
-import SpaceTimeLine from "./SpaceTimeLine";
+import MyCalendar from "../TaskCalendar/Calendra";
+import Board from "../../Board";
+import SpaceList from "../TaskList/SpaceList";
+import SpaceTimeLine from "../../SpaceTimeLine";
 import { FaUsers } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
 import { PiDotsThreeBold } from "react-icons/pi";
@@ -455,7 +455,7 @@ function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, w
                   minWidth: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <SpaceList  />
+                <SpaceList   />
               </div>
             )}
 
