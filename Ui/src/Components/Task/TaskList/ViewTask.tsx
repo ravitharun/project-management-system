@@ -1,7 +1,16 @@
 // import React from 'react'
 
 import { useState } from "react";
-
+import {
+  FiEdit3,
+  FiCopy,
+  FiLink,
+  FiImage,
+} from "react-icons/fi"; import {
+  BsPinAngle,
+  BsShare,
+} from "react-icons/bs";
+import TaskDetailsWithSubtaskTable from "./TaskDetailsWithSubtaskTable";
 function ViewTask({ theme }: any) {
   const [item, setitem] = useState(
     [
@@ -67,6 +76,32 @@ function ViewTask({ theme }: any) {
         ],
       },
     ]);
+  const menuitems = [
+    {
+      icon: <FiEdit3 className="text-[14px] sm:text-[15px]" />,
+      label: "Edit Task",
+    },
+    {
+      icon: <FiCopy className="text-[14px] sm:text-[15px]" />,
+      label: "Duplicate Task",
+    },
+    {
+      icon: <BsPinAngle className="text-[14px] sm:text-[15px]" />,
+      label: "Pin Task",
+    },
+    {
+      icon: <BsShare className="text-[14px] sm:text-[15px]" />,
+      label: "Share Task",
+    },
+    {
+      icon: <FiLink className="text-[14px] sm:text-[15px]" />,
+      label: "Copy Link",
+    },
+    {
+      icon: <FiImage className="text-[14px] sm:text-[15px]" />,
+      label: "Change Wallpaper",
+    },
+  ];
 
   const postComment = () => {
     const replyToCommentId = "CMT-102"
@@ -130,41 +165,222 @@ function ViewTask({ theme }: any) {
         >
 
           {/* TOP */}
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
+          {/* ================= TOP HEADER ================= */}
 
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+
+            {/* ================= LEFT SIDE ================= */}
             <div className="flex items-start gap-4 min-w-0">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center text-xl sm:text-2xl bg-gradient-to-br from-blue-500 to-cyan-400 text-white">
+
+              {/* ICON */}
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center text-xl sm:text-2xl bg-gradient-to-br from-blue-500 to-cyan-400 text-white shrink-0">
                 📁
               </div>
 
+              {/* HEADING */}
               <div className="min-w-0">
-                <h2 className={`text-lg sm:text-xl font-semibold truncate ${theme === "Dark" ? "text-white" : "text-gray-900"}`}>
-                  Frontend Dashboard
+
+                <h2
+                  className={`
+          text-xl sm:text-2xl font-semibold truncate
+          ${theme === "Dark" ? "text-white" : "text-gray-900"}
+        `}
+                >
+                  Frontend Dashboard Task
                 </h2>
-                <p className={`text-sm mt-1 ${theme === "Dark" ? "text-gray-400" : "text-gray-500"}`}>
+
+                <p
+                  className={`
+          text-sm mt-1
+          ${theme === "Dark" ? "text-white" : "text-gray-900"}
+        `}
+                >
                   React Workspace Management
                 </p>
 
+                {/* STATUS TAGS */}
                 <div className="flex flex-wrap gap-2 mt-3">
+
                   <span className="text-xs px-3 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400">
                     In Progress
                   </span>
+
                   <span className="text-xs px-3 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400">
                     Synced
                   </span>
+
                 </div>
+
               </div>
+
             </div>
 
-            <button className={`
-          h-10 px-4 rounded-xl text-sm font-medium shrink-0
+            {/* ================= RIGHT SIDE ================= */}
+            <div className="flex items-center gap-3 ml-auto">
+              {/* MENU */}
+              <div className="relative group">
+
+                <button
+                  className={`
+          w-11 h-11 rounded-2xl
+          flex items-center justify-center
+          text-xl transition-all duration-200
+
           ${theme === "Dark"
-                ? "bg-white/10 text-white hover:bg-white/15"
-                : "bg-gray-900 text-white hover:bg-black"
-              }
-        `}>
-              Open Workspace
-            </button>
+                      ? "bg-white/10 text-white hover:bg-white/15"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }
+        `}
+                >
+                  ⋮
+                </button>
+
+                {/* DROPDOWN */}
+                <div
+                  className={`
+          absolute right-0 top-14
+          w-64 rounded-3xl border shadow-2xl z-50
+       
+          opacity-0 invisible translate-y-2
+          group-hover:opacity-100
+          group-hover:visible
+          group-hover:translate-y-0
+overflow-y-scroll
+          transition-all duration-200
+
+          ${theme === "Dark"
+                      ? "bg-[#111827] border-white/10"
+                      : "bg-white border-gray-200"
+                    }
+        `}
+                >
+
+                  {/* HEADER */}
+                  <div
+                    className={`
+            px-5 py-4 border-b
+
+            ${theme === "Dark"
+                        ? "border-white/10"
+                        : "border-gray-200"
+                      }
+          `}
+                  >
+
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                      Task Actions
+                    </h3>
+
+                    <p className="text-xs text-gray-500 mt-1">
+                      Manage workspace settings
+                    </p>
+
+                  </div>
+
+                  {/* MENU ITEMS */}
+                  <div className="p-2">
+
+                    {menuitems.map((item, i) => (
+                      <button
+                        key={i}
+                        className={`
+        w-full rounded-2xl
+        px-3 sm:px-4
+        py-2.5 sm:py-3
+
+        flex items-center gap-3
+        transition-all duration-200
+
+        ${theme === "Dark"
+                            ? "text-gray-300 hover:bg-white/5"
+                            : "text-gray-700 hover:bg-gray-100"
+                          }
+      `}
+                      >
+
+                        {/* ICON */}
+                        <div
+                          className={`
+          w-8 h-8 sm:w-9 sm:h-9
+          rounded-xl
+          flex items-center justify-center
+          shrink-0
+
+          ${theme === "Dark"
+                              ? "bg-white/5"
+                              : "bg-gray-100"
+                            }
+        `}
+                        >
+                          <span className="text-[14px] sm:text-[15px]">
+                            {item.icon}
+                          </span>
+                        </div>
+
+                        {/* LABEL */}
+                        <div className="flex-1 text-left">
+
+                          <p className="text-[13px] sm:text-sm font-medium">
+                            {item.label}
+                          </p>
+
+                        </div>
+
+                      </button>
+                    ))}
+
+                  </div>
+
+                  {/* DELETE */}
+                  <div
+                    className={`
+            p-2 border-t
+
+            ${theme === "Dark"
+                        ? "border-white/10"
+                        : "border-gray-200"
+                      }
+          `}
+                  >
+
+                    <button
+                      className={`
+              w-full rounded-2xl px-4 py-3
+              flex items-center gap-4
+              text-sm transition-all duration-200
+
+              ${theme === "Dark"
+                          ? "text-red-400 hover:bg-red-500/10"
+                          : "text-red-600 hover:bg-red-50"
+                        }
+            `}
+                    >
+
+                      <div
+                        className={`
+                w-9 h-9 rounded-xl
+                flex items-center justify-center
+
+                ${theme === "Dark"
+                            ? "bg-red-500/10"
+                            : "bg-red-100"
+                          }
+              `}
+                      >
+                        🗑️
+                      </div>
+
+                      Delete Task
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -185,8 +401,10 @@ function ViewTask({ theme }: any) {
                   }
             `}
               >
-                <p className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</p>
-                <h3 className="text-2xl font-semibold mt-2 text-gray-900 dark:text-white">
+                <p className={`text-xs ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>{stat.label}</p>
+                <h3 className={`text-2xl font-semibold mt-2           ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
                   {stat.value}
                 </h3>
                 <p className="text-xs mt-1 text-gray-500">{stat.sub}</p>
@@ -198,10 +416,12 @@ function ViewTask({ theme }: any) {
           <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 mt-6">
 
             <div className="xl:col-span-3 rounded-2xl border p-4 bg-white dark:bg-white/[0.02] border-gray-200 dark:border-white/10">
-              <h3 className="text-sm font-semibold mb-2 text-gray-900 dark:text-white">
+              <h3 className={`text-sm font-semibold mb-2           ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
                 Description
               </h3>
-              <p className="text-sm leading-7 text-gray-600 dark:text-gray-400">
+              <p className={`text-sm leading-7           ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
                 This workspace contains frontend dashboard modules, realtime socket integration,
                 responsive layouts, reusable UI blocks, and collaboration tools built using React
                 and Tailwind CSS.
@@ -209,7 +429,8 @@ function ViewTask({ theme }: any) {
             </div>
 
             <div className="xl:col-span-2 rounded-2xl border p-4 bg-white dark:bg-white/[0.02] border-gray-200 dark:border-white/10">
-              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+              <h3 className={`text-sm font-semibold mb-3          ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
                 Overview
               </h3>
 
@@ -220,18 +441,48 @@ function ViewTask({ theme }: any) {
                   ["Status", "Production ready"],
                 ].map(([l, v]) => (
                   <div key={l} className="flex justify-between text-sm">
-                    <span className="text-gray-500">{l}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{v}</span>
+                    <span className={`          ${theme === "Dark" ? "text-white" : "text-gray-900"}`}>{l}</span>
+                    <span className={`          ${theme === "Dark" ? "text-white" : "text-gray-900"}
+ font-medium`}>{v}</span>
                   </div>
                 ))}
               </div>
+
+
             </div>
 
           </div>
 
+
+
+          {/* Sub Task */}
+          <div
+            className={`
+    mt-26 mx-auto rounded-[28px] border overflow-hidden backdrop-blur-xl
+    shadow-[0_10px_30px_rgba(0,0,0,0.08)]
+    w-full max-w-6xl
+    ${theme === "Dark"
+                ? "border-white/10 bg-white/[0.05]"
+                : "border-gray-200 bg-white/70"}
+  `}
+          >
+            <div
+              className={`
+      px-4 sm:px-5 py-4 border-b
+      backdrop-blur-xl
+      ${theme === "Dark"
+                  ? "border-white/10 bg-white/[0.03]"
+                  : "border-gray-200 bg-gray-50/70"}
+    `}
+            >
+              <TaskDetailsWithSubtaskTable theme={theme} />
+            </div>
+          </div>
+
           {/* ACTIVITY */}
-          <div className="mt-6">
-            <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+          <div className="mt-22">
+            <h3 className={`text-sm font-semibold mb-3            ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
               Recent Activity
             </h3>
 
@@ -434,6 +685,8 @@ function ViewTask({ theme }: any) {
 
             </div>
 
+            {/* TaskDetailsWithSubtaskTable */}
+
             {/* ADD COMMENT */}
             <div
               className={`
@@ -484,7 +737,8 @@ function ViewTask({ theme }: any) {
         </div>
 
 
-      </div>
+
+      </div >
 
 
     </>
