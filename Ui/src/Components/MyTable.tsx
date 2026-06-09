@@ -5,6 +5,7 @@ const modules = [AllCommunityModule];
 
 type RowData = {
     taskid: string;
+    AssignedTo: string,
     taskname: string;
     status: string;
     priority: string;
@@ -15,6 +16,7 @@ const MyTable = ({ theme }: any) => {
     const rowData: RowData[] = [
         {
             taskid: "T-101",
+            AssignedTo:"UnAssigned",
             taskname: "Setup authentication system",
             status: "In Progress",
             priority: "High",
@@ -23,6 +25,7 @@ const MyTable = ({ theme }: any) => {
         {
             taskid: "T-102",
             taskname: "Design dashboard UI",
+                        AssignedTo:"UnAssigned",
             status: "Completed",
             priority: "Medium",
             action: "View",
@@ -30,6 +33,7 @@ const MyTable = ({ theme }: any) => {
         {
             taskid: "T-103",
             taskname: "Socket integration",
+                        AssignedTo:"UnAssigned",
             status: "Pending",
             priority: "High",
             action: "Start",
@@ -37,13 +41,14 @@ const MyTable = ({ theme }: any) => {
         {
             taskid: "T-104",
             taskname: "Fix responsive bugs",
+                        AssignedTo:"Tharun",
             status: "In Progress",
             priority: "Low",
             action: "Fix",
         },
     ];
 
-    const columnDefs : ColDef<RowData>[]= [
+    const columnDefs: ColDef<RowData>[] = [
         {
             field: "taskid",
             headerName: "Task ID",
@@ -87,6 +92,17 @@ const MyTable = ({ theme }: any) => {
                 return <span className={`font-medium ${color}`}>{params.value}</span>;
             },
         },
+        {
+            field: "AssignedTo",
+            headerName: "Task AssignedTo",
+            cellRenderer: (params: any) => {
+  
+                return <span className={`font-medium `}>{params.value}</span>;
+            },
+        },
+
+
+
         {
             field: "action",
             headerName: "Action",

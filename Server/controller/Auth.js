@@ -54,8 +54,8 @@ const AuthNewAccount = async (req, res) => {
 const Login = async (req, res) => {
     try {
         // role, email, password
-        const { role, email, password, type } = req.query
-        console.log(req.query, 'req.query')
+        const { email, password, type } = req.query
+        console.log( email, password, type , 'req.query')
         console.log(req.query.type, 'req.query.type')
         const isExits = await UserSchema.findOne({ userEmail: email })
         if (!isExits) {
@@ -87,7 +87,7 @@ const Login = async (req, res) => {
 
         return res.status(200).json({ message: "userLogedin.", token: token, userinfo: isExits, status: true })
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
         return res.status(500).json({ message: error.message })
     }
 

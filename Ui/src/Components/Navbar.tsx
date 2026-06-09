@@ -92,7 +92,7 @@ function Sidebar({ page }: Props) {
             } catch (error: any) {
                 console.error(error.response.status, 'err nav');
                 if (error.response.status == 401) {
-                    checkuser()
+                   return checkuser()
                     // redirect("")
 
                 }
@@ -136,6 +136,11 @@ function Sidebar({ page }: Props) {
             }
         } catch (error: any) {
             console.error(error.message)
+             if (error.response.status == 401) {
+                   return checkuser()
+                    // redirect("")
+
+                }
 
         }
     }

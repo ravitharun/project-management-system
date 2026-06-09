@@ -16,7 +16,7 @@ import {
 import "../index.css"
 import Input from "../Components/Input";
 import toast from "react-hot-toast";
-import { getuserInfo } from "../Components/LocalStorage";
+import { checkuser, getuserInfo } from "../Components/LocalStorage";
 import { instance } from "../services/apiservices";
 import { useEffect, useState } from "react";
 import TaskForm from "../Components/TaskForm";
@@ -58,7 +58,12 @@ function ProjetcDeatils() {
             const response = await instance.put("/api/ManageProject/UpdateProjectStatus", UpdateProjectStatus)
             console.log(response.status)
         } catch (error: any) {
-               console.error(error.message)
+            console.error(error.message)
+            if (error.response.status == 401) {
+             return   checkuser()
+                // redirect("")
+
+            }
 
         }
         // setProjectStatus(status)
@@ -95,7 +100,12 @@ function ProjetcDeatils() {
                 }, 1500);
             }
         } catch (error: any) {
-            return toast.error(error.message)
+            toast.error(error.message)
+            if (error.response.status == 401) {
+                return checkuser()
+                // redirect("")
+
+            }
         }
 
     }
@@ -113,9 +123,13 @@ function ProjetcDeatils() {
                 setProjectInfo(response.data.data)
                 console.log(response.data.data, 'response.data.data')
             } catch (error: any) {
-                   console.error(error.message)
+                console.error(error.message)
                 toast.error(error)
+                if (error.response.status == 401) {
+                    return checkuser()
+                    // redirect("")
 
+                }
 
             }
         }
@@ -142,13 +156,24 @@ function ProjetcDeatils() {
     useEffect(() => {
 
         const FetchTask = async () => {
-            const response = await instance.get("/api/Task/TaskBYPproject", {
-                params: {
-                    projectId: data.projectId
+            try {
+                const response = await instance.get("/api/Task/TaskBYPproject", {
+                    params: {
+                        projectId: data.projectId
+                    }
+                })
+                console.log(response, 'responses')
+                setTaskes(response.data.message)
+
+            } catch (error: any) {
+                if (error.response.status == 401) {
+                    return checkuser()
+                    // redirect("")
+
                 }
-            })
-            console.log(response, 'responses')
-            setTaskes(response.data.message)
+
+            }
+
 
         }
         FetchTask()
