@@ -8,13 +8,20 @@ import { FaGear } from "react-icons/fa6";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { CgMaximizeAlt } from "react-icons/cg";
 import { TbMinimize } from "react-icons/tb";
+import { useState } from "react";
+import AddPeopleWorkspace from "../AddPeople-workspace/AddPeopleWorkspace";
 
-function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
+function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
   console.log("normalApp page uis")
-  console.log(workspace?.icon,'workspace?.icon')
+  console.log(workspace?.icon, 'workspace?.icon')
+
+  const [AddMembers,setAddMembers] = useState<boolean>(false)
+
 
   return (
     <>
+
+    {AddMembers &&<AddPeopleWorkspace theme={theme} closesetAddMembers={setAddMembers}/>}
       <div
         className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
           ? "bg-[#0b1020] text-white"
@@ -161,7 +168,7 @@ function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, w
                     max-w-[180px]
                   "
                     >
-                      {workspace?.name}
+                      {workspace?.name} 
                     </h1>
 
                     {/* USERS */}
@@ -174,14 +181,17 @@ function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, w
                     text-[11px]
                     shrink-0
                     transition-all
+                    hover:cursor-pointer
 
                     ${theme === "Dark"
                           ? "bg-white/[0.04] border-white/10 hover:bg-white/[0.08]"
                           : "bg-gray-100 border-gray-200 hover:bg-gray-200"
                         }
                   `}
+                  onClick={()=>setAddMembers((prev)=>!prev)}
                     >
-                      <FaUsers fontSize={20} />
+                     
+                      <FaUsers fontSize={20}   />
                     </button>
 
                     {/* MENU */}
@@ -455,7 +465,7 @@ function MinAndMaxWorkspaceView({ HandelShare,handelMaximizeAndMinPoup, theme, w
                   minWidth: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <SpaceList   />
+                <SpaceList />
               </div>
             )}
 

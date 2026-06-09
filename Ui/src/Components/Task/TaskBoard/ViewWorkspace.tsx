@@ -81,7 +81,7 @@ ${url}/shared/ViewWorkspace?id=${id}`,
         console.log(err);
       }
       // console.log("make it []")
-      // setSpaceJsonView([]);
+      setSpaceJsonView([]);
     }
 
     fetchWorkspace();
