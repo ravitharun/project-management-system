@@ -1,6 +1,7 @@
 
 import axios from "axios"
-export const token = "12"
+import { Token } from "../Components/LocalStorage"
+// export const token = "12"
 
 // const server = import.meta.env.Vite_Env
 console.log(import.meta.env.VITE_API)
@@ -11,7 +12,7 @@ export const instance = axios.create({
     baseURL: import.meta.env.VITE_ENV === 'prod' ? import.meta.env.VITE_API : "http://localhost:5000/"
     ,
     headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${Token}`,
     },
 })
 
