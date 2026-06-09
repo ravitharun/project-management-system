@@ -1,4 +1,147 @@
-    <div
+// import React from 'react'
+
+import { useState } from "react";
+import {
+  FiEdit3,
+  FiCopy,
+  FiLink,
+  FiImage,
+} from "react-icons/fi"; import {
+  BsPinAngle,
+  BsShare,
+} from "react-icons/bs";
+import TaskDetailsWithSubtaskTable from "./TaskDetailsWithSubtaskTable";
+function ViewTask({ theme }: any) {
+  const [item, setitem] = useState(
+    [
+      {
+        id: "CMT-101",
+        name: "Tharun Ravi",
+        role: "Frontend Developer",
+        comment:
+          "Updated dashboard responsiveness and fixed mobile spacing issues.",
+        time: "2h ago",
+
+        replies: [
+          {
+            replyId: "RPL-201",
+            replyToCommentId: "CMT-101",
+            name: "Pranav Kumar",
+            role: "UI Designer",
+            reply:
+              "UI looks much cleaner now. Especially tablet view.",
+            time: "1h ago",
+          },
+
+          {
+            replyId: "RPL-202",
+            replyToCommentId: "CMT-101",
+            name: "Kiran",
+            role: "Backend Dev",
+            reply:
+              "Can you also align the activity cards section?",
+            time: "45m ago",
+          },
+          {
+            replyId: "RPL-203",
+            replyToCommentId: "CMT-101",
+            name: "Ravi",
+            role: "Frontend Developer",
+            reply:
+              "Socket integration is already in progress.",
+            time: "20m ago",
+          },
+        ],
+      },
+
+      {
+        id: "CMT-102",
+        name: "Rahul",
+        role: "Project Manager",
+        comment:
+          "Need realtime notifications for task updates.",
+        time: "Yesterday",
+
+        replies: [
+          {
+            replyId: "RPL-203",
+            replyToCommentId: "CMT-102",
+            name: "Tharun Ravi",
+            role: "Frontend Developer",
+            reply:
+              "Socket integration is already in progress.",
+            time: "20m ago",
+          },
+
+        ],
+      },
+    ]);
+  const menuitems = [
+    {
+      icon: <FiEdit3 className="text-[14px] sm:text-[15px]" />,
+      label: "Edit Task",
+    },
+    {
+      icon: <FiCopy className="text-[14px] sm:text-[15px]" />,
+      label: "Duplicate Task",
+    },
+    {
+      icon: <BsPinAngle className="text-[14px] sm:text-[15px]" />,
+      label: "Pin Task",
+    },
+    {
+      icon: <BsShare className="text-[14px] sm:text-[15px]" />,
+      label: "Share Task",
+    },
+    {
+      icon: <FiLink className="text-[14px] sm:text-[15px]" />,
+      label: "Copy Link",
+    },
+    {
+      icon: <FiImage className="text-[14px] sm:text-[15px]" />,
+      label: "Change Wallpaper",
+    },
+  ];
+
+  const postComment = () => {
+    const replyToCommentId = "CMT-102"
+
+    const postdata = {
+      replyId: "RPL-203",
+      replyToCommentId: replyToCommentId,
+      name: "New user",
+      role: "Devops Engineer",
+      reply:
+        "Node Version Misss Match in Prod",
+      time: "a min ago",
+    }
+
+    const addrply = item.map((comment) => {
+
+
+      if (comment.id === replyToCommentId) {
+
+        return {
+          ...comment,
+
+          replies: [
+            ...(comment.replies || []),
+            postdata,
+          ],
+        };
+      }
+
+      return comment;
+    });
+    // setitem
+    setitem(addrply)
+  }
+
+  return (
+    <>
+
+
+      <div
         className={`
       flex-1 min-w-0
       lg:h-[560px]
@@ -49,7 +192,7 @@
                 <p
                   className={`
           text-sm mt-1
-          ${theme === "Dark" ? "text-gray-400" : "text-gray-500"}
+          ${theme === "Dark" ? "text-white" : "text-gray-900"}
         `}
                 >
                   React Workspace Management
@@ -97,13 +240,12 @@
                   className={`
           absolute right-0 top-14
           w-64 rounded-3xl border shadow-2xl z-50
-          overflow-hidden
-
+       
           opacity-0 invisible translate-y-2
           group-hover:opacity-100
           group-hover:visible
           group-hover:translate-y-0
-
+overflow-y-scroll
           transition-all duration-200
 
           ${theme === "Dark"
@@ -259,8 +401,10 @@
                   }
             `}
               >
-                <p className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</p>
-                <h3 className="text-2xl font-semibold mt-2 text-gray-900 dark:text-white">
+                <p className={`text-xs ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>{stat.label}</p>
+                <h3 className={`text-2xl font-semibold mt-2           ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
                   {stat.value}
                 </h3>
                 <p className="text-xs mt-1 text-gray-500">{stat.sub}</p>
@@ -272,10 +416,12 @@
           <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 mt-6">
 
             <div className="xl:col-span-3 rounded-2xl border p-4 bg-white dark:bg-white/[0.02] border-gray-200 dark:border-white/10">
-              <h3 className="text-sm font-semibold mb-2 text-gray-900 dark:text-white">
+              <h3 className={`text-sm font-semibold mb-2           ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
                 Description
               </h3>
-              <p className="text-sm leading-7 text-gray-600 dark:text-gray-400">
+              <p className={`text-sm leading-7           ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
                 This workspace contains frontend dashboard modules, realtime socket integration,
                 responsive layouts, reusable UI blocks, and collaboration tools built using React
                 and Tailwind CSS.
@@ -283,7 +429,8 @@
             </div>
 
             <div className="xl:col-span-2 rounded-2xl border p-4 bg-white dark:bg-white/[0.02] border-gray-200 dark:border-white/10">
-              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+              <h3 className={`text-sm font-semibold mb-3          ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
                 Overview
               </h3>
 
@@ -294,18 +441,48 @@
                   ["Status", "Production ready"],
                 ].map(([l, v]) => (
                   <div key={l} className="flex justify-between text-sm">
-                    <span className="text-gray-500">{l}</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{v}</span>
+                    <span className={`          ${theme === "Dark" ? "text-white" : "text-gray-900"}`}>{l}</span>
+                    <span className={`          ${theme === "Dark" ? "text-white" : "text-gray-900"}
+ font-medium`}>{v}</span>
                   </div>
                 ))}
               </div>
+
+
             </div>
 
           </div>
 
+
+
+          {/* Sub Task */}
+          <div
+            className={`
+    mt-26 mx-auto rounded-[28px] border overflow-hidden backdrop-blur-xl
+    shadow-[0_10px_30px_rgba(0,0,0,0.08)]
+    w-full max-w-6xl
+    ${theme === "Dark"
+                ? "border-white/10 bg-white/[0.05]"
+                : "border-gray-200 bg-white/70"}
+  `}
+          >
+            <div
+              className={`
+      px-4 sm:px-5 py-4 border-b
+      backdrop-blur-xl
+      ${theme === "Dark"
+                  ? "border-white/10 bg-white/[0.03]"
+                  : "border-gray-200 bg-gray-50/70"}
+    `}
+            >
+              <TaskDetailsWithSubtaskTable theme={theme} />
+            </div>
+          </div>
+
           {/* ACTIVITY */}
           <div className="mt-22">
-            <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+            <h3 className={`text-sm font-semibold mb-3            ${theme === "Dark" ? "text-white" : "text-gray-900"}
+`}>
               Recent Activity
             </h3>
 
@@ -508,6 +685,8 @@
 
             </div>
 
+            {/* TaskDetailsWithSubtaskTable */}
+
             {/* ADD COMMENT */}
             <div
               className={`
@@ -559,4 +738,11 @@
 
 
 
-      </div>
+      </div >
+
+
+    </>
+  )
+}
+
+export default ViewTask

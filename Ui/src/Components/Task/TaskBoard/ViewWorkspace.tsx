@@ -1,16 +1,16 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import WorkspaceData from "../Context/workspaceData";
-import WorkspaceViwe from "./WorkspaceViwe";
-import CreatedspaceData from "../Context/CreatedWorkspace";
+import WorkspaceData from "../../../Context/workspaceData";
+import WorkspaceViwe from "../../WorkspaceViwe";
+import CreatedspaceData from "../../../Context/CreatedWorkspace";
 
 
-import SetWork from "../Components/SetWork";
+import SetWork from "../../SetWork";
 
 import { useNavigate } from "react-router-dom";
 
 import MinAndMaxWorkspaceView from "./MinAndMaxWorkspaceview";
-import SharespaceView from "../Context/ShareViewContext";
-import ShareMinAndMaxWorkspaceView from "./Share/ShareMinAndMaxWorkspaceView";
+import SharespaceView from "../../../Context/ShareViewContext";
+import ShareMinAndMaxWorkspaceView from "../../Share/ShareMinAndMaxWorkspaceView";
 import axios from "axios";
 
 
