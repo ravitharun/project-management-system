@@ -4,6 +4,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { instance } from "../services/apiservices";
 // import toast from "react-hot-toast";
 import { toast, ToastContainer } from "react-toastify";
+import { checkuser } from "./LocalStorage";
 
 type ProjectIdProps = {
     projectsid: string;
@@ -55,8 +56,11 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
 
                 setusers(response.data.message)
             } catch (error: any) {
-                   console.error(error.message)
+                if (error.response.status == 401) {
+                    return checkuser()
+                    // redirect("")
 
+                }
 
             }
         }
@@ -94,7 +98,7 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
                 return toast.success("Added")
             }
         } catch (error: any) {
-               console.error(error.message)
+            console.error(error.message)
             if (error.status == 404) {
                 toast.info("More Than 1 Members are required to added in these project")
             }
@@ -225,7 +229,7 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
                             </button>
 
                             <button
-                                className={`w-full bg-blue-600 text-white py-3 rounded-xl font-medium  transition ${userid.length == 0?'bg-green-100 hover:cursor-not-allowed':'hover:bg-blue-700'}`}
+                                className={`w-full bg-blue-600 text-white py-3 rounded-xl font-medium  transition ${userid.length == 0 ? 'bg-green-100 hover:cursor-not-allowed' : 'hover:bg-blue-700'}`}
                                 onClick={AddMember}
                                 disabled={userid.length == 0}
                             >

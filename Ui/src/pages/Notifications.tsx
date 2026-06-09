@@ -5,6 +5,7 @@ import { CurrentDateFucntion, timeAgo } from "../Components/timeAgo ";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { instance } from "../services/apiservices";
+import { checkuser } from "../Components/LocalStorage";
 
 function Notifications() {
 
@@ -18,7 +19,12 @@ function Notifications() {
                 setnotifications(response.data.message)
 
             } catch (error: any) {
-                console.log(error)
+                console.error(error)
+                if (error.response.status == 401) {
+                  return  checkuser()
+                    // redirect("")
+
+                }
 
             }
 
@@ -71,7 +77,7 @@ function Notifications() {
             }
         });
 
-        console.log(GetIds,'GetIds')
+        console.log(GetIds, 'GetIds')
         // const updatenotificationsisread = notifications.map((notif) => {
         //     console.log(notif, 'notif')
         //     notif.isread = true

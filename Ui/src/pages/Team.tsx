@@ -9,7 +9,7 @@ import {
 import Sidebar from "../Components/Navbar";
 import { instance } from "../services/apiservices";
 import { departments } from "../types/Dept";
-import { useremail } from "../Components/LocalStorage";
+import { checkuser, useremail } from "../Components/LocalStorage";
 import { socket } from "../Scokets/ScoketConfig";
 import Progress from "../Components/progress";
 
@@ -37,7 +37,12 @@ function Team() {
         setFilteredMembers(response.data.message);
 
       } catch (error: any) {
-           console.error(error.message);
+        console.error(error.message);
+        if (error.response.status == 401) {
+          return checkuser()
+          // redirect("")
+
+        }
       }
     };
 

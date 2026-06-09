@@ -3,7 +3,7 @@ import bgthemeContext from "../Context/ThemeContext"
 import { useContext, useState } from "react"
 import { instance } from "../services/apiservices"
 import { toast, ToastContainer } from "react-toastify"
-import { useremail } from "./LocalStorage"
+import { checkuser, useremail } from "./LocalStorage"
 import { allowedtype } from "../types/CustomUploadFormat"
 import UploadingLoader from "./UploadingLoader"
 
@@ -48,6 +48,11 @@ function WorkspacePanel({ SetBackground, id }: any) {
 
         } catch (error: any) {
             console.error(error.message, 'err')
+            if (error.response.status == 401) {
+               return checkuser()
+                // redirect("")
+
+            }
 
         }
     }
@@ -85,13 +90,17 @@ function WorkspacePanel({ SetBackground, id }: any) {
             console.error(error.name)
             if (error?.response?.data?.message) {
                 toast.error(error.response.data.message);
-
+return
             }
             if (error?.response?.data?.status) {
-                toast.error(error.response.data.message);
+             return   toast.error(error.response.data.message);
 
             }
+            if (error.response.status == 401) {
+              return  checkuser()
+                // redirect("")
 
+            }
 
         }
         finally { setisuploading(false) }

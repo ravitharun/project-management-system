@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import bgthemeContext from "../../Context/ThemeContext"
 import { IoClose } from "react-icons/io5"
-import { useremail } from "../LocalStorage"
+import { checkuser, useremail } from "../LocalStorage"
 import { instance } from "../../services/apiservices"
 import { WorkSpaceIcon } from "../../types/workspaceIcon"
 
@@ -102,6 +102,11 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
             }
         } catch (error: any) {
                console.error(error.message)
+                if (error.response.status == 401) {
+                               return    checkuser()
+                                   // redirect("")
+               
+                               }
 
         }
 

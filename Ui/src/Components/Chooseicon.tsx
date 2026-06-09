@@ -3,7 +3,7 @@ import { WorkSpaceIcon } from "../types/workspaceIcon"
 import { useState } from "react"
 import { instance } from "../services/apiservices"
 import { toast } from "react-toastify"
-import { useremail } from "./LocalStorage"
+import { checkuser, useremail } from "./LocalStorage"
 import { allowedtype } from "../types/CustomUploadFormat"
 import UploadingLoader from "./UploadingLoader"
 
@@ -37,6 +37,11 @@ function Chooseicon({
 
         } catch (error: any) {
             console.error(error.message)
+            if (error.response.status == 401) {
+             return   checkuser()
+                // redirect("")
+
+            }
 
         }
 
@@ -80,7 +85,7 @@ function Chooseicon({
             );
 
             console.log(responseUpload, "responseUpload");
-            if(responseUpload?.status==200){
+            if (responseUpload?.status == 200) {
                 return toast.success(responseUpload?.data.message)
             }
 
@@ -90,6 +95,11 @@ function Chooseicon({
             if (error?.response?.status == 400) {
 
                 return toast.info(error?.response?.data?.message)
+            }
+            if (error.response.status == 401) {
+               return checkuser()
+                // redirect("")
+
             }
 
         } finally {
