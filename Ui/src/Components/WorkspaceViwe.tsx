@@ -7,6 +7,7 @@ import {
 
 import WorkspaceData from "../Context/workspaceData";
 import { useremail } from "./LocalStorage";
+import ViewProfileCard from "./PoupProfileCard/ViewProfileCard";
 
 function WorkspaceViwe({ theme, SpaceJson }: any) {
 
@@ -27,6 +28,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
 
   return (
     <>
+    {/* <ViewProfileCard></ViewProfileCard> */}
       <div
         className={`
     min-h-screen

@@ -1,6 +1,8 @@
 import { AgGridReact, AgGridProvider } from "ag-grid-react";
 import { AllCommunityModule } from "ag-grid-community";
 import type { ColDef } from "ag-grid-community";
+import { useRef, useState } from "react";
+import ViewProfileCard from "./PoupProfileCard/ViewProfileCard";
 const modules = [AllCommunityModule];
 
 type RowData = {
@@ -13,10 +15,17 @@ type RowData = {
 };
 
 const MyTable = ({ theme }: any) => {
+    const timeoutRef = useRef<any>(null);
+    const [popupPos, setPopupPos] = useState({
+        x: 0,
+        y: 0,
+        show: false,
+        userInof: {}
+    });
     const rowData: RowData[] = [
         {
             taskid: "T-101",
-            AssignedTo:"UnAssigned",
+            AssignedTo: "UnAssigned",
             taskname: "Setup authentication system",
             status: "In Progress",
             priority: "High",
@@ -25,7 +34,7 @@ const MyTable = ({ theme }: any) => {
         {
             taskid: "T-102",
             taskname: "Design dashboard UI",
-                        AssignedTo:"UnAssigned",
+            AssignedTo: "UnAssigned",
             status: "Completed",
             priority: "Medium",
             action: "View",
@@ -33,7 +42,7 @@ const MyTable = ({ theme }: any) => {
         {
             taskid: "T-103",
             taskname: "Socket integration",
-                        AssignedTo:"UnAssigned",
+            AssignedTo: "UnAssigned",
             status: "Pending",
             priority: "High",
             action: "Start",
@@ -41,7 +50,7 @@ const MyTable = ({ theme }: any) => {
         {
             taskid: "T-104",
             taskname: "Fix responsive bugs",
-                        AssignedTo:"Tharun",
+            AssignedTo: "Tharun",
             status: "In Progress",
             priority: "Low",
             action: "Fix",
@@ -92,17 +101,49 @@ const MyTable = ({ theme }: any) => {
                 return <span className={`font-medium ${color}`}>{params.value}</span>;
             },
         },
+
+
         {
             field: "AssignedTo",
             headerName: "Task AssignedTo",
+
             cellRenderer: (params: any) => {
-  
-                return <span className={`font-medium `}>{params.value}</span>;
+                return (
+                    <div
+                        className="inline-block"
+
+                        onMouseEnter={(e: any) => {
+
+                            clearTimeout(timeoutRef.current);
+
+                            setPopupPos({
+                                x: e.clientX,
+                                y: e.clientY,
+                                show: true,
+                                userInof: {
+                                    username: "tharun",
+                                    email: "tharunravi5@gmail.com"
+                                }
+                            });
+                        }}
+                        onMouseLeave={() => {
+
+                            timeoutRef.current = setTimeout(() => {
+                                setPopupPos((prev) => ({
+                                    ...prev,
+                                    show: false,
+                                    userInof:{}
+                                }));
+                            }, 1200);
+                        }}
+                    >
+                        <span className="cursor-pointer text-blue-500">
+                            {params.value}
+                        </span>
+                    </div>
+                );
             },
         },
-
-
-
         {
             field: "action",
             headerName: "Action",
@@ -116,56 +157,86 @@ const MyTable = ({ theme }: any) => {
         },
     ];
 
-
+    console.log(popupPos.userInof, 'popupPos.userInof')
     return (
-        <AgGridProvider modules={modules}>
-            <div
-                className={`
-      ${theme === "Dark"
-                        ? "ag-theme-alpine-dark"
-                        : "ag-theme-alpine"
-                    }
+
+        <>
+            {
+                popupPos.show && (
+                    <div
+                        className="fixed z-[999999999]"
+                        style={{
+                            top: popupPos.y + 10,
+                            left: popupPos.x + 10,
+                        }}
+
+                        onMouseEnter={() => {
+                            setPopupPos((prev) => ({
+                                ...prev,
+                                show: true,
+                            }));
+                        }}
+
+                        onMouseLeave={() => {
+                            setPopupPos((prev) => ({
+                                ...prev,
+                                show: false,
+                            }));
+                        }}
+                    >
+                        <ViewProfileCard userInof={popupPos.userInof} />
+                    </div>
+                )
+            }
+            <AgGridProvider modules={modules}>
+                <div
+                    className={`
+                    ${theme === "Dark"
+                            ? "ag-theme-alpine-dark"
+                            : "ag-theme-alpine"
+                        }
       w-full rounded-xl
       h-[300px] sm:h-[400px] lg:h-[500px]
       overflow-auto   /* ✅ IMPORTANT */
     `}
-                style={{
-                    "--ag-background-color": theme === "Dark" ? "#0f172a" : "#ffffff",
-                    "--ag-header-background-color":
-                        theme === "Dark" ? "#111827" : "#f3f4f6",
-                    "--ag-odd-row-background-color":
-                        theme === "Dark" ? "#0b1220" : "#ffffff",
-                    "--ag-border-color":
-                        theme === "Dark"
-                            ? "rgba(255,255,255,0.1)"
-                            : "#e5e7eb",
-                    "--ag-foreground-color":
-                        theme === "Dark" ? "#e5e7e3" : "#111827",
-                } as React.CSSProperties}
-            >
-                <span>Dummy Data </span>
-                <AgGridReact
-                    rowData={rowData}
-                    columnDefs={columnDefs}
+                    style={{
+                        "--ag-background-color": theme === "Dark" ? "#0f172a" : "#ffffff",
+                        "--ag-header-background-color":
+                            theme === "Dark" ? "#111827" : "#f3f4f6",
+                        "--ag-odd-row-background-color":
+                            theme === "Dark" ? "#0b1220" : "#ffffff",
+                        "--ag-border-color":
+                            theme === "Dark"
+                                ? "rgba(255,255,255,0.1)"
+                                : "#e5e7eb",
+                        "--ag-foreground-color":
+                            theme === "Dark" ? "#e5e7e3" : "#111827",
+                    } as React.CSSProperties}
+                >
+                    <span>Dummy Data </span>
+                    <AgGridReact
+                        rowData={rowData}
+                        columnDefs={columnDefs}
 
-                    suppressHorizontalScroll={false}
+                        suppressHorizontalScroll={false}
 
-                    defaultColDef={{
-                        resizable: true,
-                        sortable: true,
-                        filter: true,
-                        editable: true,
-                        flex: 1,
-                        minWidth: 350,
-                    }}
+                        defaultColDef={{
+                            resizable: true,
+                            sortable: true,
+                            filter: true,
+                            editable: true,
+                            flex: 1,
+                            minWidth: 350,
+                        }}
 
-                    onCellClicked={(params) => {
-                        console.log("Cell clicked:", params.value);
-                        console.log("Row data:", params.data);
-                    }}
-                />
-            </div>
-        </AgGridProvider>
+                        onCellClicked={(params) => {
+                            console.log("Cell clicked:", params.value);
+                            console.log("Row data:", params.data);
+                        }}
+                    />
+                </div>
+            </AgGridProvider>
+        </>
     );
 };
 
