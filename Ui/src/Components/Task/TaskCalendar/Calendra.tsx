@@ -1,5 +1,5 @@
 import { Scheduler } from "@aldabil/react-scheduler";
-import MyTable from "../Components/MyTable";
+import MyTable from "../TaskList/MyTable";
 
 function MyCalendar({ theme }: any) {
   return (

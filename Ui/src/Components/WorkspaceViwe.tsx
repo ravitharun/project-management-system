@@ -7,7 +7,6 @@ import {
 
 import WorkspaceData from "../Context/workspaceData";
 import { useremail } from "./LocalStorage";
-import ViewProfileCard from "./PoupProfileCard/ViewProfileCard";
 
 function WorkspaceViwe({ theme, SpaceJson }: any) {
 

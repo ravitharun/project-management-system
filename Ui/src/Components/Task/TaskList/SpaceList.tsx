@@ -1,12 +1,13 @@
 import { useContext, useState } from "react";
 import { FaListUl } from "react-icons/fa";
 import { MdGridView } from "react-icons/md";
-import Button from "./Button";
+import Button from "../../Button";
 import ViewTask from "./ViewTask";
-import bgthemeContext from "../Context/ThemeContext";
+import bgthemeContext from "../../../Context/ThemeContext";
 import MyTable from "./MyTable";
 
 function SpaceList() {
+    // console.log(ismaxAndMin,'space list')
     const contexttheme = useContext(bgthemeContext)
     const { theme }: any = contexttheme
     console.log(theme, 'theme')
@@ -111,7 +112,6 @@ function SpaceList() {
                     <MyTable theme={theme}></MyTable>
                 </>
             )}
-
 
             {CurrentView === 'grid' &&
 

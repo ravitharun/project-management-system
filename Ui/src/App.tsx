@@ -3,7 +3,7 @@ import { useContext } from "react";
 import SideBarContext from "./Context/SideBard";
 import bgthemeContext from "./Context/ThemeContext";
 import Sidebar from "./Components/Navbar";
-import ViewWorkspace from "./Components/ViewWorkspace";
+import ViewWorkspace from "./Components/Task/TaskBoard/ViewWorkspace";
 
 
 

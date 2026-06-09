@@ -2,7 +2,7 @@ import { AgGridReact, AgGridProvider } from "ag-grid-react";
 import { AllCommunityModule } from "ag-grid-community";
 import type { ColDef } from "ag-grid-community";
 import { useRef, useState } from "react";
-import ViewProfileCard from "./PoupProfileCard/ViewProfileCard";
+import ViewProfileCard from "../../PoupProfileCard/ViewProfileCard";
 const modules = [AllCommunityModule];
 
 type RowData = {
@@ -184,7 +184,7 @@ const MyTable = ({ theme }: any) => {
                             }));
                         }}
                     >
-                        <ViewProfileCard userInof={popupPos.userInof} />
+                        <ViewProfileCard userInof={popupPos.userInof}  theme={theme}/>
                     </div>
                 )
             }
