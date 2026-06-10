@@ -42,7 +42,7 @@ const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" 
 const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localhost:27017/ProjectManagementWebsite'
 
 
-app.use(cors({ origin: envStatusurl }));
+app.use(cors({ origin: [envStatusurl,'https://devserver-testing--taskora-system.netlify.app'] }));
 
 console.log("--------- check the id's -----")
 console.log("Task id :" + TaskId("Task"))
