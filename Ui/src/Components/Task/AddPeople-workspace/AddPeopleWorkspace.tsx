@@ -22,11 +22,26 @@ function AddPeopleWorkspace({ theme, closesetAddMembers, workspace }: any) {
                 workspace,
                 arr_email
             }
-            console.log(data)
-            const response = await instance.post("/api/WorkSpace/AddTOWorkSpace", {data})
-            console.log(response.data.message);
+            const response = await instance.post("/api/WorkSpace/AddTOWorkSpace", { data })
+            if (response.status == 200) {
+                toast.success("Added.")
+                if (response.data.Samemember) {
+
+
+                    setTimeout(() => {
+                        return toast.info(response.data.Samemember)
+                    }, 1000);
+                }
+            }
         } catch (error: any) {
-            console.log(error)
+
+            console.log(error?.response.status)
+            if (error?.response.status == 400) {
+                return toast.info(error?.response?.data?.message)
+            }
+
+
+            // console.log(error?.response?.status)
 
         }
     }
