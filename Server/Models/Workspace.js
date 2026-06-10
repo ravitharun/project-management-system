@@ -65,6 +65,7 @@ const WorkspaceSchema = new mongoose.Schema({
     ,
     Spacebackground: { type: String },
     isStaredUsers: starUsser,
+    WorkSpacememebers: [{ type: String }],
 
 
     workspaceSetup: workspaceSetupSchema

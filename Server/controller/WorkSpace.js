@@ -175,4 +175,24 @@ const handelCustomUoploadIcon = async (req, res) => {
         return res.status(500).json({ message: "Server Error" })
     }
 }
-module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon }
+
+
+const AddWorkSpacememebers = async (req, res, next) => {
+    try {
+        const { data } = req.body
+        console.log(data.workspace)
+        console.log(data.arr_email)
+
+        const isUserExitsInWorkspace = await Workspace.findById({ _id: data.workspace })
+
+        console.log(isUserExitsInWorkspace, 'isuese')
+
+        // const isWorkspaceisexit = await Workspace.findByIdAndUpdate({ _id: data.workspace }, { $push: { WorkSpacememebers: data.arr_email } }, { returnDocument: "after" })
+        return res.status(200).json({ message: isWorkspaceisexit })
+    } catch (error) {
+
+        next(error)
+
+    }
+}
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers }
