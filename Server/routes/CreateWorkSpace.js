@@ -1,5 +1,5 @@
 const express = require("express")
-const { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers } = require("../controller/WorkSpace")
+const { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers, ApproveEmail } = require("../controller/WorkSpace")
 const { uploadWorkspaceWallpaper, uploadWorkspaceIcon } = require("../config/mutler")
 const AuthTokenVerification = require("../Middleware/AuthMiddleware")
 const CreateWorkSpaceRouter = express.Router()
@@ -11,4 +11,5 @@ CreateWorkSpaceRouter.delete("/DeleteWorkspace", AuthTokenVerification,DeleteWor
 CreateWorkSpaceRouter.put("/CustomUopload/Background",AuthTokenVerification, uploadWorkspaceWallpaper.single("CustomUopload"), handelCustomUoploadBackground,)
 CreateWorkSpaceRouter.put("/CustomUopload/Icon",AuthTokenVerification, uploadWorkspaceIcon.single("CustomUploadIcon"), handelCustomUoploadIcon,)
 CreateWorkSpaceRouter.post("/AddTOWorkSpace",AuthTokenVerification,  AddWorkSpacememebers,)
+CreateWorkSpaceRouter.post("/approve-workspace-invite", ApproveEmail)
 module.exports = CreateWorkSpaceRouter

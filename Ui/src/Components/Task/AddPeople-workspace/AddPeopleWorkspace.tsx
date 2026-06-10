@@ -24,10 +24,8 @@ function AddPeopleWorkspace({ theme, closesetAddMembers, workspace }: any) {
             }
             const response = await instance.post("/api/WorkSpace/AddTOWorkSpace", { data })
             if (response.status == 200) {
-                toast.success("Added.")
+                toast.success("Email Sent.")
                 if (response.data.Samemember) {
-
-
                     setTimeout(() => {
                         return toast.info(response.data.Samemember)
                     }, 1000);

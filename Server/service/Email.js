@@ -1,7 +1,7 @@
 
 const { Resend } = require("resend");
 
-const resend = new Resend(process.env.RESEND_API);
+ const resend = new Resend(process.env.RESEND_API);
 if (process.env.RESEND_API === undefined) {
     console.log("process.env.RESEND_API === undefined")
 }
@@ -251,5 +251,6 @@ const taskAssiginedEmail = async (data) => {
 module.exports = {
     SendAccountCreationEmail,
     SendWelcomEmail,
-    taskAssiginedEmail
+    taskAssiginedEmail,
+    resend
 };
