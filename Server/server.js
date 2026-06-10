@@ -56,7 +56,7 @@ app.use("/api/Analytcs", AnalytcsRouter)
 app.use("/api/WorkSpace", CreateWorkSpaceRouter)
 app.use("/api/Task", WorkSpaceTaskRouter)
 // client.connectRedis()
-
+app.use(ErrorMiddleware)
 
 redis.on("connect", () => {
   console.log("Redis Connected");

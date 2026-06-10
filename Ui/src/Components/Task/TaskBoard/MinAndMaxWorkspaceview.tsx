@@ -21,7 +21,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
   return (
     <>
 
-    {AddMembers &&<AddPeopleWorkspace theme={theme} closesetAddMembers={setAddMembers}/>}
+    {AddMembers &&<AddPeopleWorkspace theme={theme} closesetAddMembers={setAddMembers} workspace={workspace._id}/>}
       <div
         className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
           ? "bg-[#0b1020] text-white"

@@ -175,4 +175,55 @@ const handelCustomUoploadIcon = async (req, res) => {
         return res.status(500).json({ message: "Server Error" })
     }
 }
-module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon }
+
+
+const AddWorkSpacememebers = async (req, res, next) => {
+    try {
+        const { data } = req.body
+        // console.log(data.workspace)
+        // console.log(data.arr_email)
+
+        const isUserExitsInWorkspace = await Workspace.findById(data.workspace)
+        if (!isUserExitsInWorkspace) {
+            const err = new Error("Workspace not found");
+            err.status = 404;
+            return next(err);
+        }
+        const DbEmail = isUserExitsInWorkspace.WorkSpacememebers
+        // gives the not exits in the workspaceDb
+        const CheckExits = data.arr_email.filter((emails) => !DbEmail.includes(emails))
+
+        if (CheckExits.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Some members are already Exits In the Workspace :  ${isUserExitsInWorkspace.name || "WorkSpace name"}`
+            });
+        }
+
+
+
+        const isWorkspaceisexit = await Workspace.findByIdAndUpdate({ _id: data.workspace }, {
+            $push: {
+
+                WorkSpacememebers: CheckExits
+            }
+        }, { returnDocument: "after" })
+
+        // Add the smae Emails into the array
+        const Addsameemails = data.arr_email.filter((emails) => DbEmail.includes(emails))
+        const Samemember = Addsameemails.length >= 1 ? Addsameemails : null
+ 
+        return res.status(200).json({
+            message: isWorkspaceisexit,
+
+            Samemember: Samemember
+                ? `Some users already exist: ${Samemember.join(", ")}`
+                : null,
+        });
+    } catch (error) {
+        console.log(error.message, 'err')
+        next(error)
+
+    }
+}
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers }
