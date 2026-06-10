@@ -1,4 +1,6 @@
 const Workspace = require("../Models/Workspace")
+const EmailQueue = require("../Queues/Producer")
+const worker = require("../Queues/Worker")
 const cloudinary = require("../config/Clounadry")
 const CreateWorkSpace = async (req, res) => {
     try {
@@ -180,8 +182,7 @@ const handelCustomUoploadIcon = async (req, res) => {
 const AddWorkSpacememebers = async (req, res, next) => {
     try {
         const { data } = req.body
-        // console.log(data.workspace)
-        // console.log(data.arr_email)
+        console.log(data, 'data')
 
         const isUserExitsInWorkspace = await Workspace.findById(data.workspace)
         if (!isUserExitsInWorkspace) {
@@ -189,36 +190,24 @@ const AddWorkSpacememebers = async (req, res, next) => {
             err.status = 404;
             return next(err);
         }
-        const DbEmail = isUserExitsInWorkspace.WorkSpacememebers
-        // gives the not exits in the workspaceDb
-        const CheckExits = data.arr_email.filter((emails) => !DbEmail.includes(emails))
 
-        if (CheckExits.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: `Some members are already Exits In the Workspace :  ${isUserExitsInWorkspace.name || "WorkSpace name"}`
-            });
+        const Emaildata = {
+            ...isUserExitsInWorkspace,
+            data
+
         }
+        await EmailQueue.add("WorkspaceAcceptInvitation", Emaildata, {
+            attempts: 3,
+            backoff: {
+                type: "fixed",
+                delay: 1000,
+            },
+        })
 
 
 
-        const isWorkspaceisexit = await Workspace.findByIdAndUpdate({ _id: data.workspace }, {
-            $push: {
-
-                WorkSpacememebers: CheckExits
-            }
-        }, { returnDocument: "after" })
-
-        // Add the smae Emails into the array
-        const Addsameemails = data.arr_email.filter((emails) => DbEmail.includes(emails))
-        const Samemember = Addsameemails.length >= 1 ? Addsameemails : null
- 
         return res.status(200).json({
-            message: isWorkspaceisexit,
-
-            Samemember: Samemember
-                ? `Some users already exist: ${Samemember.join(", ")}`
-                : null,
+            message: 'Email Sent',
         });
     } catch (error) {
         console.log(error.message, 'err')
@@ -226,4 +215,55 @@ const AddWorkSpacememebers = async (req, res, next) => {
 
     }
 }
-module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers }
+
+// approve Email 
+const ApproveEmail = async (req, res, next) => {
+    try {
+
+        const { AcceptEmail, workspaceid } = req.query
+        console.log(req.query)
+
+        if (!AcceptEmail) {
+            const error = new Error("Email is required")
+            error.status = 400
+            return next(error)
+        }
+
+        const isWorkspaceExists = await Workspace.findById(workspaceid)
+
+        if (!isWorkspaceExists) {
+            const error = new Error("Workspace not found")
+            error.status = 404
+            return next(error)
+        }
+
+        const DbEmail = isWorkspaceExists.WorkSpacememebers
+
+        const isEmailAlreadyExists = DbEmail.includes(AcceptEmail)
+
+        if (isEmailAlreadyExists) {
+            return res.status(409).json({
+                message: "Email already exists in workspace"
+            })
+        }
+
+        await Workspace.findByIdAndUpdate(
+            workspaceid,
+            {
+                $push: {
+                    WorkSpacememebers: AcceptEmail
+                }
+            },
+            { returnDocument: "true" }
+        )
+
+        return res.status(201).json({
+            message: "Member added to workspace successfully"
+        })
+
+    } catch (error) {
+        console.log("error", error.message)
+        next(error)
+    }
+}
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers, ApproveEmail }

@@ -26,10 +26,16 @@ const WorkSpaceTaskRouter = require("./routes/WorkSpaceTask_router");
 const limiter = require("./RateLimiter");
 const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 const AuthTokenVerification = require("./Middleware/AuthMiddleware");
+const check = `${process.env.envStatus === "Local"
+    ? "http://localhost:5000"
+    : "https://project-management-system-u091.onrender.com"
+  }/api/workspace/approve-workspace-invite/?workspaceid=spaceId&AcceptEmail=useremail`;
+console.log(check, 'check Email')
 
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
 }
+console.log(process.env.envStatus, 'process.env.envStatus')
 
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI

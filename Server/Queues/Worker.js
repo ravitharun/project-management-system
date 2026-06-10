@@ -8,6 +8,7 @@ const {
     SendAccountCreationEmail,
     SendWelcomEmail,
 } = require("../service/Email");
+const { workspaceAcceptInvitation } = require("../service/Workspace");
 
 const isProd = process.env.envStatus === "Prod";
 console.log(isProd,'isProd')
@@ -25,6 +26,10 @@ const worker = new Worker(
             if (job.name === "SendWelcomEmail") {
                 console.log("Sending Welcome Email");
                 return await SendWelcomEmail(job.data);
+            }
+            if (job.name === "WorkspaceAcceptInvitation") {
+                console.log("Sending WorkspaceAcceptInvitation Email");
+                return await workspaceAcceptInvitation(job.data);
             }
 
             throw new Error(`Unknown job name: ${job.name}`); // ✅ IMPORTANT
