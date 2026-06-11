@@ -591,7 +591,7 @@ function Sidebar({ page }: Props) {
                             <StartMenuList
                                 setStarMenu={setStarMenu}
                                 theme={theme}
-                                Workspace={Workspace}
+                                // Workspace={Workspace}
                                 useremail={useremail}
                                 handelSelectSpace={handelSelectSpace}
                             />

@@ -7,7 +7,7 @@ import { instance } from "../services/apiservices";
 function StartMenuList({
     setStarMenu,
     theme,
-    Workspace,
+    // Workspace,
     useremail,
     handelSelectSpace,
 }: any) {
@@ -34,9 +34,7 @@ function StartMenuList({
     }, [])
 
     console.log(star, 'starstarstar')
-    // const starredSpaces = Workspace.filter(
-    //     (w: any) => w?.isStaredUsers?.userEmail === useremail
-    // );
+
 
     return (
         <div
