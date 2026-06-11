@@ -309,6 +309,7 @@ const MakeStarTOWorkspace = async (req, res, next) => {
                 StarUsers: {
                     isstar: data.isStared,
                     emails: data.useremail,
+                    UserId:data.UserId
 
                 }
 
