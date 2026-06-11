@@ -124,6 +124,7 @@ function Sidebar({ page }: Props) {
 
     // setSelectSpace
     const handelSelectSpace = (data: any) => {
+       alert(data)
         setwork(data)
     }
 
@@ -590,7 +591,7 @@ function Sidebar({ page }: Props) {
                             <StartMenuList
                                 setStarMenu={setStarMenu}
                                 theme={theme}
-                                Workspace={Workspace}
+                                // Workspace={Workspace}
                                 useremail={useremail}
                                 handelSelectSpace={handelSelectSpace}
                             />

@@ -1,17 +1,40 @@
 import { IoClose } from "react-icons/io5";
 import { FiStar, FiEye } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { instance } from "../services/apiservices";
+
 
 function StartMenuList({
     setStarMenu,
     theme,
-    Workspace,
+    // Workspace,
     useremail,
     handelSelectSpace,
 }: any) {
 
-    const starredSpaces = Workspace.filter(
-        (w: any) => w?.isStaredUsers?.userEmail === useremail
-    );
+    const [star, setstar] = useState<any[]>([])
+
+
+    useEffect(() => {
+        const FetchStarWorkspace = async () => {
+            try {
+                const response = await instance.get("/api/workspace/Star", {
+                    params: {
+                        email: useremail
+                    }
+                })
+                console.log(response, 'star')
+                setstar(response.data.Stardata)
+            } catch (error: any) {
+                console.log(error)
+
+            }
+        }
+        FetchStarWorkspace()
+    }, [])
+
+    console.log(star, 'starstarstar')
+
 
     return (
         <div
@@ -76,7 +99,7 @@ function StartMenuList({
             {/* ================= LIST ================= */}
             <div className="p-3 space-y-2 overflow-y-auto max-h-[420px]">
 
-                {starredSpaces.length === 0 ? (
+                {star.length === 0 ? (
 
                     <div className="flex flex-col items-center justify-center py-12 text-center">
 
@@ -102,11 +125,11 @@ function StartMenuList({
 
                 ) : (
 
-                    starredSpaces.map((itm: any, idx: number) => (
+                    star.map((itm: any, idx: number) => (
 
                         <div
                             key={idx}
-                            onClick={() => handelSelectSpace(itm)}
+                            onClick={() => handelSelectSpace(itm?.workspaceID)}
                             className={`
                                 group flex items-center justify-between
                                 gap-3 p-3 rounded-2xl cursor-pointer
@@ -133,8 +156,8 @@ function StartMenuList({
                                     `}
                                 >
                                     <img
-                                        src={itm?.icon}
-                                        alt="workspace"
+                                        src={itm?.workspaceID?.workspaceicon?.img}
+                                        alt="Not Founf"
                                         className="w-6 h-6 object-cover rounded-md"
                                     />
                                 </div>
@@ -152,7 +175,7 @@ function StartMenuList({
                                             }
                                         `}
                                     >
-                                        Favorite Workspace
+                                        {itm?.workspaceID?.workspaceSetup?.workspaceName || "workspaceName"}
                                     </p>
                                 </div>
                             </div>
@@ -182,6 +205,7 @@ function StartMenuList({
                                             : "bg-white hover:bg-blue-600 hover:text-white"
                                         }
                                     `}
+                                     onClick={() => handelSelectSpace(itm?.workspaceID)}
                                 >
                                     <FiEye size={14} />
                                 </button>
@@ -190,7 +214,7 @@ function StartMenuList({
                     ))
                 )}
             </div>
-        </div>
+        </div >
     );
 }
 
