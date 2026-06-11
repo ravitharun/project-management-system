@@ -6,7 +6,8 @@ import {
 } from "react-icons/fi";
 
 import WorkspaceData from "../Context/workspaceData";
-import { useremail } from "./LocalStorage";
+import { getuserInfo, useremail } from "./LocalStorage";
+import { instance } from "../services/apiservices";
 
 function WorkspaceViwe({ theme, SpaceJson }: any) {
 
@@ -25,9 +26,23 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
     "Viewed",
   ];
 
+  const HandelStarWorkpsace = async (isStared: boolean, id: number | string) => {
+    try {
+      // console.log({ isStared, id })
+      const data = { isStared, id, useremail, UserId: JSON.parse(getuserInfo)._id }
+
+
+      const api_response = await instance.post("/api/Workspace/MakeStar", { data })
+      console.log(api_response, 'star api')
+
+    } catch (error: any) {
+
+      console.log(error.message)
+    }
+  }
   return (
     <>
-    {/* <ViewProfileCard></ViewProfileCard> */}
+      {/* <ViewProfileCard></ViewProfileCard> */}
       <div
         className={`
     min-h-screen
@@ -150,7 +165,6 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
             </button>
           </div>
           {/* ================= SPACES ================= */}
-          {/* ================= SPACES ================= */}
           <div className="mt-8 w-full space-y-4">
 
             {SpaceJson.map((w: any, i: number) => (
@@ -159,7 +173,6 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
                 key={i}
                 onMouseEnter={() => setid(i)}
                 onMouseLeave={() => setid(null)}
-                onClick={() => setwork(w)}
                 className={`
         w-full max-w-[820px] mx-auto
         rounded-[20px]
@@ -260,6 +273,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
                             : "bg-gray-100 text-gray-600"
                         }
                 `}
+                      onClick={() => HandelStarWorkpsace(true, w._id)}
                     >
                       <FiStar
                         className={`text-[14px] ${w?.isStaredUsers?.userEmail === useremail
@@ -283,7 +297,10 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
                           : "bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white"
                         }
                 `}
+                      title="View"
+
                     >
+                      {/* <p title="View"></p> */}
                       <FiEye className="text-[14px]" />
                     </button>
                   </div>}
