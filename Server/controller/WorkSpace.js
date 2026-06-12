@@ -363,8 +363,7 @@ const StarWorkspaceByUserEmail = async (req, res, next) => {
         })
             .populate("workspaceID")
             .populate("StarUsers.UserId"); console.log(findByStrSpace, 'findByStrSpace')
-            
-        if (findByStrSpace.length == 0) {
+                    if (findByStrSpace.length == 0) {
             const error = new Error("No Star Worksapce is Found.")
             error.status = 404
             return next(error)
@@ -382,7 +381,7 @@ const StarWorkspaceByUserEmail = async (req, res, next) => {
 const RemoveStarWorkspaceByUserEmail = async (req, res, next) => {
     try {
         const { email, SpaceId } = req.body
-        console.log(email, 'email')
+        console.log(req.body,'reqresponse')
         if (!email) {
             const error = new Error("Email Is required .")
             error.status = 404
@@ -393,7 +392,8 @@ const RemoveStarWorkspaceByUserEmail = async (req, res, next) => {
             error.status = 404
             return next(error)
         }
-        const CheckWorkSpaceId = await Workspace.findById({ _id: SpaceId })
+        const CheckWorkSpaceId = await Workspace.findOne({ _id: SpaceId })
+        console.log(CheckWorkSpaceId,'CheckWorkSpaceId')
         if (!CheckWorkSpaceId) {
             const error = new Error("There is no Workspace Found .")
             error.status = 404
