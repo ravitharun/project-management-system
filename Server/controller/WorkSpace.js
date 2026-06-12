@@ -309,7 +309,7 @@ const MakeStarTOWorkspace = async (req, res, next) => {
                 StarUsers: {
                     isstar: data.isStared,
                     emails: data.useremail,
-                    UserId:data.UserId
+                    UserId: data.UserId
 
                 }
 
@@ -347,13 +347,23 @@ const MakeStarTOWorkspace = async (req, res, next) => {
 const StarWorkspaceByUserEmail = async (req, res, next) => {
     try {
         const { email } = req.query
-        console.log(email,'email')
+        console.log(email, 'getemail')
         if (!email) {
             const error = new Error("Email Is required .")
             error.status = 404
             return next(error)
         }
-        const findByStrSpace = await WorkspaceStar.find({ "StarUsers.emails": email }).populate("workspaceID").populate("StarUsers.UserId")
+        const findByStrSpace = await WorkspaceStar.find({
+            StarUsers: {
+                $elemMatch: {
+                    emails: email,
+                    isstar: true
+                }
+            }
+        })
+            .populate("workspaceID")
+            .populate("StarUsers.UserId"); console.log(findByStrSpace, 'findByStrSpace')
+            
         if (findByStrSpace.length == 0) {
             const error = new Error("No Star Worksapce is Found.")
             error.status = 404
@@ -369,4 +379,62 @@ const StarWorkspaceByUserEmail = async (req, res, next) => {
 
 
 }
-module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers, ApproveEmail, MakeStarTOWorkspace, StarWorkspaceByUserEmail }
+const RemoveStarWorkspaceByUserEmail = async (req, res, next) => {
+    try {
+        const { email, SpaceId } = req.body
+        console.log(email, 'email')
+        if (!email) {
+            const error = new Error("Email Is required .")
+            error.status = 404
+            return next(error)
+        }
+        if (!SpaceId) {
+            const error = new Error("SpaceId Is required .")
+            error.status = 404
+            return next(error)
+        }
+        const CheckWorkSpaceId = await Workspace.findById({ _id: SpaceId })
+        if (!CheckWorkSpaceId) {
+            const error = new Error("There is no Workspace Found .")
+            error.status = 404
+            return next(error)
+        }
+
+
+        const findByStrSpace = await WorkspaceStar.findOneAndUpdate(
+            {
+                workspaceID: SpaceId,
+                "StarUsers.emails": email
+            },
+            {
+                $set: {
+                    "StarUsers.$.isstar": false
+                }
+            },
+            {
+                returnDocument: "after"
+            }
+        );
+        if (!findByStrSpace) {
+            const error = new Error("There is no findByStrSpace  Workspace Found .")
+            error.status = 404
+            return next(error)
+        }
+
+
+
+
+        return res.status(200).json({ message: findByStrSpace, Stardata: [] })
+    } catch (error) {
+        console.log("error", error.message)
+        next(error)
+
+    }
+
+
+}
+
+
+
+
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers, ApproveEmail, MakeStarTOWorkspace, StarWorkspaceByUserEmail, RemoveStarWorkspaceByUserEmail }
