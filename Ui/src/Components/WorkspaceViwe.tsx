@@ -42,7 +42,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
   }
   return (
     <>
-      {/* <ViewProfileCard></ViewProfileCard> */}
+       {/* <ApiLoader theme="Dark"></ApiLoader> */}
       <div
         className={`
     min-h-screen
