@@ -505,7 +505,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
                   height: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <Board theme={theme} work={work} />
+                <Board theme={theme} work={work} ismaxAndMin={ismaxAndMin} />
               </div>
             )}
           </div>
