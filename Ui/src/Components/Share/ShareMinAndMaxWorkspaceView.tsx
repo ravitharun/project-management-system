@@ -12,6 +12,7 @@ import Board from "../Board";
 
 function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
     console.log("share page Ui")
+    alert(ismaxAndMin)
 
     return (
         <>
@@ -76,7 +77,7 @@ function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, th
           shadow-sm
         "
                     >
-                        Reset to For 
+                        Reset to For
                     </button>
 
                     <div
@@ -493,14 +494,21 @@ function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, th
                         {CurrentView == "Board" && (
                             <div
                                 style={{
-                                    width: ismaxAndMin ? "100%" : "",
-                                    minWidth: ismaxAndMin ? "100%" : "",
-                                    height: ismaxAndMin ? "100%" : "",
+                                    position: ismaxAndMin ? "fixed" : "relative",
+                                    inset: ismaxAndMin ? "0" : "",
+                                    zIndex: ismaxAndMin ? 10 : "",
+                                    width: ismaxAndMin ? "100vw" : "",
+                                    height: ismaxAndMin ? "100vh" : "",
                                 }}
                             >
-                                <Board theme={theme} work={work} />
+                                <Board
+                                    theme={theme}
+                                    work={work}
+                                    ismaxAndMin={ismaxAndMin}
+                                />
                             </div>
                         )}
+
                     </div>
                 </div>
             </div>

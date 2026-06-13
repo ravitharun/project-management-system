@@ -6,7 +6,6 @@ const App = lazy(() => import("../App"))
 const Task = lazy(() => import("../pages/Task"))
 const Projects = lazy(() => import("../pages/Projects"))
 const Team = lazy(() => import("../pages/Team"))
-const ProjetcDeatils = lazy(() => import("../pages/ProjetcDeatils"))
 const Notifications = lazy(() => import("../pages/Notifications"))
 const Analytics = lazy(() => import("../pages/Analytics"))
 const Profile = lazy(() => import("../pages/Profile"))
@@ -168,7 +167,6 @@ function AppRouter() {
                     {/* <Route path="shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} /> */}
                     <Route path="/shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} />
                     <Route path="/projects" element={<Projects />} />
-                    <Route path="/naviagte-ProjectDeatils" element={<ProjetcDeatils />} />
                     <Route path="/projectSettings" element={<ProjectSettings />} />
                     <Route path="/Tasks" element={<Task />} />
                     <Route path="/Notifications" element={<Notifications />} />

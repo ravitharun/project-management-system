@@ -107,14 +107,13 @@ ${url}/shared/ViewWorkspace?id=${id}`,
   useEffect(() => {
 
     const handleKeyDown = (e: any) => {
-      if (e.key === "Shift") {
+      if (e.key === "o") {
         return setMaxAndMin(true);
       }
       else if (e.key === 'i' || e.key == "I") {
 
         return setMaxAndMin(false);
       }
-      else if (e.key == "m") { return }
     };
 
     window.addEventListener("keydown", handleKeyDown);
