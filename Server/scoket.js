@@ -17,7 +17,7 @@ const initSocket = (server) => {
     cors: {
       origin: [
         "http://localhost:5173",
-        "https://taskora-system.netlify.app","https://devserver-testing--taskora-system.netlify.app/"
+        "https://taskora-system.netlify.app","https://devserver-testing--taskora-system.netlify.app",'https://project-management-system-weld-eight.vercel.app'
       ],
     },
   });
