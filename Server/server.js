@@ -45,6 +45,7 @@ const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localho
 app.use(cors({ origin: [envStatusurl,'https://devserver-testing--taskora-system.netlify.app','https://project-management-system-weld-eight.vercel.app'] }));
 
 console.log("--------- check the id's -----")
+console.log(envStatusurl,'envStatusurl')
 console.log("Task id :" + TaskId("Task"))
 console.log("emp id : " + GetEmpNameGenById(""))
 console.log("Project id : " + ProjetcId())
