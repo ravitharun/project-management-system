@@ -7,7 +7,6 @@ import ThemeProvider from "./Provider/ThemeProvider.tsx";
 import WorkspaceProvider from "./Provider/WorkspaceProvider.tsx";
 import WrokspaceJson from "./Provider/WrokspaceJson.tsx";
 import SharespaceViewProvider from "./Provider/SharespaceViewProvider.tsx";
-// import ShareViewProvider from "./Provider/ShareViewProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <WorkspaceProvider>
@@ -15,16 +14,15 @@ createRoot(document.getElementById("root")!).render(
             <WrokspaceJson>
                 <UserProvider>
                     <ThemeProvider>
-
-
-                        <BrowserRouter>
+                            <BrowserRouter>
 
 
                                 <AppRouter />
 
-             
 
-                        </BrowserRouter>
+
+                            </BrowserRouter>
+
                     </ThemeProvider>
 
                 </UserProvider>

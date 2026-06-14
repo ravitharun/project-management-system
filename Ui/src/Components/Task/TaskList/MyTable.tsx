@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import ViewProfileCard from "../../PoupProfileCard/ViewProfileCard";
 const modules = [AllCommunityModule];
 
-type RowData = {
+export type RowData = {
     taskid: string;
     AssignedTo: string,
     taskname: string;
@@ -216,6 +216,7 @@ const MyTable = ({ theme }: any) => {
                     <span>Dummy Data </span>
                     <AgGridReact
                         rowData={rowData}
+                        domLayout="autoHeight"
                         columnDefs={columnDefs}
 
                         suppressHorizontalScroll={false}
