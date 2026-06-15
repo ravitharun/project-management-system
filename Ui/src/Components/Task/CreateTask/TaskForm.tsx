@@ -113,7 +113,7 @@ function TaskForm({
     }, []);
 
 
-    const selectedMember :any= Members.find((m:any) => m?.id === assignTo)
+    const selectedMember: any = Members.find((m: any) => m?.id === assignTo)
 
     const isDark = theme === "Dark"
 
@@ -299,32 +299,50 @@ function TaskForm({
                                         : "bg-white border-gray-200"
                                         }`}
                                 >
-                                    {Members.map((member:any) => (
-                                        <button
-                                            key={member.id}
-                                            type="button"
-                                            onClick={() => {
-                                                setAssignTo(member.id)
-                                                setAssignOpen(false)
-                                            }}
-                                            className={`w-full flex items-center gap-3 px-3 py-3 text-left transition ${isDark
-                                                ? "hover:bg-gray-800 text-white"
-                                                : "hover:bg-gray-50 text-gray-800"
-                                                }`}
-                                        >
-                                            <img
-                                                src={member?.id?.userProfile}
-                                                alt={member?.id?.Username}
-                                                className="h-9 w-9 rounded-full object-cover"
-                                            />
-                                            <div className="flex flex-col">
-                                                <span className="font-medium">{member?.id?.Username}</span>
-                                                <span className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-                                                    Team member
-                                                </span>
+                                    {Members.length==0 ?
+
+                                        <div className="flex flex-col items-center justify-center py-10 text-center">
+                                            <div className="mb-3 rounded-full bg-gray-100 p-4">
+                                                👥
                                             </div>
-                                        </button>
-                                    ))}
+
+                                            <h3 className="text-lg font-semibold text-gray-700">
+                                                No Members Found
+                                            </h3>
+
+                                            <p className="mt-1 max-w-sm text-sm text-gray-500">
+                                                There are currently no members in this workspace.
+                                                Invite team members to start collaborating.
+                                            </p>
+                                        </div>
+
+
+                                        : Members.map((member: any) => (
+                                            <button
+                                                key={member.id}
+                                                type="button"
+                                                onClick={() => {
+                                                    setAssignTo(member.id)
+                                                    setAssignOpen(false)
+                                                }}
+                                                className={`w-full flex items-center gap-3 px-3 py-3 text-left transition ${isDark
+                                                    ? "hover:bg-gray-800 text-white"
+                                                    : "hover:bg-gray-50 text-gray-800"
+                                                    }`}
+                                            >
+                                                <img
+                                                    src={member?.id?.userProfile}
+                                                    alt={member?.id?.Username}
+                                                    className="h-9 w-9 rounded-full object-cover"
+                                                />
+                                                <div className="flex flex-col">
+                                                    <span className="font-medium">{member?.id?.Username}</span>
+                                                    <span className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+                                                        Team member
+                                                    </span>
+                                                </div>
+                                            </button>
+                                        ))}
                                 </div>
                             )}
                         </div>
