@@ -32,7 +32,6 @@ function SiginUp() {
             setProfilePreview(url);
             return setfile(file)
         }
-        alert("file")
 
     };
 

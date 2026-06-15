@@ -124,7 +124,6 @@ function Sidebar({ page }: Props) {
 
     // setSelectSpace
     const handelSelectSpace = (data: any) => {
-       alert(data)
         setwork(data)
     }
 

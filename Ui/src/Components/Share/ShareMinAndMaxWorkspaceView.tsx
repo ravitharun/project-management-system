@@ -12,7 +12,6 @@ import Board from "../Board";
 
 function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
     console.log("share page Ui")
-    alert(ismaxAndMin)
 
     return (
         <>

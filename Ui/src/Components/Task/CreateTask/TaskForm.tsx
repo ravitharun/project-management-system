@@ -23,6 +23,7 @@ import { checkuser } from "../../LocalStorage"
 import { instance } from "../../../services/apiservices"
 import Input from "../../Input"
 import Loader from "../../Loader"
+import GlobalToast from "../../GlobalToast"
 
 type Props = {
     AddedBy?: string | null
@@ -136,13 +137,16 @@ function TaskForm({
         }
 
         try {
-            const response = await instance.post("/api/Task/Addtask", { TaskData })
-
-            if (response?.data?.message === "Task Created.") {
-                toast.success("Task Created.")
-                // onclose()
+            const response = await instance.post("/api/Task/AddWorkSpaceTask", { TaskData })
+            alert(response?.status)
+            if (response?.status === 201) {
+                return  GlobalToast("Task Created Successfully", "success");
             }
-        } catch (error: any) {
+        }
+        catch (error: any) {
+
+
+            console.log(error?.response?.data.message)
             toast.error(
                 error?.response?.data?.message || error?.message || "Something went wrong"
             )
@@ -299,7 +303,7 @@ function TaskForm({
                                         : "bg-white border-gray-200"
                                         }`}
                                 >
-                                    {Members.length==0 ?
+                                    {Members.length == 0 ?
 
                                         <div className="flex flex-col items-center justify-center py-10 text-center">
                                             <div className="mb-3 rounded-full bg-gray-100 p-4">
