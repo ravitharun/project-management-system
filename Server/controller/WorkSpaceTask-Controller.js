@@ -3,16 +3,15 @@ const WorkSpaceTask = require("../Models/WorkSapceTask")
 const AddcommentsSchema = require("../Models/Workspace-comments")
 const AddWorkSpaceTask = async (req, res) => {
     try {
-        console.log(req.body)
+        console.log(req.body.TaskData)
 
         const Createtask = new WorkSpaceTask({
-            ...req.body,
-            SubTask: req.body.SubTask,
-            Files: req.body.Files,
-            Links: req.body.Links
-        })
+            ...req.body.TaskData,
 
+        })
         await Createtask.save()
+
+        console.log("workSpace Created")
         return res.status(201).json({ message: "WorkSpaceTask Created", data: req.body })
     } catch (error) {
         console.log(error.message)

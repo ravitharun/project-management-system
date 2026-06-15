@@ -65,7 +65,12 @@ const WorkspaceSchema = new mongoose.Schema({
     ,
     Spacebackground: { type: String },
     isStaredUsers: starUsser,
-    WorkSpacememebers: [{ type: String }],
+    WorkSpacememebers: [
+        {
+            email: { type: String, required: true },
+            id: { type: String, ref: "User", required: true },
+        }
+    ],
 
 
     workspaceSetup: workspaceSetupSchema

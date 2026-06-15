@@ -10,8 +10,6 @@ const connectDb = require("./config/Db");
 const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator");
 const ProjectsRoute = require("./routes/HandelProjectRouter");
 const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
-const TaskRotuer = require("../Server/routes/TaskRouter")
-const TaskRouter = require("../Server/routes/TaskRouter");
 const NotificatonsRouter = require("./routes/NotificatonsRouter");
 const FetchTeamRouter = require("./routes/FetchTeamRouter");
 const AnalytcsRouter = require("./routes/AnalytcsRouter");
@@ -45,6 +43,7 @@ const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localho
 app.use(cors({ origin: [envStatusurl,'https://devserver-testing--taskora-system.netlify.app','https://project-management-system-weld-eight.vercel.app'] }));
 
 console.log("--------- check the id's -----")
+console.log(envStatusurl,'envStatusurl')
 console.log("Task id :" + TaskId("Task"))
 console.log("emp id : " + GetEmpNameGenById(""))
 console.log("Project id : " + ProjetcId())
@@ -55,12 +54,12 @@ app.use(limiter)
 app.use("/api/auth", AuthRouter);
 app.use("/api/ManageProject", ProjectsRoute);
 app.use("/api/ProjectfileUpload", FileUploadRouter)
-app.use("/api/Task", TaskRouter)
 app.use("/api/Notificatons", NotificatonsRouter)
 app.use("/api/Team", FetchTeamRouter)
 app.use("/api/Analytcs", AnalytcsRouter)
 app.use("/api/WorkSpace", CreateWorkSpaceRouter)
 app.use("/api/Task", WorkSpaceTaskRouter)
+// /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)
 
