@@ -9,11 +9,11 @@ import WrokspaceJson from "./Provider/WrokspaceJson.tsx";
 import SharespaceViewProvider from "./Provider/SharespaceViewProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
-    <WorkspaceProvider>
-        <SharespaceViewProvider>
-            <WrokspaceJson>
-                <UserProvider>
-                    <ThemeProvider>
+        <WorkspaceProvider>
+            <SharespaceViewProvider>
+                <WrokspaceJson>
+                    <UserProvider>
+                        <ThemeProvider>
                             <BrowserRouter>
 
 
@@ -23,10 +23,11 @@ createRoot(document.getElementById("root")!).render(
 
                             </BrowserRouter>
 
-                    </ThemeProvider>
+                        </ThemeProvider>
 
-                </UserProvider>
-            </WrokspaceJson>
-        </SharespaceViewProvider>
-    </WorkspaceProvider>
+                    </UserProvider>
+                </WrokspaceJson>
+            </SharespaceViewProvider>
+        </WorkspaceProvider>
+
 );

@@ -15,5 +15,5 @@ CreateWorkSpaceRouter.post("/approve-workspace-invite", ApproveEmail)
 CreateWorkSpaceRouter.post("/MakeStar", AuthTokenVerification, MakeStarTOWorkspace)
 CreateWorkSpaceRouter.get("/Star", AuthTokenVerification, StarWorkspaceByUserEmail)
 CreateWorkSpaceRouter.put("/Remove-WorkspaceStar", RemoveStarWorkspaceByUserEmail)
-CreateWorkSpaceRouter.post("/TeamMembers", FetchTeamInfoWorkpsace)
+CreateWorkSpaceRouter.get("/TeamMembers", FetchTeamInfoWorkpsace)
 module.exports = CreateWorkSpaceRouter

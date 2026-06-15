@@ -8,20 +8,20 @@ const TaskToAssiginMemeber = new mongosse.Schema({
 })
 
 const Subatask = new mongosse.Schema([{
-    TaskId: { type: String, required: true, unique: true ,   index: true
+    TaskId: { type: String, unique: true ,   index: true
 },
-    taskName: { type: String, required: true, },
-    taskPriority: { type: String, required: true },
+    taskName: { type: String,  },
+    taskPriority: { type: String, },
     AssiginMember: TaskToAssiginMemeber,
     SubTaskStatus: { type: String, default: "In progress" },
 
 }])
 
 const WorkSpaceTask = new mongosse.Schema({
-    workSpaceId: { type: String, required: true  , index: true},
-    Taskid: { type: String, required: true  , index: true},
-    TaskName: { type: String, required: true },
-    TaskNameDescprition: { type: String, required: true },
+    projectid: { type: String, required: true  , index: true},
+    Taskid: { type: String, required: true  , index: true,default:"Tasks"},
+    taskName: { type: String, required: true },
+    description: { type: String, required: true },
     SubTask: [Subatask],
     Files: [{ type: String }],
     Links: [{

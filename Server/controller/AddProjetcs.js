@@ -6,7 +6,6 @@ const { ProjetcId } = require("../Utils/EmpIDGenrator")
 const  redis  = require("../config/Ioredi")
 const { json } = require("express")
 const NotificationSchema = require("../Models/Notification")
-const build = require("../service/buildAnalytics")
 const CreateProjects = async (req, res) => {
     try {
         const io = getIO()
