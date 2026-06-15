@@ -1,4 +1,6 @@
+const { tryCatch } = require("bullmq")
 const Workspace = require("../Models/Workspace")
+const User = require("../Models/Auth")
 const WorkspaceStar = require("../Models/WorkspaceStar")
 const EmailQueue = require("../Queues/Producer")
 const worker = require("../Queues/Worker")
@@ -238,8 +240,7 @@ const ApproveEmail = async (req, res, next) => {
             return next(error)
         }
 
-        const DbEmail = isWorkspaceExists.WorkSpacememebers
-
+        const DbEmail = isWorkspaceExists.WorkSpacememebers.map((emails) => emails.email)
         const isEmailAlreadyExists = DbEmail.includes(AcceptEmail)
 
         if (isEmailAlreadyExists) {
@@ -248,11 +249,23 @@ const ApproveEmail = async (req, res, next) => {
             })
         }
 
+
+        const CheckIsuserAccount = await User.findOne({ userEmail: AcceptEmail })
+
+        console.log(CheckIsuserAccount, 'CheckIsuserAccount')
+
+        if (!CheckIsuserAccount) {
+            return res.status(403).json({ message: " Create Account ." })
+        }
+
         await Workspace.findByIdAndUpdate(
             workspaceid,
             {
                 $push: {
-                    WorkSpacememebers: AcceptEmail
+                    WorkSpacememebers: [{
+                        email: AcceptEmail,
+                        id: CheckIsuserAccount._id
+                    }]
                 }
             },
             { returnDocument: "true" }
@@ -362,8 +375,9 @@ const StarWorkspaceByUserEmail = async (req, res, next) => {
             }
         })
             .populate("workspaceID")
-            .populate("StarUsers.UserId"); console.log(findByStrSpace, 'findByStrSpace')
-                    if (findByStrSpace.length == 0) {
+            .populate("StarUsers.UserId");
+        console.log(findByStrSpace, 'findByStrSpace')
+        if (findByStrSpace.length == 0) {
             const error = new Error("No Star Worksapce is Found.")
             error.status = 404
             return next(error)
@@ -381,7 +395,7 @@ const StarWorkspaceByUserEmail = async (req, res, next) => {
 const RemoveStarWorkspaceByUserEmail = async (req, res, next) => {
     try {
         const { email, SpaceId } = req.body
-        console.log(req.body,'reqresponse')
+        console.log(req.body, 'reqresponse')
         if (!email) {
             const error = new Error("Email Is required .")
             error.status = 404
@@ -393,7 +407,7 @@ const RemoveStarWorkspaceByUserEmail = async (req, res, next) => {
             return next(error)
         }
         const CheckWorkSpaceId = await Workspace.findOne({ _id: SpaceId })
-        console.log(CheckWorkSpaceId,'CheckWorkSpaceId')
+        console.log(CheckWorkSpaceId, 'CheckWorkSpaceId')
         if (!CheckWorkSpaceId) {
             const error = new Error("There is no Workspace Found .")
             error.status = 404
@@ -435,6 +449,47 @@ const RemoveStarWorkspaceByUserEmail = async (req, res, next) => {
 }
 
 
+// Fetch the TeamInfo
 
 
-module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers, ApproveEmail, MakeStarTOWorkspace, StarWorkspaceByUserEmail, RemoveStarWorkspaceByUserEmail }
+const FetchTeamInfoWorkpsace = async (req, res, next) => {
+    try {
+        const { SpaceID } = req.body
+
+        console.log(SpaceID)
+        if (!SpaceID) {
+            const err = new Error("SpaceID is required.")
+            err.status = 404
+            return err
+        }
+
+        const Isexits = await Workspace.findById(SpaceID).populate("WorkSpacememebers.id")
+        console.log(Isexits, 'checkisexits')
+        if (!Isexits) {
+            const err = new Error("There is no workspace")
+
+
+            err.status = 404
+            return err
+        }
+
+        console.log(Isexits.WorkSpacememebers)
+
+
+        if (Isexits.WorkSpacememebers.length == 0) {
+            const message = new Error("Isexits.WorkSpacememebers")
+            message.status = 404
+            return message
+        }
+
+        return res.status(200).json({ message: Isexits.WorkSpacememebers })
+    } catch (error) {
+        console.log(error.message, 'err')
+        next(error)
+
+    }
+
+
+}
+
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers, ApproveEmail, MakeStarTOWorkspace, StarWorkspaceByUserEmail, RemoveStarWorkspaceByUserEmail, FetchTeamInfoWorkpsace }
