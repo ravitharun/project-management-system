@@ -229,7 +229,7 @@ export default function Board({ theme, work, spacetasks, ismaxAndMin }: any) {
             </DragDropContext>
             {CreateTask
 
-                && <TaskForm onclose={() => setCreateTask(false)}  maximizeParent={ismaxAndMin}
+                && <TaskForm onclose={() => setCreateTask(false)}  maximizeParent={ismaxAndMin}  projectid={work._id}
 
                 ></TaskForm>
             }

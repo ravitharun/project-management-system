@@ -22,6 +22,7 @@ import Button from "../../Button"
 import { checkuser } from "../../LocalStorage"
 import { instance } from "../../../services/apiservices"
 import Input from "../../Input"
+import Loader from "../../Loader"
 
 type Props = {
     AddedBy?: string | null
@@ -34,10 +35,13 @@ type Props = {
 function TaskForm({
     onclose,
     AddedBy = "me",
-    projectid = "12",
+    projectid,
     theme,
     maximizeParent
 }: Props) {
+
+
+    console.log(projectid, 'projectid')
     const [maximize, setMaximize] = useState(false)
     const [assignOpen, setAssignOpen] = useState(false)
     const [taskName, setTaskName] = useState("")
@@ -50,7 +54,35 @@ function TaskForm({
     const [tags, setTags] = useState("")
     const [estimatedHours, setEstimatedHours] = useState("")
     const [progress, setProgress] = useState(0)
-    // const [assignTo, setAssignTo] = useState("")
+
+    const [Members, setMembers] = useState([])
+
+    const [loadr, setloader] = useState(false)
+
+
+    useEffect(() => {
+        const fetchTeamMembers = async () => {
+            try {
+                setloader(true)
+                console.log("first", projectid)
+                const response = await instance.get("/api/WorkSpace/TeamMembers", {
+                    params: {
+                        projectid: projectid
+                    }
+                })
+
+                setMembers(response.data.message)
+                console.log(response.data.message, 'res')
+                setloader(false)
+            } catch (error: any) {
+
+
+                console.log(error.response.data.message)
+
+            }
+        }
+        fetchTeamMembers()
+    }, [])
 
     useEffect(() => {
 
@@ -79,25 +111,10 @@ function TaskForm({
             document.body.style.overflow = "auto";
         };
     }, []);
-    const teamMembers = [
-        {
-            id: "1",
-            name: "Tharun Ravi",
-            image: "https://i.pravatar.cc/100?img=12",
-        },
-        {
-            id: "2",
-            name: "Suresh",
-            image: "https://i.pravatar.cc/100?img=15",
-        },
-        {
-            id: "3",
-            name: "Priya",
-            image: "https://i.pravatar.cc/100?img=20",
-        },
-    ]
 
-    const selectedMember = teamMembers.find((m) => m.id === assignTo)
+
+    const selectedMember :any= Members.find((m:any) => m?.id === assignTo)
+
     const isDark = theme === "Dark"
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -151,6 +168,12 @@ function TaskForm({
     return (
         <>
             <Toaster />
+
+            {loadr && <>
+
+                <Loader></Loader>
+
+            </>}
             <div
                 className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 sm:p-6"
                 style={{
@@ -162,12 +185,12 @@ function TaskForm({
 
                 <div
                     className={`relative z-[100000] w-full overflow-hidden rounded-3xl border shadow-[0_25px_80px_rgba(0,0,0,0.4)] transition-all duration-500 ease-in-out ${cardClass} ${maximizeParent
-                            ? maximize
-                                ? "max-w-5xl h-[85vh] mx-auto"
-                                : "max-w-2xl h-[60vh] mx-auto"
-                            : maximize
-                                ? "max-w-5xl h-[85vh] ml-80 mt-20"
-                                : "max-w-2xl h-[60vh] ml-20"
+                        ? maximize
+                            ? "max-w-5xl h-[85vh] mx-auto"
+                            : "max-w-2xl h-[60vh] mx-auto"
+                        : maximize
+                            ? "max-w-5xl h-[85vh] ml-80 mt-20"
+                            : "max-w-2xl h-[60vh] ml-20"
                         }`}
                 >
 
@@ -248,11 +271,11 @@ function TaskForm({
                                     {selectedMember ? (
                                         <>
                                             <img
-                                                src={selectedMember.image}
-                                                alt={selectedMember.name}
+                                                src={selectedMember?.id?.userProfile}
+                                                alt={selectedMember?.id?.Username}
                                                 className="h-9 w-9 rounded-full object-cover"
                                             />
-                                            <span>{selectedMember.name}</span>
+                                            <span>{selectedMember?.id?.Username}</span>
                                         </>
                                     ) : (
                                         <span className={isDark ? "text-gray-400" : "text-gray-500"}>
@@ -276,7 +299,7 @@ function TaskForm({
                                         : "bg-white border-gray-200"
                                         }`}
                                 >
-                                    {teamMembers.map((member) => (
+                                    {Members.map((member:any) => (
                                         <button
                                             key={member.id}
                                             type="button"
@@ -290,12 +313,12 @@ function TaskForm({
                                                 }`}
                                         >
                                             <img
-                                                src={member.image}
-                                                alt={member.name}
+                                                src={member?.id?.userProfile}
+                                                alt={member?.id?.Username}
                                                 className="h-9 w-9 rounded-full object-cover"
                                             />
                                             <div className="flex flex-col">
-                                                <span className="font-medium">{member.name}</span>
+                                                <span className="font-medium">{member?.id?.Username}</span>
                                                 <span className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
                                                     Team member
                                                 </span>
