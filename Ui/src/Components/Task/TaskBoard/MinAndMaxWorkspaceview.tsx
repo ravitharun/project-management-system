@@ -15,13 +15,13 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
   console.log("normalApp page uis")
   console.log(workspace?.icon, 'workspace?.icon')
 
-  const [AddMembers,setAddMembers] = useState<boolean>(false)
+  const [AddMembers, setAddMembers] = useState<boolean>(false)
 
 
   return (
     <>
 
-    {AddMembers &&<AddPeopleWorkspace theme={theme} closesetAddMembers={setAddMembers} workspace={workspace._id}/>}
+      {AddMembers && <AddPeopleWorkspace theme={theme} closesetAddMembers={setAddMembers} workspace={workspace._id} />}
       <div
         className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
           ? "bg-[#0b1020] text-white"
@@ -168,7 +168,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
                     max-w-[180px]
                   "
                     >
-                      {workspace?.name} 
+                      {workspace?.name}
                     </h1>
 
                     {/* USERS */}
@@ -188,10 +188,10 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
                           : "bg-gray-100 border-gray-200 hover:bg-gray-200"
                         }
                   `}
-                  onClick={()=>setAddMembers((prev)=>!prev)}
+                      onClick={() => setAddMembers((prev) => !prev)}
                     >
-                     
-                      <FaUsers fontSize={20}   />
+
+                      <FaUsers fontSize={20} />
                     </button>
 
                     {/* MENU */}
@@ -465,7 +465,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
                   minWidth: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <SpaceList />
+                <SpaceList spaceid={work._id} />
               </div>
             )}
 
