@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaListUl } from "react-icons/fa";
 import { MdGridView } from "react-icons/md";
 import Button from "../../Button";
@@ -6,108 +6,143 @@ import ViewTask from "./ViewTask";
 import bgthemeContext from "../../../Context/ThemeContext";
 import MyTable from "./MyTable";
 import { FiChevronLeft, FiChevronRight, FiGrid } from "react-icons/fi";
+import { instance } from "../../../services/apiservices";
+import ViewTaskFirst from "../../../Context/FirstTaskView";
 
-function SpaceList() {
-    // console.log(ismaxAndMin,'space list')
-    const contexttheme = useContext(bgthemeContext)
-    const { theme }: any = contexttheme
-    console.log(theme, 'theme')
+function SpaceList({ spaceid }: any) {
+  console.log(spaceid, 'spaceid')
+  // console.log(ismaxAndMin,'space list')
+  const contexttheme = useContext(bgthemeContext)
+  const { theme }: any = contexttheme
 
-    const [CurrentView, setCurrentView] = useState("grid");
-    const [isworkspace, setisworkspace] = useState(true)
-    const TaskListView = [
-        {
-            id: 1,
-            title: "Frontend Dashboard",
-            desc: "React + Tailwind Workspace UI",
-        },
-        {
-            id: 2,
-            title: "Backend API",
-            desc: "Node.js + Express Server",
-        },
-        {
-            id: 3,
-            title: "Socket Connection",
-            desc: "Realtime Collaboration Feature",
-        },
-        {
-            id: 4,
-            title: "Workspace Theme",
-            desc: "Dark and Light Theme Setup",
-        },
-    ];
 
-    return (
-        <>
+  const TasksView = useContext(ViewTaskFirst)
 
-            {/* ================= TOPBAR ================= */}
-            <div className="flex items-center justify-between mb-5">
+  const { setasks }: any = TasksView
 
-                {/* TOGGLE BUTTON */}
-                <div
-                    className={`
+  const [CurrentView, setCurrentView] = useState("grid");
+  const [isworkspace, setisworkspace] = useState(true)
+  const [TaskListView, setTaskListView] = useState<any>([]);
+
+  useEffect(() => {
+    const FetchTasks = async () => {
+
+      try {
+        const response = await instance.get("/api/Task/", {
+          params: {
+            spaceid: spaceid
+          }
+        })
+
+
+        console.log(response.data.message, 'response')
+        setTaskListView(response.data.message)
+      } catch (error: any) {
+        console.log(error)
+      }
+
+    }
+    FetchTasks()
+  }, [])
+
+  const [taksid, settaskid] = useState<number>(0)
+
+  const [viewtasks, setviewtaks] = useState([])
+
+
+  useEffect(() => {
+    if (TaskListView?.length > 0) {
+      setasks(TaskListView[0]);
+    }
+  }, [TaskListView]);
+
+
+
+
+
+
+
+  const handelViewtaks = (id: number, tasks: any) => {
+
+
+    settaskid(id)
+    setviewtaks(tasks)
+    setasks([])
+
+
+  }
+
+
+  return (
+    <>
+
+      {/* ================= TOPBAR ================= */}
+      <div className="flex items-center justify-between mb-5">
+
+        {/* TOGGLE BUTTON */}
+        <div
+          className={`
         flex items-center gap-1 px-1.5 py-1 rounded-lg border w-fit
 
         ${theme === "Dark"
-                            ? "border-gray-700 bg-[#111827] text-white"
-                            : "border-gray-300 bg-white text-black"
-                        }
+              ? "border-gray-700 bg-[#111827] text-white"
+              : "border-gray-300 bg-white text-black"
+            }
       `}
-                >
+        >
 
-                    {/* GRID */}
-                    <Button
-                        type="button"
-                        title="Grid View"
-                        classaName={`
+          {/* GRID */}
+          <Button
+            type="button"
+            title="Grid View"
+            classaName={`
           p-1.5 rounded-md
 
           ${CurrentView === "grid"
-                                ? theme === "Dark"
-                                    ? "text-blue-400"
-                                    : "text-blue-600"
-                                : theme === "Dark"
-                                    ? "text-gray-400 hover:text-white"
-                                    : "text-gray-500 hover:text-black"
-                            }
+                ? theme === "Dark"
+                  ? "text-blue-400"
+                  : "text-blue-600"
+                : theme === "Dark"
+                  ? "text-gray-400 hover:text-white"
+                  : "text-gray-500 hover:text-black"
+              }
         `}
-                        OnclickEvent={() => setCurrentView("grid")}
-                        Icon={<MdGridView className="text-[14px] sm:text-[16px]" />}
-                    />
+            OnclickEvent={() => setCurrentView("grid")}
+            Icon={<MdGridView className="text-[14px] sm:text-[16px]" />}
+          />
 
-                    {/* LIST */}
-                    <Button
-                        type="button"
-                        title="List View"
-                        classaName={`
+          {/* LIST */}
+          <Button
+            type="button"
+            title="List View"
+            classaName={`
           p-1.5 rounded-md
 
           ${CurrentView === "list"
-                                ? theme === "Dark"
-                                    ? "text-blue-400"
-                                    : "text-blue-600"
-                                : theme === "Dark"
-                                    ? "text-gray-400 hover:text-white"
-                                    : "text-gray-500 hover:text-black"
-                            }
+                ? theme === "Dark"
+                  ? "text-blue-400"
+                  : "text-blue-600"
+                : theme === "Dark"
+                  ? "text-gray-400 hover:text-white"
+                  : "text-gray-500 hover:text-black"
+              }
         `}
-                        OnclickEvent={() => setCurrentView("list")}
-                        Icon={<FaListUl className="text-[12px] sm:text-[14px]" />}
-                    />
+            OnclickEvent={() => setCurrentView("list")}
+            Icon={<FaListUl className="text-[12px] sm:text-[14px]" />}
+          />
 
-                </div>
+        </div>
 
-            </div>
+      </div>
 
-            {/* ================= LIST VIEW ================= */}
-            {CurrentView === "list" && <MyTable theme={theme} />}
+      {/* ================= LIST VIEW ================= */}
+      {CurrentView === "list" && <MyTable theme={theme} />}
 
-            {/* ================= GRID VIEW ================= */}
-            {CurrentView === "grid" && (
+      {/* ================= GRID VIEW ================= */}
+      {CurrentView === "grid" && (
 
-                <div
-                    className={`
+        <div
+          className={`
         w-full max-w-[1000px]
         rounded-[28px] border overflow-hidden
         flex flex-col lg:flex-row
@@ -116,135 +151,130 @@ function SpaceList() {
         min-h-screen lg:min-h-[560px]
 
         ${theme === "Dark"
-                            ? "bg-[#0f172a] border-white/10"
-                            : "bg-white border-gray-200"
-                        }
+              ? "bg-[#0f172a] border-white/10"
+              : "bg-white border-gray-200"
+            }
       `}
-                >
-                    {/* ================= LEFT PANEL (RESPONSIVE FIX) ================= */}
-                    <div className="flex">
+        >
+          {/* ================= LEFT PANEL (RESPONSIVE FIX) ================= */}
+          <div className="flex">
 
-      {/* ================= SIDEBAR ================= */}
-      <div
-        className={`
-          transition-all duration-300 ease-in-out
-          h-full lg:h-[560px]
-          overflow-hidden
+            {/* ================= SIDEBAR ================= */}
+            <div
+              className={`
+    transition-all duration-300 ease-in-out
+    h-[560px]
+    overflow-y-auto
+    ${isworkspace ? "w-[260px]" : "w-[60px]"}
+    ${theme === "Dark"
+                  ? "bg-[#0b1220] border-white/10"
+                  : "bg-white border-gray-200"}
+    border-r
+  `}
+            >
 
-          ${isworkspace ? "w-[260px]" : "w-[60px]"}
-          lg:block
-
-          ${theme === "Dark"
-            ? "bg-[#0b1220] border-white/10"
-            : "bg-white border-gray-200"
-          }
-          border-r
-        `}
-      >
-
-        {/* HEADER */}
-        <div
-          className={`
+              {/* HEADER */}
+              <div
+                className={`
             flex items-center justify-between p-3 border-b
             ${theme === "Dark" ? "border-white/10" : "border-gray-200"}
           `}
-        >
+              >
 
-          {/* TITLE OR ICON ONLY */}
-          {isworkspace && (
-            <h2 className="text-xs font-semibold">Workspaces</h2>
-          )}
+                {/* TITLE OR ICON ONLY */}
+                {isworkspace && (
+                  <h2 className="text-xs font-semibold">Workspaces</h2>
+                )}
 
-          {/* TOGGLE BUTTON */}
-          <button
-            onClick={() => setisworkspace((prev) => !prev)}
-            className={`
+                {/* TOGGLE BUTTON */}
+                <button
+                  onClick={() => setisworkspace((prev) => !prev)}
+                  className={`
               p-1.5 rounded-md
               ${theme === "Dark"
-                ? "bg-white/10 text-white"
-                : "bg-gray-100 text-gray-800"
-              }
+                      ? "bg-white/10 text-white"
+                      : "bg-gray-100 text-gray-800"
+                    }
             `}
-          >
-            {isworkspace ? <FiChevronLeft /> : <FiChevronRight    />}
-          </button>
-        </div>
+                >
+                  {isworkspace ? <FiChevronLeft /> : <FiChevronRight />}
+                </button>
+              </div>
 
-        {/* ================= LIST ================= */}
-        <div className="p-2 space-y-2">
+              {/* ================= LIST ================= */}
+              <div className="p-2 space-y-2">
 
-          {TaskListView.map((itm, index) => (
-            <div
-              key={itm.id}
-              className={`
+                {TaskListView.map((itm: any, index: number) => (
+                  <div
+                    key={itm?.id}
+
+                    onClick={() => handelViewtaks(index, itm)}
+                    className={`
                 flex items-center gap-2 rounded-lg cursor-pointer
                 px-2 py-2 transition-all
 
                 ${isworkspace ? "justify-start" : "justify-center"}
 
-                ${
-                  index === 0
-                    ? theme === "Dark"
-                      ? "bg-white/10"
-                      : "bg-blue-50"
-                    : theme === "Dark"
-                    ? "hover:bg-white/5"
-                    : "hover:bg-gray-100"
-                }
+                ${index === taksid
+                        ? theme === "Dark"
+                          ? "bg-white/10"
+                          : "bg-blue-50"
+                        : theme === "Dark"
+                          ? "hover:bg-white/5"
+                          : "hover:bg-gray-100"
+                      }
               `}
-            >
+                  >
 
-              {/* ICON */}
-              <div
-                className={`
+                    {/* ICON */}
+                    <div
+                      className={`
                   w-8 h-8 rounded-md flex items-center justify-center text-xs shrink-0
-                  ${
-                    index === 0
-                      ? "bg-blue-500 text-white"
-                      : theme === "Dark"
-                      ? "bg-white/10 text-gray-300"
-                      : "bg-gray-200 text-gray-700"
-                  }
+                  ${index === taksid
+                          ? "bg-blue-500 text-white"
+                          : theme === "Dark"
+                            ? "bg-white/10 text-gray-300"
+                            : "bg-gray-200 text-gray-700"
+                        }
                 `}
-              >
-                <FiGrid />
-              </div>
-
-              {/* TEXT (ONLY WHEN OPEN) */}
-              {isworkspace && (
-                <p
-                  className={`text-xs truncate ${
-                    theme === "Dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {itm.title}
-                </p>
-              )}
-
-            </div>
-          ))}
-
-        </div>
-      </div>
-
-      {/* ================= RIGHT CONTENT ================= */}
-      <div className="flex-1 p-4">
-        {/* your main content here */}
-      </div>
-
-    </div>
-
-
-                    {/* ================= RIGHT PANEL ================= */}
-                    <div className="flex-1 min-w-0">
-                        <ViewTask theme={theme} />
+                    >
+                      <FiGrid />
                     </div>
 
-                </div>
-            )}
+                    {/* TEXT (ONLY WHEN OPEN) */}
+                    {isworkspace && (
+                      <p
+                        className={`text-xs truncate ${theme === "Dark" ? "text-white" : "text-gray-900"
+                          }`}
+                      >
+                        {itm.taskName}
+                      </p>
+                    )}
 
-        </>
-    );
+                  </div>
+                ))}
+
+              </div>
+            </div>
+
+            {/* ================= RIGHT CONTENT ================= */}
+            <div className="flex-1 p-4">
+              {/* your main content here */}
+            </div>
+
+          </div>
+
+
+          {/* ================= RIGHT PANEL ================= */}
+          <div className="flex-1 min-w-0">
+            <ViewTask theme={theme} viewtasks={viewtasks} />
+          </div>
+
+        </div>
+      )}
+
+    </>
+  );
 }
 
 export default SpaceList;
