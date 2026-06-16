@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SubTaskTable from "../CreateTask/SubTask/SubTasktabel";
+import ViewTaskFirst from "../../../Context/FirstTaskView";
 export interface RowData {
   taskid: string;
   taskname: string;
@@ -8,42 +9,62 @@ export interface RowData {
   priority: string;
   action: string;
 }
-/* ================= COMPONENT ================= */
-export default function SubTaskWithFiles({ theme = "Dark" }) {
+export default function SubTaskWithFiles({ theme, viewtasks }: any) {
   const isDark = theme === "Dark";
+  console.log(viewtasks, 'viewtasks')
+
+  const contextFirstView = useContext(ViewTaskFirst)
+
+  const { Tasks }: any = contextFirstView
+  console.log(Tasks?.SubTask
+    , 'Tasks')
+
+
 
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
-
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+
+  console.log(uploadedFiles, 'uploadedFiles')
   console.log(setActiveTaskId, setUploadedFiles)
-  const [rowData, setrowdata] = useState<RowData[]>([
-    {
-      taskid: "ST-101",
-      taskname: "Design Login UI",
-      AssignedTo: "Amit",
-      status: "In Progress",
-      priority: "High",
-      action: "Edit",
-    },
-    {
-      taskid: "ST-102",
-      taskname: "API Integration",
-      AssignedTo: "Ravi",
-      status: "Pending",
-      priority: "Medium",
-      action: "View",
-    },
-  ]);
+  const [rowData, setrowdata] = useState<RowData[]>([]);
+  const [Data, setdata] = useState<any>()
+  console.log(rowData, 'rowDatarowDatarowData')
+
+  useEffect(() => {
+    const SetTasks = () => {
+      if (Tasks) {
+        console.log("Tasks", Tasks)
+        setrowdata(Tasks?.SubTask)
+        return setdata(Tasks)
+      }
+
+
+      else {
+        setrowdata(viewtasks?.SubTask)
+        return setdata(viewtasks)
+      }
+
+    }
+
+    SetTasks()
+  }, [Data])
+
+
 
   const AddTask = () => {
     const newTask: RowData = {
-      taskid: `ST-${100 + rowData.length + 1}`,
+      taskid: `ST-${100 + (rowData?.length || 0) + 1}`,
       taskname: "Add New SubTask",
       AssignedTo: "John",
       status: "Completed",
       priority: "Low",
       action: "Done",
     };
+
+    if (!rowData || rowData.length === 0) {
+      setrowdata([newTask]);
+      return;
+    }
 
     setrowdata((prev) => [...prev, newTask]);
   };
@@ -85,6 +106,7 @@ export default function SubTaskWithFiles({ theme = "Dark" }) {
         <div className="overflow-x-auto">
           <SubTaskTable
             theme={theme}
+            Data={Data}
             rowData={rowData}
           />
         </div>
@@ -109,13 +131,13 @@ export default function SubTaskWithFiles({ theme = "Dark" }) {
 
         {/* FILE LIST */}
         <div className="space-y-2">
-          {uploadedFiles.length === 0 && (
+          {Data?.Files?.length === 0 && (
             <p className="text-xs text-gray-500">
-              No files uploaded
+              No files uploadeds
             </p>
           )}
 
-          {uploadedFiles.map((file: any, index: number) => (
+          {Data?.Files?.map((file: any, index: number) => (
             <div
               key={index}
               className="flex items-center justify-between bg-white/5 p-2 rounded-lg"

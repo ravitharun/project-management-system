@@ -5,7 +5,7 @@ import { AllCommunityModule } from "ag-grid-community";
 
 const modules = [AllCommunityModule];
 
-function SubTaskTable({ theme = "Dark", rowData = [] }: any) {
+function SubTaskTable({ theme = "Dark", rowData  }: any) {
   console.log("Grid Data:", rowData);
 
   const columnDefs = [
