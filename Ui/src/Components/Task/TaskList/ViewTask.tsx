@@ -1,6 +1,6 @@
 // import React from 'react'
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   FiEdit3,
   FiCopy,
@@ -11,7 +11,17 @@ import {
   BsShare,
 } from "react-icons/bs";
 import TaskDetailsWithSubtaskTable from "./TaskDetailsWithSubtaskTable";
-function ViewTask({ theme }: any) {
+import ViewTaskFirst from "../../../Context/FirstTaskView";
+function ViewTask({ theme, viewtasks }: any) {
+
+const TasksView = useContext(ViewTaskFirst);
+
+if (!TasksView) return null;
+
+const { Tasks } = TasksView;
+
+console.log(Tasks);
+  console.log(Tasks, 'Tasks')
   const [item, setitem] = useState(
     [
       {
@@ -76,6 +86,11 @@ function ViewTask({ theme }: any) {
         ],
       },
     ]);
+
+
+
+
+
   const menuitems = [
     {
       icon: <FiEdit3 className="text-[14px] sm:text-[15px]" />,
@@ -186,7 +201,7 @@ function ViewTask({ theme }: any) {
           ${theme === "Dark" ? "text-white" : "text-gray-900"}
         `}
                 >
-                  Frontend Dashboard Task
+                  {Tasks?.taskName || viewtasks?.taskName || "taskName"}
                 </h2>
 
                 <p
@@ -195,7 +210,7 @@ function ViewTask({ theme }: any) {
           ${theme === "Dark" ? "text-white" : "text-gray-900"}
         `}
                 >
-                  React Workspace Management
+                  {Tasks?.description || viewtasks?.description || "description"}
                 </p>
 
                 {/* STATUS TAGS */}

@@ -7,9 +7,12 @@ import ThemeProvider from "./Provider/ThemeProvider.tsx";
 import WorkspaceProvider from "./Provider/WorkspaceProvider.tsx";
 import WrokspaceJson from "./Provider/WrokspaceJson.tsx";
 import SharespaceViewProvider from "./Provider/SharespaceViewProvider.tsx";
+import FirstViewProvider from "./Provider/FirstViewProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
-        <WorkspaceProvider>
+    <WorkspaceProvider>
+        <FirstViewProvider>
+
             <SharespaceViewProvider>
                 <WrokspaceJson>
                     <UserProvider>
@@ -28,6 +31,8 @@ createRoot(document.getElementById("root")!).render(
                     </UserProvider>
                 </WrokspaceJson>
             </SharespaceViewProvider>
-        </WorkspaceProvider>
+        </FirstViewProvider>
+
+    </WorkspaceProvider>
 
 );

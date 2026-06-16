@@ -20,6 +20,48 @@ const AddWorkSpaceTask = async (req, res) => {
 
 }
 
+
+// fetch toasks
+
+
+// /api//tasks
+const FetchTasks = async (req, res, next) => {
+
+    try {
+        // const { spaceid } = req.query
+
+        // console.log(spaceid, 'spaceid');
+        // console.log(spaceid, 'spaceid');
+        const spaceid = "6a1e8587848d4471d14a554a"
+        if (!spaceid) {
+            const spaceid = new Error("spaceid is required to fetch tasks")
+            spaceid.status = 404
+            return spaceid
+        }
+
+        // check The Task Db
+        const tasks = await WorkSpaceTask.find({ projectid: spaceid })
+
+
+        console.log(tasks)
+
+
+        if (tasks.length == 0) {
+            return res.status(404).json({ message: "no taks found." })
+        }
+
+
+
+
+        return res.status(200).json({ message: tasks })
+    } catch (error) {
+
+
+        next(error)
+
+    }
+}
+
 // checking the Addcomments
 const Addcomments = async (req, res) => {
     try {
@@ -119,4 +161,4 @@ const AddRelpys = async (req, res) => {
         });
     }
 }
-module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys }
+module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks }
