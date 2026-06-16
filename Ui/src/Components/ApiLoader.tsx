@@ -1,4 +1,4 @@
-function ApiLoader({ theme = "Light" }: any) {
+function ApiLoader({ theme = "Light",texttyoe,text }: any) {
     const isDark = theme === "Dark";
 
     return (
@@ -13,9 +13,9 @@ function ApiLoader({ theme = "Light" }: any) {
                 <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
 
                 <div className="text-center">
-                    <h3 className="text-lg font-semibold">Updating</h3>
+                    <h3 className="text-lg font-semibold">{texttyoe}</h3>
                     <p className="text-sm opacity-70">
-                        Please wait while we save your changes...
+                       {text}
                     </p>
                 </div>
             </div>

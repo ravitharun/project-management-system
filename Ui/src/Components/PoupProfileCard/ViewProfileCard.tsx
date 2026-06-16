@@ -1,9 +1,7 @@
 import { Mail, User } from "lucide-react";
 
 function ViewProfileCard({ userInof, theme }: any) {
-
     const isDark = theme === "Dark";
-
     return (
         <div
             className={`
@@ -47,11 +45,11 @@ function ViewProfileCard({ userInof, theme }: any) {
                             ${isDark ? "text-white" : "text-gray-800"}
                         `}
                     >
-                        {userInof?.name || "Tharun Ravi"}
+                        {userInof?.data?.AssiginMember?.Name || "Name"}
                     </h2>
 
                     <a
-                        href={`mailto:${userInof?.email}`}
+                        href={`mailto:${userInof?.data?.AssiginMember?.Email}`}
                         className={`
                             mt-1 flex items-center gap-2 text-sm transition-colors
                             ${isDark
@@ -61,7 +59,7 @@ function ViewProfileCard({ userInof, theme }: any) {
                         `}
                     >
                         <Mail size={14} />
-                        {userInof?.email || "tharunravi@example.com"}
+                        {userInof?.data?.AssiginMember?.Email|| "Email"}
                     </a>
                 </div>
             </div>
