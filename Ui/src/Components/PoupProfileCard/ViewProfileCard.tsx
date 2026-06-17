@@ -1,6 +1,9 @@
 import { Mail, User } from "lucide-react";
 
 function ViewProfileCard({ userInof, theme }: any) {
+    console.log(userInof, 'userInof')
+    console.log(userInof?.username?.data?.AssiginMember?.Name, 'userInof?. username?.data?.AssignedTo?.Email')
+    console.log(userInof?.username?.data?.AssiginMember?.Email, 'userInof?. username?.data?.AssignedTo?.Email')
     const isDark = theme === "Dark";
     return (
         <div
@@ -45,11 +48,11 @@ function ViewProfileCard({ userInof, theme }: any) {
                             ${isDark ? "text-white" : "text-gray-800"}
                         `}
                     >
-                        {userInof?.data?.AssiginMember?.Name || "Name"}
+                        {userInof?.data?.AssiginMember?.Name || userInof?.data?.AssiginMember?.Name || "Name"}
                     </h2>
 
                     <a
-                        href={`mailto:${userInof?.data?.AssiginMember?.Email}`}
+                        href={`mailto:${userInof?.data?.AssiginMember?.Email || userInof?.username?.data?.AssiginMember?.Email}`}
                         className={`
                             mt-1 flex items-center gap-2 text-sm transition-colors
                             ${isDark
@@ -59,7 +62,7 @@ function ViewProfileCard({ userInof, theme }: any) {
                         `}
                     >
                         <Mail size={14} />
-                        {userInof?.data?.AssiginMember?.Email|| "Email"}
+                        {userInof?.data?.AssiginMember?.Email || userInof?.username?.data?.AssignedTo?.Email || "Email"}
                     </a>
                 </div>
             </div>
