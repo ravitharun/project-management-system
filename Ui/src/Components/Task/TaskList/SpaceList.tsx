@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { FaListUl } from "react-icons/fa";
+import { FaClipboardList, FaListUl, FaTasks } from "react-icons/fa";
 import { MdGridView } from "react-icons/md";
 import Button from "../../Button";
 import ViewTask from "./ViewTask";
@@ -177,9 +177,11 @@ function SpaceList({ spaceid }: any) {
 
                 {/* TITLE OR ICON ONLY */}
                 {isworkspace && (
-                  <h2 className="text-xs font-semibold">Workspaces</h2>
+                  <h2 className="flex items-center gap-2 text-xs font-semibold">
+                    <FaTasks className="text-sm" />
+                    <span>Tasks</span>
+                  </h2>
                 )}
-
                 {/* TOGGLE BUTTON */}
                 <button
                   onClick={() => setisworkspace((prev) => !prev)}
@@ -197,6 +199,44 @@ function SpaceList({ spaceid }: any) {
 
               {/* ================= LIST ================= */}
               <div className="p-2 space-y-2">
+                {TaskListView.length === 0 && (
+                  <div className="flex items-center justify-center px-4 py-10 sm:py-16">
+                    <div
+                      className={`
+        w-full max-w-md rounded-2xl border p-6 sm:p-8 text-center shadow-sm
+        transition-all duration-300
+        ${theme === "Dark"
+                          ? "bg-[#0f172a] border-slate-700 text-white"
+                          : "bg-white border-slate-200 text-slate-800"
+                        }
+      `}
+                    >
+                      <div
+                        className={`
+          mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full
+          ${theme === "Dark"
+                            ? "bg-slate-800 text-slate-400"
+                            : "bg-slate-100 text-slate-500"
+                          }
+        `}
+                      >
+                        <FaClipboardList fontSize={28}></FaClipboardList>
+                      </div>
+
+                      <h3 className="text-lg sm:text-xl font-semibold">
+                        No Tasks Found
+                      </h3>
+
+                      <p
+                        className={`mt-2 text-sm sm:text-base ${theme === "Dark" ? "text-slate-400" : "text-slate-500"
+                          }`}
+                      >
+                        There are no tasks available at the moment. Create a new task to get
+                        started.
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {TaskListView.map((itm: any, index: number) => (
                   <div
@@ -262,7 +302,7 @@ function SpaceList({ spaceid }: any) {
 
           {/* ================= RIGHT PANEL ================= */}
           <div className="flex-1 min-w-0">
-            <ViewTask theme={theme} viewtasks={viewtasks} />
+            <ViewTask theme={theme} viewtasks={viewtasks} TaskListView={TaskListView} />
           </div>
 
         </div>
