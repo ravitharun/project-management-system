@@ -22,7 +22,7 @@ const { Tasks } = TasksView;
 
 console.log(Tasks);
   console.log(Tasks, 'Tasks')
-  const [item, setitem] = useState(
+  const [item, setitem] = useState<any>(
     [
       {
         id: "CMT-101",
@@ -131,7 +131,7 @@ console.log(Tasks);
       time: "a min ago",
     }
 
-    const addrply = item.map((comment) => {
+    const addrply = item.map((comment:any) => {
 
 
       if (comment.id === replyToCommentId) {
@@ -490,7 +490,7 @@ overflow-y-scroll
                   : "border-gray-200 bg-gray-50/70"}
     `}
             >
-              <TaskDetailsWithSubtaskTable theme={theme} />
+              <TaskDetailsWithSubtaskTable theme={theme} viewtasks={viewtasks} />
             </div>
           </div>
 
@@ -549,10 +549,10 @@ overflow-y-scroll
               <div className="mt-5 ml-4 sm:ml-10 border-l border-gray-200 dark:border-white/10 pl-4 space-y-4">
                 <div className="space-y-6">
 
-                  {item.map((comment) => {
+                  {item.map((comment:any) => {
 
                     const replies = comment.replies?.filter(
-                      (reply) => reply.replyToCommentId === comment.id
+                      (reply:any) => reply.replyToCommentId === comment.id
                     );
 
                     return (
@@ -622,8 +622,7 @@ overflow-y-scroll
 
                           <div className="mt-5 ml-4 sm:ml-10 border-l border-gray-200 dark:border-white/10 pl-4 space-y-4">
 
-                            {replies.map((reply) => (
-
+                            {replies.map((reply:any) => (
                               <div
                                 key={reply.replyId}
                                 className={`

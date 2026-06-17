@@ -1,4 +1,6 @@
 const WorkSpaceTask = require("../Models/WorkSapceTask")
+const Workspace = require("../Models/Workspace")
+
 // const WorkspaceComments = require("../Models/Workspace-comments")
 const AddcommentsSchema = require("../Models/Workspace-comments")
 const AddWorkSpaceTask = async (req, res) => {
@@ -29,7 +31,6 @@ const FetchTasks = async (req, res, next) => {
 
     try {
         // const { spaceid } = req.query
-
         // console.log(spaceid, 'spaceid');
         // console.log(spaceid, 'spaceid');
         const spaceid = "6a1e8587848d4471d14a554a"
@@ -161,4 +162,54 @@ const AddRelpys = async (req, res) => {
         });
     }
 }
-module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks }
+
+
+
+const AddSubTask = async (req, res, next) => {
+
+
+    try {
+        const { rowData, id } = req.body
+
+        console.log({ rowData, id })
+
+
+        const isexits = await WorkSpaceTask.findOneAndUpdate(
+            { _id: id },
+            {
+                $push: {
+                    SubTask: {
+                        TaskId: rowData.taskid,
+                        taskName: rowData.taskname,
+                        taskPriority: rowData.priority,
+                        SubTaskStatus: rowData.status,
+                        AssiginMember: {
+                            Name: rowData.createby.name,
+                            Email: rowData.createby.email,
+                        },
+                    },
+                },
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+
+        if (!isexits) {
+            return res.status(404).json({ message: "No Workspce Foudn to Add subTasks." })
+        }
+
+
+
+        console.log(isexits, 'isexits')
+
+        return res.status(201).json({ message: "Added the SubTask" })
+    } catch (error) {
+        console.log(error.message)
+        next(error)
+
+    }
+}
+module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask }

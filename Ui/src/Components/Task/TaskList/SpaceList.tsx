@@ -67,7 +67,7 @@ function SpaceList({ spaceid }: any) {
 
     settaskid(id)
     setviewtaks(tasks)
-    setasks([])
+    setasks(tasks)
 
 
   }
@@ -260,6 +260,7 @@ function SpaceList({ spaceid }: any) {
             {/* ================= RIGHT CONTENT ================= */}
             <div className="flex-1 p-4">
               {/* your main content here */}
+              
             </div>
 
           </div>
