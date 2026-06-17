@@ -19,7 +19,7 @@ const Subatask = new mongosse.Schema([{
 
 const WorkSpaceTask = new mongosse.Schema({
     projectid: { type: String, required: true  , index: true},
-    Taskid: { type: String, required: true  , index: true,default:"Tasks"},
+    Taskid: { type: String, required: true  , index: true},
     taskName: { type: String, required: true },
     description: { type: String, required: true },
     SubTask: [Subatask],

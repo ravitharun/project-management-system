@@ -19,11 +19,12 @@ import Loader from "../Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
 import bgthemeContext from "../Context/ThemeContext";
 import Shareview from "../Components/Shareview";
+import EmailBasedJoinWorkspace from "../Components/EmailApproval/EmailBasedJoinWorkspace";
 
 function AppRouter() {
     const navigate = useNavigate();
     const ContextTheme = useContext(bgthemeContext)
-    const { theme }:any = ContextTheme
+    const { theme }: any = ContextTheme
     const dev = import.meta.env.VITE_ENV
     console.log(dev, 'dev')
     useEffect(() => {
@@ -174,6 +175,7 @@ function AppRouter() {
                     <Route path="/Calendar" element={<Calendra />} />
                     <Route path="/Team" element={<Team />} />
                     <Route path="/Profile" element={<Profile />} />
+                    <Route path="/Email-JoinWorkspace" element={<EmailBasedJoinWorkspace theme={theme} />} />
                     <Route path="/Login" element={<Login />} />
                     <Route path="/Signup" element={<SiginUp />} />
                 </Routes>

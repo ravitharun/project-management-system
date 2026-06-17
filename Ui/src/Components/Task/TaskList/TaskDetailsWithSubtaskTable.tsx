@@ -16,6 +16,8 @@ export interface RowData {
   { name: string, email: string }
 
 }
+import { nanoid } from "nanoid";
+
 export default function SubTaskWithFiles({ theme, viewtasks }: any) {
   const isDark = theme === "Dark";
   console.log(viewtasks, 'viewtasks')
@@ -35,8 +37,8 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
   console.log(setActiveTaskId, setUploadedFiles)
   const [rowData, setrowdata] = useState<any>([]);
   const [Data, setdata] = useState<any>()
-  console.log(activeTaskId,'activeTaskIdcls')
-  console.log(setdata,'setdata')
+  console.log(activeTaskId, 'activeTaskIdcls')
+  console.log(setdata, 'setdata')
 
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
 
   const AddTask = async () => {
     const newTask: RowData = {
-      taskid: `ST-${100 + (rowData?.length || 0) + 1}`,
+      taskid: `ST-${nanoid()}`,
       taskname: "Add New SubTask",
       AssignedTo: "Unassigned",
       status: "Completed",
@@ -61,7 +63,7 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
         email: useremail,
       },
     };
-
+    console.log(newTask, 'newTask')
     const updatedTasks = [...(rowData || []), newTask];
 
     setrowdata(updatedTasks);
