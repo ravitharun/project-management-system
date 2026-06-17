@@ -6,12 +6,11 @@ import ViewTask from "./ViewTask";
 import bgthemeContext from "../../../Context/ThemeContext";
 import MyTable from "./MyTable";
 import { FiChevronLeft, FiChevronRight, FiGrid } from "react-icons/fi";
-import { instance } from "../../../services/apiservices";
 import ViewTaskFirst from "../../../Context/FirstTaskView";
+import { fetchtaskApi } from "../../../services/taskApi";
 
 function SpaceList({ spaceid }: any) {
   console.log(spaceid, 'spaceid')
-  // console.log(ismaxAndMin,'space list')
   const contexttheme = useContext(bgthemeContext)
   const { theme }: any = contexttheme
 
@@ -28,12 +27,7 @@ function SpaceList({ spaceid }: any) {
     const FetchTasks = async () => {
 
       try {
-        const response = await instance.get("/api/Task/", {
-          params: {
-            spaceid: spaceid
-          }
-        })
-
+        const response = await fetchtaskApi(spaceid)
 
         console.log(response.data.message, 'response')
         setTaskListView(response.data.message)
@@ -136,7 +130,7 @@ function SpaceList({ spaceid }: any) {
       </div>
 
       {/* ================= LIST VIEW ================= */}
-      {CurrentView === "list" && <MyTable theme={theme} />}
+      {CurrentView === "list" && <MyTable theme={theme} spaceid={spaceid} />}
 
       {/* ================= GRID VIEW ================= */}
       {CurrentView === "grid" && (
@@ -260,7 +254,7 @@ function SpaceList({ spaceid }: any) {
             {/* ================= RIGHT CONTENT ================= */}
             <div className="flex-1 p-4">
               {/* your main content here */}
-              
+
             </div>
 
           </div>

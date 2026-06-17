@@ -1,67 +1,85 @@
 import { AgGridReact, AgGridProvider } from "ag-grid-react";
-import { AllCommunityModule } from "ag-grid-community";
 import type { ColDef } from "ag-grid-community";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ViewProfileCard from "../../PoupProfileCard/ViewProfileCard";
+import { fetchtaskApi } from "../../../services/taskApi";
+import SubTaskCell from "./SubTaskCell ";
+
 const modules = [AllCommunityModule];
+import { ModuleRegistry } from "ag-grid-community";
+import { AllCommunityModule } from "ag-grid-community";
+import { MasterDetailModule, RowGroupingModule } from "ag-grid-enterprise";
+
+ModuleRegistry.registerModules([
+    AllCommunityModule,
+    MasterDetailModule,
+    RowGroupingModule,
+]);
 
 export type RowData = {
     taskid: string;
-    AssignedTo: string,
+    AssignedTo: string;
     taskname: string;
     status: string;
     priority: string;
     action: string;
+    SubTask?: any[];
 };
 
-const MyTable = ({ theme }: any) => {
+const MyTable = ({ theme = "Dark", spaceid }: any) => {
     const timeoutRef = useRef<any>(null);
+
     const [popupPos, setPopupPos] = useState({
         x: 0,
         y: 0,
         show: false,
-        userInof: {}
+        userInof: {},
     });
-    const rowData: RowData[] = [
-        {
-            taskid: "T-101",
-            AssignedTo: "UnAssigned",
-            taskname: "Setup authentication system",
-            status: "In Progress",
-            priority: "High",
-            action: "Edit",
-        },
-        {
-            taskid: "T-102",
-            taskname: "Design dashboard UI",
-            AssignedTo: "UnAssigned",
-            status: "Completed",
-            priority: "Medium",
-            action: "View",
-        },
-        {
-            taskid: "T-103",
-            taskname: "Socket integration",
-            AssignedTo: "UnAssigned",
-            status: "Pending",
-            priority: "High",
-            action: "Start",
-        },
-        {
-            taskid: "T-104",
-            taskname: "Fix responsive bugs",
-            AssignedTo: "Tharun",
-            status: "In Progress",
-            priority: "Low",
-            action: "Fix",
-        },
-    ];
 
-    const columnDefs: ColDef<RowData>[] = [
+    const [rowData, setrowData] = useState<any[]>([]);
+
+    useEffect(() => {
+        const FetchTasks = async () => {
+            try {
+                const response = await fetchtaskApi(spaceid);
+
+                const formattedData = response.data.message.map((item: any) => ({
+                    taskid: item.Taskid,
+                    taskname: item.taskName,
+                    status: item.status || "Pending",
+                    priority: item.priority || "Low",
+                    AssignedTo: item.AssignedTo || "Unassigned",
+                    action: "View",
+                    _id: item._id,
+                    SubTask: item.SubTask || [],
+                    Files: item.Files,
+                    Links: item.Links,
+                }));
+
+                setrowData(formattedData);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        FetchTasks();
+    }, []);
+
+    const columnDefs: ColDef[] = [
+        {
+            headerName: "",
+            field: "expand",
+            width: 50,
+            cellRenderer: "agGroupCellRenderer",
+        },
         {
             field: "taskid",
             headerName: "Task ID",
-            width: 120,
+            width: 150,
+            flex: 1,
+            cellRenderer: (params: any) => {
+                return <div>{params.data.taskid}</div>;
+            },
         },
         {
             field: "taskname",
@@ -81,7 +99,9 @@ const MyTable = ({ theme }: any) => {
                             : "bg-yellow-500/20 text-yellow-400";
 
                 return (
-                    <button className={`px-3 py-1 rounded-full text-xs ${color}`} onClick={() => console.log(params.value, 'vlu')}>
+                    <button
+                        className={`px-3 py-1 rounded-full text-xs ${color}`}
+                    >
                         {params.value}
                     </button>
                 );
@@ -98,22 +118,21 @@ const MyTable = ({ theme }: any) => {
                             ? "text-yellow-400"
                             : "text-green-400";
 
-                return <span className={`font-medium ${color}`}>{params.value}</span>;
+                return (
+                    <span className={`font-medium ${color}`}>
+                        {params.value}
+                    </span>
+                );
             },
         },
-
-
         {
             field: "AssignedTo",
-            headerName: "Task AssignedTo",
-
+            headerName: "Assigned To",
             cellRenderer: (params: any) => {
                 return (
                     <div
                         className="inline-block"
-
                         onMouseEnter={(e: any) => {
-
                             clearTimeout(timeoutRef.current);
 
                             setPopupPos({
@@ -121,20 +140,18 @@ const MyTable = ({ theme }: any) => {
                                 y: e.clientY,
                                 show: true,
                                 userInof: {
-                                    username: "tharun",
-                                    email: "tharunravi5@gmail.com"
-                                }
+                                    username: params
+                                },
                             });
                         }}
                         onMouseLeave={() => {
-
                             timeoutRef.current = setTimeout(() => {
                                 setPopupPos((prev) => ({
                                     ...prev,
                                     show: false,
-                                    userInof:{}
+                                    userInof: {},
                                 }));
-                            }, 1200);
+                            }, 800);
                         }}
                     >
                         <span className="cursor-pointer text-blue-500">
@@ -144,6 +161,9 @@ const MyTable = ({ theme }: any) => {
                 );
             },
         },
+
+
+
         {
             field: "action",
             headerName: "Action",
@@ -157,69 +177,50 @@ const MyTable = ({ theme }: any) => {
         },
     ];
 
-    console.log(popupPos.userInof, 'popupPos.userInof')
     return (
-
         <>
-            {
-                popupPos.show && (
-                    <div
-                        className="fixed z-[999999999]"
-                        style={{
-                            top: popupPos.y + 10,
-                            left: popupPos.x + 10,
-                        }}
+            {/* POPUP */}
+            {popupPos.show && (
+                <div
+                    className="fixed z-[9999]"
+                    style={{
+                        top: popupPos.y + 10,
+                        left: popupPos.x + 10,
+                    }}
+                >
+                    <ViewProfileCard
+                        userInof={popupPos.userInof}
+                        theme={theme}
+                    />
+                </div>
+            )}
 
-                        onMouseEnter={() => {
-                            setPopupPos((prev) => ({
-                                ...prev,
-                                show: true,
-                            }));
-                        }}
-
-                        onMouseLeave={() => {
-                            setPopupPos((prev) => ({
-                                ...prev,
-                                show: false,
-                            }));
-                        }}
-                    >
-                        <ViewProfileCard userInof={popupPos.userInof}  theme={theme}/>
-                    </div>
-                )
-            }
             <AgGridProvider modules={modules}>
                 <div
-                    className={`
-                    ${theme === "Dark"
-                            ? "ag-theme-alpine-dark"
-                            : "ag-theme-alpine"
-                        }
-      w-full rounded-xl
-      h-[300px] sm:h-[400px] lg:h-[500px]
-      overflow-auto   /* ✅ IMPORTANT */
-    `}
-                    style={{
-                        "--ag-background-color": theme === "Dark" ? "#0f172a" : "#ffffff",
-                        "--ag-header-background-color":
-                            theme === "Dark" ? "#111827" : "#f3f4f6",
-                        "--ag-odd-row-background-color":
-                            theme === "Dark" ? "#0b1220" : "#ffffff",
-                        "--ag-border-color":
-                            theme === "Dark"
-                                ? "rgba(255,255,255,0.1)"
-                                : "#e5e7eb",
-                        "--ag-foreground-color":
-                            theme === "Dark" ? "#e5e7e3" : "#111827",
-                    } as React.CSSProperties}
+                    className={`${theme === "Dark"
+                        ? "ag-theme-alpine-dark"
+                        : "ag-theme-alpine"
+                        } w-full h-[500px] rounded-xl`}
                 >
-                    <span>Dummy Data </span>
                     <AgGridReact
                         rowData={rowData}
-                        domLayout="autoHeight"
-                        columnDefs={columnDefs}
+                        masterDetail={true}
 
-                        suppressHorizontalScroll={false}
+                        isRowMaster={(data: any) => {
+                            return data?.SubTask && data.SubTask.length > 0;
+                        }}
+
+                        autoGroupColumnDef={{
+                            headerName: "Tasks",
+                            minWidth: 200,
+                            cellRendererParams: {
+                                suppressCount: true,
+                            },
+                        }}
+
+                        columnDefs={columnDefs}
+                        domLayout="autoHeight"
+                        suppressHorizontalScroll={true}
 
                         defaultColDef={{
                             resizable: true,
@@ -227,12 +228,81 @@ const MyTable = ({ theme }: any) => {
                             filter: true,
                             editable: true,
                             flex: 1,
-                            minWidth: 350,
+                            minWidth: 150,
                         }}
 
                         onCellClicked={(params) => {
-                            console.log("Cell clicked:", params.value);
-                            console.log("Row data:", params.data);
+                            console.log("Cell clicked:", params.data);
+                        }}
+
+                        detailCellRendererParams={{
+                            detailGridOptions: {
+                                columnDefs: [
+                                    { field: "TaskId", headerName: "SubTask TaskId" },
+                                    { field: "taskName", headerName: "SubTask Name" },
+
+                                    {
+                                        field: "AssiginMember",
+                                        headerName: "Assigin Member",
+
+                                        cellRenderer: (params: any) => {
+                                            console.log(params.data,'params')
+                                            return (
+                                                <div
+                                                    className="inline-block"
+                                                    onMouseEnter={(e: any) => {
+                                                        clearTimeout(timeoutRef.current);
+
+                                                        setPopupPos({
+                                                            x: e.clientX,
+                                                            y: e.clientY,
+                                                            show: true,
+                                                            userInof: {
+                                                                username: params.value
+                                                            },
+                                                        });
+                                                    }}
+                                                    onMouseLeave={() => {
+                                                        timeoutRef.current = setTimeout(() => {
+                                                            setPopupPos((prev) => ({
+                                                                ...prev,
+                                                                show: false,
+                                                                userInof: {},
+                                                            }));
+                                                        }, 800);
+                                                    }}
+                                                >
+                                                    <span className="cursor-pointer text-blue-500">
+                                                        {params.data?.AssiginMember?.Name}
+                                                    </span>
+                                                </div>
+                                            );
+                                        },
+                                    },
+
+
+
+
+
+                                    { field: "SubTaskStatus", headerName: "SubTask Status" },
+                                    { field: "taskPriority", headerName: "SubTask Priority" },
+                                ],
+
+                                defaultColDef: {
+                                    flex: 1,
+                                    minWidth: 150,
+                                    resizable: true,
+                                    sortable: true,
+                                    editable: true,
+                                    filter: true,
+                                },
+
+                                suppressHorizontalScroll: false,
+                            },
+
+                            getDetailRowData: (params: any) => {
+                                params.successCallback(params.data.SubTask || []);
+                            },
                         }}
                     />
                 </div>
