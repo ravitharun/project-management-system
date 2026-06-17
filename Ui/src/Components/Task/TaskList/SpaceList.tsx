@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { FaClipboardList, FaListUl } from "react-icons/fa";
+import { FaClipboardList, FaListUl, FaTasks } from "react-icons/fa";
 import { MdGridView } from "react-icons/md";
 import Button from "../../Button";
 import ViewTask from "./ViewTask";
@@ -177,9 +177,11 @@ function SpaceList({ spaceid }: any) {
 
                 {/* TITLE OR ICON ONLY */}
                 {isworkspace && (
-                  <h2 className="text-xs font-semibold">Workspaces</h2>
+                  <h2 className="flex items-center gap-2 text-xs font-semibold">
+                    <FaTasks className="text-sm" />
+                    <span>Tasks</span>
+                  </h2>
                 )}
-
                 {/* TOGGLE BUTTON */}
                 <button
                   onClick={() => setisworkspace((prev) => !prev)}
@@ -300,7 +302,7 @@ function SpaceList({ spaceid }: any) {
 
           {/* ================= RIGHT PANEL ================= */}
           <div className="flex-1 min-w-0">
-            <ViewTask theme={theme} viewtasks={viewtasks}  TaskListView={TaskListView}/>
+            <ViewTask theme={theme} viewtasks={viewtasks} TaskListView={TaskListView} />
           </div>
 
         </div>
