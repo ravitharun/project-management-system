@@ -1,5 +1,6 @@
 const { tryCatch } = require("bullmq")
-const Workspace = require("../Models/Workspace")
+const crypto = require("crypto"); const Workspace = require("../Models/Workspace")
+
 const User = require("../Models/Auth")
 const WorkspaceStar = require("../Models/WorkspaceStar")
 const EmailQueue = require("../Queues/Producer")
@@ -185,8 +186,11 @@ const handelCustomUoploadIcon = async (req, res) => {
 const AddWorkSpacememebers = async (req, res, next) => {
     try {
         const { data } = req.body
-        console.log(data, 'data')
 
+        const token = crypto.randomBytes(32).toString("hex");
+        const expiresAt = new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+        );
         const isUserExitsInWorkspace = await Workspace.findById(data.workspace)
         if (!isUserExitsInWorkspace) {
             const err = new Error("Workspace not found");
@@ -196,8 +200,9 @@ const AddWorkSpacememebers = async (req, res, next) => {
 
         const Emaildata = {
             ...isUserExitsInWorkspace,
-            data
-
+            data,
+            token,
+            expiresAt
         }
         await EmailQueue.add("WorkspaceAcceptInvitation", Emaildata, {
             attempts: 3,
@@ -223,8 +228,14 @@ const AddWorkSpacememebers = async (req, res, next) => {
 const ApproveEmail = async (req, res, next) => {
     try {
 
-        const { AcceptEmail, workspaceid } = req.body
-        console.log(req.body,"req")
+        const { AcceptEmail, workspaceid, toekn, expiresAt } = req.body
+        console.log(req.body, "tharun")
+        if (Date.now() > new Date(expiresAt).getTime()) {
+            return res.status(400).json({
+                status: "INVITE_EXPIRED",
+                message: "Invitation has expired",
+            });
+        }
 
         if (!AcceptEmail) {
             const error = new Error("Email is required")

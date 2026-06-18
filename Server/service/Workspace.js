@@ -1,25 +1,20 @@
 const { resend } = require("./Email")
 
 const workspaceAcceptInvitation = async (data) => {
-
-
-
-
-    const response =
-
-
-        data.data.arr_email.map(async (emails) => {
-
-            console.log(`${process.env.envStatus === "Local"
-                ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}`
-                : `${preocess.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}`
-                }`)
-
-            await resend.emails.send({
-                from: "Taskora <taskoraSystem@resend.dev>",
-                to: emails || "tr565003@gmail.com",
-                subject: "You're Invited to Join a Workspace",
-                html: `
+    console.log(data, 'emaildata')
+    // console.log(data.arr_email,'emaildata')
+    // console.log(data.token,'token')
+    // console.log(data.expiresAt,'expiresAt')
+    const response = data.data.arr_email.map(async (emails) => {
+        console.log(`${process.env.envStatus === "Local"
+            ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
+            : `${preocess.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
+            }`)
+        await resend.emails.send({
+            from: "Taskora <taskoraSystem@resend.dev>",
+            to: emails || "tr565003@gmail.com",
+            subject: "You're Invited to Join a Workspace",
+            html: `
 
 
         < div style = "max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px;" >
@@ -41,9 +36,9 @@ const workspaceAcceptInvitation = async (data) => {
             <div style="margin-top: 30px;">
                 <a
                 href=${process.env.envStatus === "Local"
-                        ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}`
-                        : `${preocess.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}`
-                    }
+                    ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
+                    : `${preocess.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
+                }
                     style="
                         background: #4f46e5;
                         color: white;
@@ -67,8 +62,8 @@ const workspaceAcceptInvitation = async (data) => {
     </div >
 
     `
-            })
         })
+    })
 }
 
 module.exports = { workspaceAcceptInvitation }
