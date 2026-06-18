@@ -55,6 +55,8 @@ function Sidebar({ page }: Props) {
     const CreatedSpaceJson = useContext(CreatedspaceData)
     const workSpaceData = useContext(WorkspaceData)
     const { setwork }: any = workSpaceData
+    const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
+
     const { theme }: any = context || {};
     const { setspacejson }: any = CreatedSpaceJson
 
