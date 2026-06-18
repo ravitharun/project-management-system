@@ -77,6 +77,8 @@ const MyTable = ({ theme = "Dark", spaceid }: any) => {
             headerName: "Task ID",
             width: 150,
             flex: 1,
+            editable: false,
+
             cellRenderer: (params: any) => {
                 return <div>{params.data.taskid}</div>;
             },
@@ -167,6 +169,8 @@ const MyTable = ({ theme = "Dark", spaceid }: any) => {
         {
             field: "action",
             headerName: "Action",
+            editable: false,
+
             cellRenderer: (params: any) => {
                 return (
                     <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700">
@@ -246,7 +250,7 @@ const MyTable = ({ theme = "Dark", spaceid }: any) => {
                                         headerName: "Assigin Member",
 
                                         cellRenderer: (params: any) => {
-                                            console.log(params.data,'params')
+                                            console.log(params.data, 'params')
                                             return (
                                                 <div
                                                     className="inline-block"

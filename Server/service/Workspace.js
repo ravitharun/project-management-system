@@ -5,13 +5,15 @@ const workspaceAcceptInvitation = async (data) => {
 
 
 
-
     const response =
 
 
         data.data.arr_email.map(async (emails) => {
 
-            console.log(emails, 'emailsemailsemails')
+            console.log(`${process.env.envStatus === "Local"
+                ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}`
+                : `${preocess.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}`
+                }`)
 
             await resend.emails.send({
                 from: "Taskora <taskoraSystem@resend.dev>",
@@ -19,9 +21,8 @@ const workspaceAcceptInvitation = async (data) => {
                 subject: "You're Invited to Join a Workspace",
                 html: `
 
-    < div style = "font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4;" >
 
-        <div style="max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px;">
+        < div style = "max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px;" >
 
             <h2 style="color: #333;">
                 You're Invited to Join a Workspace
@@ -39,10 +40,10 @@ const workspaceAcceptInvitation = async (data) => {
 
             <div style="margin-top: 30px;">
                 <a
-                href=${process.env.envStatus === "dev"
-                        ? "http://localhost:5000"
-                        : "https://project-management-system-u091.onrender.com"
-                    } / api / workspace / approve - workspace - invite ? workspaceid = ${data.data.workspace} & AcceptEmail=${emails}
+                href=${process.env.envStatus === "Local"
+                        ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}`
+                        : `${preocess.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}`
+                    }
                     style="
                         background: #4f46e5;
                         color: white;
@@ -55,13 +56,13 @@ const workspaceAcceptInvitation = async (data) => {
                 >
                     Join Workspace
                 </a>
-            </div>
+            </div >
 
-            <p style="margin-top: 30px; font-size: 13px; color: #999;">
-                If you did not expect this invitation, you can safely ignore this email.
-            </p>
+    <p style="margin-top: 30px; font-size: 13px; color: #999;">
+        If you did not expect this invitation, you can safely ignore this email.
+    </p>
 
-        </div>
+        </ >
 
     </div >
 

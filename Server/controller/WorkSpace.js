@@ -223,8 +223,8 @@ const AddWorkSpacememebers = async (req, res, next) => {
 const ApproveEmail = async (req, res, next) => {
     try {
 
-        const { AcceptEmail, workspaceid } = req.query
-        console.log(req.query)
+        const { AcceptEmail, workspaceid } = req.body
+        console.log(req.body,"req")
 
         if (!AcceptEmail) {
             const error = new Error("Email is required")
@@ -258,7 +258,7 @@ const ApproveEmail = async (req, res, next) => {
             return res.status(403).json({ message: " Create Account ." })
         }
 
-        await Workspace.findByIdAndUpdate(
+        const data = await Workspace.findByIdAndUpdate(
             workspaceid,
             {
                 $push: {
@@ -272,7 +272,9 @@ const ApproveEmail = async (req, res, next) => {
         )
 
         return res.status(201).json({
-            message: "Member added to workspace successfully"
+            status: true,
+            message: "Member added to workspace successfully",
+            data: data
         })
 
     } catch (error) {
