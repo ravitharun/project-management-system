@@ -160,14 +160,17 @@ function ViewTask({ theme, viewtasks, TaskListView }: any) {
 
       <div
         className={`
-      flex-1 min-w-0
-      lg:h-[560px]
-      overflow-y-auto
-      p-3 sm:p-5 lg:p-6
+     flex-1
+    min-w-0
+    max-w-full
+    lg:h-[560px]
+    overflow-y-auto
+    overflow-x-hidden
+    p-3 sm:p-5 lg:p-6
       ${theme == "Dark" ? "bg-[#111827]" : "bg-white"}
     `}
       >
-        {TaskListView.length === 0 ? (
+        {TaskListView?.length === 0 ? (
           <div className="h-full flex items-center justify-center px-4">
             <div
               className={`
@@ -249,156 +252,213 @@ function ViewTask({ theme, viewtasks, TaskListView }: any) {
                 }
   `}
             >
-              {/* TOP HEADER */}
-              <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                {/* LEFT SIDE */}
-                <div className="flex min-w-0 flex-1 items-start gap-4">
-                  {/* ICON */}
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 text-lg text-white shadow-md">
-                    📁
-                  </div>
+              <div
+                className={`
+    overflow-hidden rounded-3xl shadow-lg
+    ${theme === "Dark" ? "bg-[#0f172a]" : "bg-white"}
+  `}
+              >
+                {/* COVER IMAGE */}
+                <div className="relative h-52 w-full sm:h-60 md:h-72">
+                  <img
+                    src="https://avatars.githubusercontent.com/u/145847829?v=4&size=300"
+                    alt="Cover"
+                    className="h-full w-full object-cover"
+                  />
 
-                  {/* HEADING */}
-                  <div className="min-w-0 flex-1">
-                    <h2
-                      className={`
-            break-words text-lg font-semibold tracking-tight sm:text-xl xl:text-2xl
-            ${theme === "Dark" ? "text-white" : "text-gray-900"}
-          `}
-                    >
-                      {Tasks?.taskName || viewtasks?.taskName || "taskName"}
-                    </h2>
+                  {/* optional overlay */}
+                  <div className="absolute inset-0 bg-black/20" />
 
-                    <p
-                      className={`
-            mt-1 max-w-3xl break-words text-sm leading-6
-            ${theme === "Dark" ? "text-gray-400" : "text-gray-600"}
-          `}
-                    >
-                      {Tasks?.description || viewtasks?.description || "description"}
-                    </p>
-
-                    {/* STATUS TAGS */}
-                    <div className="mt-3 flex flex-wrap items-center gap-2">
-                      <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
-                        In Progress
-                      </span>
-
-                      <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20">
-                        Synced
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* RIGHT SIDE */}
-                <div className="flex items-center gap-3 self-start xl:ml-4">
-                  <div className="group relative">
-                    <button
-                      className={`
-            flex h-11 w-11 items-center justify-center rounded-2xl border text-xl transition-all duration-200
-            ${theme === "Dark"
-                          ? "border-white/10 bg-white/5 text-white hover:bg-white/10"
-                          : "border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100"
-                        }
-          `}
-
-
-                      onClick={() => SetOpenDropDown((prev) => !prev)}
-                    >
-                      <HiOutlineDotsVertical fontSize={28} />
-
-                    </button>
-
-                    {/* DROPDOWN */}
-                    {OpenDropDown &&
-                      <div
+                  {/* top-right button on image */}
+                  <div className="absolute right-4 top-4 z-10">
+                    <div className="relative">
+                      <button
+                        onClick={() => SetOpenDropDown((prev) => !prev)}
                         className={`
-            absolute right-0 top-14 z-50 w-64 overflow-hidden rounded-2xl border shadow-2xl
-            opacity-0 invisible translate-y-2 transition-all duration-200
-            group-hover:visible group-hover:translate-y-0 group-hover:opacity-100
+            flex h-11 w-11 items-center justify-center rounded-2xl border text-xl backdrop-blur-md transition-all duration-200
             ${theme === "Dark"
-                            ? "border-white/10 bg-[#111827]"
-                            : "border-gray-200 bg-white"
-                          }
+                            ? "border-white/10 bg-white/10 text-white hover:bg-white/20"
+                            : "border-white/40 bg-white/70 text-gray-800 hover:bg-white"}
           `}
                       >
-                        {/* HEADER */}
+                        <HiOutlineDotsVertical fontSize={24} />
+                      </button>
+
+                      {OpenDropDown && (
                         <div
                           className={`
-              border-b px-4 py-4
-              ${theme === "Dark" ? "border-white/10" : "border-gray-200"}
+              absolute right-0 top-14 z-50 w-64 overflow-hidden rounded-2xl border shadow-2xl
+              ${theme === "Dark"
+                              ? "border-white/10 bg-[#111827]"
+                              : "border-gray-200 bg-white"}
             `}
                         >
-                          <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                            Task Actions
-                          </h3>
-                          <p className="mt-1 text-xs text-gray-500">
-                            Manage workspace settings
-                          </p>
-                        </div>
+                          <div
+                            className={`
+                border-b px-4 py-4
+                ${theme === "Dark" ? "border-white/10" : "border-gray-200"}
+              `}
+                          >
+                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                              Task Actions
+                            </h3>
+                            <p className="mt-1 text-xs text-gray-500">
+                              Manage workspace settings
+                            </p>
+                          </div>
 
-                        {/* MENU ITEMS */}
-                        <div className="max-h-72 overflow-y-auto p-2">
-                          {menuitems.map((item, i) => (
+                          <div className="max-h-72 overflow-y-auto p-2">
+                            {menuitems.map((item, i) => (
+                              <button
+                                key={i}
+                                className={`
+                    flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-all duration-200
+                    ${theme === "Dark"
+                                    ? "text-gray-300 hover:bg-white/5"
+                                    : "text-gray-700 hover:bg-gray-100"}
+                  `}
+                              >
+                                <div
+                                  className={`
+                      flex h-9 w-9 shrink-0 items-center justify-center rounded-xl
+                      ${theme === "Dark" ? "bg-white/5" : "bg-gray-100"}
+                    `}
+                                >
+                                  <span className="text-[15px]">{item.icon}</span>
+                                </div>
+
+                                <div className="min-w-0 flex-1">
+                                  <p className="truncate text-sm font-medium">{item.label}</p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+
+                          <div
+                            className={`
+                border-t p-2
+                ${theme === "Dark" ? "border-white/10" : "border-gray-200"}
+              `}
+                          >
                             <button
-                              key={i}
                               className={`
-                  flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-all duration-200
+                  flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200
                   ${theme === "Dark"
-                                  ? "text-gray-300 hover:bg-white/5"
-                                  : "text-gray-700 hover:bg-gray-100"
-                                }
+                                  ? "text-red-400 hover:bg-red-500/10"
+                                  : "text-red-600 hover:bg-red-50"}
                 `}
                             >
                               <div
                                 className={`
-                    flex h-9 w-9 shrink-0 items-center justify-center rounded-xl
-                    ${theme === "Dark" ? "bg-white/5" : "bg-gray-100"}
+                    flex h-9 w-9 items-center justify-center rounded-xl
+                    ${theme === "Dark" ? "bg-red-500/10" : "bg-red-100"}
                   `}
                               >
-                                <span className="text-[15px]">{item.icon}</span>
+                                🗑️
                               </div>
-
-                              <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium">{item.label}</p>
-                              </div>
+                              Delete Task
                             </button>
-                          ))}
+                          </div>
                         </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
 
-                        {/* DELETE */}
-                        <div
-                          className={`
-              border-t p-2
-              ${theme === "Dark" ? "border-white/10" : "border-gray-200"}
-            `}
-                        >
-                          <button
-                            className={`
-                flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200
-                ${theme === "Dark"
-                                ? "text-red-400 hover:bg-red-500/10"
-                                : "text-red-600 hover:bg-red-50"
-                              }
-              `}
-                          >
-                            <div
-                              className={`
-                  flex h-9 w-9 items-center justify-center rounded-xl
-                  ${theme === "Dark" ? "bg-red-500/10" : "bg-red-100"}
-                `}
-                            >
-                              🗑️
-                            </div>
-                            Delete Task
-                          </button>
-                        </div>
+                {/* DATA BELOW IMAGE */}
+                <div className="p-5 sm:p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 text-lg text-white shadow-md">
+                      📁
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <h2
+                        className={`
+            break-words text-lg font-semibold tracking-tight sm:text-xl xl:text-2xl
+            ${theme === "Dark" ? "text-white" : "text-gray-900"}
+          `}
+                      >
+                        {Tasks?.taskName || viewtasks?.taskName || "taskName"}
+                      </h2>
+
+                      <p
+                        className={`
+            mt-1 break-words text-sm leading-6
+            ${theme === "Dark" ? "text-gray-400" : "text-gray-600"}
+          `}
+                      >
+                        {Tasks?.description || viewtasks?.description || "description"}
+                      </p>
+
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
+                          In Progress
+                        </span>
+
+                        <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20">
+                          Synced
+                        </span>
                       </div>
-                    }
+                    </div>
                   </div>
                 </div>
               </div>
+              {/* TASK IMAGE PREVIEW */}
+              {(Tasks?.image || viewtasks?.image) && (
+                <div
+                  className={`
+      mt-4 overflow-hidden rounded-2xl border
+      max-w-md transition-all duration-300
+      ${theme === "Dark"
+                      ? "border-white/10 bg-white/[0.03]"
+                      : "border-gray-200 bg-gray-50"
+                    }
+    `}
+                >
+                  <img
+                    src="https://avatars.githubusercontent.com/u/145847829?v=4&size=64"
+                    alt="Task Attachment"
+                    className="h-44 w-full object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
+                  />
+
+                  <div className="flex items-center justify-between p-3">
+                    <div>
+                      <p
+                        className={`text-sm font-medium ${theme === "Dark" ? "text-white" : "text-gray-900"
+                          }`}
+                      >
+                        Task Attachment
+                      </p>
+
+                      <p
+                        className={`text-xs ${theme === "Dark"
+                          ? "text-gray-400"
+                          : "text-gray-500"
+                          }`}
+                      >
+                        Uploaded file preview
+                      </p>
+                    </div>
+
+                    <span
+                      className={`
+          rounded-lg px-2 py-1 text-xs font-medium
+          ${theme === "Dark"
+                          ? "bg-blue-500/10 text-blue-400"
+                          : "bg-blue-100 text-blue-700"
+                        }
+        `}
+                    >
+                      Image
+                    </span>
+                  </div>
+                </div>
+              )}
+
+
+
+
 
               {/* DESCRIPTION + DETAILS */}
               <div className="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-5">
@@ -430,7 +490,7 @@ function ViewTask({ theme, viewtasks, TaskListView }: any) {
                 </div>
 
               </div>
-              <div className="mt-20">
+              <div className="mt-20 w-full min-w-0 overflow-x-auto">
 
 
                 <TaskDetailsWithSubtaskTable theme={theme} viewtasks={viewtasks} />

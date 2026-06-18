@@ -20,6 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import bgthemeContext from "../Context/ThemeContext";
 import Shareview from "../Components/Shareview";
 import EmailBasedJoinWorkspace from "../Components/EmailApproval/EmailBasedJoinWorkspace";
+// import Layout from "../Components/Layout";
 
 function AppRouter() {
     const navigate = useNavigate();
@@ -170,6 +171,7 @@ function AppRouter() {
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projectSettings" element={<ProjectSettings />} />
                     <Route path="/Tasks" element={<Task />} />
+                    {/* <Route path="/TasksLayout" element={<Layout />} /> */}
                     <Route path="/Notifications" element={<Notifications />} />
                     <Route path="/Analytics" element={<Analytics />} />
                     <Route path="/Calendar" element={<Calendra />} />
