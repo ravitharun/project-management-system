@@ -24,6 +24,7 @@ import { instance } from "../../../services/apiservices"
 import Input from "../../Input"
 import Loader from "../../Loader"
 import GlobalToast from "../../GlobalToast"
+import { nanoid } from "nanoid"
 
 type Props = {
     AddedBy?: string | null
@@ -122,6 +123,7 @@ function TaskForm({
         e.preventDefault()
 
         const TaskData = {
+            Taskid:`Task-${nanoid()}`,
             taskName,
             description,
             assignTo,
@@ -138,7 +140,6 @@ function TaskForm({
 
         try {
             const response = await instance.post("/api/Task/AddWorkSpaceTask", { TaskData })
-            alert(response?.status)
             if (response?.status === 201) {
                 return  GlobalToast("Task Created Successfully", "success");
             }
