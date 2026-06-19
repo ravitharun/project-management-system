@@ -163,7 +163,6 @@ function AppRouter() {
 
             <Suspense fallback={<Loader theme={theme} />}>
                 <Routes>
-
                     <Route path="/" element={<App />} />
 
                     {/* <Route path="shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} /> */}
@@ -179,6 +178,7 @@ function AppRouter() {
                     <Route path="/Profile" element={<Profile />} />
                     <Route path="/Email-JoinWorkspace" element={<EmailBasedJoinWorkspace theme={theme} />} />
                     <Route path="/Login" element={<Login />} />
+                    {/* <Route path="/Loader" element={<Loader />} /> */}
                     <Route path="/Signup" element={<SiginUp />} />
                 </Routes>
             </Suspense>
