@@ -3,10 +3,6 @@ import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
 // import { CiMenuKebab } from "react-icons/ci";
 
 import {
-    FaTasks,
-    FaUsers,
-    FaCalendarAlt,
-    FaChartLine,
     FaBell,
     FaSignOutAlt,
     FaSignInAlt,
@@ -78,10 +74,7 @@ function Sidebar({ page }: Props) {
         { name: "For You", icon: <FaUserCircle />, href: "/" },
         { name: "Star", icon: <CiStar /> },
         { name: "Space", icon: <FaLayerGroup />, href: "/projects" },
-        { name: "Tasks", icon: <FaTasks />, href: "/Tasks" },
-        { name: "Team", icon: <FaUsers />, href: "/Team" },
-        { name: "Calendar", icon: <FaCalendarAlt />, href: "/Calendar" },
-        { name: "Analytics", icon: <FaChartLine />, href: "/Analytics" },
+
     ];
 
     const handelpoupSpace = (e?: React.MouseEvent) => {
