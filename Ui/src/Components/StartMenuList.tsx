@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { instance } from "../services/apiservices";
 import { toast } from "react-toastify";
 import ApiLoader from "./ApiLoader";
+import { FetchStarWorkspace } from "../services/FetchStarSpace";
 
 
 function StartMenuList({
@@ -18,13 +19,9 @@ function StartMenuList({
     const [apiloading, setapiloading] = useState<boolean>(false)
 
     useEffect(() => {
-        const FetchStarWorkspace = async () => {
+        const FetchStarWorkspaces = async () => {
             try {
-                const response = await instance.get("/api/workspace/Star", {
-                    params: {
-                        email: useremail
-                    }
-                })
+                const response = await FetchStarWorkspace(useremail)
                 console.log(response, 'star')
                 setstar(response.data.Stardata)
             } catch (error: any) {
@@ -32,7 +29,7 @@ function StartMenuList({
 
             }
         }
-        FetchStarWorkspace()
+        FetchStarWorkspaces()
     }, [])
 
     console.log(star, 'starstarstar')
@@ -60,9 +57,9 @@ function StartMenuList({
 
 
             {apiloading &&
-            <ApiLoader theme="Dark"></ApiLoader>
-        
-        }
+                <ApiLoader theme="Dark"></ApiLoader>
+
+            }
             <div
                 className={`
                 fixed top-5 left-[90px] md:left-[280px]
