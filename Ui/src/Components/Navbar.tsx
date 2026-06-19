@@ -56,10 +56,8 @@ function Sidebar({ page }: Props) {
     const workSpaceData = useContext(WorkspaceData)
     const { setwork }: any = workSpaceData
     const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
-
     const { theme }: any = context || {};
     const { setspacejson }: any = CreatedSpaceJson
-
     const userPanelRef = useRef<HTMLDivElement | null>(null);
     const [workspaceid, setworkspcaeid] = useState("")
     const [StarMenu, setStarMenu] = useState<boolean>(false)
