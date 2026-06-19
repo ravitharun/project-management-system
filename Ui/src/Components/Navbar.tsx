@@ -55,14 +55,27 @@ function Sidebar({ page }: Props) {
     const CreatedSpaceJson = useContext(CreatedspaceData)
     const workSpaceData = useContext(WorkspaceData)
     const { setwork }: any = workSpaceData
+    const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
+
     const { theme }: any = context || {};
     const { setspacejson }: any = CreatedSpaceJson
 
     const userPanelRef = useRef<HTMLDivElement | null>(null);
-    const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
-    // const backgroundPanelRef = useRef<HTMLDivElement | null>(null);
-    // const redirect = useNavigate()
+    const [workspaceid, setworkspcaeid] = useState("")
     const [StarMenu, setStarMenu] = useState<boolean>(false)
+    const workspaceProvider = useContext(WorkspaceData);
+    const { work }: any = workspaceProvider;
+    console.log(work, 'work from navabr')
+    useEffect(() => {
+        const UpdateIdBg = () => {
+            if (work) {
+                setworkspcaeid("")
+            }
+        }
+        UpdateIdBg()
+    }, [work])
+
+
     const menuItems = [
         { name: "For You", icon: <FaUserCircle />, href: "/" },
         { name: "Star", icon: <CiStar /> },
@@ -92,7 +105,7 @@ function Sidebar({ page }: Props) {
             } catch (error: any) {
                 console.error(error.response.status, 'err nav');
                 if (error.response.status == 401) {
-                   return checkuser()
+                    return checkuser()
                     // redirect("")
 
                 }
@@ -124,6 +137,8 @@ function Sidebar({ page }: Props) {
 
     // setSelectSpace
     const handelSelectSpace = (data: any) => {
+
+        setworkspcaeid(data._id)
         setwork(data)
     }
 
@@ -136,11 +151,11 @@ function Sidebar({ page }: Props) {
             }
         } catch (error: any) {
             console.error(error.message)
-             if (error.response.status == 401) {
-                   return checkuser()
-                    // redirect("")
+            if (error.response.status == 401) {
+                return checkuser()
+                // redirect("")
 
-                }
+            }
 
         }
     }
@@ -422,7 +437,7 @@ function Sidebar({ page }: Props) {
                                                             className={`
                                                 relative group flex items-center justify-between
                                                 px-2 py-2 rounded-lg transition-all cursor-pointer
-
+${workspaceid === itm._id || work._id === itm._id ? "bg-gray-700" : ""}
                                                 ${theme === "Dark"
                                                                     ? "hover:bg-gray-800"
                                                                     : "hover:bg-gray-100"
@@ -626,17 +641,19 @@ function Sidebar({ page }: Props) {
                         )}
                     </button>
                 </div>
-            </aside>
+            </aside >
 
             {/* BACKGROUND MODAL */}
-            {isSetBackground && (
-                <SetWork
-                    SetBackground={SetBackground}
-                    id={selectedWorkspace._id}
+            {
+                isSetBackground && (
+                    <SetWork
+                        SetBackground={SetBackground}
+                        id={selectedWorkspace._id}
 
-                    theme={theme}
-                />
-            )}
+                        theme={theme}
+                    />
+                )
+            }
             {isworkspace && <TemplatesUi setisworkspace={setisworkspace} />}
         </>
     );
