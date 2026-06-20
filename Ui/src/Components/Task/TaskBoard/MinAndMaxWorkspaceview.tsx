@@ -8,14 +8,16 @@ import { FaGear } from "react-icons/fa6";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { CgMaximizeAlt } from "react-icons/cg";
 import { TbMinimize } from "react-icons/tb";
-import { useState } from "react";
 import AddPeopleWorkspace from "../AddPeople-workspace/AddPeopleWorkspace";
+import { useState } from "react";
+
 
 function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
   console.log("normalApp page uis")
   console.log(workspace?.icon, 'workspace?.icon')
 
   const [AddMembers, setAddMembers] = useState<boolean>(false)
+
 
 
   return (
@@ -511,6 +513,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
           </div>
         </div>
       </div>
+
     </>
   )
 }

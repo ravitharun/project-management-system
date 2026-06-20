@@ -57,6 +57,7 @@ app.use("/api/ManageProject", ProjectsRoute);
 app.use("/api/ProjectfileUpload", FileUploadRouter)
 app.use("/api/Notificatons", NotificatonsRouter)
 app.use("/api/Team", FetchTeamRouter)
+// /api/Analytcs/View
 app.use("/api/Analytcs", AnalytcsRouter)
 app.use("/api/WorkSpace", CreateWorkSpaceRouter)
 app.use("/api/Task", WorkSpaceTaskRouter)

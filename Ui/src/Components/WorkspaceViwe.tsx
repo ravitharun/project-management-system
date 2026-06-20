@@ -9,6 +9,7 @@ import WorkspaceData from "../Context/workspaceData";
 import { getuserInfo, useremail } from "./LocalStorage";
 import { instance } from "../services/apiservices";
 import StaredWrokspace from "./StaredWrokspace";
+import { View } from "../services/View";
 // import TaskForm from "./Task/CreateTask/TaskForm";
 
 
@@ -44,6 +45,19 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
     }
   }
 
+
+  const ViewedWworkspace = async (w: any) => {
+    setwork(w)
+    try {
+      const response = await View(JSON.parse(getuserInfo)._id, w._id)
+      console.log(JSON.parse(getuserInfo)._id, w._id, 'Tharun')
+      console.log(response, 'response View ')
+    } catch (error: any) {
+      console.log(error.message)
+    }
+
+
+  }
 
 
 
@@ -301,7 +315,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
 
                         {/* VIEW */}
                         <button
-                          onClick={() => setwork(w)}
+                          onClick={() => ViewedWworkspace(w)}
                           className={`
                   w-9 h-9
                   rounded-[12px]
