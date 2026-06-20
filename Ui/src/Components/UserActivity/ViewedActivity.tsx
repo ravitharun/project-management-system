@@ -10,11 +10,12 @@ import {
 import { instance } from "../../services/apiservices";
 import { getuserInfo } from "../LocalStorage";
 import WorkspaceData from "../../Context/workspaceData";
+import type { ProjectInfo } from "../EmailApproval/EmailBasedJoinWorkspace";
 
 
 function ViewedActivity({ theme }: any) {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [spaces, setSpaces] = useState<any>([]);
+  const [spaces, setSpaces] = useState<ProjectInfo>([]);
   const workspaceProvider = useContext(WorkspaceData);
   const { setwork }: any = workspaceProvider;
 
