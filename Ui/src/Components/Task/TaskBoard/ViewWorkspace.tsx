@@ -17,7 +17,8 @@ import axios from "axios";
 
 
 
-function ViewWorkspace({theme}:any) {
+
+function ViewWorkspace({ theme }: any) {
 
   const workspaceProvider = useContext(WorkspaceData);
   const CreatedSpaceJson = useContext(CreatedspaceData);
@@ -35,8 +36,8 @@ function ViewWorkspace({theme}:any) {
   const { work, setwork }: any = workspaceProvider;
   const { SpaceJsonView, setSpaceJsonView }: any = CreatedSharespaceView;
 
-
   const workspace = work
+
 
   const HandelShare = async (id: number) => {
     try {

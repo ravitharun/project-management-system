@@ -1,178 +1,92 @@
-const  redis  = require("../config/Ioredi");
-const project = require("../Models/Project");
-const Auth = require("../Models/Auth");
-const { getIO } = require("../scoket");
 
-const Analytics = async (req, res) => {
+
+const User = require("../Models/Auth")
+const Workspace = require("../Models/Workspace")
+const WorkspaceViewed = require("../Models/ViwedOn")
+
+
+// /api/Analytcs/View
+const ViewdAt = async (req, res, next) => {
     try {
-        const io = getIO();
+        console.log(WorkspaceViewed, 'WorkspaceViewed');
+        const { Userid, WorkspaceId } = req.body
+        console.log(req.body, 'Viewd Feat Api Datas')
+        if (!Userid || !WorkspaceId) {
+            const FieldMissing = new Error("Some Feilds Are Missing.")
+            FieldMissing.status = 404
+            return next(FieldMissing)
+        }
+        // check the userid if exits then next 
+        const isuserexits = await User.findById({ _id: Userid });
+        if (!isuserexits) {
+            const NouserFound = new Error("No user Found.")
+            NouserFound.status = 404
+            return next(NouserFound)
+        }
+        // check the Spaceid if exits then next 
 
-        // cache
-        const AnalyticsCache = await redis.get("Analytics");
-        const month = [
-            "jan",
-            "feb",
-            "march",
-            "april",
-            "may",
-            "june",
-            "juily",
-            "agust",
-            "sept",
-            "oct",
-            "nov",
-            "dec",
-        ];
 
-        // ================= CACHE MISS =================
-        if (!AnalyticsCache) {
+        const isworkspaceexits = await Workspace.findById(WorkspaceId)
 
-            const FetchProjects = await project.countDocuments();
 
-            const fetchTask = await task.countDocuments();
 
-            // task status
-            const projectstatus = await task.aggregate([
-                {
-                    $match: {
-                        Taskstatus: {
-                            $in: ["completed", "In Progress", "Pending"],
-                        },
-                    },
-                },
-                {
-                    $group: {
-                        _id: "$Taskstatus",
-                        total: { $sum: 1 },
-                    },
-                },
-            ]);
-
-            // task priority
-            const projectpriority = await task.aggregate([
-                {
-                    $match: {
-                        taskpriority: {
-                            $in: ["High", "Medium", "Low"],
-                        },
-                    },
-                },
-                {
-                    $group: {
-                        _id: "$taskpriority",
-                        total: { $sum: 1 },
-                    },
-                },
-            ]);
-
-            // revenue
-            const ProjectsRevenue = await project.find({});
-
-            const TotalRevenue = ProjectsRevenue.reduce((acc, curr) => {
-                return acc + curr.budget.total;
-            }, 0);
-
-            // monthwise projects
-            const dataMonth = await project.aggregate([
-                {
-                    $match: {
-                        month: { $in: month },
-                    },
-                },
-                {
-                    $group: {
-                        _id: "$month",
-                        total: { $sum: 1 },
-                    },
-                },
-            ]);
-
-            // monthwise revenue
-            const MonthwiseBudget = await project.aggregate([
-                {
-                    $match: {
-                        month: { $in: month },
-                    },
-                },
-                {
-                    $group: {
-                        _id: "$month",
-                        revenue: { $sum: "$budget.total" },
-                    },
-                },
-            ]);
-
-            // performance
-            const Performance = await Auth.find({}, ["userEmail", "Username"]);
-
-            const emails = Performance.map((email) => email.userEmail);
-
-            const PerformanceAggre = await task.aggregate([
-                {
-                    $match: {
-                        assignToMember: { $in: emails },
-                    },
-                },
-                {
-                    $group: {
-                        _id: "$assignToMember",
-                        totaltask: { $sum: 1 },
-                    },
-                },
-            ]);
-
-            // final data
-            const Data = {
-                dataMonth,
-                PerformanceAggre,
-                MonthwiseBudget,
-                FetchProjects,
-                fetchTask,
-                projectstatus,
-                projectpriority,
-                TotalRevenue,
-            };
-
-            // save cache
-            await redis.setex(
-                "Analytics",
-                500,
-                JSON.stringify(Data)
-            );
-
-            console.log("Analytics emitted");
-
-            // socket emit
-            io.emit("Analytics", Data);
-
-            return res.status(200).json({
-                message: Data,
-                status: true,
-                DataFrom: "Set Cache",
-            });
+        if (!isworkspaceexits) {
+            const WorkspaceIdNotfound = new Error("WorkspaceId Not Found.")
+            WorkspaceId.status = 404
+            return next(WorkspaceId)
         }
 
-        // ================= CACHE HIT =================
+        // Check the userid Viewd 
 
-        const ParsedData = JSON.parse(AnalyticsCache);
+        const ViewAt = await WorkspaceViewed.findOne({ UserId: Userid })
+        console.log(ViewAt, 'ViewAt')
 
-        console.log("Analytics emitted from cache");
+        if (!ViewAt) {
 
-        io.emit("Analytics", ParsedData);
+            // creta a new obj
+            const AddViewObj = new WorkspaceViewed({
+                UserId: Userid, WorkspaceId: WorkspaceId
 
-        return res.status(200).json({
-            message: ParsedData,
-            status: true,
-            DataFrom: "Cache",
-        });
+            })
+            await AddViewObj.save()
+            return res.status(201).json({
+                message: "Viewed Added"
+            })
 
+
+        }
+
+
+        ViewAt.WorkspaceId = WorkspaceId
+
+        await ViewAt.save()
+
+
+
+
+
+
+        return res.status(201).json({ message: "Updated" })
     } catch (error) {
-        console.log(error.message);
-
-        return res.status(500).json({
-            message: "Server Error",
-        });
+        console.log(error)
+        next(error)
     }
-};
+}
 
-module.exports = Analytics;
+const FetchView = async (req, res, next) => {
+    try {
+        const { userid } = req.query
+        if (!userid) {
+            const FieldMissing = new Error("Userid  is  Missing.")
+            FieldMissing.status = 404
+            return next(FieldMissing)
+        }
+
+        return res.status(200).json({ message: "Viewd", data: [] })
+    } catch (error) {
+
+        next(error)
+
+    }
+}
+module.exports = { ViewdAt, FetchView }
