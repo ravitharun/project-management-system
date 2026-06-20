@@ -52,7 +52,7 @@ const ViewdAt = async (req, res, next) => {
             });
         }
 
-     
+
         viewedDoc.viewedWorkspaces =
             viewedDoc.viewedWorkspaces.filter(
                 (item) =>
@@ -65,7 +65,7 @@ const ViewdAt = async (req, res, next) => {
             ViewedAt: new Date(),
         });
 
-        
+
         viewedDoc.viewedWorkspaces =
             viewedDoc.viewedWorkspaces.slice(0, 10);
 
@@ -90,11 +90,17 @@ const FetchView = async (req, res, next) => {
             return next(FieldMissing)
         }
 
-        return res.status(200).json({ message: "Viewd", data: [] })
+
+
+
+        const fetch = await WorkspaceViewed.findOne({ UserId: userid }).populate("viewedWorkspaces.WorkspaceId").populate("UserId")
+        console.log(fetch,'fetch')
+
+        return res.status(200).json({ message: "Viewd", data: fetch })
     } catch (error) {
 
         next(error)
 
     }
 }
-module.exports = { ViewdAt, FetchView }10
+module.exports = { ViewdAt, FetchView }
