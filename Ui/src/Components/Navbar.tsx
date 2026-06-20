@@ -426,14 +426,21 @@ function Sidebar({ page }: Props) {
                                                         <div
                                                             key={idx}
                                                             className={`
-                                                relative group flex items-center justify-between
-                                                px-2 py-2 rounded-lg transition-all cursor-pointer
-${workspaceid === itm._id || work._id === itm._id ? "bg-gray-700" : ""}
-                                                ${theme === "Dark"
-                                                                    ? "hover:bg-gray-800"
-                                                                    : "hover:bg-gray-100"
+relative group flex items-center justify-between
+px-3 py-3 rounded-xl cursor-pointer
+transition-all duration-300 ease-in-out
+
+${workspaceid === itm._id || work._id === itm._id
+                                                                    ? theme === "Dark"
+                                                                        ? "bg-green-500/20 border border-green-500/40 shadow-md shadow-green-500/10"
+                                                                        : "bg-green-100 border border-green-300 shadow-sm"
+                                                                    : theme === "Dark"
+                                                                        ? "border border-transparent hover:bg-gray-800 hover:border-gray-700"
+                                                                        : "border border-transparent hover:bg-gray-50 hover:border-gray-200"
                                                                 }
-                                            `}
+
+hover:translate-x-1
+`}
                                                             onClick={() => handelSelectSpace(itm)}
                                                         >
 
@@ -451,8 +458,8 @@ ${workspaceid === itm._id || work._id === itm._id ? "bg-gray-700" : ""}
                                                         text-sm truncate
 
                                                         ${theme === "Dark"
-                                                                            ? "text-gray-300"
-                                                                            : "text-gray-700"
+                                                                            ? "text-white"
+                                                                            : "text-black"
                                                                         }
                                                     `}
                                                                 >
