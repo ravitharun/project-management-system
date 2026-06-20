@@ -10,6 +10,7 @@ import { getuserInfo, useremail } from "./LocalStorage";
 import { instance } from "../services/apiservices";
 import StaredWrokspace from "./StaredWrokspace";
 import { View } from "../services/View";
+import ViewedActivity from "./UserActivity/ViewedActivity";
 // import TaskForm from "./Task/CreateTask/TaskForm";
 
 
@@ -372,8 +373,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
           </>}
           {type == "Viewed" && <>
 
-
-            <h1>{type}</h1>
+            <ViewedActivity theme={theme}></ViewedActivity>
           </>}
         </div>
       </div>
