@@ -13,22 +13,22 @@ import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { instance } from "../../services/apiservices";
 
-type WorkspaceMember = {
+export type WorkspaceMember = {
     _id?: string;
     name?: string;
     email?: string;
 };
 
-type WorkspaceStatus = {
+export type WorkspaceStatus = {
     name?: string;
     color?: string;
 };
 
-type WorkspaceWorkType = {
+export type WorkspaceWorkType = {
     name?: string;
 };
 
-type WorkspaceSetup = {
+export type WorkspaceSetup = {
     createby?: any;
     title?: string;
     description?: string;
@@ -36,13 +36,13 @@ type WorkspaceSetup = {
     statuses?: WorkspaceStatus[] | string[];
 };
 
-type WorkspaceIcon = {
+export type WorkspaceIcon = {
     id?: string;
     name?: string;
     img?: string;
 };
 
-type ProjectInfo = {
+export type ProjectInfo = {
     _id?: string;
     id?: string;
     name?: string;
