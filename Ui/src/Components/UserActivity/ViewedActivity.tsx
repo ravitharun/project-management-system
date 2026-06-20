@@ -1,87 +1,52 @@
-import { useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   Eye,
-  Star,
   Clock3,
   ChevronRight,
   User2,
   Layers3,
   Sparkles,
 } from "lucide-react";
+import { instance } from "../../services/apiservices";
+import { getuserInfo } from "../LocalStorage";
+import WorkspaceData from "../../Context/workspaceData";
 
-const dummyViewedSpaces = [
-  {
-    _id: "1",
-    icon: "https://cdn.simpleicons.org/notion",
-    workspaceSetup: {
-      workspaceName: "Design System",
-      createby: { userName: "Tharun" },
-    },
-    viewedAt: "2h ago",
-    role: "Team Lead",
-    isStaredUsers: { userEmail: "tharun@gmail.com" },
-  },
-  {
-    _id: "2",
-    icon: "https://cdn.simpleicons.org/slack",
-    workspaceSetup: {
-      workspaceName: "Marketing Workspace",
-      createby: { userName: "Arjun" },
-    },
-    viewedAt: "5h ago",
-    role: "Manager",
-    isStaredUsers: { userEmail: "" },
-  },
-  {
-    _id: "3",
-    icon: "https://cdn.simpleicons.org/figma",
-    workspaceSetup: {
-      workspaceName: "UI Kit Planning",
-      createby: { userName: "Meena" },
-    },
-    viewedAt: "1d ago",
-    role: "Designer",
-    isStaredUsers: { userEmail: "tharun@gmail.com" },
-  },
-  {
-    _id: "4",
-    icon: "https://cdn.simpleicons.org/github",
-    workspaceSetup: {
-      workspaceName: "Dev Workspace",
-      createby: { userName: "Ravi" },
-    },
-    viewedAt: "3d ago",
-    role: "Developer",
-    isStaredUsers: { userEmail: "" },
-  },
-];
 
 function ViewedActivity({ theme }: any) {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [spaces, setSpaces] = useState(dummyViewedSpaces);
+  const [spaces, setSpaces] = useState<any>([]);
+  const workspaceProvider = useContext(WorkspaceData);
+  const { setwork }: any = workspaceProvider;
 
-  const useremail = "tharun@gmail.com";
+
   const isDark = theme === "Dark";
 
-  const HandelStarWorkpsace = (fav: boolean, id: string) => {
-    console.log(fav)
-    setSpaces((prev) =>
-      prev.map((item) =>
-        item._id === id
-          ? {
-            ...item,
-            isStaredUsers: {
-              userEmail:
-                item.isStaredUsers?.userEmail === useremail ? "" : useremail,
-            },
+
+  useEffect(() => {
+    const fetchViewd = async () => {
+
+
+      try {
+        const response = await instance.get("/api/Analytcs/", {
+          params: {
+            userid: JSON.parse(getuserInfo)._id
           }
-          : item
-      )
-    );
-  };
+        })
+        console.log(response?.data?.data)
+        setSpaces(response?.data?.data)
+      } catch (error: any) {
+        console.log(error.message)
+
+      }
+    }
+    fetchViewd()
+  }, [])
+
+
+
 
   const ViewedWworkspace = (workspace: any) => {
-    console.log("Open workspace:", workspace);
+    setwork(workspace);
   };
 
   const styles = useMemo(
@@ -110,6 +75,7 @@ function ViewedActivity({ theme }: any) {
     [isDark]
   );
 
+
   return (
     <section
       className={`w-full rounded-3xl p-4 sm:p-5 md:p-6 ${styles.section} ${styles.page}`}
@@ -136,13 +102,13 @@ function ViewedActivity({ theme }: any) {
           className={`inline-flex w-fit items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium ${styles.badge}`}
         >
           <Layers3 size={14} />
-          {spaces.length} workspaces
+          {spaces?.viewedWorkspaces?.length} workspaces
         </div>
       </div>
 
       <div className="space-y-3">
-        {spaces.map((w: any, i: number) => {
-          const isStarred = w?.isStaredUsers?.userEmail === useremail;
+        {spaces?.viewedWorkspaces?.map((w: any, i: number) => {
+
 
           return (
             <article
@@ -160,10 +126,10 @@ function ViewedActivity({ theme }: any) {
                   <div
                     className={`flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl ${styles.iconWrap}`}
                   >
-                    {w?.icon ? (
+                    {w?.WorkspaceId?.image ? (
                       <img
-                        src={w.icon}
-                        alt={w?.workspaceSetup?.workspaceName || "workspace"}
+                        src={w?.WorkspaceId?.image}
+                        alt={w?.workspaceSetup?.name || "workspace"}
                         className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
                       />
                     ) : (
@@ -174,7 +140,7 @@ function ViewedActivity({ theme }: any) {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="truncate text-sm sm:text-[15px] font-semibold">
-                        {w?.workspaceSetup?.workspaceName}
+                        {w?.WorkspaceId?.name}
                       </h3>
 
                       <span
@@ -189,17 +155,23 @@ function ViewedActivity({ theme }: any) {
                     >
                       <span className="inline-flex items-center gap-1">
                         <User2 size={13} />
-                        {w?.workspaceSetup?.createby?.userName}
+                        {w?.workspaceSetup?.createby?.userEmail}
                       </span>
 
                       <span className="inline-flex items-center gap-1">
                         <Clock3 size={13} />
-                        {w?.viewedAt}
+                        {new Date(w?.ViewdAt).toLocaleString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </span>
 
                       <span className="inline-flex items-center gap-1">
                         <Eye size={13} />
-                        {w?.role}
+                        {w?.role || "Role"}
                       </span>
                     </div>
                   </div>
@@ -207,22 +179,10 @@ function ViewedActivity({ theme }: any) {
 
                 <div className="flex items-center justify-between md:justify-end gap-2">
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => HandelStarWorkpsace(true, w._id)}
-                      className={`
-                        flex h-10 w-10 items-center justify-center rounded-xl transition-all
-                        ${isStarred ? styles.starred : styles.actionBtn}
-                      `}
-                      title="Star workspace"
-                    >
-                      <Star
-                        size={16}
-                        className={isStarred ? "fill-current" : ""}
-                      />
-                    </button>
+
 
                     <button
-                      onClick={() => ViewedWworkspace(w)}
+                      onClick={() => ViewedWworkspace(w.WorkspaceId)}
                       className={`
                         flex h-10 items-center gap-2 rounded-xl px-3 sm:px-3.5
                         text-sm font-medium transition-all
