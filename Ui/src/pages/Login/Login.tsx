@@ -50,7 +50,11 @@ function Login() {
 
             return
         } catch (error: any) {
-            return console.log(error)
+            setresponsetext({
+                message: error.response.data.message,
+                types: "failure",
+            });
+            return console.log(error.response.data.message)
         }
 
     }
@@ -86,7 +90,7 @@ function Login() {
         } catch (error: any) {
 
             setresponsetext({
-                message: error.message,
+                message: error.response.data.message,
                 types: "failure",
             });
 
