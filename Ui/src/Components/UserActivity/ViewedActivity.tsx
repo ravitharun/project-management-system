@@ -63,7 +63,7 @@ function ViewedActivity({ theme }: any) {
   const useremail = "tharun@gmail.com";
   const isDark = theme === "Dark";
 
-  const HandelStarWorkpsace = (fav: boolean, id: string) => {
+  const HandelStarWorkpsace = ( id: string) => {
     setSpaces((prev) =>
       prev.map((item) =>
         item._id === id
