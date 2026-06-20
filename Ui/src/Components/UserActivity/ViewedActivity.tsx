@@ -63,17 +63,18 @@ function ViewedActivity({ theme }: any) {
   const useremail = "tharun@gmail.com";
   const isDark = theme === "Dark";
 
-  const HandelStarWorkpsace = ( id: string) => {
+  const HandelStarWorkpsace = (fav: boolean, id: string) => {
+    console.log(fav)
     setSpaces((prev) =>
       prev.map((item) =>
         item._id === id
           ? {
-              ...item,
-              isStaredUsers: {
-                userEmail:
-                  item.isStaredUsers?.userEmail === useremail ? "" : useremail,
-              },
-            }
+            ...item,
+            isStaredUsers: {
+              userEmail:
+                item.isStaredUsers?.userEmail === useremail ? "" : useremail,
+            },
+          }
           : item
       )
     );
@@ -237,10 +238,9 @@ function ViewedActivity({ theme }: any) {
                   <div
                     className={`
                       hidden md:flex items-center justify-center transition-all duration-300
-                      ${
-                        hoveredId === i
-                          ? "translate-x-0 opacity-100"
-                          : "translate-x-2 opacity-0"
+                      ${hoveredId === i
+                        ? "translate-x-0 opacity-100"
+                        : "translate-x-2 opacity-0"
                       }
                     `}
                   >
