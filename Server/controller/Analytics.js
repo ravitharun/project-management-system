@@ -4,74 +4,82 @@ const User = require("../Models/Auth")
 const Workspace = require("../Models/Workspace")
 const WorkspaceViewed = require("../Models/ViwedOn")
 
-
-// /api/Analytcs/View
 const ViewdAt = async (req, res, next) => {
     try {
-        console.log(WorkspaceViewed, 'WorkspaceViewed');
-        const { Userid, WorkspaceId } = req.body
-        console.log(req.body, 'Viewd Feat Api Datas')
+        const { Userid, WorkspaceId } = req.body;
+
         if (!Userid || !WorkspaceId) {
-            const FieldMissing = new Error("Some Feilds Are Missing.")
-            FieldMissing.status = 404
-            return next(FieldMissing)
+            const err = new Error("Some Fields Are Missing.");
+            err.status = 400;
+            return next(err);
         }
-        // check the userid if exits then next 
-        const isuserexits = await User.findById({ _id: Userid });
+
+        const isuserexits = await User.findById(Userid);
+
         if (!isuserexits) {
-            const NouserFound = new Error("No user Found.")
-            NouserFound.status = 404
-            return next(NouserFound)
+            const err = new Error("No User Found.");
+            err.status = 404;
+            return next(err);
         }
-        // check the Spaceid if exits then next 
 
-
-        const isworkspaceexits = await Workspace.findById(WorkspaceId)
-
-
+        const isworkspaceexits = await Workspace.findById(WorkspaceId);
 
         if (!isworkspaceexits) {
-            const WorkspaceIdNotfound = new Error("WorkspaceId Not Found.")
-            WorkspaceId.status = 404
-            return next(WorkspaceId)
+            const err = new Error("Workspace Not Found.");
+            err.status = 404;
+            return next(err);
         }
 
-        // Check the userid Viewd 
+        let viewedDoc = await WorkspaceViewed.findOne({
+            UserId: Userid,
+        });
 
-        const ViewAt = await WorkspaceViewed.findOne({ UserId: Userid })
-        console.log(ViewAt, 'ViewAt')
+        // First View
+        if (!viewedDoc) {
+            viewedDoc = await WorkspaceViewed.create({
+                UserId: Userid,
+                viewedWorkspaces: [
+                    {
+                        WorkspaceId,
+                        ViewedAt: new Date(),
+                    },
+                ],
+            });
 
-        if (!ViewAt) {
-
-            // creta a new obj
-            const AddViewObj = new WorkspaceViewed({
-                UserId: Userid, WorkspaceId: WorkspaceId
-
-            })
-            await AddViewObj.save()
             return res.status(201).json({
-                message: "Viewed Added"
-            })
-
-
+                message: "Workspace Viewed",
+                data: viewedDoc,
+            });
         }
 
+     
+        viewedDoc.viewedWorkspaces =
+            viewedDoc.viewedWorkspaces.filter(
+                (item) =>
+                    item.WorkspaceId.toString() !==
+                    WorkspaceId.toString()
+            );
 
-        ViewAt.WorkspaceId = WorkspaceId
+        viewedDoc.viewedWorkspaces.unshift({
+            WorkspaceId,
+            ViewedAt: new Date(),
+        });
 
-        await ViewAt.save()
+        
+        viewedDoc.viewedWorkspaces =
+            viewedDoc.viewedWorkspaces.slice(0, 10);
 
+        await viewedDoc.save();
 
-
-
-
-
-        return res.status(201).json({ message: "Updated" })
+        return res.status(200).json({
+            message: "Viewed History Updated",
+            data: viewedDoc,
+        });
     } catch (error) {
-        console.log(error)
-        next(error)
+        console.log(error);
+        next(error);
     }
-}
+};
 
 const FetchView = async (req, res, next) => {
     try {
@@ -89,4 +97,4 @@ const FetchView = async (req, res, next) => {
 
     }
 }
-module.exports = { ViewdAt, FetchView }
+module.exports = { ViewdAt, FetchView }10
