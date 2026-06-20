@@ -1,13 +1,16 @@
 import { instance } from "./apiservices"
 
 export const fetchtaskApi = async (spaceid: any) => {
-    console.log(spaceid, 'spaceid')
+    console.log(spaceid, 'spaceid hey')
     try {
         const response = await instance.get("/api/Task/", {
             params: {
                 spaceid: spaceid
             }
         })
+
+
+        console.log("response",responseresponse)
         return response
     } catch (error: any) {
         throw error

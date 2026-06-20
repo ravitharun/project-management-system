@@ -51,8 +51,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
     setwork(w)
     try {
       const response = await View(JSON.parse(getuserInfo)._id, w._id)
-      console.log(JSON.parse(getuserInfo)._id, w._id, 'Tharun')
-      console.log(response, 'response View ')
+      return response
     } catch (error: any) {
       console.log(error.message)
     }
