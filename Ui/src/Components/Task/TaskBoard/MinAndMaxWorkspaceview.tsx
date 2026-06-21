@@ -14,7 +14,7 @@ import { useState } from "react";
 
 function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
   console.log("normalApp page uis")
-  console.log(workspace?.icon, 'workspace?.icon')
+  console.log(CurrentView, 'workspace?.icon')
 
   const [AddMembers, setAddMembers] = useState<boolean>(false)
 
@@ -70,7 +70,10 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
 
           {/* HEADER */}
           <button
-            onClick={() => setwork([])}
+            onClick={() => {setwork([])
+
+              setCurrentView("")
+            }}
             className="
           px-3 py-1.5
           text-xs font-medium

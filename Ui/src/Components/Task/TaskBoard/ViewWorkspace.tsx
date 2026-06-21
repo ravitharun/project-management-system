@@ -24,7 +24,6 @@ function ViewWorkspace({ theme }: any) {
   const CreatedSpaceJson = useContext(CreatedspaceData);
   const CreatedSharespaceView = useContext(SharespaceView);
   const [ismaxAndMin, setMaxAndMin] = useState<boolean>(false)
-  const [CurrentView, setCurrentView] = useState<string>("Board");
 
 
   const [isSetBackground, SetBackground] = useState<boolean>(false);
@@ -37,6 +36,18 @@ function ViewWorkspace({ theme }: any) {
   const { SpaceJsonView, setSpaceJsonView }: any = CreatedSharespaceView;
 
   const workspace = work
+  const [CurrentView, setCurrentView] = useState("");
+  useEffect(() => {
+    const ChooseBoard = () => {
+
+      const TaskBoardType = workspace?.name == "Scrum" ? "Board" : "Summary"
+      setCurrentView(TaskBoardType)
+
+
+    }
+    ChooseBoard()
+  }, [workspace])
+
 
 
   const HandelShare = async (id: number) => {
@@ -215,7 +226,9 @@ ${url}/shared/ViewWorkspace?id=${id}`,
           {SpaceJsonView?.length == 0 ?
             <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
               setCurrentView
-            } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> : <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+            } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> :
+
+            <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
               setCurrentView
             } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin} />
           }
