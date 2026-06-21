@@ -30,10 +30,10 @@ const AddWorkSpaceTask = async (req, res) => {
 const FetchTasks = async (req, res, next) => {
 
     try {
-        // const { spaceid } = req.query
+        const { spaceid } = req.query
+        console.log(spaceid, 'spaceid');
         // console.log(spaceid, 'spaceid');
-        // console.log(spaceid, 'spaceid');
-        const spaceid = "6a1e8587848d4471d14a554a"
+        // const spaceid = "6a1e8587848d4471d14a554a"
         if (!spaceid) {
             const spaceid = new Error("spaceid is required to fetch tasks")
             spaceid.status = 404
