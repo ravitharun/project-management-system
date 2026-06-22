@@ -15,9 +15,10 @@ import { LuListTodo } from "react-icons/lu";
 import { FiPlus } from "react-icons/fi";
 import TaskDetailsWithSubtaskTable from "./TaskDetailsWithSubtaskTable";
 import ViewTaskFirst from "../../../Context/FirstTaskView";
-function ViewTask({ theme, viewtasks, TaskListView }: any) {
+import TaskForm from "../CreateTask/TaskForm";
+function ViewTask({ theme, viewtasks, TaskListView,projectid }: any) {
   const [OpenDropDown, SetOpenDropDown] = useState<boolean>(false)
-
+  const [CreateTask, setCreateTask] = useState(false)
   const TasksView = useContext(ViewTaskFirst);
 
 
@@ -88,10 +89,6 @@ function ViewTask({ theme, viewtasks, TaskListView }: any) {
         ],
       },
     ]);
-
-
-
-
 
   const menuitems = [
     {
@@ -231,6 +228,8 @@ function ViewTask({ theme, viewtasks, TaskListView }: any) {
         hover:bg-blue-700
         transition-all
       "
+
+                onClick={() => setCreateTask(true)}
               >
                 <FiPlus size={16} />
                 Add Task
@@ -708,7 +707,7 @@ function ViewTask({ theme, viewtasks, TaskListView }: any) {
 
           )}
       </div >
-
+      {CreateTask && <TaskForm CreateTask={CreateTask} onclose={() => setCreateTask(false)} projectid={projectid} />}
 
     </>
   )
