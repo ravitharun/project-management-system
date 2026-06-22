@@ -39,7 +39,7 @@ const worker = new Worker(
         }
     },
     {
-        connection: isProd == 'Prod'
+        connection: isProd 
             ? redis
             : { host: "127.0.0.1", port: 6379 },
     }
