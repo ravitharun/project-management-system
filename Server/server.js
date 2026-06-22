@@ -33,14 +33,15 @@ console.log(check, 'check Email')
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
 }
-console.log(process.env.envStatus, 'process.env.envStatus')
+
+console.log("REDIS_URL :")
+console.log(process.env.REDIS_URL, 'process.env.REDIS_URL')
 
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
 const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localhost:27017/ProjectManagementWebsite'
 
 
-// app.use(cors({ origin: [envStatusurl,'https://devserver-testing--taskora-system.netlify.app','https://taskora-system.netlify.app'] }));
 app.use(cors({ origin: [envStatusurl,'https://taskora-system.netlify.app'] }));
 
 console.log("--------- check the id's -----")
