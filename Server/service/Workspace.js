@@ -8,7 +8,7 @@ const workspaceAcceptInvitation = async (data) => {
     const response = data.data.arr_email.map(async (emails) => {
         console.log(`${process.env.envStatus === "Local"
             ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
-            : `${preocess.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
+            : `${process.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
             }`)
         await resend.emails.send({
             from: "Taskora <taskoraSystem@resend.dev>",
@@ -37,7 +37,7 @@ const workspaceAcceptInvitation = async (data) => {
                 <a
                 href=${process.env.envStatus === "Local"
                     ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
-                    : `${preocess.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
+                    : `${process.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
                 }
                     style="
                         background: #4f46e5;
