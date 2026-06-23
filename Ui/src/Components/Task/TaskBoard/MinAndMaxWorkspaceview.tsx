@@ -9,13 +9,20 @@ import { PiDotsThreeBold } from "react-icons/pi";
 import { CgMaximizeAlt } from "react-icons/cg";
 import { TbMinimize } from "react-icons/tb";
 import AddPeopleWorkspace from "../AddPeople-workspace/AddPeopleWorkspace";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ClickedWorkSpace from "../../../Context/ClickedWorkSpace";
 
 
-function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
-  console.log("normalApp page uis")
+function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
+
+  const navi = useNavigate()
   console.log(CurrentView, 'workspace?.icon')
 
+ const contextSpace = useContext(ClickedWorkSpace);
+    // const workSpaceData = useContext(WorkspaceData)
+    // const { ClickedSpace, setClickedSpace }: any = contextSpace
+    const {  setClickedSpace }: any = contextSpace
   const [AddMembers, setAddMembers] = useState<boolean>(false)
 
 
@@ -70,11 +77,16 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
 
           {/* HEADER */}
           <button
-            onClick={() => {setwork([])
+            onClick={() => {
+
+
+              navi("/")
+              setClickedSpace([])
 
               setCurrentView("")
             }}
             className="
+          mt-12
           px-3 py-1.5
           text-xs font-medium
           rounded-full
@@ -85,7 +97,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
           shadow-sm
         "
           >
-            Reset to For You
+            Back
           </button>
 
           <div
@@ -143,7 +155,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
               `}
                 >
                   <img
-                    src={work?.icon}
+                    src={workspace?.icon}
                     alt=""
                     className="w-full h-full object-cover"
                   />
@@ -264,7 +276,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
                     }
               `}
                 >
-                  <CiShare1 fontSize={20} title="press Key s" onClick={() => HandelShare(work._id)} />
+                  <CiShare1 fontSize={20} title="press Key s" onClick={() => HandelShare(workspace._id)} />
                 </button>
                 {/* MAX / MIN */}
                 <button
@@ -470,7 +482,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
                   minWidth: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <SpaceList spaceid={work._id} />
+                <SpaceList spaceid={workspace._id} />
               </div>
             )}
 
@@ -510,7 +522,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
                   height: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <Board theme={theme} work={work} ismaxAndMin={ismaxAndMin} />
+                <Board theme={theme} work={workspace} ismaxAndMin={ismaxAndMin} />
               </div>
             )}
           </div>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import WorkspaceData from "../../../Context/workspaceData";
+// import WorkspaceData from "../../../Context/workspaceData";
 import WorkspaceViwe from "../../WorkspaceViwe";
 import CreatedspaceData from "../../../Context/CreatedWorkspace";
 
@@ -12,6 +12,7 @@ import MinAndMaxWorkspaceView from "./MinAndMaxWorkspaceview";
 import SharespaceView from "../../../Context/ShareViewContext";
 import ShareMinAndMaxWorkspaceView from "../../Share/ShareMinAndMaxWorkspaceView";
 import axios from "axios";
+import ClickedWorkSpace from "../../../Context/ClickedWorkSpace";
 
 
 
@@ -20,7 +21,7 @@ import axios from "axios";
 
 function ViewWorkspace({ theme }: any) {
 
-  const workspaceProvider = useContext(WorkspaceData);
+  const workspaceProvider = useContext(ClickedWorkSpace);
   const CreatedSpaceJson = useContext(CreatedspaceData);
   const CreatedSharespaceView = useContext(SharespaceView);
   const [ismaxAndMin, setMaxAndMin] = useState<boolean>(false)
@@ -32,10 +33,11 @@ function ViewWorkspace({ theme }: any) {
   const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
 
   const { SpaceJson }: any = CreatedSpaceJson;
-  const { work, setwork }: any = workspaceProvider;
+  // const { ClickedSpace, setClickedSpace }: any = workspaceProvider;
+  const { ClickedSpace }: any = workspaceProvider;
   const { SpaceJsonView, setSpaceJsonView }: any = CreatedSharespaceView;
 
-  const workspace = work
+  const workspace = ClickedSpace
   const [CurrentView, setCurrentView] = useState("");
   useEffect(() => {
     const ChooseBoard = () => {
@@ -196,7 +198,7 @@ ${url}/shared/ViewWorkspace?id=${id}`,
     });
   };
 
-  if (work?.length === 0) {
+  if (ClickedSpace?.length === 0) {
     return <WorkspaceViwe theme={theme} SpaceJson={SpaceJson} />;
   }
 
@@ -224,11 +226,11 @@ ${url}/shared/ViewWorkspace?id=${id}`,
         <>
 
           {SpaceJsonView?.length == 0 ?
-            <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+            <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme}  workspace={workspace} setwork={"setwork"} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
               setCurrentView
             } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> :
 
-            <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+            <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} workspace={workspace} setwork={"setwork"} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
               setCurrentView
             } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin} />
           }
@@ -245,9 +247,9 @@ ${url}/shared/ViewWorkspace?id=${id}`,
 
 
           {SpaceJsonView?.length == 0 ?
-            <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+            <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme}  workspace={workspace}  setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
               setCurrentView
-            } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> : <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={work} workspace={workspace} setwork={setwork} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+            } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> : <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} work={"work"} workspace={workspace} setwork={"setwork"} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
               setCurrentView
             } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin} />
           }

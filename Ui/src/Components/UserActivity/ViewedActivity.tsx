@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import {  useEffect, useMemo, useState } from "react";
 import {
   Eye,
   Clock3,
@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { instance } from "../../services/apiservices";
 import { getuserInfo } from "../LocalStorage";
-import WorkspaceData from "../../Context/workspaceData";
 import type { WorkspaceIcon, WorkspaceMember, WorkspaceSetup } from "../EmailApproval/EmailBasedJoinWorkspace";
 
 
@@ -65,8 +64,7 @@ type UserView = {
 function ViewedActivity({ theme }: any) {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [spaces, setSpaces] = useState<UserView>();
-  const workspaceProvider = useContext(WorkspaceData);
-  const { setwork }: any = workspaceProvider;
+
 
 
   const isDark = theme === "Dark";
@@ -96,7 +94,7 @@ function ViewedActivity({ theme }: any) {
 
 
   const ViewedWworkspace = (workspace: any) => {
-    setwork(workspace);
+    console.log(workspace);
   };
 
   const styles = useMemo(

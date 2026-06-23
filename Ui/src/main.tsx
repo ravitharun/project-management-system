@@ -4,7 +4,6 @@ import AppRouter from "./Routes/AppRouter.tsx";
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "./Provider/SidebarProvider.tsx";
 import ThemeProvider from "./Provider/ThemeProvider.tsx";
-import WorkspaceProvider from "./Provider/WorkspaceProvider.tsx";
 import WrokspaceJson from "./Provider/WrokspaceJson.tsx";
 import SharespaceViewProvider from "./Provider/SharespaceViewProvider.tsx";
 import FirstViewProvider from "./Provider/FirstViewProvider.tsx";
@@ -13,7 +12,7 @@ createRoot(document.getElementById("root")!).render(
     <ClickedSpaceProvider>
 
 
-        <WorkspaceProvider>
+        <>
             <FirstViewProvider>
 
                 <SharespaceViewProvider>
@@ -36,7 +35,7 @@ createRoot(document.getElementById("root")!).render(
                 </SharespaceViewProvider>
             </FirstViewProvider>
 
-        </WorkspaceProvider>
+        </>
     </ClickedSpaceProvider>
 
 
