@@ -17,7 +17,8 @@ import TaskDetailsWithSubtaskTable from "./TaskDetailsWithSubtaskTable";
 import ViewTaskFirst from "../../../Context/FirstTaskView";
 import TaskForm from "../CreateTask/TaskForm";
 import { FaTrash } from "react-icons/fa";
-function ViewTask({ theme, viewtasks, TaskListView,projectid }: any) {
+import GlobalToast from "../../GlobalToast";
+function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   const [OpenDropDown, SetOpenDropDown] = useState<boolean>(false)
   const [CreateTask, setCreateTask] = useState(false)
   const TasksView = useContext(ViewTaskFirst);
@@ -156,6 +157,37 @@ function ViewTask({ theme, viewtasks, TaskListView,projectid }: any) {
     setitem(addrply)
   }
 
+
+
+
+  const HandelMenu = (itm: any) => {
+    switch (itm) {
+      case "Duplicate Task":
+        GlobalToast(itm, "info")
+        break;
+      case "Edit Task":
+        GlobalToast(itm, "info")
+
+        break;
+      case "Pin Task":
+        GlobalToast(itm, "info")
+
+        break;
+      case "Share Task":
+        GlobalToast(itm, "info")
+
+        break;
+      case "Copy Link":
+        GlobalToast(itm, "info")
+
+        break;
+
+      default:
+        GlobalToast(itm, "info")
+
+        break;
+    }
+  }
   return (
     <>
 
@@ -321,6 +353,7 @@ function ViewTask({ theme, viewtasks, TaskListView,projectid }: any) {
                                     ? "text-gray-300 hover:bg-white/5"
                                     : "text-gray-700 hover:bg-gray-100"}
                   `}
+                                onClick={() => HandelMenu(item.label)}
                               >
                                 <div
                                   className={`
