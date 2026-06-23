@@ -1,8 +1,12 @@
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TaskForm from "./Task/CreateTask/TaskForm";
+import bgthemeContext from "../Context/ThemeContext";
 
-export default function Board({ theme, work, spacetasks, ismaxAndMin }: any) {
+export default function Board({ work, spacetasks, ismaxAndMin }: any) {
+
+    const ThemeCOntext = useContext(bgthemeContext)
+    const { theme }: any = ThemeCOntext
     console.log(spacetasks, 'spacetasks')
 
 
@@ -229,7 +233,7 @@ export default function Board({ theme, work, spacetasks, ismaxAndMin }: any) {
             </DragDropContext>
             {CreateTask
 
-                && <TaskForm onclose={() => setCreateTask(false)}  maximizeParent={ismaxAndMin}  projectid={work._id} CreateTask={CreateTask}
+                && <TaskForm onclose={() => setCreateTask(false)} maximizeParent={ismaxAndMin} projectid={work._id} CreateTask={CreateTask}
 
                 ></TaskForm>
             }

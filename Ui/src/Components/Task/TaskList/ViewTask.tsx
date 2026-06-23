@@ -16,6 +16,7 @@ import { FiPlus } from "react-icons/fi";
 import TaskDetailsWithSubtaskTable from "./TaskDetailsWithSubtaskTable";
 import ViewTaskFirst from "../../../Context/FirstTaskView";
 import TaskForm from "../CreateTask/TaskForm";
+import { FaTrash } from "react-icons/fa";
 function ViewTask({ theme, viewtasks, TaskListView,projectid }: any) {
   const [OpenDropDown, SetOpenDropDown] = useState<boolean>(false)
   const [CreateTask, setCreateTask] = useState(false)
@@ -92,12 +93,12 @@ function ViewTask({ theme, viewtasks, TaskListView,projectid }: any) {
 
   const menuitems = [
     {
-      icon: <FiEdit3 className="text-[14px] sm:text-[15px]" />,
-      label: "Edit Task",
-    },
-    {
       icon: <FiCopy className="text-[14px] sm:text-[15px]" />,
       label: "Duplicate Task",
+    },
+    {
+      icon: <FiEdit3 className="text-[14px] sm:text-[15px]" />,
+      label: "Edit Task",
     },
     {
       icon: <BsPinAngle className="text-[14px] sm:text-[15px]" />,
@@ -114,6 +115,10 @@ function ViewTask({ theme, viewtasks, TaskListView,projectid }: any) {
     {
       icon: <FiImage className="text-[14px] sm:text-[15px]" />,
       label: "Change Wallpaper",
+    },
+    {
+      icon: <FaTrash className="text-[14px] sm:text-[15px]" />,
+      label: "Delete Task",
     },
   ];
 
