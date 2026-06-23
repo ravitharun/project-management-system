@@ -1,12 +1,11 @@
 import { Scheduler } from "@aldabil/react-scheduler";
-import MyTable from "../TaskList/MyTable";
 
 function MyCalendar({ theme }: any) {
   return (
     <>
 
 
-      <MyTable></MyTable>
+     
       <div
         className={`w-260 min-h-screen p-4 md:p-6 transition-all duration-300 ${theme === "Dark" ? "bg-[#0B1120] text-white" : "bg-[#F5F7FB] text-black"
           }`}
