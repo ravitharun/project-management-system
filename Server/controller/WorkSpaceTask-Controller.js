@@ -1,3 +1,5 @@
+// const cloudinary = require("../config/Clounadry")
+const cloudinary = require("../config/Clounadry")
 const WorkSpaceTask = require("../Models/WorkSapceTask")
 const Workspace = require("../Models/Workspace")
 
@@ -212,4 +214,20 @@ const AddSubTask = async (req, res, next) => {
 
     }
 }
-module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask }
+
+
+
+const UploadSubTaskFile = async (req, res, next) => {
+    try {
+        console.log(req.body, 'body')
+        console.log(req.file.path, 'file')
+
+
+        const fileurl = await cloudinary.uploader.upload(req.file.path)
+        console.log(fileurl.secure_url, 'fileurl')
+        return res.status(201).json({ message: "File Uploaded", fileurl: fileurl })
+    } catch (error) {
+        next(error)
+    }
+}
+module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile }

@@ -26,7 +26,7 @@ export type RowData = {
     SubTask?: any[];
 };
 
-const MyTable = ({ theme = "Dark", spaceid }: any) => {
+const MyTable = ({ theme, spaceid }: any) => {
     const timeoutRef = useRef<any>(null);
 
     const [popupPos, setPopupPos] = useState({
