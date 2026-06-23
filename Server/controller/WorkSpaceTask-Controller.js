@@ -1,3 +1,5 @@
+// const cloudinary = require("../config/Clounadry")
+const cloudinary = require("../config/Clounadry")
 const WorkSpaceTask = require("../Models/WorkSapceTask")
 const Workspace = require("../Models/Workspace")
 
@@ -41,10 +43,10 @@ const FetchTasks = async (req, res, next) => {
         }
 
         // check The Task Db
-        const tasks = await WorkSpaceTask.find({ projectid: spaceid })
+        const tasks = await WorkSpaceTask.find({ projectid: spaceid }).populate("Files.userid")
 
 
-        console.log(tasks)
+        console.log(tasks,"tasks")
 
 
         if (tasks.length == 0) {
@@ -212,4 +214,39 @@ const AddSubTask = async (req, res, next) => {
 
     }
 }
-module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask }
+
+
+
+const UploadSubTaskFile = async (req, res, next) => {
+    try {
+        console.log(req.body, 'body')
+        console.log(req.file.path, 'file')
+
+        if (!req.file.path) {
+            const FileNotFoundTask = new Error("File is required")
+            FileNotFoundTask.status = 404
+            return next(FileNotFoundTask)
+        }
+        const Isexitstask = await WorkSpaceTask.findOne({ Taskid: req.body.Taskid })
+
+        if (!Isexitstask) {
+            const NotFoundTask = new Error("Task Not Found")
+            NotFoundTask.status = 404
+            return next(NotFoundTask)
+        }
+        console.log(Isexitstask, 'Isexitstask')
+
+        const fileurl = await cloudinary.uploader.upload(req.file.path)
+
+  
+        Isexitstask.Files.push({
+            fileurl: fileurl.secure_url,
+            userid: req.body.UploadedBy
+        })
+        await Isexitstask.save()
+        return res.status(201).json({ message: "File Uploaded", fileurl: fileurl })
+    } catch (error) {
+        next(error)
+    }
+}
+module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile }

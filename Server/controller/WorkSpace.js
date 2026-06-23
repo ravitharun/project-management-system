@@ -6,6 +6,7 @@ const WorkspaceStar = require("../Models/WorkspaceStar")
 const EmailQueue = require("../Queues/Producer")
 const worker = require("../Queues/Worker")
 const cloudinary = require("../config/Clounadry")
+
 const CreateWorkSpace = async (req, res) => {
     try {
         const { updatedData } = req.body
@@ -42,8 +43,13 @@ const FetchWorkspace = async (req, res) => {
             return res.status(404).json({ message: "Some thing Went Wrong." })
         }
 
-        const FetchWorkspace = await Workspace.find({ "workspaceSetup.createby.userEmail": useremail })
-        console.log(FetchWorkspace, 'FetchWorkspace')
+        const FetchWorkspace = await Workspace.find({
+            $or: [
+                { "workspaceSetup.createby.userEmail": useremail },
+                { "WorkSpacememebers.email": useremail }
+            ]
+        });
+         console.log(FetchWorkspace, 'FetchWorkspace')
         return res.status(200).json({ data: FetchWorkspace })
     } catch (error) {
         console.log(error.message)
