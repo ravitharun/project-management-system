@@ -25,26 +25,30 @@ const limiter = require("./RateLimiter");
 const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 const AuthTokenVerification = require("./Middleware/AuthMiddleware");
 const check = `${process.env.envStatus === "Local"
-    ? "http://localhost:5000"
-    : "https://project-management-system-u091.onrender.com"
+  ? "http://localhost:5000"
+  : "https://project-management-system-u091.onrender.com"
   }/api/workspace/approve-workspace-invite/?workspaceid=spaceId&AcceptEmail=useremail`;
 console.log(check, 'check Email')
 
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
 }
-console.log(process.env.envStatus, 'process.env.envStatus')
+const isProd = process.env.envStatus === "Prod";
+console.log(isProd, 'checkispord')
+let a = isProd ? redis : { host: "127.0.0.1", port: 6379 }
+
+console.log("IOREDIS:", a)
+console.log(process.env.REDIS_URL, 'process.env.REDIS_URL')
 
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
 const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localhost:27017/ProjectManagementWebsite'
 
 
-// app.use(cors({ origin: [envStatusurl,'https://devserver-testing--taskora-system.netlify.app','https://taskora-system.netlify.app'] }));
-app.use(cors({ origin: [envStatusurl,'https://taskora-system.netlify.app'] }));
+app.use(cors({ origin: [envStatusurl, 'https://taskora-system.netlify.app'] }));
 
 console.log("--------- check the id's -----")
-console.log(envStatusurl,'envStatusurl')
+console.log(envStatusurl, 'envStatusurl')
 console.log("Task id :" + TaskId("Task"))
 console.log("emp id : " + GetEmpNameGenById(""))
 console.log("Project id : " + ProjetcId())

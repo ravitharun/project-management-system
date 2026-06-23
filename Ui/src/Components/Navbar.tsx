@@ -33,7 +33,7 @@ import { IoClose } from "react-icons/io5";
 import { FaGear } from "react-icons/fa6";
 
 type Props = {
-    page: string;
+    page?: string;
 };
 
 export type theme = "Dark" | "Ligth";
@@ -430,7 +430,7 @@ relative group flex items-center justify-between
 px-3 py-3 rounded-xl cursor-pointer
 transition-all duration-300 ease-in-out
 
-${workspaceid === itm._id || work._id === itm._id
+${workspaceid === itm._id || work._id === itm._id 
                                                                     ? theme === "Dark"
                                                                         ? "bg-green-500/20 border border-green-500/40 shadow-md shadow-green-500/10"
                                                                         : "bg-green-100 border border-green-300 shadow-sm"
