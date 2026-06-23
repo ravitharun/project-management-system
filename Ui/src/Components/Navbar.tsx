@@ -25,12 +25,12 @@ import SetWork from "./SetWork";
 import { instance } from "../services/apiservices";
 import { toast } from "react-toastify";
 import WorkspaceMenu from "./WorkspaceMenu";
-import WorkspaceData from "../Context/workspaceData";
 import CreatedspaceData from "../Context/CreatedWorkspace";
 import { CiStar } from "react-icons/ci";
 import StartMenuList from "./StartMenuList";
 import { IoClose } from "react-icons/io5";
 import { FaGear } from "react-icons/fa6";
+import ClickedWorkSpace from "../Context/ClickedWorkSpace";
 
 type Props = {
     page?: string;
@@ -48,17 +48,21 @@ function Sidebar({ page }: Props) {
     const [Workspace, setworkspace] = useState<any[]>([]);
     const sidebar = useContext(SideBarContext);
     const context = useContext(bgthemeContext);
+    const contextSpace = useContext(ClickedWorkSpace);
     const CreatedSpaceJson = useContext(CreatedspaceData)
-    const workSpaceData = useContext(WorkspaceData)
-    const { setwork }: any = workSpaceData
+    // const workSpaceData = useContext(WorkspaceData)
+    const { ClickedSpace, setClickedSpace }: any = contextSpace
+    console.log(ClickedSpace, 'ClickedSpace')
+    // const { setwork }: any = workSpaceData
     const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
     const { theme }: any = context || {};
     const { setspacejson }: any = CreatedSpaceJson
     const userPanelRef = useRef<HTMLDivElement | null>(null);
     const [workspaceid, setworkspcaeid] = useState("")
     const [StarMenu, setStarMenu] = useState<boolean>(false)
-    const workspaceProvider = useContext(WorkspaceData);
-    const { work }: any = workspaceProvider;
+    // const workspaceProvider = useContext(WorkspaceData);
+    // const { work }: any = workspaceProvider;
+    const work: any = ClickedSpace
     console.log(work, 'work from navabr')
     useEffect(() => {
         const UpdateIdBg = () => {
@@ -95,6 +99,9 @@ function Sidebar({ page }: Props) {
                 setspacejson(response?.data?.data || []);
             } catch (error: any) {
                 console.error(error.response.status, 'err nav');
+                if(error.response.status==429){
+                    return  toast.info(error.response.data.message)
+                }
                 if (error.response.status == 401) {
                     return checkuser()
                     // redirect("")
@@ -126,11 +133,16 @@ function Sidebar({ page }: Props) {
         })
     }
 
+
+    const navaigte = useNavigate()
+
     // setSelectSpace
     const handelSelectSpace = (data: any) => {
-
         setworkspcaeid(data._id)
-        setwork(data)
+
+        navaigte("/workspace", { state: { data:data } })
+        setClickedSpace(data)
+        console.log(data, 'data')
     }
 
     // handelDeleteWorkspace
@@ -430,7 +442,7 @@ relative group flex items-center justify-between
 px-3 py-3 rounded-xl cursor-pointer
 transition-all duration-300 ease-in-out
 
-${workspaceid === itm._id || work._id === itm._id 
+${workspaceid === itm._id || work._id === itm._id
                                                                     ? theme === "Dark"
                                                                         ? "bg-green-500/20 border border-green-500/40 shadow-md shadow-green-500/10"
                                                                         : "bg-green-100 border border-green-300 shadow-sm"

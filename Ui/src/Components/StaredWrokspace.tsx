@@ -1,12 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { FiEye, FiStar } from 'react-icons/fi'
-import WorkspaceData from '../Context/workspaceData';
 import { FetchStarWorkspace } from '../services/FetchStarSpace';
 import { useremail } from './LocalStorage';
 
 function StaredWrokspace({ theme }: any) {
-    const workSpaceData = useContext(WorkspaceData);
-    const { setwork }: any = workSpaceData;
 
     const [StarWorkspace, setStarWorkspace] = useState([])
     const [id, setid] = useState<number | null>(null)
@@ -169,7 +166,7 @@ function StaredWrokspace({ theme }: any) {
                                 {/* VIEW */}
                                 <button
                                     // onClick={() => console.log(w)}
-                                    onClick={() => setwork(w.workspaceID
+                                    onClick={() => console.log(w.workspaceID
                                     )}
                                     className={`
                   w-9 h-9
