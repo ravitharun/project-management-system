@@ -44,6 +44,14 @@ const PdffileFilter = (req, file, cb) => {
     cb(new Error("Only PDF files allowed"), false);
   }
 };
+// Task PDF Upload Filter
+const TaskPdfUploadFilter = (req, file, cb) => {
+  if (file.mimetype === "application/pdf") {
+    cb(null, true);
+  } else {
+    cb(new Error("Only PDF files allowed"), false);
+  }
+};
 
 // Upload instances
 const upload = multer({
@@ -67,8 +75,13 @@ const uploadWorkspaceIcon = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: WorkspaceIconfileFilter
 });
+const uploadTaskPdfUploadFilter = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: TaskPdfUploadFilter
+});
 
 
 
 
-module.exports = { upload, Pdfupload ,uploadWorkspaceWallpaper,uploadWorkspaceIcon};
+module.exports = { upload, Pdfupload ,uploadWorkspaceWallpaper,uploadWorkspaceIcon, uploadTaskPdfUploadFilter};

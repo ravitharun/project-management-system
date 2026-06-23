@@ -2,22 +2,16 @@ const { resend } = require("./Email")
 
 const workspaceAcceptInvitation = async (data) => {
     console.log(data, 'emaildata')
-    // console.log(data.arr_email,'emaildata')
-    // console.log(data.token,'token')
-    // console.log(data.expiresAt,'expiresAt')
     const response = data.data.arr_email.map(async (emails) => {
-        console.log(`${process.env.envStatus === "Local"
-            ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
-            : `${process.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
-            }`)
+        console.log(emails)
+ 
         await resend.emails.send({
             from: "Taskora <taskoraSystem@resend.dev>",
-            to: emails || "tr565003@gmail.com",
+            to: emails ,
             subject: "You're Invited to Join a Workspace",
             html: `
 
 
-        < div style = "max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px;" >
 
             <h2 style="color: #333;">
                 You're Invited to Join a Workspace

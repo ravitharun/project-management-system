@@ -1,4 +1,4 @@
-function ApiLoader({ theme = "Light",texttyoe,text }: any) {
+function ApiLoader({ theme ,texttyoe,text }: any) {
     const isDark = theme === "Dark";
 
     return (

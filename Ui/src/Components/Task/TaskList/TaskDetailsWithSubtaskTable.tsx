@@ -17,6 +17,8 @@ export interface RowData {
 
 }
 import { nanoid } from "nanoid";
+import { toast, ToastContainer } from "react-toastify";
+import TaskFiles from "./TaskFiles";
 
 export default function SubTaskWithFiles({ theme, viewtasks }: any) {
   const isDark = theme === "Dark";
@@ -31,15 +33,17 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
 
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  console.log(uploadedFiles,'uploadedFiles')
   const [loader, setloader] = useState(false)
-
-  console.log(uploadedFiles, 'uploadedFiles')
+  const [file, setfile] = useState<any | null>(null)
   console.log(setActiveTaskId, setUploadedFiles)
   const [rowData, setrowdata] = useState<any>([]);
-  const [Data, setdata] = useState<any>()
+  const [Data, setdata] = useState<any>(viewtasks.Files);
+console.log(file,'file')
   console.log(activeTaskId, 'activeTaskIdcls')
   console.log(setdata, 'setdata')
 
+  const [fileUpload, setfileUpload] = useState<boolean>(false)
 
   useEffect(() => {
     setrowdata(data?.SubTask || []);
@@ -89,14 +93,62 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
     }
   };
 
+  const UploadFiles = async (e: any) => {
+    const file = e.target.files[0]
+    if (!file) { return toast.info("File is required to Upload ") }
+    setfile(file)
 
+    try {
+      setfileUpload(true)
+      const Fileformdata = new FormData()
+      Fileformdata.append("TaskFileUpload", file)
+      Fileformdata.append("Taskid", viewtasks.Taskid)
+      Fileformdata.append("projectid", viewtasks.projectid)
+      Fileformdata.append("UploadedBy", JSON.parse(getuserInfo)._id)
+      const response = await instance.post("/api/Task/uploadSubtaskFiles", Fileformdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      console.log(response.status)
+      if (response.status == 201) {
+        toast.success("File Uploaded.")
+        setfile(null);
+        e.target.value = "";
+
+
+        return
+      }
+
+      setfile(null)
+    } catch (error: any) {
+      const errmessage = error.response.data.message
+      const errstatus = error.response.status
+
+      return errmessage + errstatus
+
+    }
+    finally { setfileUpload(false) }
+
+  }
 
   return (
     <>
+      <ToastContainer></ToastContainer>
       {loader && (
         <ApiLoader
           texttyoe="Adding Subtask"
           text="Please wait while we create your subtask..."
+        />
+      )}
+
+
+
+      {fileUpload && (
+        <ApiLoader
+          theme={theme}
+          texttyoe="Uploading File..."
+          text="Please wait while your file is being uploaded."
         />
       )}
       <div className="flex flex-col gap-5 w-full">
@@ -143,40 +195,30 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
           className={`rounded-2xl p-4 ${isDark ? "bg-[#111827]" : "bg-white"
             }`}
         >
-          <h2
-            className={`text-sm font-semibold mb-3 ${isDark ? "text-white" : "text-gray-900"
-              }`}
-          >
-            Uploaded Files
-          </h2>
+          {/* HEADER */}
+          <div className="flex items-center justify-between mb-4">
+            <h2
+              className={`text-sm font-semibold ${isDark ? "text-white" : "text-gray-900"
+                }`}
+            >
+              Uploaded Files
+            </h2>
 
-          {/* DROP AREA */}
-          <div className="border border-white/10 rounded-xl p-4 text-center text-gray-400 text-xs mb-4">
-            Drag & Drop files here or use upload button
+            <label className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-md cursor-pointer transition">
+              Upload
+              <input
+                type="file"
+                className="hidden"
+                onChange={(e) => UploadFiles(e)}
+              />
+            </label>
           </div>
 
           {/* FILE LIST */}
-          <div className="space-y-2">
-            {Data?.Files?.length === 0 && (
-              <p className="text-xs text-gray-500">
-                No files uploadeds
-              </p>
-            )}
-
-            {Data?.Files?.map((file: any, index: number) => (
-              <div
-                key={index}
-                className="flex items-center justify-between bg-white/5 p-2 rounded-lg"
-              >
-                <span className="text-xs text-gray-300 truncate">
-                  {file?.fileName}
-                </span>
-
-                <span className="text-[10px] text-gray-500">
-                  {file?.taskId}
-                </span>
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <div className="max-h-[300px] overflow-y-auto">
+              <TaskFiles theme={theme} file={Data} />
+            </div>
           </div>
         </div>
       </div>
