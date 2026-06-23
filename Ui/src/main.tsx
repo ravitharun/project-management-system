@@ -8,30 +8,36 @@ import WorkspaceProvider from "./Provider/WorkspaceProvider.tsx";
 import WrokspaceJson from "./Provider/WrokspaceJson.tsx";
 import SharespaceViewProvider from "./Provider/SharespaceViewProvider.tsx";
 import FirstViewProvider from "./Provider/FirstViewProvider.tsx";
+import ClickedSpaceProvider from "./Provider/ClickedSpaceProvider.tsx";
 createRoot(document.getElementById("root")!).render(
-    <WorkspaceProvider>
-        <FirstViewProvider>
-
-            <SharespaceViewProvider>
-                <WrokspaceJson>
-                    <UserProvider>
-                        <ThemeProvider>
-                            <BrowserRouter>
+    <ClickedSpaceProvider>
 
 
-                                <AppRouter />
+        <WorkspaceProvider>
+            <FirstViewProvider>
+
+                <SharespaceViewProvider>
+                    <WrokspaceJson>
+                        <UserProvider>
+                            <ThemeProvider>
+                                <BrowserRouter>
+
+
+                                    <AppRouter />
 
 
 
-                            </BrowserRouter>
+                                </BrowserRouter>
 
-                        </ThemeProvider>
+                            </ThemeProvider>
 
-                    </UserProvider>
-                </WrokspaceJson>
-            </SharespaceViewProvider>
-        </FirstViewProvider>
+                        </UserProvider>
+                    </WrokspaceJson>
+                </SharespaceViewProvider>
+            </FirstViewProvider>
 
-    </WorkspaceProvider>
+        </WorkspaceProvider>
+    </ClickedSpaceProvider>
+
 
 );
