@@ -13,8 +13,16 @@ ModuleRegistry.registerModules([
 ]);
 
 function TaskFiles({ theme, file }: any) {
-    console.log(file, 'file§')
-    const GetDate = new Date()
+    console.log(file, 'Tarun')
+  const GetDate = (date: any) => {
+  return new Date(date).toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
 
     if (!file || file.length === 0) {
         return (
@@ -26,30 +34,18 @@ function TaskFiles({ theme, file }: any) {
 
     const rowData = file.map((item: any) => ({
         ...item,
-
-        taskid: item.taskId,
-        taskname: item.fileName,
     }));
-
     const columnDefs: ColDef[] = [
-        {
-            headerName: "Task ID",
-            field: "taskid",
-            flex: 1,
-        },
-        {
-            headerName: "Task Name",
-            field: "taskname",
-            flex: 1,
-        },
         {
             headerName: "Uploaded By",
             field: "Uploaded By",
             flex: 1,
-            cellRenderer: () => {
+            cellRenderer: (params:any) => {
+                // console.log(params.data,'Tharunparams')
+                   const row = params.data;
                 return (
                     <div className="flex items-center gap-2">
-                        Username
+                        {row?.userid?.Username||"Username"}
 
                     </div>
                 );
@@ -59,10 +55,11 @@ function TaskFiles({ theme, file }: any) {
             headerName: "Uploaded At",
             field: "Uploaded At",
             flex: 1,
-            cellRenderer: () => {
+            cellRenderer: (params:any) => {
+                   const row = params.data;
                 return (
                     <div className="flex items-center gap-2">
-                        {GetDate.toDateString() || "Date"}
+                        {GetDate(row?.uploadedAt) || "Date"}
                     </div>
                 );
             },
@@ -79,10 +76,18 @@ function TaskFiles({ theme, file }: any) {
                     <div className="flex items-center gap-2">
 
                         {/* VIEW */}
-                        <button className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-blue-600 hover:bg-blue-700 text-white transition">
+                        <a className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-blue-600 hover:bg-blue-700 text-white transition" 
+                        
+                        
+                        href={`https://docs.google.com/gview?url=${encodeURIComponent(row.fileurl)}&embedded=true`}
+                        target="_blank"
+                        >
                             <FiEye size={14} />
+                            {/* {
+                            }  - View */}
                             View
-                        </button>
+                            
+                        </a>
 
                         {/* DOWNLOAD */}
                         <button className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-green-600 hover:bg-green-700 text-white transition">
@@ -91,7 +96,7 @@ function TaskFiles({ theme, file }: any) {
                         </button>
 
                         {/* DELETE */}
-                        {row?.uploadedBy?._id === JSON.parse(getuserInfo)._id && <button className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-red-600 hover:bg-red-700 text-white transition">
+                        {row?.userid?._id === JSON.parse(getuserInfo)._id && <button className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-red-600 hover:bg-red-700 text-white transition">
                             <FiTrash2 size={14} />
                             Delete
                         </button>}

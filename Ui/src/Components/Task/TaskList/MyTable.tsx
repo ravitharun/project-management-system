@@ -180,7 +180,6 @@ const MyTable = ({ theme, spaceid }: any) => {
             },
         },
     ];
-
     return (
         <>
             {/* POPUP */}

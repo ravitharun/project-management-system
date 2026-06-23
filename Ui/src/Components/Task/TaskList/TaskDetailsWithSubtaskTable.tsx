@@ -33,45 +33,13 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
 
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  console.log(uploadedFiles,'uploadedFiles')
   const [loader, setloader] = useState(false)
   const [file, setfile] = useState<any | null>(null)
   console.log(setActiveTaskId, setUploadedFiles)
   const [rowData, setrowdata] = useState<any>([]);
-  const [Data, setdata] = useState<any>({
-    Files: [
-      {
-        fileName: "project-doc.pdf",
-        taskId: "task_101",
-        uploadedAt: "2026-06-23T10:30:00Z",
-        uploadedBy: {
-          _id: "6a16ec6c16d8e9b2a7674c69",
-          name: "Ravi Tharun",
-          profilePic: "https://i.pravatar.cc/150?img=3"
-        }
-      },
-      {
-        fileName: "design.png",
-        taskId: "task_102",
-        uploadedAt: "2026-06-23T11:00:00Z",
-        uploadedBy: {
-          _id: "user_2",
-          name: "John Doe",
-          profilePic: "https://i.pravatar.cc/150?img=5"
-        }
-      },
-      {
-        fileName: "design.png",
-        taskId: "task_103",
-        uploadedAt: "2026-06-23T11:00:00Z",
-        uploadedBy: {
-          _id: "user_2",
-          name: "John Doe",
-          profilePic: "https://i.pravatar.cc/150?img=5"
-        }
-      }
-    ]
-  });
-
+  const [Data, setdata] = useState<any>(viewtasks.Files);
+console.log(file,'file')
   console.log(activeTaskId, 'activeTaskIdcls')
   console.log(setdata, 'setdata')
 
@@ -241,7 +209,7 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
               <input
                 type="file"
                 className="hidden"
-                onChange={UploadFiles}
+                onChange={(e) => UploadFiles(e)}
               />
             </label>
           </div>
@@ -249,7 +217,7 @@ export default function SubTaskWithFiles({ theme, viewtasks }: any) {
           {/* FILE LIST */}
           <div className="overflow-x-auto">
             <div className="max-h-[300px] overflow-y-auto">
-              <TaskFiles theme={theme} file={Data?.Files} />
+              <TaskFiles theme={theme} file={Data} />
             </div>
           </div>
         </div>
