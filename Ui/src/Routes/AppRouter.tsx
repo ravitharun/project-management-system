@@ -20,6 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import bgthemeContext from "../Context/ThemeContext";
 import Shareview from "../Components/Shareview";
 import EmailBasedJoinWorkspace from "../Components/EmailApproval/EmailBasedJoinWorkspace";
+import TaskLayout from "../Components/Task/TaskLayout";
 // import Layout from "../Components/Layout";
 
 function AppRouter() {
@@ -164,6 +165,7 @@ function AppRouter() {
             <Suspense fallback={<Loader theme={theme} />}>
                 <Routes>
                     <Route path="/" element={<App />} />
+                    <Route path="/Workspace" element={<TaskLayout  />} />
 
                     {/* <Route path="shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} /> */}
                     <Route path="/shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} />

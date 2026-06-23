@@ -1,47 +1,58 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from '../Navbar'
-import MinAndMaxWorkspaceView from './TaskBoard/MinAndMaxWorkspaceview';
-
-import { useContext, useEffect, useRef, useState } from 'react';
-// import WorkspaceData from '../../Context/workspaceData';
-import CreatedspaceData from '../../Context/CreatedWorkspace';
-import SharespaceView from '../../Context/ShareViewContext';
-import axios from 'axios';
-import ShareMinAndMaxWorkspaceView from '../Share/ShareMinAndMaxWorkspaceView';
-// import WorkspaceViwe from '../WorkspaceViwe';
+import { useContext, useEffect, useRef, useState } from "react";
+import Sidebar from "../Navbar"
+import CreatedspaceData from "../../Context/CreatedWorkspace";
+import SharespaceView from "../../Context/ShareViewContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import MinAndMaxWorkspaceView from "./TaskBoard/MinAndMaxWorkspaceview";
+import ShareMinAndMaxWorkspaceView from "../Share/ShareMinAndMaxWorkspaceView";
 
 function TaskLayout({ theme }: any) {
-    const location = useLocation();
-    const w = location.state.w
-    // const workspaceProvider = useContext(WorkspaceData);
+    const stats = useLocation()
+
+    const navigate = useNavigate()
+    const w = stats?.state?.data
+
+    console.log(w, 'dd')
+
+    useEffect(() => {
+
+
+        const checkData = () => {
+            if (w == undefined) {
+               return navigate("/")
+            }
+        }
+        checkData()
+    }, [])
+
     const CreatedSpaceJson = useContext(CreatedspaceData);
     const CreatedSharespaceView = useContext(SharespaceView);
     const [ismaxAndMin, setMaxAndMin] = useState<boolean>(false)
-
-
     const [isSetBackground, SetBackground] = useState<boolean>(false);
-    console.log(isSetBackground,'isSetBackground')
+    console.log(isSetBackground, 'isSetBackground')
     const [openProject, setOpenProject] = useState<string | null>(null);
 
     const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
 
     const { SpaceJson }: any = CreatedSpaceJson;
-    console.log(SpaceJson,'SpaceJson')
-    // const { work, setwork }: any = workspaceProvider;
+    console.log(SpaceJson, 'SpaceJson')
     const { SpaceJsonView, setSpaceJsonView }: any = CreatedSharespaceView;
 
-    // const workspace = work
+    const workspace = w
     const [CurrentView, setCurrentView] = useState("");
+
+
     useEffect(() => {
         const ChooseBoard = () => {
 
-            const TaskBoardType = w?.name == "Scrum" ? "Board" : "Summary"
+            const TaskBoardType = workspace?.name == "Scrum" ? "Board" : "Summary"
             setCurrentView(TaskBoardType)
 
 
         }
         ChooseBoard()
-    }, [w])
+    }, [workspace])
 
 
 
@@ -66,7 +77,6 @@ function TaskLayout({ theme }: any) {
     };
 
 
-    const navigate = useNavigate();
 
 
 
@@ -83,9 +93,7 @@ function TaskLayout({ theme }: any) {
                     `http://localhost:5000/workspace/share?id=6a1e8587848d4471d14a554a`
                 );
                 // console.log(res.data.data, 'res.data.data')
-                // setSpaceJsonView(res.data.data);
-
-                return res
+                setSpaceJsonView(res.data.data);
             } catch (err) {
                 console.log(err);
             }
@@ -133,8 +141,8 @@ function TaskLayout({ theme }: any) {
     }, []);
 
     const columns =
-        SpaceJsonView || w?.columns?.map((c: any) => c.name) ||
-        SpaceJsonView || w?.workspaceSetup?.statuses || [
+        SpaceJsonView || workspace?.columns?.map((c: any) => c.name) ||
+        SpaceJsonView || workspace?.workspaceSetup?.statuses || [
             "Backlog",
             "To Do",
             "In Progress",
@@ -143,7 +151,7 @@ function TaskLayout({ theme }: any) {
         ];
 
     const tasks =
-        SpaceJsonView?.tasks || w?.tasks || [
+        SpaceJsonView?.tasks || workspace?.tasks || [
             {
                 id: 1,
                 title: "Setup project structure",
@@ -193,54 +201,61 @@ function TaskLayout({ theme }: any) {
         });
     };
 
+    if (workspace?.length === 0) {
+        return "hi"
+    }
 
 
     const handelMaximizeAndMinPoup = () => {
         setMaxAndMin((prev) => !prev)
 
     }
+
+
     return (
         <>
 
 
             <Sidebar ></Sidebar>
+            <div className="mt-2 ml-64">
 
-            <div className="mt-12 ml-64">             {ismaxAndMin ?
+                {ismaxAndMin ?
+                    <>
 
-                <>
+                        {SpaceJsonView?.length == 0 ?
+                            <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} workspace={workspace} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+                                setCurrentView
+                            } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> :
 
-
-                    {w ?
-                        <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme}  workspace={location.state.w}  setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
-                            setCurrentView
-                        } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> :
-
-                        <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme}workspace={location.state.w}  setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
-                            setCurrentView
-                        } hand
-                            leProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin} />
-                    }
-
-                </>
-                :
+                            <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} workspace={workspace} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+                                setCurrentView
+                            } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin} />
+                        }
+                    </>
 
 
 
-                <>
+
+                    :
 
 
-                    {w?
-                        <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme}  workspace={location.state.w}  setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
-                            setCurrentView
-                        } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> : <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} workspace={location.state.w}  setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
-                            setCurrentView
-                        } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin} />
-                    }
-                </>
-            }
+
+                    <>
+
+
+                        {SpaceJsonView?.length == 0 ?
+                            <MinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} workspace={workspace} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+                                setCurrentView
+                            } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin}></MinAndMaxWorkspaceView> : <ShareMinAndMaxWorkspaceView HandelShare={HandelShare} handelMaximizeAndMinPoup={handelMaximizeAndMinPoup} theme={theme} workspace={workspace} setOpenProject={setOpenProject} openProject={openProject} workspaceMenuRef={workspaceMenuRef} SetBackground={SetBackground} CurrentView={CurrentView} setCurrentView={
+                                setCurrentView
+                            } handleProjectSetting={handleProjectSetting} ismaxAndMin={ismaxAndMin} />
+                        }
+                    </>
+                }
             </div>
-        </>
-    )
+
+
+        </>)
 }
 
 export default TaskLayout
