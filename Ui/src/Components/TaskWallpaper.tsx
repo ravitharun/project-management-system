@@ -7,20 +7,17 @@ import {
 } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import bgthemeContext from "../Context/ThemeContext";
-import GlobalToast from "./GlobalToast";
+// import GlobalToast from "./GlobalToast"
 import { toast } from "react-toastify";
 import axios from "axios";
 
 type WallpaperPopupProps = {
     open?: boolean;
-    onClose?: () => void;
-    onApply?: (wallpaper: string) => void;
+   
 };
 
 const WallpaperPopup = ({
     open,
-    onClose,
-    onApply,
 }: WallpaperPopupProps) => {
 
     const themeContext = useContext(bgthemeContext)
@@ -84,8 +81,7 @@ const WallpaperPopup = ({
     const handleApply = () => {
         if (!selectedWallpaper) return;
 
-        onApply(selectedWallpaper);
-        onClose();
+   
     };
 
     if (!open) return null;
