@@ -24,7 +24,7 @@ function TaskLayout({ theme }: any) {
             }
         }
         checkData()
-    }, [])
+    }, [w])
 
     const CreatedSpaceJson = useContext(CreatedspaceData);
     const CreatedSharespaceView = useContext(SharespaceView);

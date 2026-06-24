@@ -18,10 +18,12 @@ import ViewTaskFirst from "../../../Context/FirstTaskView";
 import TaskForm from "../CreateTask/TaskForm";
 import { FaTrash } from "react-icons/fa";
 import GlobalToast from "../../GlobalToast";
+import WallpaperPopup from "../../TaskWallpaper";
 function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   const [OpenDropDown, SetOpenDropDown] = useState<boolean>(false)
   const [CreateTask, setCreateTask] = useState(false)
   const TasksView = useContext(ViewTaskFirst);
+  const [ShowWallpaper, setShowWallpaper] = useState<boolean>(false)
 
 
   if (!TasksView) return null;
@@ -159,7 +161,6 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
 
 
 
-
   const HandelMenu = (itm: any) => {
     switch (itm) {
       case "Duplicate Task":
@@ -180,6 +181,9 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
       case "Copy Link":
         GlobalToast(itm, "info")
 
+        break;
+      case "Change Wallpaper":
+        setShowWallpaper(true)
         break;
 
       default:
@@ -371,31 +375,6 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
                             ))}
                           </div>
 
-                          <div
-                            className={`
-                border-t p-2
-                ${theme === "Dark" ? "border-white/10" : "border-gray-200"}
-              `}
-                          >
-                            <button
-                              className={`
-                  flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200
-                  ${theme === "Dark"
-                                  ? "text-red-400 hover:bg-red-500/10"
-                                  : "text-red-600 hover:bg-red-50"}
-                `}
-                            >
-                              <div
-                                className={`
-                    flex h-9 w-9 items-center justify-center rounded-xl
-                    ${theme === "Dark" ? "bg-red-500/10" : "bg-red-100"}
-                  `}
-                              >
-                                🗑️
-                              </div>
-                              Delete Task
-                            </button>
-                          </div>
                         </div>
                       )}
                     </div>
@@ -746,7 +725,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
           )}
       </div >
       {CreateTask && <TaskForm CreateTask={CreateTask} onclose={() => setCreateTask(false)} projectid={projectid} />}
-
+      {ShowWallpaper && <WallpaperPopup open={ShowWallpaper} onClose={()=>setShowWallpaper(false)}/>}
     </>
   )
 }
