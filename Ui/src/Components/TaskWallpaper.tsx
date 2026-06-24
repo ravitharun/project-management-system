@@ -13,11 +13,12 @@ import axios from "axios";
 
 type WallpaperPopupProps = {
     open?: boolean;
-   
+    onClose?: () => void;
 };
 
 const WallpaperPopup = ({
     open,
+    onClose,
 }: WallpaperPopupProps) => {
 
     const themeContext = useContext(bgthemeContext)
