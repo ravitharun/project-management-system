@@ -43,7 +43,7 @@ function App() {
         >
           {/* <main className="flex-1 overflow-hidden"> */}
           <main className=" w-full overflow-y-auto">
-            <ViewWorkspace theme={theme} />
+            <ViewWorkspace  />
 
 
           </main>            </div>

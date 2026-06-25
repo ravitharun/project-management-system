@@ -1,10 +1,12 @@
 import { FolderKanban } from "lucide-react";
+import bgthemeContext from "../Context/ThemeContext";
+import { useContext } from "react";
 
-type LoaderProps = {
-  theme?: "Dark" | "Light";
-};
 
-function Loader({ theme = "Light" }: LoaderProps) {
+
+function Loader() {
+   const context = useContext(bgthemeContext);
+      const { theme }: any = context
   const isDark = theme === "Dark";
 
   const shimmer = isDark

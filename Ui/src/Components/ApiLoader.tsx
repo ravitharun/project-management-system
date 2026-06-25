@@ -1,4 +1,9 @@
-function ApiLoader({ theme ,texttyoe,text }: any) {
+import { useContext } from "react";
+import bgthemeContext from "../Context/ThemeContext";
+
+function ApiLoader({ texttyoe,text }: any) {
+     const context = useContext(bgthemeContext);
+        const { theme }: any = context
     const isDark = theme === "Dark";
 
     return (

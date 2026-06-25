@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   FiStar,
   FiEye,
@@ -12,9 +12,12 @@ import { View } from "../services/View";
 import ViewedActivity from "./UserActivity/ViewedActivity";
 import { Link } from "react-router-dom";
 import TemplatesUi from "./Summary-Templates/TemplatesUi";
+import bgthemeContext from "../Context/ThemeContext";
 
 
-function WorkspaceViwe({ theme, SpaceJson }: any) {
+function WorkspaceViwe({  SpaceJson }: any) {
+   const context = useContext(bgthemeContext);
+      const { theme }: any = context
 
 
   const [type, settype] = useState("Recommended");
@@ -365,7 +368,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
 
           {type == "Starred" && <>
 
-            <StaredWrokspace theme={theme}></StaredWrokspace>
+            <StaredWrokspace ></StaredWrokspace>
           </>}
           {type == "For you" && <>
 
@@ -384,7 +387,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
           </>}
           {type == "Viewed" && <>
 
-            <ViewedActivity theme={theme}></ViewedActivity>
+            <ViewedActivity ></ViewedActivity>
           </>}
         </div>
       </div >

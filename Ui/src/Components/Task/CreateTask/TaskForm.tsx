@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import {
     FaTasks,
     FaUser,
@@ -25,6 +25,7 @@ import Input from "../../Input"
 import Loader from "../../Loader"
 import GlobalToast from "../../GlobalToast"
 import { nanoid } from "nanoid"
+import bgthemeContext from "../../../Context/ThemeContext"
 
 type Props = {
     AddedBy?: string | null
@@ -39,11 +40,12 @@ function TaskForm({
     onclose,
     AddedBy,
     projectid,
-    theme,
+    // theme,
     maximizeParent,
     CreateTask
 }: Props) {
-
+    const context = useContext(bgthemeContext);
+    const { theme }: any = context
 
     console.log(projectid, 'projectid')
     const [maximize, setMaximize] = useState(false)
@@ -116,7 +118,7 @@ function TaskForm({
 
 
     const selectedMember: any = Members.find((m: any) => m?.id._id === assignTo)
-    console.log(selectedMember,'selectedMember')
+    console.log(selectedMember, 'selectedMember')
 
     const isDark = theme === "Dark"
 
@@ -329,7 +331,7 @@ function TaskForm({
                                                     key={member?.id?._id}
                                                     type="button"
                                                     onClick={() => {
-                                                        console.log(member.id._id,'iduser')
+                                                        console.log(member.id._id, 'iduser')
                                                         setAssignTo(member?.id?._id)
                                                         setAssignOpen(false)
                                                     }}

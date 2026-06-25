@@ -93,7 +93,6 @@ function Login() {
                 message: error.response.data.message,
                 types: "failure",
             });
-
         }
     };
 

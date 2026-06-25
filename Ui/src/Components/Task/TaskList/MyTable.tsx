@@ -1,6 +1,6 @@
 import { AgGridReact, AgGridProvider } from "ag-grid-react";
 import type { ColDef } from "ag-grid-community";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ViewProfileCard from "../../PoupProfileCard/ViewProfileCard";
 import { fetchtaskApi } from "../../../services/taskApi";
 // import SubTaskCell from "./SubTaskCell ";
@@ -9,6 +9,7 @@ const modules = [AllCommunityModule];
 import { ModuleRegistry } from "ag-grid-community";
 import { AllCommunityModule } from "ag-grid-community";
 import { MasterDetailModule, RowGroupingModule } from "ag-grid-enterprise";
+import bgthemeContext from "../../../Context/ThemeContext";
 
 ModuleRegistry.registerModules([
     AllCommunityModule,
@@ -26,7 +27,9 @@ export type RowData = {
     SubTask?: any[];
 };
 
-const MyTable = ({ theme, spaceid }: any) => {
+const MyTable = ({ spaceid }: any) => {
+     const context = useContext(bgthemeContext);
+        const { theme }: any = context
     const timeoutRef = useRef<any>(null);
 
     const [popupPos, setPopupPos] = useState({

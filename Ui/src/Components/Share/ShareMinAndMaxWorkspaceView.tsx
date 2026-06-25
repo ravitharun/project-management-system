@@ -8,9 +8,13 @@ import SpaceTimeLine from "../SpaceTimeLine";
 import SpaceList from "../Task/TaskList/SpaceList";
 import MyCalendar from "../Task/TaskCalendar/Calendra";
 import Board from "../Board";
+import bgthemeContext from "../../Context/ThemeContext";
+import { useContext } from "react";
 
 
-function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
+function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
+     const context = useContext(bgthemeContext);
+        const { theme }: any = context
     console.log("share page Ui")
 
     return (
@@ -482,7 +486,7 @@ function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, th
                                     height: ismaxAndMin ? "100%" : "",
                                 }}
                             >
-                                <MyCalendar theme={theme} />
+                                <MyCalendar  />
                             </div>
                         )}
 
@@ -501,7 +505,6 @@ function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, th
                                 }}
                             >
                                 <Board
-                                    theme={theme}
                                     work={work}
                                     ismaxAndMin={ismaxAndMin}
                                 />

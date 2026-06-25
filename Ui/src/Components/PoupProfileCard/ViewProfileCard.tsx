@@ -1,6 +1,10 @@
 import { Mail, User } from "lucide-react";
+import bgthemeContext from "../../Context/ThemeContext";
+import { useContext } from "react";
 
-function ViewProfileCard({ userInof, theme }: any) {
+function ViewProfileCard({ userInof }: any) {
+    const context = useContext(bgthemeContext);
+    const { theme }: any = context
     console.log(userInof, 'userInof')
     console.log(userInof?.username?.data?.AssiginMember?.Name, 'userInof?. username?.data?.AssignedTo?.Email')
     console.log(userInof?.username?.data?.AssiginMember?.Email, 'userInof?. username?.data?.AssignedTo?.Email')
