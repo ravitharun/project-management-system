@@ -288,6 +288,32 @@ const UpdateTaskWallpaper = async (req, res, next) => {
 }
 
 
+const DeleteTask = async (req, res, next) => {
+
+    try {
+        const { taskid } = req.params
+        console.log(taskid, 'taskid')
+        if (!taskid) {
+            const taskidNotFound = new Error("taskid is missing.")
+            taskidNotFound.status = 404
+            return next(taskidNotFound)
+        }
 
 
-module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
+        const IsexitstaskDeleted = await WorkSpaceTask.findOneAndDelete({ Taskid: taskid })
+        if (IsexitstaskDeleted == null) {
+            return res.status(404).json({ message: "Task is not Found to Delete it" })
+        }
+
+        console.log(IsexitstaskDeleted)
+
+
+        return res.status(200).json({ message: "Task deleted successfully" })
+    } catch (error) {
+        console.log(error.message)
+        next(error)
+    }
+
+}
+
+module.exports = { DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
