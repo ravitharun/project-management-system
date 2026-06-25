@@ -163,6 +163,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
 
   const HandelDeleteTask = async () => {
     const TasksId = Tasks.TaskId
+    alert(TasksId)
     if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 
