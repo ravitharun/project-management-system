@@ -29,6 +29,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   if (!TasksView) return null;
 
   const { Tasks } = TasksView;
+  console.log(Tasks,'Tasks')
   const [item, setitem] = useState<any>(
     [
       {
@@ -301,7 +302,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
                 {/* COVER IMAGE */}
                 <div className="relative h-52 w-full sm:h-60 md:h-72">
                   <img
-                    src="https://avatars.githubusercontent.com/u/145847829?v=4&size=300"
+                    src={Tasks?.TaskWallpaper}
                     alt="Cover"
                     className="h-full w-full object-cover"
                   />
@@ -725,7 +726,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
           )}
       </div >
       {CreateTask && <TaskForm CreateTask={CreateTask} onclose={() => setCreateTask(false)} projectid={projectid} />}
-      {ShowWallpaper && <WallpaperPopup open={ShowWallpaper} onClose={()=>setShowWallpaper(false)}/>}
+      {ShowWallpaper && <WallpaperPopup open={ShowWallpaper} onClose={()=>setShowWallpaper(false)} Tasks={Tasks}/>}
     </>
   )
 }
