@@ -12,7 +12,7 @@ const AddWorkSpaceTask = async (req, res) => {
 
         const Createtask = new WorkSpaceTask({
             ...TaskData,
-            assignTo: assignTo || null,
+            assignTo: TaskData.assignTo || null,
             SubTask: [],
             Files: [],
             Links: []
