@@ -38,6 +38,8 @@ const WorkSpaceTask = new mongosse.Schema({
     TaskWallpaper: { type: String, default: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e" },
     taskName: { type: String, required: true },
     description: { type: String, required: true },
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
     SubTask: [Subatask],
     Files: [{
         fileurl: { type: String },
