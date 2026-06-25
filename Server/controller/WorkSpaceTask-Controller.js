@@ -8,7 +8,7 @@ const AddWorkSpaceTask = async (req, res) => {
         const { TaskData, assignTo } = req.body;
         console.log(req.body,'req.body')
         console.log(TaskData,'TaskData')
-        console.log(assignTo,'assignTo.body')
+        console.log(TaskData.assignTo,'assignTo')
 
         const Createtask = new WorkSpaceTask({
             ...TaskData,
