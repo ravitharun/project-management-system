@@ -10,17 +10,20 @@ import bgthemeContext from "../Context/ThemeContext";
 // import GlobalToast from "./GlobalToast"
 import { toast } from "react-toastify";
 import axios from "axios";
+import { instance } from "../services/apiservices";
 
 type WallpaperPopupProps = {
     open?: boolean;
     onClose?: () => void;
+    Tasks: any
 };
 
 const WallpaperPopup = ({
     open,
     onClose,
+    Tasks
 }: WallpaperPopupProps) => {
-
+    console.log(Tasks, 'Tasks')
     const themeContext = useContext(bgthemeContext)
     const [search, setSearch] = useState("workspace");
     const [searchedImages, setSearchedImages] = useState<any[]>([]);
@@ -79,10 +82,25 @@ const WallpaperPopup = ({
         setSelectedWallpaper(imageUrl);
     };
 
-    const handleApply = () => {
+    const handleApply = async () => {
         if (!selectedWallpaper) return;
 
-   
+
+
+
+        try {
+            const response = await instance.put(`/api/Task/${Tasks.Taskid}/wallpaper`, { selectedWallpaper: selectedWallpaper })
+            console.log(response)
+
+            if(response.status==200){return toast.success(response.data.message)}
+        } catch (error: any) {
+            console.log(error.response.data.message)
+            console.log(error.response.data)
+            return console.log(error.response.status)
+
+        }
+
+
     };
 
     if (!open) return null;

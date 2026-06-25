@@ -22,14 +22,24 @@ const Subatask = new mongosse.Schema([{
 
 const WorkSpaceTask = new mongosse.Schema({
     projectid: { type: String, required: true, index: true },
+    TaskStatus: {
+        type: String,
+        enum: ["todo", "inprogress", "review", "completed"],
+        default: "todo"
+    },
+    isTicketOpen: {
+        type: Boolean,
+        default: true
+    },
     Taskid: { type: String, required: true, index: true },
+    TaskWallpaper: { type: String, default: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e" },
     taskName: { type: String, required: true },
     description: { type: String, required: true },
     SubTask: [Subatask],
     Files: [{
         fileurl: { type: String },
         userid: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        uploadedAt: { type: Date, default: Date.now()}
+        uploadedAt: { type: Date, default: Date.now() }
     }],
     Links: [{
         Link: { type: String },
@@ -38,7 +48,7 @@ const WorkSpaceTask = new mongosse.Schema({
     }],
 
 }, {
-    timeseries: true
+    timestamps: true
 })
 
 
