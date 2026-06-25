@@ -6,6 +6,9 @@ const AddcommentsSchema = require("../Models/Workspace-comments")
 const AddWorkSpaceTask = async (req, res) => {
     try {
         const { TaskData, assignTo } = req.body;
+        console.log(req.body,'req.body')
+        console.log(TaskData,'TaskData')
+        console.log(assignTo,'assignTo.body')
 
         const Createtask = new WorkSpaceTask({
             ...TaskData,
