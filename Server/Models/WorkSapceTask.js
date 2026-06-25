@@ -59,9 +59,9 @@ const WorkSpaceTask = new mongoose.Schema(
 
         description: { type: String, required: true },
 
-        startDate: { type: Date, required: true },
+        startDate: { type: Date, default: Date.now() },
 
-        endDate: { type: Date, required: true },
+        endDate: { type: Date, default: Date.now()},
 
         SubTask: [SubTaskSchema],
 

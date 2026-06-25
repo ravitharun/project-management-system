@@ -324,38 +324,45 @@ const DeleteTask = async (req, res, next) => {
 // Duplicate Task
 const DuplicateTask = async (req, res, next) => {
     try {
+        const { taskid } = req.params;
 
+        if (!taskid) {
+            return res.status(404).json({ message: "TaskId is missing to duplicate" });
+        }
 
-        const { taskid } = req.params
+        const IsduplicateTask = await WorkSpaceTask.findOne({ Taskid: taskid });
 
+        if (!IsduplicateTask) {
+            return res.status(404).json({ message: "Task not found" });
+        }
 
-        console.log(req.body.NewTaskid, 'NewTaskid')
-
-        console.log(taskid, 'taskid DuplicateTask')
-        if (!taskid) { return res.status(404).json({ message: "TaskId is missing to duplicate" }) }
-        const IsduplicateTask = await WorkSpaceTask.findOne({ Taskid: taskid })
-        console.log(IsduplicateTask, 'IsduplicateTask')
+        if (!req.body.NewTaskid) {
+            return res.status(400).json({ message: "NewTaskid is required" });
+        }
 
         const { _id, ...taskData } = IsduplicateTask.toObject();
+        console.log({ _id, ...taskData })
 
         const Add = new WorkSpaceTask({
             ...taskData,
-            Taskid: req.body.NewTaskid, // new task id
+            Taskid: req.body.NewTaskid,
             isDuplicateTaskId: IsduplicateTask.Taskid,
+            SubTask: [],
+            Files: [],
+            Links: []
         });
 
         await Add.save();
+
         return res.status(200).json({
             message: "Task duplicated successfully. You can now edit the copied task."
         });
+
     } catch (error) {
-
-        console.log(error.message)
-
-        next(error)
-
+        console.log(error.message);
+        next(error);
     }
-}
+};
 
 
 module.exports = { DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
