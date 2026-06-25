@@ -11,6 +11,7 @@ import StaredWrokspace from "./StaredWrokspace";
 import { View } from "../services/View";
 import ViewedActivity from "./UserActivity/ViewedActivity";
 import { Link } from "react-router-dom";
+import TemplatesUi from "./Summary-Templates/TemplatesUi";
 
 
 function WorkspaceViwe({ theme, SpaceJson }: any) {
@@ -18,8 +19,9 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
 
   const [type, settype] = useState("Recommended");
   const [id, setid] = useState<number | null>(null);
-      // const workSpaceData = useContext(WorkspaceData)
-      // const { ClickedSpace, setClickedSpace }: any = contextSpace
+  const [isworkspace, setisworkspace] = useState<boolean>(false)
+  // const workSpaceData = useContext(WorkspaceData)
+  // const { ClickedSpace, setClickedSpace }: any = contextSpace
 
   const filters = [
     "Recommended",
@@ -182,6 +184,7 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
       font-medium
       transition-all duration-300
     "
+              onClick={() => setisworkspace(true)}
             >
               + Create Workspace
             </button>
@@ -385,6 +388,8 @@ function WorkspaceViwe({ theme, SpaceJson }: any) {
           </>}
         </div>
       </div >
+
+      {isworkspace && <TemplatesUi setisworkspace={() => setisworkspace(false)} />}
     </>
   );
 }
