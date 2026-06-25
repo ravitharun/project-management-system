@@ -11,7 +11,6 @@ import StaredWrokspace from "./StaredWrokspace";
 import { View } from "../services/View";
 import ViewedActivity from "./UserActivity/ViewedActivity";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import TemplatesUi from "./Summary-Templates/TemplatesUi";
 
 
