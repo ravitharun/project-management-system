@@ -19,7 +19,7 @@ import TaskForm from "../CreateTask/TaskForm";
 import { FaTrash } from "react-icons/fa";
 import GlobalToast from "../../GlobalToast";
 import WallpaperPopup from "../../TaskWallpaper";
-import { HandelTaskDelete } from "../../../services/TaskDelete";
+import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDelete";
 function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   const [OpenDropDown, SetOpenDropDown] = useState<boolean>(false)
   const [CreateTask, setCreateTask] = useState(false)
@@ -183,11 +183,36 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
 
     }
   }
+  const DuplicateTask = async () => {
+    const TasksId = Tasks.Taskid
+    if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
+
+
+    try {
+
+      const response = await HandelDuplicateTask(TasksId)
+      console.log(response.status)
+      if (response.status == 200) {
+
+        return GlobalToast(response.data.message, 'info')
+
+      }
+
+    } catch (error: any) {
+
+      return GlobalToast(error.response.data.message, 'info')
+
+    }
+
+
+
+
+  }
   const HandelMenu = (itm: any,) => {
     switch (itm) {
       case "Duplicate Task":
-        GlobalToast(itm, "info")
+        DuplicateTask()
         break;
       case "Edit Task":
         GlobalToast(itm, "info")
