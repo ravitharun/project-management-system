@@ -251,22 +251,29 @@ const UploadSubTaskFile = async (req, res, next) => {
 }
 
 
-const UpdateTaskWallpaper = async (req, res) => {
+const UpdateTaskWallpaper = async (req, res, next) => {
     try {
         const { taskId } = req.params;
-        console.log("taskId", taskId)
-        const { selectedWallpaper } = req.body;
+        // const { selectedWallpaper, uplodtype } = req.body;
+        console.log(req.body.selectedWallpaper);
+        console.log(req.body.uplodtype);
+        console.log(req.params, ' req.params')
+        let Customurl = ""
+        if (req.body.uplodtype == "Custom") {
+
+            const url = await cloudinary.uploader.upload(req.file.path)
+            Customurl = url.secure_url
+        }
 
         if (!taskId) {
             const IDNotFound = new Error("Task Id is To Update the wallpaper")
             IDNotFound.status = 404
             return next(IDNotFound)
         }
-        console.log("selectedWallpaper", selectedWallpaper)
 
 
 
-        const isexitsupdate = await WorkSpaceTask.findOneAndUpdate({ Taskid: taskId }, { TaskWallpaper: selectedWallpaper }, { returnDocument: "after" })
+        const isexitsupdate = await WorkSpaceTask.findOneAndUpdate({ Taskid: taskId }, { TaskWallpaper: req.body.uplodtype == "Custom" ? Customurl : req.body.selectedWallpaper }, { returnDocument: "after" })
         console.log(isexitsupdate, 'isexitsupdate updated .')
         if (isexitsupdate == null) {
             return res.status(404).json({ message: "Taskid Not found" })
@@ -274,9 +281,13 @@ const UpdateTaskWallpaper = async (req, res) => {
         return res.status(200).json({ message: "Wallpaper is Updated." })
     } catch (error) {
 
-
+        console.log("err", error.message)
         return next(error)
 
     }
 }
+
+
+
+
 module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
