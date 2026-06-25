@@ -1,9 +1,12 @@
-import {  useEffect, useState } from 'react';
+import {  useContext, useEffect, useState } from 'react';
 import { FiEye, FiStar } from 'react-icons/fi'
 import { FetchStarWorkspace } from '../services/FetchStarSpace';
 import { useremail } from './LocalStorage';
+import bgthemeContext from '../Context/ThemeContext';
 
-function StaredWrokspace({ theme }: any) {
+function StaredWrokspace() {
+     const context = useContext(bgthemeContext);
+        const { theme }: any = context
 
     const [StarWorkspace, setStarWorkspace] = useState([])
     const [id, setid] = useState<number | null>(null)

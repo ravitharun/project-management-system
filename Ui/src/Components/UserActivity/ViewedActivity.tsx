@@ -1,4 +1,4 @@
-import {  useEffect, useMemo, useState } from "react";
+import {  useContext, useEffect, useMemo, useState } from "react";
 import {
   Eye,
   Clock3,
@@ -10,6 +10,7 @@ import {
 import { instance } from "../../services/apiservices";
 import { getuserInfo } from "../LocalStorage";
 import type { WorkspaceIcon, WorkspaceMember, WorkspaceSetup } from "../EmailApproval/EmailBasedJoinWorkspace";
+import bgthemeContext from "../../Context/ThemeContext";
 
 
 
@@ -61,7 +62,9 @@ type UserView = {
   viewedWorkspaces: ViewedWorkspace[];
 };
 
-function ViewedActivity({ theme }: any) {
+function ViewedActivity() {
+   const context = useContext(bgthemeContext);
+      const { theme }: any = context
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [spaces, setSpaces] = useState<UserView>();
 

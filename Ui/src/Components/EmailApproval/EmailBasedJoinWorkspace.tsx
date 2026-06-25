@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
     FaFolderOpen,
     FaEnvelope,
@@ -12,6 +12,7 @@ import { CheckCircle } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { instance } from "../../services/apiservices";
+import bgthemeContext from "../../Context/ThemeContext";
 
 export type WorkspaceMember = {
     _id?: string;
@@ -63,12 +64,13 @@ export type ProjectInfo = {
     workspaceSetup?: WorkspaceSetup;
 };
 
-type Props = {
-    theme?: "Dark" | "Light" | string;
-};
 
-function EmailBasedJoinWorkspace({ theme = "Light" }: Props) {
+
+function EmailBasedJoinWorkspace() {
+    const context = useContext(bgthemeContext);
+    const { theme }: any = context
     const isDark = theme === "Dark";
+
 
     const [loading, setloading] = useState(true);
     const [projectinfo, setprojects] = useState<ProjectInfo | null>(null);

@@ -13,13 +13,16 @@ import SharespaceView from "../../../Context/ShareViewContext";
 import ShareMinAndMaxWorkspaceView from "../../Share/ShareMinAndMaxWorkspaceView";
 import axios from "axios";
 import ClickedWorkSpace from "../../../Context/ClickedWorkSpace";
+import bgthemeContext from "../../../Context/ThemeContext";
 
 
 
 
 
 
-function ViewWorkspace({ theme }: any) {
+function ViewWorkspace() {
+   const context = useContext(bgthemeContext);
+    const { theme }: any = context
 
   const workspaceProvider = useContext(ClickedWorkSpace);
   const CreatedSpaceJson = useContext(CreatedspaceData);

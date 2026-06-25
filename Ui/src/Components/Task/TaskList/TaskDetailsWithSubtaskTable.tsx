@@ -19,8 +19,11 @@ export interface RowData {
 import { nanoid } from "nanoid";
 import { toast, ToastContainer } from "react-toastify";
 import TaskFiles from "./TaskFiles";
+import bgthemeContext from "../../../Context/ThemeContext";
 
-export default function SubTaskWithFiles({ theme, viewtasks }: any) {
+export default function SubTaskWithFiles({  viewtasks }: any) {
+   const context = useContext(bgthemeContext);
+    const { theme }: any = context
   const isDark = theme === "Dark";
   console.log(viewtasks, 'viewtasks')
 

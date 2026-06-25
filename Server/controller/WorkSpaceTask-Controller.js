@@ -1,28 +1,35 @@
-// const cloudinary = require("../config/Clounadry")
 const cloudinary = require("../config/Clounadry")
 const WorkSpaceTask = require("../Models/WorkSapceTask")
 const Workspace = require("../Models/Workspace")
 
-// const WorkspaceComments = require("../Models/Workspace-comments")
 const AddcommentsSchema = require("../Models/Workspace-comments")
 const AddWorkSpaceTask = async (req, res) => {
     try {
-        console.log(req.body.TaskData)
+        const { TaskData, assignTo } = req.body;
+        console.log(req.body,'req.body')
+        console.log(TaskData,'TaskData')
+        console.log(TaskData.assignTo,'assignTo')
 
         const Createtask = new WorkSpaceTask({
-            ...req.body.TaskData,
+            ...TaskData,
+            assignTo: TaskData.assignTo || null,
+            SubTask: [],
+            Files: [],
+            Links: []
+        });
 
-        })
-        await Createtask.save()
+        await Createtask.save();
 
-        console.log("workSpace Created")
-        return res.status(201).json({ message: "WorkSpaceTask Created", data: req.body })
+        return res.status(201).json({
+            message: "WorkSpaceTask Created",
+            data: Createtask
+        });
+
     } catch (error) {
-        console.log(error.message)
-        return res.status(500).json({ message: "Server Error." })
+        console.log(error.message);
+        return res.status(500).json({ message:error.message });
     }
-
-}
+};
 
 
 // fetch toasks
@@ -227,7 +234,7 @@ const UploadSubTaskFile = async (req, res, next) => {
             FileNotFoundTask.status = 404
             return next(FileNotFoundTask)
         }
-        const Isexitstask = await WorkSpaceTask.findOne({ Taskid: req.body.Taskid })
+        const Isexitstask = await WorkSpaceTask.findOne({ TaskId: req.body.Taskid })
 
         if (!Isexitstask) {
             const NotFoundTask = new Error("Task Not Found")
@@ -273,7 +280,7 @@ const UpdateTaskWallpaper = async (req, res, next) => {
 
 
 
-        const isexitsupdate = await WorkSpaceTask.findOneAndUpdate({ Taskid: taskId }, { TaskWallpaper: req.body.uplodtype == "Custom" ? Customurl : req.body.selectedWallpaper }, { returnDocument: "after" })
+        const isexitsupdate = await WorkSpaceTask.findOneAndUpdate({ TaskId: taskId }, { TaskWallpaper: req.body.uplodtype == "Custom" ? Customurl : req.body.selectedWallpaper }, { returnDocument: "after" })
         console.log(isexitsupdate, 'isexitsupdate updated .')
         if (isexitsupdate == null) {
             return res.status(404).json({ message: "Taskid Not found" })
@@ -292,7 +299,7 @@ const DeleteTask = async (req, res, next) => {
 
     try {
         const { taskid } = req.params
-        console.log(taskid, 'taskid')
+        console.log(taskid, 'taskid to delete')
         if (!taskid) {
             const taskidNotFound = new Error("taskid is missing.")
             taskidNotFound.status = 404
@@ -300,7 +307,7 @@ const DeleteTask = async (req, res, next) => {
         }
 
 
-        const IsexitstaskDeleted = await WorkSpaceTask.findOneAndDelete({ Taskid: taskid })
+        const IsexitstaskDeleted = await WorkSpaceTask.findOneAndDelete({ TaskId: taskid })
         if (IsexitstaskDeleted == null) {
             return res.status(404).json({ message: "Task is not Found to Delete it" })
         }
@@ -320,38 +327,47 @@ const DeleteTask = async (req, res, next) => {
 // Duplicate Task
 const DuplicateTask = async (req, res, next) => {
     try {
+        const { taskid } = req.params;
+        console.log(taskid,'taskid')
 
+        if (!taskid) {
+            return res.status(404).json({ message: "TaskId is missing to duplicate" });
+        }
 
-        const { taskid } = req.params
+        const IsduplicateTask = await WorkSpaceTask.findOne({ TaskId: taskid });
+        console.log(IsduplicateTask,'IsduplicateTask')
 
+        if (!IsduplicateTask) {
+            return res.status(404).json({ message: "Task not found" });
+        }
 
-        console.log(req.body.NewTaskid,'NewTaskid')
-
-        console.log(taskid, 'taskid DuplicateTask')
-        if (!taskid) { return res.status(404).json({ message: "TaskId is missing to duplicate" }) }
-        const IsduplicateTask = await WorkSpaceTask.findOne({ Taskid: taskid })
-        console.log(IsduplicateTask, 'IsduplicateTask')
+        if (!req.body.NewTaskid) {
+            return res.status(400).json({ message: "NewTaskid is required" });
+        }
 
         const { _id, ...taskData } = IsduplicateTask.toObject();
+        console.log({ _id, ...taskData })
 
         const Add = new WorkSpaceTask({
             ...taskData,
-            Taskid: req.body.NewTaskid, // new task id
+            Taskid: req.body.NewTaskid,
             isDuplicateTaskId: IsduplicateTask.Taskid,
+            SubTask: [],
+            Files: [],
+            Links: []
         });
 
         await Add.save();
+
         return res.status(200).json({
             message: "Task duplicated successfully. You can now edit the copied task."
         });
+
     } catch (error) {
-
-        console.log(error.message)
-
-        next(error)
-
+        console.log(error.message);
+        next(error);
     }
-}
+};
 
 
 module.exports = { DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }

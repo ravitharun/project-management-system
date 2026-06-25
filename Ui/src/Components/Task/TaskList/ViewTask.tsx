@@ -20,7 +20,10 @@ import { FaTrash } from "react-icons/fa";
 import GlobalToast from "../../GlobalToast";
 import WallpaperPopup from "../../TaskWallpaper";
 import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDelete";
-function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
+import bgthemeContext from "../../../Context/ThemeContext";
+function ViewTask({  viewtasks, TaskListView, projectid }: any) {
+   const context = useContext(bgthemeContext);
+    const { theme }: any = context
   const [OpenDropDown, SetOpenDropDown] = useState<boolean>(false)
   const [CreateTask, setCreateTask] = useState(false)
   const TasksView = useContext(ViewTaskFirst);
@@ -162,7 +165,8 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   }
 
   const HandelDeleteTask = async () => {
-    const TasksId = Tasks.Taskid
+    const TasksId = Tasks.TaskId
+    alert(TasksId)
     if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 
@@ -184,7 +188,8 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
     }
   }
   const DuplicateTask = async () => {
-    const TasksId = Tasks.Taskid
+    const TasksId = Tasks.TaskId
+    console.log(TasksId)
     if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 

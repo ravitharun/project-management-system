@@ -5,6 +5,8 @@ import { ModuleRegistry } from "ag-grid-community";
 import { MasterDetailModule, RowGroupingModule } from "ag-grid-enterprise";
 import { FiEye, FiDownload, FiTrash2 } from "react-icons/fi";
 import { getuserInfo } from "../../LocalStorage";
+import bgthemeContext from "../../../Context/ThemeContext";
+import { useContext } from "react";
 
 ModuleRegistry.registerModules([
     AllCommunityModule,
@@ -12,7 +14,9 @@ ModuleRegistry.registerModules([
     RowGroupingModule,
 ]);
 
-function TaskFiles({ theme, file }: any) {
+function TaskFiles({  file }: any) {
+     const context = useContext(bgthemeContext);
+        const { theme }: any = context
     console.log(file, 'Tarun')
   const GetDate = (date: any) => {
   return new Date(date).toLocaleString("en-IN", {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
     FiMail,
     FiUsers,
@@ -7,10 +7,13 @@ import {
 } from "react-icons/fi";
 import { instance } from "../../../services/apiservices";
 import { toast } from "react-toastify";
+import bgthemeContext from "../../../Context/ThemeContext";
 
-function AddPeopleWorkspace({ theme, closesetAddMembers, workspace }: any) {
+function AddPeopleWorkspace({ closesetAddMembers, workspace }: any) {
     const [emails, setEmails] = useState("");
     console.log(emails)
+    const context = useContext(bgthemeContext);
+    const { theme }: any = context
     const dark = theme === "Dark";
 
 

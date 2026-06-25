@@ -11,10 +11,11 @@ import bgthemeContext from "../Context/ThemeContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { instance } from "../services/apiservices";
+import { checkuser } from "./LocalStorage";
 
 type WallpaperPopupProps = {
     open?: boolean;
-    onClose?:any;
+    onClose?: any;
     Tasks: any
 };
 
@@ -55,7 +56,11 @@ const WallpaperPopup = ({
                 setSearchedImages(response.data.results)
 
             } catch (error: any) {
-                return console.log(error)
+                if (error.response.status == 401) {
+                    return checkuser()
+                    // redirect("")
+
+                }
 
             }
         }
@@ -97,7 +102,7 @@ const WallpaperPopup = ({
 
         try {
             const response = await instance.put(
-                `/api/Task/${Tasks.Taskid}/wallpaper`,
+                `/api/Task/${Tasks.TaskId}/wallpaper`,
                 formdata,
                 {
                     headers: {
@@ -114,6 +119,11 @@ const WallpaperPopup = ({
             console.log(error?.response?.data?.message);
             console.log(error?.response?.data);
             console.log(error?.response?.status);
+            if (error.response.status == 401) {
+                return checkuser()
+                // redirect("")
+
+            }
         }
     };
 

@@ -6,8 +6,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import MinAndMaxWorkspaceView from "./TaskBoard/MinAndMaxWorkspaceview";
 import ShareMinAndMaxWorkspaceView from "../Share/ShareMinAndMaxWorkspaceView";
+import bgthemeContext from "../../Context/ThemeContext";
 
-function TaskLayout({ theme }: any) {
+function TaskLayout() {
+     const context = useContext(bgthemeContext);
+    const { theme }: any = context
     const stats = useLocation()
 
     const navigate = useNavigate()

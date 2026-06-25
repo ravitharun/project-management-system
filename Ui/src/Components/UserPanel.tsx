@@ -10,7 +10,6 @@ import {
 import bgthemeContext from "../Context/ThemeContext"
 import { checkuser, getuserInfo } from "./LocalStorage"
 
-export type theme = "Dark" | "Ligth"
 
 function UserPanel() {
 
