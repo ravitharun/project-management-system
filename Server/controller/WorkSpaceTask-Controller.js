@@ -9,7 +9,7 @@ const AddWorkSpaceTask = async (req, res) => {
 
         const Createtask = new WorkSpaceTask({
             ...req.body.TaskData,
-            assignTo: req.body.assignTo ? req.body.assignTo : undefined
+            assignTo: req.body.assignTo ? req.body.assignTo : undefined,
                         SubTask: [], Files: [], Links: []
         });
         await Createtask.save()
