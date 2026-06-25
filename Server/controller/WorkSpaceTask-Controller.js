@@ -234,7 +234,7 @@ const UploadSubTaskFile = async (req, res, next) => {
             FileNotFoundTask.status = 404
             return next(FileNotFoundTask)
         }
-        const Isexitstask = await WorkSpaceTask.findOne({ Taskid: req.body.Taskid })
+        const Isexitstask = await WorkSpaceTask.findOne({ TaskId: req.body.Taskid })
 
         if (!Isexitstask) {
             const NotFoundTask = new Error("Task Not Found")
@@ -280,7 +280,7 @@ const UpdateTaskWallpaper = async (req, res, next) => {
 
 
 
-        const isexitsupdate = await WorkSpaceTask.findOneAndUpdate({ Taskid: taskId }, { TaskWallpaper: req.body.uplodtype == "Custom" ? Customurl : req.body.selectedWallpaper }, { returnDocument: "after" })
+        const isexitsupdate = await WorkSpaceTask.findOneAndUpdate({ TaskId: taskId }, { TaskWallpaper: req.body.uplodtype == "Custom" ? Customurl : req.body.selectedWallpaper }, { returnDocument: "after" })
         console.log(isexitsupdate, 'isexitsupdate updated .')
         if (isexitsupdate == null) {
             return res.status(404).json({ message: "Taskid Not found" })
@@ -299,7 +299,7 @@ const DeleteTask = async (req, res, next) => {
 
     try {
         const { taskid } = req.params
-        console.log(taskid, 'taskid')
+        console.log(taskid, 'taskid to delete')
         if (!taskid) {
             const taskidNotFound = new Error("taskid is missing.")
             taskidNotFound.status = 404
@@ -307,7 +307,7 @@ const DeleteTask = async (req, res, next) => {
         }
 
 
-        const IsexitstaskDeleted = await WorkSpaceTask.findOneAndDelete({ Taskid: taskid })
+        const IsexitstaskDeleted = await WorkSpaceTask.findOneAndDelete({ TaskId: taskid })
         if (IsexitstaskDeleted == null) {
             return res.status(404).json({ message: "Task is not Found to Delete it" })
         }
@@ -328,12 +328,14 @@ const DeleteTask = async (req, res, next) => {
 const DuplicateTask = async (req, res, next) => {
     try {
         const { taskid } = req.params;
+        console.log(taskid,'taskid')
 
         if (!taskid) {
             return res.status(404).json({ message: "TaskId is missing to duplicate" });
         }
 
-        const IsduplicateTask = await WorkSpaceTask.findOne({ Taskid: taskid });
+        const IsduplicateTask = await WorkSpaceTask.findOne({ TaskId: taskid });
+        console.log(IsduplicateTask,'IsduplicateTask')
 
         if (!IsduplicateTask) {
             return res.status(404).json({ message: "Task not found" });

@@ -185,6 +185,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   }
   const DuplicateTask = async () => {
     const TasksId = Tasks.TaskId
+    console.log(TasksId)
     if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 
