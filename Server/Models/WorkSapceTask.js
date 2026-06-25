@@ -43,10 +43,10 @@ const WorkSpaceTask = new mongoose.Schema(
             default: "",
         },
 
-        Taskid: {
+        TaskId: {
             type: String,
+            default: () => new mongoose.Types.ObjectId().toString(),
             required: true,
-            index: true,
         },
 
         TaskWallpaper: {
