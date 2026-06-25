@@ -5,22 +5,28 @@ const Workspace = require("../Models/Workspace")
 const AddcommentsSchema = require("../Models/Workspace-comments")
 const AddWorkSpaceTask = async (req, res) => {
     try {
-        console.log(req.body.TaskData, 'hey')
+        const { TaskData, assignTo } = req.body;
 
         const Createtask = new WorkSpaceTask({
-            ...req.body.TaskData,
-            assignTo: req.body.assignTo ? req.body.assignTo : undefined,
-                        SubTask: [], Files: [], Links: []
+            ...TaskData,
+            assignTo: assignTo || null,
+            SubTask: [],
+            Files: [],
+            Links: []
         });
-        await Createtask.save()
-        console.log("workSpace Created")
-        return res.status(201).json({ message: "WorkSpaceTask Created", data: req.body })
-    } catch (error) {
-        console.log(error.message)
-        return res.status(500).json({ message: "Server Error." })
-    }
 
-}
+        await Createtask.save();
+
+        return res.status(201).json({
+            message: "WorkSpaceTask Created",
+            data: Createtask
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Server Error." });
+    }
+};
 
 
 // fetch toasks
