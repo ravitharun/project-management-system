@@ -52,6 +52,15 @@ const TaskPdfUploadFilter = (req, file, cb) => {
     cb(new Error("Only PDF files allowed"), false);
   }
 };
+// CustomWallpaper Upload Filter
+const CustomWallpaperFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only images allowed"), false);
+  }
+};
+
 
 // Upload instances
 const upload = multer({
@@ -80,8 +89,13 @@ const uploadTaskPdfUploadFilter = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: TaskPdfUploadFilter
 });
+const uploadCustomWallpaperTaskFilter = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: CustomWallpaperFilter
+});
 
 
 
 
-module.exports = { upload, Pdfupload ,uploadWorkspaceWallpaper,uploadWorkspaceIcon, uploadTaskPdfUploadFilter};
+module.exports = { upload, Pdfupload, uploadWorkspaceWallpaper, uploadWorkspaceIcon, uploadTaskPdfUploadFilter,uploadCustomWallpaperTaskFilter };

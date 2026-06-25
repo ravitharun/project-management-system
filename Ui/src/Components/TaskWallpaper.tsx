@@ -14,7 +14,7 @@ import { instance } from "../services/apiservices";
 
 type WallpaperPopupProps = {
     open?: boolean;
-    onClose?: () => void;
+    onClose?:any;
     Tasks: any
 };
 
@@ -28,6 +28,9 @@ const WallpaperPopup = ({
     const [search, setSearch] = useState("workspace");
     const [searchedImages, setSearchedImages] = useState<any[]>([]);
     const [pages, setpages] = useState<number>(1)
+    const [UploadFile, setfile] = useState<any | null>(null)
+
+    const [uplodtype, setuploadtype] = useState("")
 
     const [totalpages, settotalpages] = useState<number>(0)
     const { theme }: any = themeContext
@@ -59,7 +62,6 @@ const WallpaperPopup = ({
         FetchImges()
 
     }, [search, pages])
-    console.log(searchedImages, 'searchedImages')
 
     // handelSearch
     const handelSearch = async () => {
@@ -71,36 +73,48 @@ const WallpaperPopup = ({
     }
     console.log(pages, 'pages')
     // Custom File Upload Image
-    const handleUpload = (
+    const handleUpload = async (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const file = e.target.files?.[0];
+        const file: any = e.target.files?.[0];
 
         if (!file) return;
 
         const imageUrl = URL.createObjectURL(file);
         setSelectedWallpaper(imageUrl);
+        setuploadtype("Custom")
+        setfile(file)
+
     };
 
     const handleApply = async () => {
         if (!selectedWallpaper) return;
 
-
-
+        const formdata = new FormData();
+        formdata.append("CustomWallpaper", UploadFile);
+        formdata.append("selectedWallpaper", selectedWallpaper);
+        formdata.append("uplodtype", uplodtype);
 
         try {
-            const response = await instance.put(`/api/Task/${Tasks.Taskid}/wallpaper`, { selectedWallpaper: selectedWallpaper })
-            console.log(response)
+            const response = await instance.put(
+                `/api/Task/${Tasks.Taskid}/wallpaper`,
+                formdata,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            );
 
-            if(response.status==200){return toast.success(response.data.message)}
+            if (response.status === 200) {
+                toast.success(response.data.message);
+                return onClose()
+            }
         } catch (error: any) {
-            console.log(error.response.data.message)
-            console.log(error.response.data)
-            return console.log(error.response.status)
-
+            console.log(error?.response?.data?.message);
+            console.log(error?.response?.data);
+            console.log(error?.response?.status);
         }
-
-
     };
 
     if (!open) return null;
