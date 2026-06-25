@@ -7,12 +7,13 @@ const Workspace = require("../Models/Workspace")
 const AddcommentsSchema = require("../Models/Workspace-comments")
 const AddWorkSpaceTask = async (req, res) => {
     try {
-        console.log(req.body.TaskData,'hey')
+        console.log(req.body.TaskData, 'hey')
 
         const Createtask = new WorkSpaceTask({
             ...req.body.TaskData,
-
-        })
+            assignTo: req.body.TaskData.assignTo,
+            SubTask: [], Files: [], Links: []
+        });
         await Createtask.save()
 
         console.log("workSpace Created")
@@ -325,7 +326,7 @@ const DuplicateTask = async (req, res, next) => {
         const { taskid } = req.params
 
 
-        console.log(req.body.NewTaskid,'NewTaskid')
+        console.log(req.body.NewTaskid, 'NewTaskid')
 
         console.log(taskid, 'taskid DuplicateTask')
         if (!taskid) { return res.status(404).json({ message: "TaskId is missing to duplicate" }) }

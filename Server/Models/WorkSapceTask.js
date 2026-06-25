@@ -1,77 +1,94 @@
-const { default: mongoose } = require("mongoose")
-const mongosse = require("mongoose")
+const mongoose = require("mongoose");
 
-const TaskToAssiginMemeber = new mongosse.Schema({
-    Name: { type: String, required: true },
-    Email: {
-        type: String, required: true, index: true
-    },
+// SubTask Schema
+const SubTaskSchema = new mongoose.Schema({
+  TaskId: {
+    type: String,
+    default: () => new mongoose.Types.ObjectId().toString(), // or crypto.randomUUID()
+  },
 
-})
+  taskName: String,
 
-// const Subatask = new mongosse.Schema([{
-//     TaskId: {
-//         type: String,
-//         unique: true,
-//         sparse: true
-//     },
-//     taskName: { type: String, },
-//     taskPriority: { type: String, },
-//     AssiginMember: TaskToAssiginMemeber,
-//     SubTaskStatus: { type: String, default: "In progress" },
+  taskPriority: String,
 
-// }])
-const Subatask = new mongosse.Schema({
-    TaskId: {
-        type: String,
-        // unique: true,
-        sparse: true
-    },
-    taskName: String,
-    taskPriority: String,
+  assignTo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 
-    AssiginMember: TaskToAssiginMemeber,
-
-    SubTaskStatus: {
-        type: String,
-        default: "In progress"
-    }
+  SubTaskStatus: {
+    type: String,
+    default: "In progress",
+  },
 });
 
-const WorkSpaceTask = new mongosse.Schema({
+// WorkSpace Task Schema
+const WorkSpaceTask = new mongoose.Schema(
+  {
     projectid: { type: String, required: true, index: true },
+
     TaskStatus: {
-        type: String,
-        enum: ["todo", "inprogress", "review", "completed"],
-        default: "todo"
+      type: String,
+      enum: ["todo", "inprogress", "review", "completed"],
+      default: "todo",
     },
+
     isTicketOpen: {
-        type: Boolean,
-        default: true
+      type: Boolean,
+      default: true,
     },
-    isDuplicateTaskId: { type: String, default: "" },
-    Taskid: { type: String, required: true, index: true },
-    TaskWallpaper: { type: String, default: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e" },
+
+    isDuplicateTaskId: {
+      type: String,
+      default: "",
+    },
+
+    Taskid: {
+      type: String,
+      required: true,
+      index: true,
+    },
+
+    TaskWallpaper: {
+      type: String,
+      default:
+        "https://images.unsplash.com/photo-1493246507139-91e8fad9978e",
+    },
+
     taskName: { type: String, required: true },
+
     description: { type: String, required: true },
+
     startDate: { type: Date, required: true },
+
     endDate: { type: Date, required: true },
-    SubTask: [Subatask],
-    Files: [{
-        fileurl: { type: String },
+
+    SubTask: [SubTaskSchema],
+
+    assignTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+
+    Files: [
+      {
+        fileurl: String,
         userid: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        uploadedAt: { type: Date, default: Date.now() }
-    }],
-    Links: [{
-        Link: { type: String },
-        LinkName: { type: String },
+        uploadedAt: { type: Date, default: Date.now },
+      },
+    ],
 
-    }],
+    Links: [
+      {
+        Link: String,
+        LinkName: String,
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
-}, {
-    timestamps: true
-})
-
-
-
-module.exports = new mongosse.model("WorkSpaceTasks", WorkSpaceTask)
+// Export model
+module.exports = mongoose.model("WorkSpaceTasks", WorkSpaceTask);
