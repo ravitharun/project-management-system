@@ -162,7 +162,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   }
 
   const HandelDeleteTask = async () => {
-    const TasksId = Tasks.Taskid
+    const TasksId = Tasks.TaskId
     if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 
@@ -184,7 +184,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
     }
   }
   const DuplicateTask = async () => {
-    const TasksId = Tasks.Taskid
+    const TasksId = Tasks.TaskId
     if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 
