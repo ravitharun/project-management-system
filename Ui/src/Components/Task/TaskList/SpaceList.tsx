@@ -143,21 +143,43 @@ function SpaceList({ spaceid }: any) {
                   className={`
                     h-full overflow-hidden border-r
                     ${isDark
-                      ? "border-white/10 bg-[#0b1220]"
+                      ? " bg-[#0f172a]"
                       : "border-gray-200 bg-white"
                     }
                   `}
                 >
                   <div
-                    className={`
-                      flex h-14 items-center border-b px-3
-                      ${isDark ? "border-white/10" : "border-gray-200"}
-                    `}
+                    className={`flex h-16 items-center justify-between border-b px-4${isDark
+                        ? "border-white/10 bg-[#0f172a] text-white"
+                        : "border-gray-200 bg-gray-50 text-gray-800"
+                      }`}
                   >
-                    <h2 className="flex items-center gap-2 text-sm font-semibold">
-                      <FaTasks className="text-sm" />
-                      <span>Tasks</span>
-                    </h2>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`p-2 rounded-lg ${isDark
+                          ? "bg-blue-500/20 text-blue-400"
+                          : "bg-blue-100 text-blue-600"
+                          }`}
+                      >
+                        <FaTasks className="text-base" />
+                      </div>
+
+                      <div>
+                        <h2 className="text-sm font-semibold">Tasks</h2>
+                        <p className="text-xs opacity-70">
+                          Manage your workspace tasks
+                        </p>
+                      </div>
+                    </div>
+
+                    <span
+                      className={`px-3 py-1 text-xs font-semibold rounded-full ${isDark
+                        ? "bg-white/10 text-white"
+                        : "bg-gray-200 text-gray-700"
+                        }`}
+                    >
+                      {TaskListView.length}
+                    </span>
                   </div>
 
                   <div className="h-[calc(100%-56px)] overflow-y-auto p-2">

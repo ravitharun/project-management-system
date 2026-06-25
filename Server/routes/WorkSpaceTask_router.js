@@ -1,5 +1,5 @@
 const express = require("express")
-const { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask ,UploadSubTaskFile,UpdateTaskWallpaper, uploadCustomTaskWalpaper} = require("../controller/WorkSpaceTask-Controller")
+const { AddWorkSpaceTask, Addcomments, AddRelpys, DeleteTask,FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper, uploadCustomTaskWalpaper, DuplicateTask } = require("../controller/WorkSpaceTask-Controller")
 const AuthTokenVerification = require("../Middleware/AuthMiddleware")
 const { uploadTaskPdfUploadFilter, uploadCustomWallpaperTaskFilter } = require("../config/mutler")
 const WorkSpaceTaskRouter = express.Router()
@@ -9,6 +9,8 @@ WorkSpaceTaskRouter.post("/AddWorkSpaceTask", AuthTokenVerification, AddWorkSpac
 WorkSpaceTaskRouter.post("/Addcomments", AuthTokenVerification, Addcomments)
 WorkSpaceTaskRouter.put("/AddRelpys", AuthTokenVerification, AddRelpys)
 WorkSpaceTaskRouter.post("/AddSubTasks", AuthTokenVerification, AddSubTask)
-WorkSpaceTaskRouter.put("/:taskId/wallpaper", AuthTokenVerification, uploadCustomWallpaperTaskFilter.single("CustomWallpaper"),UpdateTaskWallpaper)
-WorkSpaceTaskRouter.post("/uploadSubtaskFiles", AuthTokenVerification,  uploadTaskPdfUploadFilter.single("TaskFileUpload"),UploadSubTaskFile)
+WorkSpaceTaskRouter.delete("/:taskid/Delete", AuthTokenVerification, DeleteTask)
+WorkSpaceTaskRouter.post("/:taskid/DuplicateTask", AuthTokenVerification, DuplicateTask)
+WorkSpaceTaskRouter.put("/:taskId/wallpaper", AuthTokenVerification, uploadCustomWallpaperTaskFilter.single("CustomWallpaper"), UpdateTaskWallpaper)
+WorkSpaceTaskRouter.post("/uploadSubtaskFiles", AuthTokenVerification, uploadTaskPdfUploadFilter.single("TaskFileUpload"), UploadSubTaskFile)
 module.exports = WorkSpaceTaskRouter

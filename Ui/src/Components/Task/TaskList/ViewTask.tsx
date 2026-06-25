@@ -19,6 +19,7 @@ import TaskForm from "../CreateTask/TaskForm";
 import { FaTrash } from "react-icons/fa";
 import GlobalToast from "../../GlobalToast";
 import WallpaperPopup from "../../TaskWallpaper";
+import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDelete";
 function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   const [OpenDropDown, SetOpenDropDown] = useState<boolean>(false)
   const [CreateTask, setCreateTask] = useState(false)
@@ -29,7 +30,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
   if (!TasksView) return null;
 
   const { Tasks } = TasksView;
-  console.log(Tasks,'Tasks')
+  console.log(Tasks, 'Tasks')
   const [item, setitem] = useState<any>(
     [
       {
@@ -160,12 +161,58 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
     setitem(addrply)
   }
 
+  const HandelDeleteTask = async () => {
+    const TasksId = Tasks.Taskid
+    if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 
-  const HandelMenu = (itm: any) => {
+
+    try {
+
+      const response = await HandelTaskDelete(TasksId)
+      console.log(response.status)
+      if (response.status == 200) {
+
+        return GlobalToast(response.data.message, 'info')
+
+      }
+
+    } catch (error: any) {
+
+      return GlobalToast(error.response.data.message, 'info')
+
+    }
+  }
+  const DuplicateTask = async () => {
+    const TasksId = Tasks.Taskid
+    if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
+
+
+
+    try {
+
+      const response = await HandelDuplicateTask(TasksId)
+      console.log(response.status)
+      if (response.status == 200) {
+
+        return GlobalToast(response.data.message, 'info')
+
+      }
+
+    } catch (error: any) {
+
+      return GlobalToast(error.response.data.message, 'info')
+
+    }
+
+
+
+
+  }
+  const HandelMenu = (itm: any,) => {
     switch (itm) {
       case "Duplicate Task":
-        GlobalToast(itm, "info")
+        DuplicateTask()
         break;
       case "Edit Task":
         GlobalToast(itm, "info")
@@ -188,7 +235,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
         break;
 
       default:
-        GlobalToast(itm, "info")
+        HandelDeleteTask()
 
         break;
     }
@@ -726,7 +773,7 @@ function ViewTask({ theme, viewtasks, TaskListView, projectid }: any) {
           )}
       </div >
       {CreateTask && <TaskForm CreateTask={CreateTask} onclose={() => setCreateTask(false)} projectid={projectid} />}
-      {ShowWallpaper && <WallpaperPopup open={ShowWallpaper} onClose={()=>setShowWallpaper(false)} Tasks={Tasks}/>}
+      {ShowWallpaper && <WallpaperPopup open={ShowWallpaper} onClose={() => setShowWallpaper(false)} Tasks={Tasks} />}
     </>
   )
 }

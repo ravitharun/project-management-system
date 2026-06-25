@@ -288,6 +288,70 @@ const UpdateTaskWallpaper = async (req, res, next) => {
 }
 
 
+const DeleteTask = async (req, res, next) => {
+
+    try {
+        const { taskid } = req.params
+        console.log(taskid, 'taskid')
+        if (!taskid) {
+            const taskidNotFound = new Error("taskid is missing.")
+            taskidNotFound.status = 404
+            return next(taskidNotFound)
+        }
 
 
-module.exports = { AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
+        const IsexitstaskDeleted = await WorkSpaceTask.findOneAndDelete({ Taskid: taskid })
+        if (IsexitstaskDeleted == null) {
+            return res.status(404).json({ message: "Task is not Found to Delete it" })
+        }
+
+        console.log(IsexitstaskDeleted)
+
+
+        return res.status(200).json({ message: "Task deleted successfully" })
+    } catch (error) {
+        console.log(error.message)
+        next(error)
+    }
+
+}
+
+
+// Duplicate Task
+const DuplicateTask = async (req, res, next) => {
+    try {
+
+
+        const { taskid } = req.params
+
+
+        console.log(req.body.NewTaskid,'NewTaskid')
+
+        console.log(taskid, 'taskid DuplicateTask')
+        if (!taskid) { return res.status(404).json({ message: "TaskId is missing to duplicate" }) }
+        const IsduplicateTask = await WorkSpaceTask.findOne({ Taskid: taskid })
+        console.log(IsduplicateTask, 'IsduplicateTask')
+
+        const { _id, ...taskData } = IsduplicateTask.toObject();
+
+        const Add = new WorkSpaceTask({
+            ...taskData,
+            Taskid: req.body.NewTaskid, // new task id
+            isDuplicateTaskId: IsduplicateTask.Taskid,
+        });
+
+        await Add.save();
+        return res.status(200).json({
+            message: "Task duplicated successfully. You can now edit the copied task."
+        });
+    } catch (error) {
+
+        console.log(error.message)
+
+        next(error)
+
+    }
+}
+
+
+module.exports = { DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }

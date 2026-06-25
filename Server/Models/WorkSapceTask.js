@@ -31,6 +31,7 @@ const WorkSpaceTask = new mongosse.Schema({
         type: Boolean,
         default: true
     },
+    isDuplicateTaskId: { type: String, default: "" },
     Taskid: { type: String, required: true, index: true },
     TaskWallpaper: { type: String, default: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e" },
     taskName: { type: String, required: true },
