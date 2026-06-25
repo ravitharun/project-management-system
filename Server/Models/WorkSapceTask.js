@@ -9,18 +9,34 @@ const TaskToAssiginMemeber = new mongosse.Schema({
 
 })
 
-const Subatask = new mongosse.Schema([{
+// const Subatask = new mongosse.Schema([{
+//     TaskId: {
+//         type: String,
+//         unique: true,
+//         sparse: true
+//     },
+//     taskName: { type: String, },
+//     taskPriority: { type: String, },
+//     AssiginMember: TaskToAssiginMemeber,
+//     SubTaskStatus: { type: String, default: "In progress" },
+
+// }])
+const Subatask = new mongosse.Schema({
     TaskId: {
         type: String,
-        unique: true,
+        // unique: true,
         sparse: true
     },
-    taskName: { type: String, },
-    taskPriority: { type: String, },
-    AssiginMember: TaskToAssiginMemeber,
-    SubTaskStatus: { type: String, default: "In progress" },
+    taskName: String,
+    taskPriority: String,
 
-}])
+    AssiginMember: TaskToAssiginMemeber,
+
+    SubTaskStatus: {
+        type: String,
+        default: "In progress"
+    }
+});
 
 const WorkSpaceTask = new mongosse.Schema({
     projectid: { type: String, required: true, index: true },
