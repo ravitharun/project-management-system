@@ -1,20 +1,21 @@
 import { IoClose } from "react-icons/io5";
 import { FiStar, FiEye } from "react-icons/fi";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { instance } from "../services/apiservices";
 import { toast } from "react-toastify";
 import ApiLoader from "./ApiLoader";
 import { FetchStarWorkspace } from "../services/FetchStarSpace";
+import bgthemeContext from "../Context/ThemeContext";
 
 
 function StartMenuList({
     setStarMenu,
-    theme,
     // Workspace,
     useremail,
     handelSelectSpace,
 }: any) {
-
+ const context = useContext(bgthemeContext);
+    const { theme }: any = context
     const [star, setstar] = useState<any[]>([])
     const [apiloading, setapiloading] = useState<boolean>(false)
 

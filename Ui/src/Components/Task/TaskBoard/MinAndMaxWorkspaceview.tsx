@@ -12,9 +12,12 @@ import AddPeopleWorkspace from "../AddPeople-workspace/AddPeopleWorkspace";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ClickedWorkSpace from "../../../Context/ClickedWorkSpace";
+import bgthemeContext from "../../../Context/ThemeContext";
 
 
-function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
+function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
+   const context = useContext(bgthemeContext);
+    const { theme }: any = context
 
   const navi = useNavigate()
   console.log(CurrentView, 'workspace?.icon')
@@ -506,7 +509,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, theme, 
                   height: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <MyCalendar theme={theme} />
+                <MyCalendar  />
               </div>
             )}
 

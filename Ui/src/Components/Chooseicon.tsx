@@ -1,20 +1,21 @@
 import { IoClose } from "react-icons/io5"
 import { WorkSpaceIcon } from "../types/workspaceIcon"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { instance } from "../services/apiservices"
 import { toast } from "react-toastify"
 import { checkuser, useremail } from "./LocalStorage"
 import { allowedtype } from "../types/CustomUploadFormat"
 import UploadingLoader from "./UploadingLoader"
+import bgthemeContext from "../Context/ThemeContext"
 
 function Chooseicon({
-    theme,
     close,
     id
 }: any) {
     const [choosed, setchoosed] = useState("")
 
-
+ const context = useContext(bgthemeContext);
+    const { theme }: any = context
     const [isuploading, setisuploading] = useState<boolean>(false)
     const handleUpdateIcon = async () => {
 

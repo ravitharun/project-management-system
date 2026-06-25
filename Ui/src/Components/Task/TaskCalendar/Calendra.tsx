@@ -1,6 +1,10 @@
 import { Scheduler } from "@aldabil/react-scheduler";
+import bgthemeContext from "../../../Context/ThemeContext";
+import { useContext } from "react";
 
-function MyCalendar({ theme }: any) {
+function MyCalendar() {
+   const context = useContext(bgthemeContext);
+      const { theme }: any = context
   return (
     <>
 

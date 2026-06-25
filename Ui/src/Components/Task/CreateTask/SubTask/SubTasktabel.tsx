@@ -1,13 +1,16 @@
 import { AgGridProvider, AgGridReact } from "ag-grid-react";
 import { AllCommunityModule } from "ag-grid-community";
 import ViewProfileCard from "../../../PoupProfileCard/ViewProfileCard";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import bgthemeContext from "../../../../Context/ThemeContext";
 
 
 
 const modules = [AllCommunityModule];
 
-function SubTaskTable({ theme = "Dark", rowData }: any) {
+function SubTaskTable({ rowData }: any) {
+  const context = useContext(bgthemeContext);
+  const { theme }: any = context
   console.log("Grid Data:", rowData);
   const timeoutRef = useRef<any>(null);
   const [popupPos, setPopupPos] = useState({
@@ -41,7 +44,7 @@ function SubTaskTable({ theme = "Dark", rowData }: any) {
                 x: e.clientX,
                 y: e.clientY,
                 show: true,
-                userInof:params
+                userInof: params
               });
             }}
             onMouseLeave={() => {

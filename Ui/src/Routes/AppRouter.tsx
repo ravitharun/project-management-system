@@ -11,13 +11,12 @@ const Analytics = lazy(() => import("../pages/Analytics"))
 const Profile = lazy(() => import("../pages/Profile"))
 const Calendra = lazy(() => import("../Components/Task/TaskCalendar/Calendra"))
 const ProjectSettings = lazy(() => import("../Components/ProjectSettings"))
-import { lazy, Suspense, useContext, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { socket } from "../Scokets/ScoketConfig";
 import { useremail, Usertoekn } from "../Components/LocalStorage";
 import { formatProjectNotification } from "../utils/toastMessge";
 import Loader from "../Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
-import bgthemeContext from "../Context/ThemeContext";
 import Shareview from "../Components/Shareview";
 import EmailBasedJoinWorkspace from "../Components/EmailApproval/EmailBasedJoinWorkspace";
 import TaskLayout from "../Components/Task/TaskLayout";
@@ -25,10 +24,7 @@ import TaskLayout from "../Components/Task/TaskLayout";
 
 function AppRouter() {
     const navigate = useNavigate();
-    const ContextTheme = useContext(bgthemeContext)
-    const { theme }: any = ContextTheme
-    const dev = import.meta.env.VITE_ENV
-    console.log(dev, 'dev')
+
     useEffect(() => {
 
         const handleCheckuserOnline = (data: any) => {
@@ -162,13 +158,13 @@ function AppRouter() {
                 theme="colored"
             ></ToastContainer>
 
-            <Suspense fallback={<Loader theme={theme} />}>
+            <Suspense fallback={<Loader  />}>
                 <Routes>
                     <Route path="/" element={<App />} />
                     <Route path="/Workspace" element={<TaskLayout  />} />
 
                     {/* <Route path="shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} /> */}
-                    <Route path="/shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} />
+                    <Route path="/shared/ViewWorkspace/:id" element={<Shareview  />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projectSettings" element={<ProjectSettings />} />
                     <Route path="/Tasks" element={<Task />} />
@@ -178,7 +174,7 @@ function AppRouter() {
                     <Route path="/Calendar" element={<Calendra />} />
                     <Route path="/Team" element={<Team />} />
                     <Route path="/Profile" element={<Profile />} />
-                    <Route path="/Email-JoinWorkspace" element={<EmailBasedJoinWorkspace theme={theme} />} />
+                    <Route path="/Email-JoinWorkspace" element={<EmailBasedJoinWorkspace  />} />
                     <Route path="/Login" element={<Login />} />
                     {/* <Route path="/Loader" element={<Loader />} /> */}
                     <Route path="/Signup" element={<SiginUp />} />
