@@ -11,7 +11,9 @@ const TaskToAssiginMemeber = new mongosse.Schema({
 
 const Subatask = new mongosse.Schema([{
     TaskId: {
-        type: String, unique: true, index: true
+        type: String,
+        unique: true,
+        sparse: true
     },
     taskName: { type: String, },
     taskPriority: { type: String, },
