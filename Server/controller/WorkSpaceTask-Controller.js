@@ -23,8 +23,8 @@ const AddWorkSpaceTask = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Server Error." });
+        console.log(error.message);
+        return res.status(500).json({ message:error.message });
     }
 };
 
