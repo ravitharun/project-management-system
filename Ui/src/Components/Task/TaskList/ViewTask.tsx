@@ -21,18 +21,32 @@ import GlobalToast from "../../GlobalToast";
 import WallpaperPopup from "../../TaskWallpaper";
 import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDelete";
 import bgthemeContext from "../../../Context/ThemeContext";
-function ViewTask({  viewtasks, TaskListView, projectid }: any) {
-   const context = useContext(bgthemeContext);
-    const { theme }: any = context
+// import { instance } from "../../../services/apiservices";
+function ViewTask({ viewtasks, TaskListView, projectid }: any) {
+  const context = useContext(bgthemeContext);
+  const { theme }: any = context
   const [OpenDropDown, SetOpenDropDown] = useState<boolean>(false)
   const [CreateTask, setCreateTask] = useState(false)
+  const [TaskStatus, setTaskStatus] = useState()
+
   const TasksView = useContext(ViewTaskFirst);
-  const [ShowWallpaper, setShowWallpaper] = useState<boolean>(false)
-
-
   if (!TasksView) return null;
 
   const { Tasks } = TasksView;
+  const [ShowWallpaper, setShowWallpaper] = useState<boolean>(false)
+  const [isedit, setedit] = useState<boolean>(false)
+  const [editTaskName, setEditTaskName] = useState(
+    Tasks?.taskName || viewtasks?.taskName || ""
+  );
+  const [editTaskdescription, setEditTaskdescription] = useState(
+    Tasks?.description || viewtasks?.description || ""
+  );
+
+
+
+
+
+
   console.log(Tasks, 'Tasks')
   const [item, setitem] = useState<any>(
     [
@@ -214,13 +228,20 @@ function ViewTask({  viewtasks, TaskListView, projectid }: any) {
 
 
   }
+
+
+
+  const Edittask = () => {
+    setedit((prev) => !prev)
+  }
+
   const HandelMenu = (itm: any,) => {
     switch (itm) {
       case "Duplicate Task":
         DuplicateTask()
         break;
       case "Edit Task":
-        GlobalToast(itm, "info")
+        Edittask()
 
         break;
       case "Pin Task":
@@ -243,6 +264,25 @@ function ViewTask({  viewtasks, TaskListView, projectid }: any) {
         HandelDeleteTask()
 
         break;
+    }
+  }
+
+
+
+  const save = async () => {
+    try {
+      const data = {
+        TaskStatus: TaskStatus,
+        editTaskdescription: editTaskdescription,
+        editTaskName: editTaskName
+      }
+      console.log(data)
+
+      // const response = await instance.put(`/api/Task/${Tasks.TaskId}/edit`, { data: data })
+      // console.log(response, 'responseEitTask')
+    } catch (error: any) {
+      return console.log(error.response.status)
+
     }
   }
   return (
@@ -435,39 +475,114 @@ function ViewTask({  viewtasks, TaskListView, projectid }: any) {
                 </div>
 
                 {/* DATA BELOW IMAGE */}
-                <div className="p-5 sm:p-6">
+                <div className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 text-lg text-white shadow-md">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-2xl text-white shadow-lg">
                       📁
                     </div>
 
-                    <div className="min-w-0 flex-1">
-                      <h2
-                        className={`
-            break-words text-lg font-semibold tracking-tight sm:text-xl xl:text-2xl
-            ${theme === "Dark" ? "text-white" : "text-gray-900"}
-          `}
-                      >
-                        {Tasks?.taskName || viewtasks?.taskName || "taskName"}
-                      </h2>
+                    <div className="flex-1">
+                      {/* Header */}
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        {isedit ? (
+                          <input
+                            value={editTaskName}
+                            onChange={(e) => setEditTaskName(e.target.value)}
+                            className={`w-full rounded-lg border px-3 py-2 text-xl font-semibold outline-none sm:w-auto
+              ${theme === "Dark"
+                                ? "border-gray-700 bg-gray-800 text-white"
+                                : "border-gray-300 bg-white text-gray-900"
+                              }`}
+                          />
+                        ) : (
+                          <h2
+                            className={`text-xl font-bold sm:text-2xl ${theme === "Dark" ? "text-white" : "text-gray-900"
+                              }`}
+                          >
+                            {editTaskName ||
+                              Tasks?.taskName ||
+                              viewtasks?.taskName ||
+                              "Task Name"}
+                          </h2>
+                        )}
 
-                      <p
-                        className={`
-            mt-1 break-words text-sm leading-6
-            ${theme === "Dark" ? "text-gray-400" : "text-gray-600"}
-          `}
-                      >
-                        {Tasks?.description || viewtasks?.description || "description"}
-                      </p>
+                        <div className="flex gap-2">
+                          {isedit ? (
+                            <>
+                              <button
+                                onClick={() => setedit(false)}
+                                className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
+                              >
+                                Cancel
+                              </button>
 
-                      <div className="mt-3 flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
-                          In Progress
+                              <button
+                                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                                onClick={save}
+                              >
+                                Save
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() => setedit(true)}
+                              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                            >
+                              Edit
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+
+                      {/* Description */}
+                      <div className="mt-4">
+                        {isedit ? (
+                          <textarea
+                            value={editTaskdescription}
+                            onChange={(e) => setEditTaskdescription(e.target.value)}
+                            rows={3}
+                            className={`w-full rounded-lg border px-3 py-2 outline-none resize-none
+        ${theme === "Dark"
+                                ? "border-gray-700 bg-gray-800 text-white"
+                                : "border-gray-300 bg-white text-gray-900"
+                              }`}
+                            placeholder="Enter task description..."
+                          />
+                        ) : (
+                          <p
+                            className={`text-sm leading-6 ${theme === "Dark" ? "text-gray-400" : "text-gray-600"
+                              }`}
+                          >
+                            {editTaskdescription ||
+                              Tasks?.description ||
+                              viewtasks?.description ||
+                              "No description available"}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Status Row */}
+                      <div className="mt-5 flex flex-wrap items-center gap-3">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-semibold text-blue-700">
+                          {TaskStatus ? TaskStatus : Tasks?.status || "In Progress"}
                         </span>
 
-                        <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20">
-                          Synced
+                        <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-semibold text-green-700">
+                          ✅ Synced
                         </span>
+
+                        {isedit && (
+                          <select
+                            value={TaskStatus}
+                            onChange={(e: any) => setTaskStatus(e.target.value)}
+                            className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 "
+                          >
+                            <option value="Todo" className="text-gray-900">📝 Todo</option>
+                            <option value="In Progress" className="text-gray-900">🚀 In Progress</option>
+                            <option value="Completed" className="text-gray-900">✅ Completed</option>
+                          </select>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -532,32 +647,41 @@ function ViewTask({  viewtasks, TaskListView, projectid }: any) {
               {/* DESCRIPTION + DETAILS */}
               <div className="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-5">
                 <div
-                  className={`
-        xl:col-span-5 rounded-2xl border p-5
-        ${theme === "Dark"
+                  className={`xl:col-span-5 rounded-2xl border p-5 ${theme === "Dark"
                       ? "border-white/10 bg-white/[0.03]"
                       : "border-gray-200 bg-gray-50/70"
-                    }
-      `}
+                    }`}
                 >
                   <h3
-                    className={`
-          mb-2 text-sm font-semibold
-          ${theme === "Dark" ? "text-white" : "text-gray-900"}
-        `}
+                    className={`mb-3 text-sm font-semibold ${theme === "Dark" ? "text-white" : "text-gray-900"
+                      }`}
                   >
                     Description
                   </h3>
-                  <p
-                    className={`
-          text-sm leading-7
-          ${theme === "Dark" ? "text-gray-300" : "text-gray-700"}
-        `}
-                  >
-                    {Tasks?.description || viewtasks?.description || "description"}
-                  </p>
-                </div>
 
+                  {isedit ? (
+                    <textarea
+                      value={editTaskdescription}
+                      onChange={(e) => setEditTaskdescription(e.target.value)}
+                      rows={5}
+                      className={`w-full rounded-xl border px-4 py-3 text-sm outline-none resize-none ${theme === "Dark"
+                          ? "border-gray-700 bg-gray-800 text-white"
+                          : "border-gray-300 bg-white text-gray-900"
+                        }`}
+                      placeholder="Enter task description..."
+                    />
+                  ) : (
+                    <p
+                      className={`whitespace-pre-wrap text-sm leading-7 ${theme === "Dark" ? "text-gray-300" : "text-gray-700"
+                        }`}
+                    >
+                      {editTaskdescription ||
+                        Tasks?.description ||
+                        viewtasks?.description ||
+                        "No description available"}
+                    </p>
+                  )}
+                </div>
               </div>
               <div className="mt-20 w-full min-w-0 overflow-x-auto">
 
