@@ -6,9 +6,9 @@ const AddcommentsSchema = require("../Models/Workspace-comments")
 const AddWorkSpaceTask = async (req, res) => {
     try {
         const { TaskData, assignTo } = req.body;
-        console.log(req.body,'req.body')
-        console.log(TaskData,'TaskData')
-        console.log(TaskData.assignTo,'assignTo')
+        console.log(req.body, 'req.body')
+        console.log(TaskData, 'TaskData')
+        console.log(TaskData.assignTo, 'assignTo')
 
         const Createtask = new WorkSpaceTask({
             ...TaskData,
@@ -27,7 +27,7 @@ const AddWorkSpaceTask = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message:error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -328,14 +328,14 @@ const DeleteTask = async (req, res, next) => {
 const DuplicateTask = async (req, res, next) => {
     try {
         const { taskid } = req.params;
-        console.log(taskid,'taskid')
+        console.log(taskid, 'taskid')
 
         if (!taskid) {
             return res.status(404).json({ message: "TaskId is missing to duplicate" });
         }
 
         const IsduplicateTask = await WorkSpaceTask.findOne({ TaskId: taskid });
-        console.log(IsduplicateTask,'IsduplicateTask')
+        console.log(IsduplicateTask, 'IsduplicateTask')
 
         if (!IsduplicateTask) {
             return res.status(404).json({ message: "Task not found" });
@@ -368,6 +368,22 @@ const DuplicateTask = async (req, res, next) => {
         next(error);
     }
 };
+const edittask = async (req, res, next) => {
+    try {
+        const { taskid } = req.params
+        console.log(taskid, 'taskid edit')
+        const { data } = req.body
+        console.log(data, 'data edit')
 
 
-module.exports = { DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
+
+        const updatetask = await WorkSpaceTask.findOneAndUpdate({ TaskId: taskid }, { taskName: data.editTaskName,  description: data.editTaskdescription, TaskStatus: data.taskStatus }, { returnDocument: "after" })
+        console.log(updatetask)
+        return res.status(201).json({ message: "Task Updated", updated: updatetask })
+    } catch (error) {
+        console.log(error.message)
+        next(error)
+    }
+}
+
+module.exports = { edittask, DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }

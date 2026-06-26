@@ -21,6 +21,8 @@ import GlobalToast from "../../GlobalToast";
 import WallpaperPopup from "../../TaskWallpaper";
 import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDelete";
 import bgthemeContext from "../../../Context/ThemeContext";
+import { instance } from "../../../services/apiservices";
+import { checkuser } from "../../LocalStorage";
 // import { instance } from "../../../services/apiservices";
 function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   const context = useContext(bgthemeContext);
@@ -33,6 +35,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   if (!TasksView) return null;
 
   const { Tasks } = TasksView;
+  console.log(Tasks, 'Tasks')
   const [ShowWallpaper, setShowWallpaper] = useState<boolean>(false)
   const [isedit, setedit] = useState<boolean>(false)
   const [editTaskName, setEditTaskName] = useState(
@@ -268,20 +271,35 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   }
 
 
-
+  console.log(Tasks?.taskName, 'Tasks?.taskName ')
   const save = async () => {
     try {
       const data = {
-        TaskStatus: TaskStatus,
-        editTaskdescription: editTaskdescription,
-        editTaskName: editTaskName
+        editTaskName: !editTaskName ? Tasks?.taskName || viewtasks?.taskName : editTaskName ,
+        editTaskdescription: !editTaskdescription ? Tasks?.description || viewtasks?.description : editTaskdescription,
+        taskid: Tasks?.TaskId,
+        taskStatus: !TaskStatus ? Tasks.TaskStatus || viewtasks?.TaskStatus : TaskStatus
       }
       console.log(data)
 
-      // const response = await instance.put(`/api/Task/${Tasks.TaskId}/edit`, { data: data })
-      // console.log(response, 'responseEitTask')
+      const response = await instance.put(`/api/Task/${Tasks.TaskId}/edit`, { data: data })
+      console.log(response, 'responseEitTask')
+      if(response?.status==201){
+        return GlobalToast(response?.data?.message,"success")
+      }
     } catch (error: any) {
-      return console.log(error.response.status)
+      const status=error.response.status
+      if(status==500){
+
+        return GlobalToast("Server Error","error")
+
+      }
+
+
+      if(status==401){
+        return checkuser()
+      }
+
 
     }
   }
@@ -498,6 +516,8 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
                           <h2
                             className={`text-xl font-bold sm:text-2xl ${theme === "Dark" ? "text-white" : "text-gray-900"
                               }`}
+
+                            onClick={() => setedit(true)}
                           >
                             {editTaskName ||
                               Tasks?.taskName ||
@@ -553,6 +573,8 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
                           <p
                             className={`text-sm leading-6 ${theme === "Dark" ? "text-gray-400" : "text-gray-600"
                               }`}
+                            onClick={() => setedit(true)}
+
                           >
                             {editTaskdescription ||
                               Tasks?.description ||
@@ -564,7 +586,8 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
 
                       {/* Status Row */}
                       <div className="mt-5 flex flex-wrap items-center gap-3">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-semibold text-blue-700">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-semibold text-blue-700" onClick={() => setedit(true)}
+                        >
                           {TaskStatus ? TaskStatus : Tasks?.status || "In Progress"}
                         </span>
 
@@ -648,8 +671,8 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
               <div className="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-5">
                 <div
                   className={`xl:col-span-5 rounded-2xl border p-5 ${theme === "Dark"
-                      ? "border-white/10 bg-white/[0.03]"
-                      : "border-gray-200 bg-gray-50/70"
+                    ? "border-white/10 bg-white/[0.03]"
+                    : "border-gray-200 bg-gray-50/70"
                     }`}
                 >
                   <h3
@@ -665,8 +688,8 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
                       onChange={(e) => setEditTaskdescription(e.target.value)}
                       rows={5}
                       className={`w-full rounded-xl border px-4 py-3 text-sm outline-none resize-none ${theme === "Dark"
-                          ? "border-gray-700 bg-gray-800 text-white"
-                          : "border-gray-300 bg-white text-gray-900"
+                        ? "border-gray-700 bg-gray-800 text-white"
+                        : "border-gray-300 bg-white text-gray-900"
                         }`}
                       placeholder="Enter task description..."
                     />
