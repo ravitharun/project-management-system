@@ -377,7 +377,7 @@ const edittask = async (req, res, next) => {
 
 
 
-        const updatetask = await WorkSpaceTask.findOneAndUpdate({ TaskId: taskid }, { taskName: data.editTaskName,  description: data.editTaskdescription, TaskStatus: data.taskStatus }, { returnDocument: "after" })
+        const updatetask = await WorkSpaceTask.findOneAndUpdate({ TaskId: taskid }, { taskName: data.editTaskName, description: data.editTaskdescription, TaskStatus: data.taskStatus }, { returnDocument: "after" })
         console.log(updatetask)
         return res.status(201).json({ message: "Task Updated", updated: updatetask })
     } catch (error) {
@@ -386,4 +386,32 @@ const edittask = async (req, res, next) => {
     }
 }
 
-module.exports = { edittask, DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
+
+const EditSubtask = async (req, res, next) => {
+    try {
+        const { taskid } = req.params
+        console.log(taskid, 'taskid edit')
+        const { editTask } = req.body
+        console.log(editTask.TaskId, 'data edit')
+        console.log(editTask, 'data edit')
+
+
+        const updateTask = await WorkSpaceTask.findOneAndUpdate(
+            { "SubTask.TaskId": editTask.TaskId },
+            {
+                $set: {
+                    "SubTask.$.taskName": editTask.taskName,
+                    "SubTask.$.SubTaskStatus": editTask.SubTaskStatus,
+                    "SubTask.$.taskPriority": editTask.taskPriority,
+                },
+            },
+            { new: true }
+        );
+        console.log(updateTask, 'updatetask')
+        return res.status(201).json({ message: "Task Updated", updated: updateTask })
+    } catch (error) {
+        console.log(error.message)
+        next(error)
+    }
+}
+module.exports = { EditSubtask, edittask, DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
