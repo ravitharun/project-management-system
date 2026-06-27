@@ -1,17 +1,30 @@
 import { AgGridProvider, AgGridReact } from "ag-grid-react";
 import { AllCommunityModule } from "ag-grid-community";
 import ViewProfileCard from "../../../PoupProfileCard/ViewProfileCard";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import bgthemeContext from "../../../../Context/ThemeContext";
+import { instance } from "../../../../services/apiservices";
+import GlobalToast from "../../../GlobalToast";
 
-
+type EditType = {
+  SubTaskStatus: "to do" | "in progress" | "Completed",
+  TaskId: string,
+  taskPriority: string,
+  taskName: string,
+  _id: string
+}
 
 const modules = [AllCommunityModule];
 
 function SubTaskTable({ rowData }: any) {
   const context = useContext(bgthemeContext);
+
+  const [editTask, setEditTask] = useState<EditType | undefined>(undefined);
+  console.log(editTask, 'editTask check')
   const { theme }: any = context
   console.log("Grid Data:", rowData);
+
+
   const timeoutRef = useRef<any>(null);
   const [popupPos, setPopupPos] = useState({
     x: 0,
@@ -20,16 +33,48 @@ function SubTaskTable({ rowData }: any) {
     userInof: {}
   })
 
+  useEffect(() => {
+    if (!editTask?.TaskId) return;
+
+    const handleEditTask = async () => {
+      try {
+        const response = await instance.put(
+          `/api/Task/${editTask.TaskId}/EditSubtask`,
+          { editTask }
+        );
+
+        console.log(response.data);
+
+        if(response.data.status==201){
+          return GlobalToast(response.data.message,"success")
+        }
+      } catch (error: any) {
+        const status = error.response?.status;
+        const msg = error.response?.data?.message;
+
+        GlobalToast(`${status}: ${msg}`, "error");
+      }
+    };
+
+    handleEditTask();
+  }, [editTask]);
+
+
+
+
   const columnDefs = [
     {
       field: "TaskId",
       headerName: "Task ID",
       width: 120,
+      editable: false,
+
     },
     {
       field: "taskName",
       headerName: "Task Name",
       flex: 1,
+
     },
     {
       headerName: "Assigned To",
@@ -183,9 +228,17 @@ function SubTaskTable({ rowData }: any) {
                   console.log("Row data:", params.data);
                 }}
                 onCellValueChanged={(params) => {
-                  console.log("Old Value:", params.oldValue);
-                  console.log("New Value:", params.newValue);
-                  console.log("Updated Row:", params.data);
+                  // console.log("Old Value:", params.oldValue);
+                  // console.log("New Value:", params.newValue);
+                  // setEditTask(params.data)
+                  setEditTask({
+                    TaskId: params.data.TaskId,
+                    taskName: params.data.taskName,
+                    taskPriority: params.data.taskPriority,
+                    SubTaskStatus:  params.data.SubTaskStatus,
+                    _id: params.data._id,
+                  });
+                  // console.log("Updated Row:", params.data);
                 }}
               />
             </div>
