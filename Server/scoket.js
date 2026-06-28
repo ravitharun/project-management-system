@@ -4,9 +4,8 @@
 
 
 const { Server } = require("socket.io");
-const UserSchema = require("../Server/Models/Auth");
-const redis = require("./config/Ioredi");
-
+const redis = require("./config/redis");
+const UserSchema=require("./Models/Auth")
 let io;
 
 // track user sockets

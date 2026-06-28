@@ -95,7 +95,7 @@ function WorkspaceViwe({  SpaceJson }: any) {
         font-bold
         tracking-tight
       ">
-              Your Workspaces
+              Your Workspaces 
             </h1>
 
             <p

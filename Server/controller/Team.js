@@ -1,6 +1,6 @@
 
 
-const redis = require("../config/Ioredi")
+const redis = require("../config/redis")
 const UserSchema = require("../Models/Auth")
 const { getIO } = require("../scoket")
 const FetchTeam = async (req, res) => {
