@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
 const { GetEmpNameGenById } = require("../Utils/EmpIDGenrator");
 const EmailQueue = require("../Queues/Producer");
-const redis = require("../config/Ioredi");
+const redis = require("../config/redis");
 // const EmailQueue = require("../service/Producer");
 const saltRounds = 10;
 const AuthNewAccount = async (req, res) => {

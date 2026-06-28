@@ -14,7 +14,7 @@ const NotificatonsRouter = require("./routes/NotificatonsRouter");
 const FetchTeamRouter = require("./routes/FetchTeamRouter");
 const AnalytcsRouter = require("./routes/AnalytcsRouter");
 const { SendAccountCreationEmail, SendWelcomEmail, taskAssiginedEmail } = require("./service/Email");
-const redis = require("./config/Ioredi");
+const redis = require("./config/redis");
 // Middleware
 app.use(express.json());
 const fs = require("fs");
@@ -35,14 +35,14 @@ if (!fs.existsSync("uploads")) {
 }
 const isProd = process.env.envStatus === "Prod";
 console.log(isProd, 'checkispord')
-let a = isProd ? redis : { host: "127.0.0.1", port: 6379 }
-
+let a = redis;
 console.log("IOREDIS:", a)
 console.log(process.env.REDIS_URL, 'process.env.REDIS_URL')
+console.log(process.env.Db, 'process.env.Db')
 
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
-const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localhost:27017/ProjectManagementWebsite'
+//const Db = process.env.envStatus == 'Prod' ? process.env.Db : 'mongodb://localhost:27017/ProjectManagementWebsite'
 
 
 app.use(cors({ origin: [envStatusurl, 'https://taskora-system.netlify.app'] }));

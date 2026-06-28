@@ -1,10 +1,8 @@
 const { Queue } = require("bullmq");
-const redis = require("../config/Ioredi");
-// connection
+const connection = require("../config/redis");
 
 const EmailQueue = new Queue("EmailServices", {
-    connection: process.env.envStatus == 'Prod' ? redis : { host: "localhost", port: 6379 }
-
+  connection,
 });
-// console.log(EmailQueue)
+
 module.exports = EmailQueue;

@@ -3,8 +3,9 @@ require("dotenv").config({
 });
 
 const { Worker } = require("bullmq");
-const redis = require("../config/Ioredi"); // ✅ FIX THIS PATH
+const redis = require("../config/redis"); // ✅ FIX THIS PATH
 const {
+    
     SendAccountCreationEmail,
     SendWelcomEmail,
 } = require("../service/Email");
@@ -39,9 +40,10 @@ const worker = new Worker(
         }
     },
     {
-        connection: isProd 
-            ? redis
-            : { host: "127.0.0.1", port: 6379 },
+        // connection: isProd 
+        //     ? redis
+        //     : { host: "127.0.0.1", port: 6379 },
+        connection: redis,
     }
 );
 
