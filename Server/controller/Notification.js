@@ -1,6 +1,6 @@
 
 
-const redis = require("../config/Ioredi")
+const redis = require("../config/redis")
 const Notificationschema = require("../Models/Notification")
 const { getIO } = require("../scoket")
 

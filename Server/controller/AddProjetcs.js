@@ -3,7 +3,7 @@ const { Socket } = require("socket.io")
 const AddProject = require("../Models/Project")
 const { getIO } = require("../scoket")
 const { ProjetcId } = require("../Utils/EmpIDGenrator")
-const  redis  = require("../config/Ioredi")
+const  redis  = require("../config/redis")
 const { json } = require("express")
 const NotificationSchema = require("../Models/Notification")
 const CreateProjects = async (req, res) => {

@@ -1,0 +1,58 @@
+
+services:
+  frontend:
+    build: ./Ui
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host
+    develop:
+      watch:
+        - path: ./Ui
+          action: sync
+          target: /app
+
+        - path: ./Ui/package.json
+          action: rebuild
+
+        - path: ./Ui/package-lock.json
+          action: rebuild
+
+  server:
+    build: ./Server
+    ports:
+      - "5000:5000"
+    command: node server.js
+    depends_on:
+      - database
+      - redis
+    environment:
+      Db: mongodb://localhost:27017/ProjectManagementWebsite
+      REDIS_URL: redis://redis:6379
+      NODE_ENV: development
+      envStatus: Local
+    develop:
+      watch:
+        - path: ./Server
+          action: sync
+          target: /app
+
+        - path: ./Server/package.json
+          action: rebuild
+
+        - path: ./Server/package-lock.json
+          action: rebuild
+
+  database:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - database-data:/data/db
+
+  redis:
+    image: redis:7
+    # ports:
+    #   - "6379:6379"
+
+volumes:
+  database-data:
