@@ -254,7 +254,7 @@ const UploadSubTaskFile = async (req, res, next) => {
         return res.status(201).json({ message: "File Uploaded", fileurl: fileurl })
     } catch (error) {
 
-        console.log(error,'err')
+        console.log(error, 'err')
         next(error)
     }
 }
@@ -331,6 +331,7 @@ const DuplicateTask = async (req, res, next) => {
     try {
         const { taskid } = req.params;
         console.log(taskid, 'taskid')
+        console.log(req.body, 'body')
 
         if (!taskid) {
             return res.status(404).json({ message: "TaskId is missing to duplicate" });
@@ -348,12 +349,11 @@ const DuplicateTask = async (req, res, next) => {
         }
 
         const { _id, ...taskData } = IsduplicateTask.toObject();
-        console.log({ _id, ...taskData })
 
         const Add = new WorkSpaceTask({
             ...taskData,
-            Taskid: req.body.NewTaskid,
-            isDuplicateTaskId: IsduplicateTask.Taskid,
+            TaskId: req.body.NewTaskId,
+            isDuplicateTaskId: IsduplicateTask.TaskId,
             SubTask: [],
             Files: [],
             Links: []
@@ -416,4 +416,40 @@ const EditSubtask = async (req, res, next) => {
         next(error)
     }
 }
-module.exports = { EditSubtask, edittask, DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
+
+
+
+const DeleteFile = async (req, res) => {
+    try {
+        const { id } = req.params
+        console.log(id, 'id')
+
+        if (!id) {
+
+            return res.status(404).json({ message: "Try again later" })
+        }
+        const deletedFile = await WorkSpaceTask.findOneAndUpdate(
+            { "Files._id": id },
+            {
+                $pull: {
+                    Files: { _id: id }
+                }
+            },
+            { new: true }
+        );
+
+        console.log(deletedFile); 
+        if (!deletedFile) {
+            console.log("first")
+            return res.status(404).json({ message: "" })
+        }
+
+        return res.status(200).json(
+            { message: "File has Been Deleted." }
+        )
+    } catch (error) {
+        next(error)
+
+    }
+}
+module.exports = { DeleteFile, EditSubtask, edittask, DuplicateTask, DeleteTask, AddWorkSpaceTask, Addcomments, AddRelpys, FetchTasks, AddSubTask, UploadSubTaskFile, UpdateTaskWallpaper }
