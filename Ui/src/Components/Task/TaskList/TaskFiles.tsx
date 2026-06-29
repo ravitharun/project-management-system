@@ -6,7 +6,10 @@ import { MasterDetailModule, RowGroupingModule } from "ag-grid-enterprise";
 import { FiEye, FiDownload, FiTrash2 } from "react-icons/fi";
 import { getuserInfo } from "../../LocalStorage";
 import bgthemeContext from "../../../Context/ThemeContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { instance } from "../../../services/apiservices";
+import GlobalToast from "../../GlobalToast";
+import ApiLoader from "../../ApiLoader";
 
 ModuleRegistry.registerModules([
     AllCommunityModule,
@@ -17,6 +20,8 @@ ModuleRegistry.registerModules([
 function TaskFiles({ file }: any) {
     const context = useContext(bgthemeContext);
     const { theme }: any = context
+
+    const [isdelete, setisdelete] = useState(false)
     console.log(file, 'Tarun viewtasks')
     const GetDate = (date: any) => {
         return new Date(date).toLocaleString("en-IN", {
@@ -26,7 +31,7 @@ function TaskFiles({ file }: any) {
             hour: "2-digit",
             minute: "2-digit",
         });
-};
+    };
 
     if (!file || file.length === 0) {
         return (
@@ -94,13 +99,13 @@ function TaskFiles({ file }: any) {
                         </a>
 
                         {/* DOWNLOAD */}
-                        <a href={row?.fileurl}  download={row?.fileName||"TaskFiles"} className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-green-600 hover:bg-green-700 text-white transition">
+                        <a href={row?.fileurl} download={row?.fileName || "TaskFiles"} className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-green-600 hover:bg-green-700 text-white transition">
                             <FiDownload size={14} />
                             Downloads
                         </a>
 
                         {/* DELETE */}
-                        {row?.userid?._id === JSON.parse(getuserInfo)._id && <button className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-red-600 hover:bg-red-700 text-white transition">
+                        {row?.userid?._id === JSON.parse(getuserInfo)._id && <button className="flex items-center gap-1 px-3 py-1 text-xs rounded-md bg-red-600 hover:bg-red-700 text-white transition" onClick={() => HandelDeleteFile(row._id)}>
                             <FiTrash2 size={14} />
                             Delete
                         </button>}
@@ -111,26 +116,72 @@ function TaskFiles({ file }: any) {
         },
     ];
 
+    const HandelDeleteFile = async (Id: string | number) => {
+        try {
+            setisdelete(true)
+            const response = await instance.delete(`/api/Task/${Id}/DeleteFile`)
+            console.log(response, 'response')
+            const Status = response.status
+            if (Status == 200) {
+                return GlobalToast(response.data.message, 'success')
+            }
+
+
+
+        }
+
+
+        catch (error: any) {
+            const Status: number = error?.response?.status
+            console.log(Status, 'Status')
+            const Message: string = error?.response.data.message
+            console.log(Message, 'Message')
+            if (Status === 404) {
+                return GlobalToast("try Again", 'error')
+            }
+            if (Status == 500) {
+                // return alert("Try again")
+                return GlobalToast("Server error", 'error')
+            }
+            if (Status == 401) {
+                // return alert("Try again")
+                return GlobalToast("Server error", 'error')
+            }
+
+
+        } finally {
+
+            setisdelete(false)
+        }
+    }
     return (
-        <div
-            className={`${theme === "Dark" ? "ag-theme-alpine-dark" : "ag-theme-alpine"
-                } w-full h-[500px] rounded-xl`}
-        >
-            <AgGridReact
-                rowData={rowData}
-                columnDefs={columnDefs}
-                domLayout="normal"
-                pagination={true}
-                paginationPageSize={10}
-                defaultColDef={{
-                    resizable: true,
-                    sortable: true,
-                    filter: true,
-                    flex: 1,
-                    minWidth: 120,
-                }}
-            />
-        </div>
+        <>
+            {isdelete &&
+                <ApiLoader
+                    text="Deleting File"
+                    texttyoe="Please wait. Your file is being deleted securely..."
+                />
+            }
+            <div
+                className={`${theme === "Dark" ? "ag-theme-alpine-dark" : "ag-theme-alpine"
+                    } w-full h-[500px] rounded-xl`}
+            >
+                <AgGridReact
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    domLayout="normal"
+                    pagination={true}
+                    paginationPageSize={10}
+                    defaultColDef={{
+                        resizable: true,
+                        sortable: true,
+                        filter: true,
+                        flex: 1,
+                        minWidth: 120,
+                    }}
+                />
+            </div>
+        </>
     );
 }
 
