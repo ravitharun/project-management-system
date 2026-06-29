@@ -254,7 +254,7 @@ const UploadSubTaskFile = async (req, res, next) => {
         return res.status(201).json({ message: "File Uploaded", fileurl: fileurl })
     } catch (error) {
 
-        console.log(error,'err')
+        console.log(error, 'err')
         next(error)
     }
 }
@@ -331,6 +331,7 @@ const DuplicateTask = async (req, res, next) => {
     try {
         const { taskid } = req.params;
         console.log(taskid, 'taskid')
+        console.log(req.body, 'body')
 
         if (!taskid) {
             return res.status(404).json({ message: "TaskId is missing to duplicate" });
@@ -348,12 +349,11 @@ const DuplicateTask = async (req, res, next) => {
         }
 
         const { _id, ...taskData } = IsduplicateTask.toObject();
-        console.log({ _id, ...taskData })
 
         const Add = new WorkSpaceTask({
             ...taskData,
-            Taskid: req.body.NewTaskid,
-            isDuplicateTaskId: IsduplicateTask.Taskid,
+            TaskId: req.body.NewTaskId, 
+            isDuplicateTaskId: IsduplicateTask.TaskId,
             SubTask: [],
             Files: [],
             Links: []
