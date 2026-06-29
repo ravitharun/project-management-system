@@ -227,7 +227,7 @@ const AddSubTask = async (req, res, next) => {
 const UploadSubTaskFile = async (req, res, next) => {
     try {
         console.log(req.body, 'body')
-        console.log(req.file.path, 'file')
+        // console.log(req.file.path, 'file')
 
         if (!req.file.path) {
             const FileNotFoundTask = new Error("File is required")
@@ -253,6 +253,8 @@ const UploadSubTaskFile = async (req, res, next) => {
         await Isexitstask.save()
         return res.status(201).json({ message: "File Uploaded", fileurl: fileurl })
     } catch (error) {
+
+        console.log(error,'err')
         next(error)
     }
 }

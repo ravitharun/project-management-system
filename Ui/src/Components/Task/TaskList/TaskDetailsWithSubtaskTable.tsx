@@ -21,9 +21,9 @@ import { toast, ToastContainer } from "react-toastify";
 import TaskFiles from "./TaskFiles";
 import bgthemeContext from "../../../Context/ThemeContext";
 
-export default function SubTaskWithFiles({  viewtasks }: any) {
-   const context = useContext(bgthemeContext);
-    const { theme }: any = context
+export default function SubTaskWithFiles({ viewtasks }: any) {
+  const context = useContext(bgthemeContext);
+  const { theme }: any = context
   const isDark = theme === "Dark";
   console.log(viewtasks, 'viewtasks')
 
@@ -36,15 +36,16 @@ export default function SubTaskWithFiles({  viewtasks }: any) {
 
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
-  console.log(uploadedFiles,'uploadedFiles')
+  console.log(uploadedFiles, 'uploadedFiles')
   const [loader, setloader] = useState(false)
   const [file, setfile] = useState<any | null>(null)
   console.log(setActiveTaskId, setUploadedFiles)
   const [rowData, setrowdata] = useState<any>([]);
-  const [Data, setdata] = useState<any>(viewtasks.Files);
-console.log(file,'file')
+  // const [Data, setdata] = useState<any>(viewtasks.Files);
+  
+  console.log(file, 'file')
   console.log(activeTaskId, 'activeTaskIdcls')
-  console.log(setdata, 'setdata')
+  // console.log(setdata, 'setdata')
 
   const [fileUpload, setfileUpload] = useState<boolean>(false)
 
@@ -103,9 +104,12 @@ console.log(file,'file')
 
     try {
       setfileUpload(true)
+
+
+      console.log(viewtasks, '(viewtasksviewtasksviewtasks')
       const Fileformdata = new FormData()
       Fileformdata.append("TaskFileUpload", file)
-      Fileformdata.append("Taskid", viewtasks.Taskid)
+      Fileformdata.append("Taskid", viewtasks.TaskId)
       Fileformdata.append("projectid", viewtasks.projectid)
       Fileformdata.append("UploadedBy", JSON.parse(getuserInfo)._id)
       const response = await instance.post("/api/Task/uploadSubtaskFiles", Fileformdata, {
@@ -127,6 +131,13 @@ console.log(file,'file')
     } catch (error: any) {
       const errmessage = error.response.data.message
       const errstatus = error.response.status
+      console.log(errstatus)
+      console.log(errmessage, 'tharun')
+
+
+      if (errstatus == 404) {
+        return alert(errmessage)
+      }
 
       return errmessage + errstatus
 
@@ -201,10 +212,18 @@ console.log(file,'file')
           {/* HEADER */}
           <div className="flex items-center justify-between mb-4">
             <h2
-              className={`text-sm font-semibold ${isDark ? "text-white" : "text-gray-900"
+              className={`text-lg font-semibold flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"
                 }`}
             >
-              Uploaded Files
+              📁 Uploaded Files
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${isDark
+                    ? "bg-gray-700 text-gray-200"
+                    : "bg-gray-100 text-gray-700"
+                  }`}
+              >
+                {viewtasks?.Files?.length || 0}
+              </span>
             </h2>
 
             <label className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-md cursor-pointer transition">
@@ -220,7 +239,7 @@ console.log(file,'file')
           {/* FILE LIST */}
           <div className="overflow-x-auto">
             <div className="max-h-[300px] overflow-y-auto">
-              <TaskFiles theme={theme} file={Data} />
+              <TaskFiles theme={theme} file={viewtasks} />
             </div>
           </div>
         </div>
