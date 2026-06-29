@@ -26,7 +26,7 @@ services:
       - database
       - redis
     environment:
-      Db: mongodb://localhost:27017/ProjectManagementWebsite
+      Db: mongodb://host.docker.internal:27017/ProjectManagementWebsite
       REDIS_URL: redis://redis:6379
       NODE_ENV: development
       envStatus: Local

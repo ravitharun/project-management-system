@@ -29,7 +29,7 @@ const WorkSpaceTask = new mongoose.Schema(
 
         TaskStatus: {
             type: String,
-            enum: ["todo", "inprogress", "review", "completed"],
+            enum: ["todo", "inprogress", "review", "Completed"],
             default: "todo",
         },
 
