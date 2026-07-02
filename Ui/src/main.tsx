@@ -7,36 +7,41 @@ import ThemeProvider from "./Provider/ThemeProvider.tsx";
 import WrokspaceJson from "./Provider/WrokspaceJson.tsx";
 import SharespaceViewProvider from "./Provider/SharespaceViewProvider.tsx";
 import FirstViewProvider from "./Provider/FirstViewProvider.tsx";
+import { Provider } from "react-redux";
 import ClickedSpaceProvider from "./Provider/ClickedSpaceProvider.tsx";
+import { store } from "./store/Store.ts";
 createRoot(document.getElementById("root")!).render(
-    <ClickedSpaceProvider>
+    <Provider store={store}>
+
+        <ClickedSpaceProvider>
 
 
-        <>
-            <FirstViewProvider>
+            <>
+                <FirstViewProvider>
 
-                <SharespaceViewProvider>
-                    <WrokspaceJson>
-                        <UserProvider>
-                            <ThemeProvider>
-                                <BrowserRouter>
-
-
-                                    <AppRouter />
+                    <SharespaceViewProvider>
+                        <WrokspaceJson>
+                            <UserProvider>
+                                <ThemeProvider>
+                                    <BrowserRouter>
 
 
+                                        <AppRouter />
 
-                                </BrowserRouter>
 
-                            </ThemeProvider>
 
-                        </UserProvider>
-                    </WrokspaceJson>
-                </SharespaceViewProvider>
-            </FirstViewProvider>
+                                    </BrowserRouter>
 
-        </>
-    </ClickedSpaceProvider>
+                                </ThemeProvider>
+
+                            </UserProvider>
+                        </WrokspaceJson>
+                    </SharespaceViewProvider>
+                </FirstViewProvider>
+
+            </>
+        </ClickedSpaceProvider>
+    </Provider>
 
 
 );
