@@ -2,12 +2,16 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useContext, useEffect, useState } from "react";
 import TaskForm from "./Task/CreateTask/TaskForm";
 import bgthemeContext from "../Context/ThemeContext";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchtaskApi } from "../services/taskApi";
+import { Add } from "../store/TaskStore";
 export default function Board({ work, spacetasks, ismaxAndMin }: any) {
-
     const ThemeCOntext = useContext(bgthemeContext)
     const { theme }: any = ThemeCOntext
     console.log(spacetasks, 'spacetasks')
+    const count = useSelector((state: any) => state.counter.value);
+    // console.log(count, 'count')
+    const dispatch = useDispatch();
 
 
     const [CreateTask, setCreateTask] = useState<boolean>(false)
@@ -20,8 +24,26 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
 
 
 
-
     const [Hoverid, sethoverid] = useState<string>("")
+    // 
+
+
+
+    useEffect(() => {
+        const fetchTask = async () => {
+
+            try {
+                const response = await fetchtaskApi(work._id)
+                console.log(response, 'check')
+                dispatch(Add(response.data.message))
+            } catch (error: any) {
+                return console.log(error)
+
+            }
+
+        }
+        fetchTask()
+    }, [])
 
 
     // Converting backend → UI format safely
@@ -44,7 +66,7 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
         });
 
         setData({
-            tasks: work.tasks || {},
+            tasks: count || {},
             columns,
             columnOrder
         });
@@ -53,6 +75,7 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
 
     const onDragEnd = (result: any) => {
         const { source, destination } = result;
+        // console.log(result,'result'
         if (!destination) return;
 
         // SAME COLUMN
@@ -98,7 +121,10 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
             },
         }));
     };
-
+    console.log(data,'data')
+  
+    const Bycount = count.filter((data: any) => data.TaskStatus=='todo')
+    console.log(Bycount,'hey')
     return (
 
         <>
@@ -127,12 +153,14 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
                     ) : (
                         data.columnOrder.map((colId: any) => {
                             const column = data.columns[colId];
+                            console.log(column, 'columncolumn')
                             if (!column) return null;
 
-                            const tasks = column.taskIds.map(
-                                (id: any) => data.tasks[id]
-                            );
+                            // const tasks = column.taskIds.map(
+                            //     (id: any) => data.tasks[id]
+                            // );
 
+                            // console.log(tasks,'tasks')
                             return (
                                 <Droppable droppableId={column.id} key={column.id}>
                                     {(provided) => (
@@ -167,7 +195,7 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
                                             <div className="flex-1 overflow-y-auto pr-1 space-y-3">
 
                                                 {/* EMPTY STATE */}
-                                                {tasks.length === 0 ? (
+                                                {count.length === 0 ? (
                                                     Hoverid === column.id && (
                                                         <div className="flex items-center justify-center h-full">
                                                             <button
@@ -183,12 +211,12 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
 
                                                                 onClick={() => setCreateTask(true)}
                                                             >
-                                                                + Create Task
+                                                                Add CreateTask
                                                             </button>
                                                         </div>
                                                     )
                                                 ) : (
-                                                    tasks.map((task: any, index: number) => (
+                                                    Bycount?.map((task: any, index: number) => (
                                                         <Draggable
                                                             key={task.id}
                                                             draggableId={task.id}
@@ -214,14 +242,18 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
                                                                         }
                                         `}
                                                                 >
-                                                                    {task?.content}
+                                                                    <span>
+
+                                                                        {task?.taskName || "taskName"}
+
+                                                                    </span>
+                                                                    {task?.description || "description"}
                                                                 </div>
                                                             )}
                                                         </Draggable>
                                                     ))
                                                 )}
 
-                                                {provided.placeholder}
                                             </div>
                                         </div>
                                     )}

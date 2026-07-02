@@ -11,6 +11,7 @@ import { AllCommunityModule } from "ag-grid-community";
 import { MasterDetailModule, RowGroupingModule } from "ag-grid-enterprise";
 import bgthemeContext from "../../../Context/ThemeContext";
 
+
 ModuleRegistry.registerModules([
     AllCommunityModule,
     MasterDetailModule,
@@ -28,8 +29,9 @@ export type RowData = {
 };
 
 const MyTable = ({ spaceid }: any) => {
-     const context = useContext(bgthemeContext);
-        const { theme }: any = context
+ 
+    const context = useContext(bgthemeContext);
+    const { theme }: any = context
     const timeoutRef = useRef<any>(null);
 
     const [popupPos, setPopupPos] = useState({
@@ -58,7 +60,6 @@ const MyTable = ({ spaceid }: any) => {
                     Files: item.Files,
                     Links: item.Links,
                 }));
-
                 setrowData(formattedData);
             } catch (error) {
                 console.log(error);

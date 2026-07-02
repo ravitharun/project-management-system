@@ -2,9 +2,7 @@
 const { Resend } = require("resend");
 
  const resend = new Resend(process.env.RESEND_API);
-if (process.env.RESEND_API === undefined) {
-    console.log("process.env.RESEND_API === undefined")
-}
+
 
 
 const SendAccountCreationEmail = async (data) => {

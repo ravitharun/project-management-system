@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const http = require("http");
-
+const cron=require("node-cron")
 const AuthRouter = require("./routes/AuthRoutes");
 const { initSocket, getIO } = require("./scoket");
 const cors = require("cors");
@@ -24,6 +24,7 @@ const WorkSpaceTaskRouter = require("./routes/WorkSpaceTask_router");
 const limiter = require("./RateLimiter");
 const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 const AuthTokenVerification = require("./Middleware/AuthMiddleware");
+const { runBackup } = require("./backup");
 const check = `${process.env.envStatus === "Local"
   ? "http://localhost:5000"
   : "https://project-management-system-u091.onrender.com"
@@ -136,6 +137,13 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
 
   }
 });
+
+// runBackup Db Automated @12am evryday
+cron.schedule("0 0 * * *", () => {
+
+  runBackup();
+});
+
 
 
 // ✅ Initialize socket
