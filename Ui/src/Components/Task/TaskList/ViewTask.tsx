@@ -38,7 +38,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   console.log(Tasks, 'Tasks')
   const [ShowWallpaper, setShowWallpaper] = useState<boolean>(false)
   const [isedit, setedit] = useState<boolean>(false)
-  const edit = ""
+
   const [postmessage, setpostname] = useState("")
   const [editTaskName, setEditTaskName] = useState(
     Tasks?.taskName || viewtasks?.taskName || ""
