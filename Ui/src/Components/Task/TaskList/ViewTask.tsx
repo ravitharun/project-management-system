@@ -22,7 +22,7 @@ import WallpaperPopup from "../../TaskWallpaper";
 import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDelete";
 import bgthemeContext from "../../../Context/ThemeContext";
 import { instance } from "../../../services/apiservices";
-import { checkuser } from "../../LocalStorage";
+import { checkuser, useremail } from "../../LocalStorage";
 // import { instance } from "../../../services/apiservices";
 function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   const context = useContext(bgthemeContext);
@@ -38,6 +38,8 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   console.log(Tasks, 'Tasks')
   const [ShowWallpaper, setShowWallpaper] = useState<boolean>(false)
   const [isedit, setedit] = useState<boolean>(false)
+  const edit = ""
+  const [postmessage, setpostname] = useState("")
   const [editTaskName, setEditTaskName] = useState(
     Tasks?.taskName || viewtasks?.taskName || ""
   );
@@ -60,16 +62,40 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
         comment:
           "Updated dashboard responsiveness and fixed mobile spacing issues.",
         time: "2h ago",
-
+        useremail: "tr565003@gmail.com",
         replies: [
           {
             replyId: "RPL-201",
             replyToCommentId: "CMT-101",
             name: "Pranav Kumar",
             role: "UI Designer",
+
             reply:
               "UI looks much cleaner now. Especially tablet view.",
             time: "1h ago",
+            Nestedreplies: [{
+              replyToCommentId: "RPL-201",
+              replyId: "RPL-2043",
+              name: "Ravi Kumari Reddy",
+              role: "Sr.Frontend Developer",
+              reply:
+                "Socket integration is already Completed.",
+              time: "12m ago",
+              useremail: "tr565003@gmail.com"
+
+
+            },
+            {
+              replyToCommentId: "RPL-201",
+              replyId: "RPL-20423",
+              name: " Reddy",
+              role: "Sr.Fullstack Developer",
+              reply:
+                "Socket integration is already Completed.Deployed",
+              time: "1m ago",
+
+
+            }]
           },
 
           {
@@ -84,12 +110,24 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
           {
             replyId: "RPL-203",
             replyToCommentId: "CMT-101",
-            name: "Ravi",
+            name: "Ravi kumar",
             role: "Frontend Developer",
             reply:
               "Socket integration is already in progress.",
             time: "20m ago",
+            Nestedreplies: [{
+              replyToCommentId: "RPL-203",
+              replyId: "RPL-2043",
+              name: "Ravi Kumari Reddy",
+              role: "Sr.Frontend Developer",
+              reply:
+                "Socket integration is already Completed.",
+              time: "12m ago",
+
+
+            },]
           },
+
         ],
       },
 
@@ -100,6 +138,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
         comment:
           "Need realtime notifications for task updates.",
         time: "Yesterday",
+        useremail: "tr565003@gmail.com",
 
         replies: [
           {
@@ -110,6 +149,18 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
             reply:
               "Socket integration is already in progress.",
             time: "20m ago",
+            Nestedreplies: [{
+              replyToCommentId: "RPL-203",
+              replyId: "RPL-204",
+              name: "Ravi Kumari Reddy",
+              role: "Sr.Frontend Developer",
+              reply:
+                "Socket integration is already Completed.",
+              time: "12m ago",
+              useremail: "tr565003@gmail.com"
+
+
+            }]
           },
 
         ],
@@ -155,8 +206,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
       replyToCommentId: replyToCommentId,
       name: "New user",
       role: "Devops Engineer",
-      reply:
-        "Node Version Misss Match in Prod",
+      reply: postmessage,
       time: "a min ago",
     }
 
@@ -179,6 +229,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
     });
     // setitem
     setitem(addrply)
+    setpostname("")
   }
 
   const HandelDeleteTask = async () => {
@@ -271,11 +322,10 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   }
 
 
-  console.log(Tasks?.taskName, 'Tasks?.taskName ')
   const save = async () => {
     try {
       const data = {
-        editTaskName: !editTaskName ? Tasks?.taskName || viewtasks?.taskName : editTaskName ,
+        editTaskName: !editTaskName ? Tasks?.taskName || viewtasks?.taskName : editTaskName,
         editTaskdescription: !editTaskdescription ? Tasks?.description || viewtasks?.description : editTaskdescription,
         taskid: Tasks?.TaskId,
         taskStatus: !TaskStatus ? Tasks.TaskStatus || viewtasks?.TaskStatus : TaskStatus
@@ -284,25 +334,96 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
 
       const response = await instance.put(`/api/Task/${Tasks.TaskId}/edit`, { data: data })
       console.log(response, 'responseEitTask')
-      if(response?.status==201){
-        return GlobalToast(response?.data?.message,"success")
+      if (response?.status == 201) {
+        return GlobalToast(response?.data?.message, "success")
       }
     } catch (error: any) {
-      const status=error.response.status
-      if(status==500){
+      const status = error.response.status
+      if (status == 500) {
 
-        return GlobalToast("Server Error","error")
+        return GlobalToast("Server Error", "error")
 
       }
 
 
-      if(status==401){
+      if (status == 401) {
         return checkuser()
       }
 
 
     }
   }
+
+
+  const Reply = (id: any) => {
+    console.log(id.replyId, 'id.replyId')
+    const postdata = {
+      replyId: "RPL-20333",
+      replyToCommentId: id.replyId,
+      name: "Nested New user",
+      role: "Devops Engineer",
+      reply: "Node Version Miss Match in Prod",
+      time: "a min ago",
+      useremail: "tr565003@gmail.com"
+    };
+    const updatedItems = item.map((comment: any) => ({
+      ...comment,
+      replies: comment.replies.map((reply: any) => {
+        const hasNested = reply.Nestedreplies?.some(
+          (nested: any) => nested.replyId === id.replyId
+        );
+
+        if (hasNested) {
+          return {
+            ...reply,
+            Nestedreplies: [
+              ...(reply.Nestedreplies || []),
+              postdata,
+            ],
+          };
+        }
+
+        return reply;
+      }),
+    }));
+
+    setitem(updatedItems);
+
+  };
+
+
+
+
+
+  const Replys = (commentId: any) => {
+    console.log(commentId.replyId, 'commentId.replyId')
+    const postdata = {
+      replyId: "RPL-20edvd5",
+      replyToCommentId: commentId.replyId,
+      name: "Tharun Ravi",
+      role: "Frontend Developer",
+      reply: "This is a new parent reply.",
+      time: "Just now", useremail: "tr565003@gmail.com",
+      Nestedreplies: [],
+    };
+
+    const updatedItems = item.map((comment: any) => {
+      return {
+        ...comment,
+        replies: (comment.replies || []).map((reply: any) => {
+          if (reply.replyId === commentId.replyId) {
+            return {
+              ...reply,
+              Nestedreplies: [...(reply.Nestedreplies || []), postdata],
+            };
+          }
+          return reply;
+        }),
+      };
+    });
+
+    setitem(updatedItems);
+  };
   return (
     <>
 
@@ -763,81 +884,130 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
                   <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                     Comments
                   </h3>
-
-                  <span className="text-xs text-gray-500">4 Comments</span>
+                  <span className="text-xs text-gray-500">{item?.length || 0} Comments</span>
                 </div>
 
                 <div className="space-y-5">
-                  <div className="space-y-6">
-                    {item.map((comment: any) => {
-                      const replies = comment.replies?.filter(
-                        (reply: any) => reply.replyToCommentId === comment.id
-                      );
+                  {item?.map((comment: any) => {
+                    const replies = comment.replies?.filter(
+                      (reply: any) => reply.replyToCommentId === comment.id
+                    ) || [];
 
-                      return (
-                        <div
-                          key={comment.id}
-                          className={`
-                rounded-3xl border p-4 sm:p-5
-                ${theme === "Dark"
-                              ? "border-white/10 bg-white/[0.03]"
-                              : "border-gray-200 bg-white"
-                            }
-              `}
-                        >
-                          {/* MAIN COMMENT */}
-                          <div className="flex gap-3">
-                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 font-semibold text-white shadow-sm">
-                              {comment?.name?.charAt(0)}
-                            </div>
+                    return (
+                      <div
+                        key={comment.id}
+                        className={`rounded-2xl border p-4 sm:p-5 ${theme === "Dark"
+                          ? "border-white/10 bg-white/[0.03]"
+                          : "border-gray-200 bg-white"
+                          }`}
+                      >
+                        {/* Main comment */}
+                        <div className="flex gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-sm font-semibold text-white">
+                            {comment?.name?.charAt(0)}
+                          </div>
 
-                            <div className="min-w-0 flex-1">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                  {comment.name}
-                                </h4>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                {comment.name}
+                              </h4>
 
+                              {comment.role && (
                                 <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
                                   {comment.role}
                                 </span>
+                              )}
 
-                                <span className="text-xs text-gray-500">{comment.time}</span>
-                              </div>
+                              <span className="text-xs text-gray-500">{comment.time}</span>
+                            </div>
 
-                              <p className="mt-2 text-sm leading-7 text-gray-600 dark:text-gray-400">
-                                {comment.comment}
-                              </p>
+                            <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                              {comment.comment}
+                            </p>
 
-                              <div className="mt-3 flex items-center gap-4">
-                                <button className="text-xs font-medium text-blue-500 hover:text-blue-600">
-                                  Reply
-                                </button>
+                            <div className="mt-3 flex items-center gap-4">
+                              <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Replys(comment)}>
+                                Reply
+                              </button>
+                              <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                Like
+                              </button>
+                              {useremail === comment.useremail && (
+                                <div className="mt-3 flex items-center gap-2">
+                                  <button
+                                    type="button"
 
-                                <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                                  Like
-                                </button>
-                              </div>
+                                    className="
+        inline-flex items-center gap-1.5 rounded-full
+        border border-blue-200 bg-blue-50
+        px-3 py-1.5 text-xs font-medium text-blue-700
+        transition-all duration-200 hover:bg-blue-100
+        dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/15
+      "
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      className="h-3.5 w-3.5"
+                                    >
+                                      <path d="M12 20h9" />
+                                      <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
+                                    </svg>
+                                    Edit
+                                  </button>
+
+                                  <button
+                                    type="button"
+
+                                    className="
+        inline-flex items-center gap-1.5 rounded-full
+        border border-red-200 bg-red-50
+        px-3 py-1.5 text-xs font-medium text-red-600
+        transition-all duration-200 hover:bg-red-100
+        dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/15
+      "
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      className="h-3.5 w-3.5"
+                                    >
+                                      <path d="M3 6h18" />
+                                      <path d="M8 6V4h8v2" />
+                                      <path d="M19 6l-1 14H6L5 6" />
+                                      <path d="M10 11v6" />
+                                      <path d="M14 11v6" />
+                                    </svg>
+                                    Delete
+                                  </button>
+                                </div>
+                              )}
                             </div>
                           </div>
+                        </div>
 
-                          {/* REPLIES */}
-                          {replies?.length > 0 && (
-                            <div className="mt-5 ml-4 border-l border-gray-200 pl-4 sm:ml-10 dark:border-white/10">
-                              <div className="space-y-4">
-                                {replies.map((reply: any) => (
+                        {/* Replies */}
+                        {replies.length > 0 && (
+                          <div className="mt-4 ml-4 border-l border-gray-200 pl-4 sm:ml-8 dark:border-white/10">
+                            <div className="space-y-3">
+                              {replies.map((reply: any) => (
+                                <div key={reply.replyId} className="space-y-3">
                                   <div
-                                    key={reply.replyId}
-                                    className={`
-                          rounded-2xl border p-4
-                          ${theme === "Dark"
-                                        ? "border-white/10 bg-[#0f172a]"
-                                        : "border-gray-200 bg-gray-50"
-                                      }
-                        `}
+                                    className={`rounded-2xl border p-4 ${theme === "Dark"
+                                      ? "border-white/10 bg-[#0f172a]"
+                                      : "border-gray-200 bg-gray-50"
+                                      }`}
                                   >
                                     <div className="flex gap-3">
-                                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-sm font-semibold text-white shadow-sm">
-                                        {reply.name.charAt(0)}
+                                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-xs font-semibold text-white">
+                                        {reply?.name?.charAt(0)}
                                       </div>
 
                                       <div className="min-w-0 flex-1">
@@ -846,9 +1016,11 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
                                             {reply.name}
                                           </h5>
 
-                                          <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[11px] text-purple-700 dark:bg-purple-500/10 dark:text-purple-400">
-                                            {reply.role}
-                                          </span>
+                                          {reply.role && (
+                                            <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[11px] text-purple-700 dark:bg-purple-500/10 dark:text-purple-400">
+                                              {reply.role}
+                                            </span>
+                                          )}
 
                                           <span className="text-xs text-gray-500">
                                             {reply.time}
@@ -860,60 +1032,165 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
                                         </p>
 
                                         <div className="mt-3 flex items-center gap-4">
-                                          <button className="text-xs font-medium text-blue-500 hover:text-blue-600">
+                                          <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Replys(reply)}>
                                             Reply
                                           </button>
-
                                           <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                                            Like
+                                            Likes
                                           </button>
+
+                                          {useremail == reply.useremail && <>
+
+
+                                            <button>Delte</button>
+                                          </>}
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                ))}
-                              </div>
+
+                                  {/* Nested replies */}
+                                  {reply.Nestedreplies?.length > 0 && (
+                                    <div className="ml-4 border-l border-gray-200 pl-4 dark:border-white/10">
+                                      <div className="space-y-3">
+                                        {reply.Nestedreplies.map((nested: any) => (
+                                          <div
+                                            key={nested.replyId}
+                                            className={`rounded-2xl border p-4 ${theme === "Dark"
+                                              ? "border-white/10 bg-white/[0.02]"
+                                              : "border-gray-200 bg-white"
+                                              }`}
+                                          >
+                                            <div className="flex gap-3">
+                                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-400 text-xs font-semibold text-white">
+                                                {nested?.name?.charAt(0)}
+                                              </div>
+
+                                              <div className="min-w-0 flex-1">
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                  <h6 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                    {nested.name}
+                                                  </h6>
+                                                  <span className="text-xs text-gray-500">
+                                                    {nested.time}
+                                                  </span>
+                                                </div>
+
+                                                <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                                                  {nested.reply}
+                                                </p>
+                                              </div>
+                                            </div>
+                                            <div className="mt-3 flex items-center gap-4">
+                                              <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Reply(nested)}>
+                                                Reply
+                                              </button>
+                                              <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                                Like
+                                              </button>
+                                              {useremail === nested.useremail && (
+                                                <div className="mt-3 flex items-center gap-2">
+                                                  <button
+                                                    type="button"
+                                                    // onClick={() => handleEditNestedReply(nested)}
+                                                    className="
+        inline-flex items-center gap-1.5 rounded-full
+        border border-blue-200 bg-blue-50
+        px-3 py-1.5 text-xs font-medium text-blue-700
+        transition-all duration-200 hover:bg-blue-100
+        dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/15
+      "
+                                                  >
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      viewBox="0 0 24 24"
+                                                      fill="none"
+                                                      stroke="currentColor"
+                                                      strokeWidth="2"
+                                                      className="h-3.5 w-3.5"
+                                                    >
+                                                      <path d="M12 20h9" />
+                                                      <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
+                                                    </svg>
+                                                    Edit
+                                                  </button>
+
+                                                  <button
+                                                    type="button"
+                                                    // onClick={() => handleDeleteNestedReply(nested)}
+                                                    className="
+        inline-flex items-center gap-1.5 rounded-full
+        border border-red-200 bg-red-50
+        px-3 py-1.5 text-xs font-medium text-red-600
+        transition-all duration-200 hover:bg-red-100
+        dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/15
+      "
+                                                  >
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      viewBox="0 0 24 24"
+                                                      fill="none"
+                                                      stroke="currentColor"
+                                                      strokeWidth="2"
+                                                      className="h-3.5 w-3.5"
+                                                    >
+                                                      <path d="M3 6h18" />
+                                                      <path d="M8 6V4h8v2" />
+                                                      <path d="M19 6l-1 14H6L5 6" />
+                                                      <path d="M10 11v6" />
+                                                      <path d="M14 11v6" />
+                                                    </svg>
+                                                    Delete
+                                                  </button>
+                                                </div>
+                                              )}
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
                             </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
 
-                {/* ADD COMMENT */}
+                {/* Add comment */}
                 <div
-                  className={`
-        mt-8 rounded-3xl border p-4 sm:p-5
-        ${theme === "Dark"
-                      ? "border-white/10 bg-white/[0.03]"
-                      : "border-gray-200 bg-white"
-                    }
-      `}
+                  className={`mt-8 rounded-2xl border p-4 sm:p-5 ${theme === "Dark"
+                    ? "border-white/10 bg-white/[0.03]"
+                    : "border-gray-200 bg-white"
+                    }`}
                 >
                   <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
                     Add Comment
                   </h4>
 
+                  <label className="sr-only" htmlFor="commentBox">
+                    Write your comment
+                  </label>
+
                   <textarea
+                    id="commentBox"
                     rows={4}
                     placeholder="Write your comment here..."
-                    className={`
-          w-full resize-none rounded-2xl border px-4 py-3 text-sm outline-none transition-all
-          focus:ring-2 focus:ring-blue-500/20
-          ${theme === "Dark"
-                        ? "border-white/10 bg-[#0f172a] text-white placeholder:text-gray-500 focus:border-blue-500/40"
-                        : "border-gray-200 bg-gray-50 text-black placeholder:text-gray-400 focus:border-blue-400"
-                      }
-        `}
+                    onChange={(e) => setpostname(e.target.value)}
+                    value={postmessage}
+                    className={`w-full resize-none rounded-2xl border px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500/20 ${theme === "Dark"
+                      ? "border-white/10 bg-[#0f172a] text-white placeholder:text-gray-500 focus:border-blue-500/40"
+                      : "border-gray-200 bg-gray-50 text-black placeholder:text-gray-400 focus:border-blue-400"
+                      }`}
                   />
 
                   <div className="mt-4 flex justify-end">
                     <button
-                      className="
-            inline-flex h-10 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-medium text-white transition-colors hover:bg-blue-700
-          "
                       onClick={postComment}
+                      className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                     >
                       Post Comment
                     </button>
