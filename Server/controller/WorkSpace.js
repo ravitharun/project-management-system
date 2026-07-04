@@ -49,7 +49,7 @@ const FetchWorkspace = async (req, res) => {
                 { "WorkSpacememebers.email": useremail }
             ]
         });
-         console.log(FetchWorkspace, 'FetchWorkspace')
+        console.log(FetchWorkspace, 'FetchWorkspace')
         return res.status(200).json({ data: FetchWorkspace })
     } catch (error) {
         console.log(error.message)
@@ -510,4 +510,41 @@ const FetchTeamInfoWorkpsace = async (req, res, next) => {
 
 }
 
-module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers, ApproveEmail, MakeStarTOWorkspace, StarWorkspaceByUserEmail, RemoveStarWorkspaceByUserEmail, FetchTeamInfoWorkpsace }
+
+
+
+
+// FetchTeamMembers
+const FetchTeamMembers = async (req, res, next) => {
+    try {
+        const { SpaceId } = req.query
+        console.log(SpaceId, 'idididididid')
+        if (!SpaceId) {
+            return res.status(404).json({ message: "Not Found", status: false })
+        }
+
+
+        // check Db Space Id fetch the Team users
+
+
+
+        const GetTeamUsers = await Workspace.findById({ _id: SpaceId }).populate("WorkSpacememebers.id")
+
+        if (!GetTeamUsers) {
+            return res.status(404).json({ message: "No Space Id found ." })
+        }
+
+        console.log('GetTeamUsers check :', GetTeamUsers.WorkSpacememebers)
+
+        return res.status(200).json({ message: GetTeamUsers })
+
+
+    } catch (error) {
+
+        console.log(error.message)
+
+        next(error)
+    }
+}
+
+module.exports = { CreateWorkSpace, FetchWorkspace, updateBackgroundspace, handelupdateSpaceIcon, DeleteWorkspace, handelCustomUoploadBackground, handelCustomUoploadIcon, AddWorkSpacememebers, FetchTeamMembers, ApproveEmail, MakeStarTOWorkspace, StarWorkspaceByUserEmail, RemoveStarWorkspaceByUserEmail, FetchTeamInfoWorkpsace }

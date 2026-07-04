@@ -8,28 +8,82 @@ import {
     IoEyeOutline,
     IoAdd,
 } from "react-icons/io5";
-import { FaCrown, FaTrash, FaUserCircle } from "react-icons/fa";
+import { FaCrown, FaTrash } from "react-icons/fa";
+import "../index.css"
 import bgthemeContext from "../Context/ThemeContext";
 import Chooseicon from "./Chooseicon";
 import AddPeopleWorkspace from "./Task/AddPeople-workspace/AddPeopleWorkspace";
+import { instance } from "../services/apiservices";
+import { toast, ToastContainer } from "react-toastify";
 
 function ProjectSettings() {
     const { state } = useLocation();
     const navigate = useNavigate();
     const { theme }: any = useContext(bgthemeContext);
 
-    const [ChooseIcon,setChooseIcon] = useState<string | undefined>();
+    const [ChooseIcon, setChooseIcon] = useState<string | undefined>();
     console.log(ChooseIcon)
     // console.log(first)
     const [openIconModal, setOpenIconModal] = useState(false);
 
     const data = state?.CreatedWorkSpace;
+    const [users, setusers] = useState([])
+
+
+    const naviagte = useNavigate()
+    useEffect(() => {
+        const fetchteamUsers = async () => {
+            try {
+                if (!data._id) {
+                    return naviagte("/")
+                }
+
+
+                const response = await instance.get("/api/WorkSpace/TeamUsers", {
+                    params: {
+                        SpaceId: data._id
+                    }
+                })
+
+
+                setusers(response.data.message.WorkSpacememebers)
+                console.log(response.data.message)
+
+
+
+
+            } catch (error: any) {
+                console.log(error.response, 'error.response')
+                const status_Code: number = error.response.status
+                const status_message: string = error.response.data.message
+                console.log(status_Code, status_message);
+                if (status_Code == 400) {
+                    // return GlobalToast(status_message, "error")
+                    return toast.error(status_message)
+                }
+                if (status_Code == 404) {
+                    // return GlobalToast(status_message, "error")
+                    return toast.error(status_message)
+                }
+                if (status_Code == 500) {
+                    // return GlobalToast(status_message, "error")
+                    return toast.error('server error')
+                }
+            }
+
+        }
+        fetchteamUsers()
+    }, [data._id])
+
+
+    console.log(users, 'users')
+
     const [AddMemeber, setAddMemeber] = useState(false)
     useEffect(() => {
         if (!data) navigate("/", { replace: true });
     }, [data, navigate]);
 
-    if (!data) return null;
+    if (!data) return navigate("/");
 
     const members = [
         {
@@ -61,6 +115,9 @@ function ProjectSettings() {
 
     return (
         <>
+
+
+            <ToastContainer></ToastContainer>
             {openIconModal && (
                 <Chooseicon
                     close={setOpenIconModal}
@@ -227,48 +284,130 @@ function ProjectSettings() {
                                     </button>
                                 </div>
 
-                                <div className="space-y-3">
-                                    {members.map((user) => (
+                                <div className="space-y-4">
+{users.length === 0 && (
+  <div className="flex flex-col items-center justify-center py-16 px-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+    <div className="w-20 h-20 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-10 h-10 text-blue-600 dark:text-blue-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M17 20h5V4H2v16h5m10 0v-4a3 3 0 00-3-3H10a3 3 0 00-3 3v4m10 0H7m10-10a4 4 0 11-8 0 4 4 0 018 0z"
+        />
+      </svg>
+    </div>
+
+    <h2 className="mt-5 text-xl font-semibold text-slate-800 dark:text-white">
+      No Users Found
+    </h2>
+
+    <p className="mt-2 max-w-sm text-center text-sm text-slate-500 dark:text-slate-400">
+      There are no users available at the moment. Add a new user or refresh
+      the page to see the list.
+    </p>
+  </div>
+)}                     
+                                    {users?.map((user: any) => (
                                         <div
-                                            key={user.id}
-                                            className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl p-4 transition ${isDark
-                                                ? "bg-slate-950 border border-white/10"
-                                                : "bg-slate-50 border border-slate-200"
+                                            key={user?.id?._id || user?.id}
+                                            className={`flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all duration-300 ${isDark
+                                                    ? "bg-slate-900 border border-slate-800 hover:border-slate-700"
+                                                    : "bg-white border border-slate-200 hover:border-blue-300"
                                                 }`}
                                         >
-                                            <div className="flex items-center gap-3 min-w-0">
-                                                <FaUserCircle className="text-4xl text-blue-500 shrink-0" />
-                                                <div className="min-w-0">
+                                            {/* Left Section */}
+                                            <div className="flex items-center gap-4 min-w-0 flex-1">
+                                                <div className="relative shrink-0">
+                                                    <img
+                                                        src={user?.id?.userProfile}
+                                                        alt="User Profile"
+                                                        className="w-14 h-14 rounded-full object-cover border-2 border-blue-500 shadow"
+                                                    />
+
+                                                    {/* Online Indicator */}
+                                                    {user?.id?.isactive && (
+                                                        <>
+                                                            <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-green-500 border-2 border-white animate-ping"></span>
+                                                            <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-green-500 border-2 border-white"></span>
+                                                        </>
+                                                    )}
+                                                </div>
+
+                                                <div className="min-w-0 flex-1">
+                                                    {/* Username + Role */}
                                                     <div className="flex items-center gap-2 flex-wrap">
-                                                        <p className="font-medium">{user.name}</p>
+                                                        <h2 className="font-semibold text-lg truncate">
+                                                            {user?.id?.Username}
+                                                        </h2>
+
                                                         <span
-                                                            className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${user.role === "Admin"
-                                                                ? "bg-amber-500/15 text-amber-600"
-                                                                : isDark
-                                                                    ? "bg-slate-800 text-slate-300"
-                                                                    : "bg-slate-200 text-slate-700"
+                                                            className={`px-2.5 py-1 rounded-full text-xs font-semibold ${user?.role === "Admin"
+                                                                    ? "bg-yellow-100 text-yellow-700"
+                                                                    : isDark
+                                                                        ? "bg-slate-700 text-slate-300"
+                                                                        : "bg-slate-100 text-slate-600"
                                                                 }`}
                                                         >
-                                                            {user.role}
+                                                            {user?.role || "Member"}
                                                         </span>
-                                                        {user.role === "Admin" && (
-                                                            <FaCrown className="text-xs text-amber-500" />
+
+                                                        {user?.role === "Admin" && (
+                                                            <FaCrown className="text-yellow-500" />
                                                         )}
                                                     </div>
-                                                    <p className={`text-sm truncate ${muted}`}>{user.email}</p>
+
+                                                    {/* Email */}
+                                                    <p className={`text-sm mt-1 truncate ${muted}`}>
+                                                        {user?.email}
+                                                    </p>
+                                                    {/* Status */}
+                                                    <div className="mt-3">
+                                                        {user?.id?.isactive ? (
+                                                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                                                <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+                                                                Active Now
+                                                            </span>
+                                                        ) : (
+                                                            <span
+                                                                className={`inline-flex items-center px-3 py-1 rounded-full text-xs ${isDark
+                                                                        ? "bg-slate-800 text-slate-400"
+                                                                        : "bg-slate-100 text-slate-600"
+                                                                    }`}
+                                                            >
+                                                                Last seen{" "}
+                                                                {new Date(user?.id?.lastseen).toLocaleString("en-IN", {
+                                                                    day: "2-digit",
+                                                                    month: "short",
+                                                                    year: "numeric",
+                                                                    hour: "2-digit",
+                                                                    minute: "2-digit",
+                                                                    hour12: true,
+                                                                })}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-2">
+                                            {/* Right Section */}
+                                            <div className="flex items-center gap-3">
                                                 <button
-                                                    className={`rounded-lg px-3 py-2 text-sm transition ${isDark
-                                                        ? "hover:bg-slate-800 text-slate-300"
-                                                        : "hover:bg-slate-200 text-slate-700"
+                                                    className={`px-4 py-2 rounded-xl text-sm font-medium transition ${isDark
+                                                            ? "bg-slate-800 hover:bg-slate-700 text-white"
+                                                            : "bg-blue-50 hover:bg-blue-100 text-blue-600"
                                                         }`}
                                                 >
                                                     Change Role
                                                 </button>
-                                                <button className="rounded-lg px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 transition">
+
+                                                <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 hover:bg-red-100 text-red-500 transition" onClick={()=>handelremoveteammember(user)}>
                                                     <FaTrash />
                                                 </button>
                                             </div>
