@@ -23,7 +23,6 @@ function ProjectSettings() {
 
     const [ChooseIcon, setChooseIcon] = useState<string | undefined>();
     console.log(ChooseIcon)
-    // console.log(first)
     const [openIconModal, setOpenIconModal] = useState(false);
 
     const data = state?.CreatedWorkSpace;
@@ -83,22 +82,7 @@ function ProjectSettings() {
         if (!data) navigate("/", { replace: true });
     }, [data, navigate]);
 
-    if (!data) return navigate("/");
-
-    const members = [
-        {
-            id: 1,
-            name: "Ravi Tharun",
-            email: "ravi@example.com",
-            role: "Admin",
-        },
-        {
-            id: 2,
-            name: "John Doe",
-            email: "john@example.com",
-            role: "Member",
-        },
-    ];
+    
 
     const isDark = theme === "Dark";
 
@@ -406,8 +390,10 @@ function ProjectSettings() {
                                                 >
                                                     Change Role
                                                 </button>
+                                                {/* onClick={()=>handelremoveteammember()} */}
 
-                                                <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 hover:bg-red-100 text-red-500 transition" onClick={()=>handelremoveteammember(user)}>
+                                                <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 hover:bg-red-100 text-red-500 transition" 
+                                                >
                                                     <FaTrash />
                                                 </button>
                                             </div>
