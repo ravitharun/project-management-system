@@ -119,3 +119,21 @@ body #root {
 .ag-cell {
     overflow: visible !important;
 }
+@keyframes blinkPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.active-dot {
+  animation: blinkPulse 1s infinite;
+}
