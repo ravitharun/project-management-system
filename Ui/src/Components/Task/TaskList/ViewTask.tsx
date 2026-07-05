@@ -1192,7 +1192,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
                       onClick={postComment}
                       className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                     >
-                      Post Comment
+                      main Post Comment
                     </button>
                   </div>
                 </div>

@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const http = require("http");
-const cron=require("node-cron")
+const cron = require("node-cron")
 const AuthRouter = require("./routes/AuthRoutes");
 const { initSocket, getIO } = require("./scoket");
 const cors = require("cors");
@@ -20,6 +20,7 @@ app.use(express.json());
 const fs = require("fs");
 const CreateWorkSpaceRouter = require("./routes/CreateWorkSpace");
 const Workspace = require("./Models/Workspace");
+const Comments = require("./routes/Comments");
 const WorkSpaceTaskRouter = require("./routes/WorkSpaceTask_router");
 const limiter = require("./RateLimiter");
 const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
@@ -66,6 +67,7 @@ app.use("/api/Team", FetchTeamRouter)
 app.use("/api/Analytcs", AnalytcsRouter)
 app.use("/api/WorkSpace", CreateWorkSpaceRouter)
 app.use("/api/Task", WorkSpaceTaskRouter)
+app.use("/api/comments", Comments)
 // /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)

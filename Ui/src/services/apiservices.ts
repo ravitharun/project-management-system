@@ -1,11 +1,6 @@
 
 import axios from "axios"
 import { Token } from "../Components/LocalStorage"
-// export const token = "12"
-
-// const server = import.meta.env.Vite_Env
-console.log(import.meta.env.VITE_API)
-console.log(import.meta.env.VITE_ENV)
 
 
 export const instance = axios.create({

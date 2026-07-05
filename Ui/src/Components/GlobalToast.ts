@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 
 const GlobalToast = ( text:string, type : "success" | "warning" | "error" | "info") => {
+    console.log( text,type,'check tharun')
     switch (type) {
         case "success":
             toast.success(text);
