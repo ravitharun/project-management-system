@@ -39,7 +39,7 @@ jobs:
     - name: Server Deploy
       run: echo "Deploy Server Done"
 
-Build:
+  Build:
   name: Build & Push Docker Image
   runs-on: ubuntu-latest
 
