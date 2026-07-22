@@ -40,6 +40,7 @@ jobs:
       run: echo "Deploy Server Done"
 
   build:
+    needs: ServerDeploy
     name: Build & Push Docker Images
     runs-on: ubuntu-latest
 
