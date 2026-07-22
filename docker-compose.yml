@@ -2,6 +2,7 @@
 services:
   frontend:
     build: ./Ui
+    image: ravitharun/project-management-frontend:1.0.0
     ports:
       - "5173:5173"
     command: npm run dev -- --host
@@ -19,6 +20,8 @@ services:
 
   server:
     build: ./Server
+    image: ravitharun/project-management-server:1.0.0
+
     ports:
       - "5000:5000"
     command: node server.js

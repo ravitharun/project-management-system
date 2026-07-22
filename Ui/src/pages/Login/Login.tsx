@@ -67,6 +67,7 @@ function Login() {
                 auth,
                 provider
             );
+            console.log(result, 'resultresultresult');
 
             const email = result.user.providerData[0].email
             const type = result.user.providerId
@@ -75,7 +76,7 @@ function Login() {
             if (response.data.message == "userLogedin.") {
 
                 setresponsetext({
-                    message: "Account Logined successfully 🎉",
+                    message: "Account Logined successfully",
                     types: "success",
                 });
 
