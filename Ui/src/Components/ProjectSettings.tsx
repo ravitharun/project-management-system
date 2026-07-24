@@ -15,15 +15,28 @@ import Chooseicon from "./Chooseicon";
 import AddPeopleWorkspace from "./Task/AddPeople-workspace/AddPeopleWorkspace";
 import { instance } from "../services/apiservices";
 import { toast, ToastContainer } from "react-toastify";
+import { Role } from "../types/Role";
+import { getuserInfo } from "./LocalStorage";
 
 function ProjectSettings() {
+
+
     const { state } = useLocation();
     const navigate = useNavigate();
     const { theme }: any = useContext(bgthemeContext);
 
     const [ChooseIcon, setChooseIcon] = useState<string | undefined>();
+
+    const [isRoleOpen, setisRoleopen] = useState<boolean>(false)
+    const [ProjectRole, setProjectRole] = useState<String | any>("")
+    const [userid, setusrid] = useState<string | Number | any>('')
+
+
+    console.log(userid, 'userid')
     console.log(ChooseIcon)
+
     const [openIconModal, setOpenIconModal] = useState(false);
+
 
     const data = state?.CreatedWorkSpace;
     const [users, setusers] = useState([])
@@ -72,7 +85,7 @@ function ProjectSettings() {
 
         }
         fetchteamUsers()
-    }, [data._id])
+    }, [data?._id])
 
 
     console.log(users, 'users')
@@ -82,7 +95,7 @@ function ProjectSettings() {
         if (!data) navigate("/", { replace: true });
     }, [data, navigate]);
 
-    
+
 
     const isDark = theme === "Dark";
 
@@ -96,7 +109,10 @@ function ProjectSettings() {
 
     const muted = isDark ? "text-slate-400" : "text-slate-500";
     const subtle = isDark ? "bg-slate-800 text-slate-300" : "bg-slate-100 text-slate-700";
-
+    const handelRolePoup = (id: any) => {
+        setisRoleopen((prev) => !prev);
+        setusrid(id);
+    };
     return (
         <>
 
@@ -120,6 +136,8 @@ function ProjectSettings() {
 
                 />
             }
+
+
 
             <div className={`min-h-screen transition-colors duration-300 ${shell}`}>
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -269,41 +287,46 @@ function ProjectSettings() {
                                 </div>
 
                                 <div className="space-y-4">
-{users.length === 0 && (
-  <div className="flex flex-col items-center justify-center py-16 px-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-    <div className="w-20 h-20 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-10 h-10 text-blue-600 dark:text-blue-400"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M17 20h5V4H2v16h5m10 0v-4a3 3 0 00-3-3H10a3 3 0 00-3 3v4m10 0H7m10-10a4 4 0 11-8 0 4 4 0 018 0z"
-        />
-      </svg>
-    </div>
+                                    {users.length === 0 && (
+                                        <div className="flex flex-col items-center justify-center py-16 px-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                                            <div className="w-20 h-20 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="w-10 h-10 text-blue-600 dark:text-blue-400"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                    strokeWidth={2}
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M17 20h5V4H2v16h5m10 0v-4a3 3 0 00-3-3H10a3 3 0 00-3 3v4m10 0H7m10-10a4 4 0 11-8 0 4 4 0 018 0z"
+                                                    />
+                                                </svg>
+                                            </div>
 
-    <h2 className="mt-5 text-xl font-semibold text-slate-800 dark:text-white">
-      No Users Found
-    </h2>
+                                            <h2 className="mt-5 text-xl font-semibold text-slate-800 dark:text-white">
+                                                No Users Found
+                                            </h2>
 
-    <p className="mt-2 max-w-sm text-center text-sm text-slate-500 dark:text-slate-400">
-      There are no users available at the moment. Add a new user or refresh
-      the page to see the list.
-    </p>
-  </div>
-)}                     
+                                            <p className="mt-2 max-w-sm text-center text-sm text-slate-500 dark:text-slate-400">
+                                                There are no users available at the moment. Add a new user or refresh
+                                                the page to see the list.
+                                            </p>
+                                        </div>
+                                    )}
                                     {users?.map((user: any) => (
                                         <div
                                             key={user?.id?._id || user?.id}
-                                            className={`flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all duration-300 ${isDark
-                                                    ? "bg-slate-900 border border-slate-800 hover:border-slate-700"
-                                                    : "bg-white border border-slate-200 hover:border-blue-300"
+                                            className={`flex flex-col md:flex-row md:items-center md:justify-between gap-3 rounded-lg px-4 py-3 border transition-all duration-200
+${JSON.parse(getuserInfo).userEmail === user.email
+                                                    ? isDark
+                                                        ? "bg-blue-900/20 border-blue-800"
+                                                        : "bg-blue-50 border-blue-300"
+                                                    : isDark
+                                                        ? "bg-slate-950 border-slate-800 hover:bg-slate-900"
+                                                        : "bg-white border-slate-200 hover:bg-slate-50"
                                                 }`}
                                         >
                                             {/* Left Section */}
@@ -333,10 +356,10 @@ function ProjectSettings() {
 
                                                         <span
                                                             className={`px-2.5 py-1 rounded-full text-xs font-semibold ${user?.role === "Admin"
-                                                                    ? "bg-yellow-100 text-yellow-700"
-                                                                    : isDark
-                                                                        ? "bg-slate-700 text-slate-300"
-                                                                        : "bg-slate-100 text-slate-600"
+                                                                ? "bg-yellow-100 text-yellow-700"
+                                                                : isDark
+                                                                    ? "bg-slate-700 text-slate-300"
+                                                                    : "bg-slate-100 text-slate-600"
                                                                 }`}
                                                         >
                                                             {user?.role || "Member"}
@@ -361,8 +384,8 @@ function ProjectSettings() {
                                                         ) : (
                                                             <span
                                                                 className={`inline-flex items-center px-3 py-1 rounded-full text-xs ${isDark
-                                                                        ? "bg-slate-800 text-slate-400"
-                                                                        : "bg-slate-100 text-slate-600"
+                                                                    ? "bg-slate-800 text-slate-400"
+                                                                    : "bg-slate-100 text-slate-600"
                                                                     }`}
                                                             >
                                                                 Last seen{" "}
@@ -381,21 +404,70 @@ function ProjectSettings() {
                                             </div>
 
                                             {/* Right Section */}
-                                            <div className="flex items-center gap-3">
+                                            <div className="relative flex items-center gap-3">
                                                 <button
+                                                    onClick={() => handelRolePoup(user?._id)}
                                                     className={`px-4 py-2 rounded-xl text-sm font-medium transition ${isDark
-                                                            ? "bg-slate-800 hover:bg-slate-700 text-white"
-                                                            : "bg-blue-50 hover:bg-blue-100 text-blue-600"
+                                                        ? "bg-slate-800 hover:bg-slate-700 text-white"
+                                                        : "bg-blue-50 hover:bg-blue-100 text-blue-600"
                                                         }`}
                                                 >
-                                                    Change Role
+                                                    {isRoleOpen && userid === user?._id ? "Close" : "Choose Role"}
                                                 </button>
-                                                {/* onClick={()=>handelremoveteammember()} */}
 
-                                                <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 hover:bg-red-100 text-red-500 transition" 
-                                                >
+                                                <button className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors">
                                                     <FaTrash />
                                                 </button>
+
+                                                {isRoleOpen && userid === user?._id && (
+                                                    <div
+                                                        className={`absolute top-0 left-full ml-4 z-50 w-64 rounded-2xl shadow-xl border p-4 ${isDark
+                                                            ? "bg-slate-900 border-slate-700"
+                                                            : "bg-white border-slate-200"
+                                                            }`}
+                                                    >
+                                                        <h3 className="text-sm font-semibold mb-3">
+                                                            Change Project Role
+                                                        </h3>
+
+                                                        <select
+                                                            name="role"
+                                                            id="Projectrole"
+                                                            value={ProjectRole}
+                                                            onChange={(e) => setProjectRole(e.target.value)}
+                                                            className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDark
+                                                                ? "bg-slate-800 border-slate-700 text-white"
+                                                                : "bg-white border-slate-300"
+                                                                }`}
+                                                        >
+                                                            <option value="">Choose Role</option>
+
+                                                            {Role.map((role) => (
+                                                                <option key={role} value={role}>
+                                                                    {role}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+
+                                                        <div className="mt-4 flex justify-end gap-2">
+                                                            <button
+                                                                onClick={() => setisRoleopen(false)}
+                                                                className={`px-3 py-2 rounded-lg text-sm ${isDark
+                                                                    ? "bg-slate-800 hover:bg-slate-700"
+                                                                    : "bg-slate-100 hover:bg-slate-200"
+                                                                    }`}
+                                                            >
+                                                                Cancel
+                                                            </button>
+
+                                                            <button
+                                                                className="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700"
+                                                            >
+                                                                Save
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     ))}
@@ -448,6 +520,11 @@ function ProjectSettings() {
                     </div>
                 </div>
             </div>
+
+            {/* 
+             Poup Role */}
+
+
         </>
     );
 }
