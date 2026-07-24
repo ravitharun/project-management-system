@@ -11,3 +11,16 @@ export const UpdateRole = async (userId: any, projid: any, ProjectRole: String) 
 
 
 }
+export const RemoveTeamMember = async (id: any, pid: any,) => {
+    try {
+        const response = await instance.delete(`/api/project-roles/${id}/${pid}`)
+        return response
+    } catch (error) {
+        throw error
+
+    }
+
+
+}
+
+
