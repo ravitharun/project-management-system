@@ -13,6 +13,7 @@ const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
 const NotificatonsRouter = require("./routes/NotificatonsRouter");
 const FetchTeamRouter = require("./routes/FetchTeamRouter");
 const AnalytcsRouter = require("./routes/AnalytcsRouter");
+const handelProjectRoleRouter = require("./routes/handelProjectRole-Router");
 const { SendAccountCreationEmail, SendWelcomEmail, taskAssiginedEmail } = require("./service/Email");
 const redis = require("./config/redis");
 // Middleware
@@ -68,6 +69,7 @@ app.use("/api/Analytcs", AnalytcsRouter)
 app.use("/api/WorkSpace", CreateWorkSpaceRouter)
 app.use("/api/Task", WorkSpaceTaskRouter)
 app.use("/api/comments", Comments)
+app.use("/api/project-roles", handelProjectRoleRouter)
 // /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)

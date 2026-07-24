@@ -17,11 +17,13 @@ import { instance } from "../services/apiservices";
 import { toast, ToastContainer } from "react-toastify";
 import { Role } from "../types/Role";
 import { getuserInfo } from "./LocalStorage";
+import { UpdateRole } from "../services/ProjectRole";
 
 function ProjectSettings() {
 
 
     const { state } = useLocation();
+
     const navigate = useNavigate();
     const { theme }: any = useContext(bgthemeContext);
 
@@ -113,6 +115,38 @@ function ProjectSettings() {
         setisRoleopen((prev) => !prev);
         setusrid(id);
     };
+
+
+    const handelRole = async (userId: String | Number | any) => {
+
+
+
+        try {
+            const response = await UpdateRole(userId, state?.CreatedWorkSpace?._id, ProjectRole)
+            if (response.status == 200) {
+                return toast.success(response.data.message)
+            }
+
+
+        } catch (error: any) {
+            const status: Number = error.response.status
+            const Err_message: string = error.response.data.message
+
+            console.log({ status, Err_message });
+
+            if (status == 404) {
+
+                return toast.info(Err_message)
+            }
+
+            if (status == 500) {
+
+
+                return toast.error(Err_message)
+            }
+
+        }
+    }
     return (
         <>
 
@@ -461,6 +495,7 @@ ${JSON.parse(getuserInfo).userEmail === user.email
                                                             </button>
 
                                                             <button
+                                                                onClick={() => handelRole(user?.id?._id)}
                                                                 className="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700"
                                                             >
                                                                 Save
