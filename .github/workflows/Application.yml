@@ -65,6 +65,7 @@ jobs:
       run: docker push ravitharun/project-management-frontend:1.0.0
 
     # Push Backend Image
+    - name: Push Backend
       run: docker push ravitharun/project-management-server:1.0.0
 
     # Completed
