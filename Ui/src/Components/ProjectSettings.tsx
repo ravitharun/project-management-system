@@ -17,7 +17,7 @@ import { instance } from "../services/apiservices";
 import { toast, ToastContainer } from "react-toastify";
 import { Role } from "../types/Role";
 import { getuserInfo } from "./LocalStorage";
-import { UpdateRole } from "../services/ProjectRole";
+import { RemoveTeamMember, UpdateRole } from "../services/ProjectRole";
 
 function ProjectSettings() {
 
@@ -147,6 +147,40 @@ function ProjectSettings() {
 
         }
     }
+
+
+
+
+    // handelRemoveTeamMemeber
+    const handelRemoveTeamMemeber = async (id: any, pid: any) => {
+
+        console.log({ id, pid });
+
+        try {
+            const resposne = await RemoveTeamMember(id, pid)
+            if (resposne.status == 200) {
+                return toast.success(resposne.data.message)
+            }
+        } catch (error: any) {
+            const status: Number = error.response.status
+            const Err_message: string = error.response.data.message
+
+            console.log({ status, Err_message });
+
+            if (status == 404) {
+
+                return toast.info(Err_message)
+            }
+
+            if (status == 500) {
+
+
+                return toast.error(Err_message)
+            }
+
+        }
+    }
+
     return (
         <>
 
@@ -449,7 +483,10 @@ ${JSON.parse(getuserInfo).userEmail === user.email
                                                     {isRoleOpen && userid === user?._id ? "Close" : "Choose Role"}
                                                 </button>
 
-                                                <button className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors">
+                                                <button className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+
+                                                    onClick={() => handelRemoveTeamMemeber(user?.id._id, state?.CreatedWorkSpace?._id)}
+                                                >
                                                     <FaTrash />
                                                 </button>
 
