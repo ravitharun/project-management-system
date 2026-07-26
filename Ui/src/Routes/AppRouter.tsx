@@ -119,9 +119,14 @@ function AppRouter() {
             console.log("Disconnected from server");
         });
         socket.on("ProjectInfoUpload", handelProjectInfoUpload)
+        // const UpdatedWorkspace = (data: any) => {
+        //     console.log(data, "UpdatedWorkspace");
+        // };
 
+        // socket.on("updatedWorkspace", UpdatedWorkspace);
         return () => {
-
+            
+            // socket.off("updatedWorkspace", UpdatedWorkspace);
             socket.off("NewTask", handelTask);
             socket.off("task_updated", handelcheck);
             socket.off("handelprojectStatus", handelprojectStatus);
@@ -158,13 +163,13 @@ function AppRouter() {
                 theme="colored"
             ></ToastContainer>
 
-            <Suspense fallback={<Loader  />}>
+            <Suspense fallback={<Loader />}>
                 <Routes>
                     <Route path="/" element={<App />} />
-                    <Route path="/Workspace" element={<TaskLayout  />} />
+                    <Route path="/Workspace" element={<TaskLayout />} />
 
                     {/* <Route path="shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} /> */}
-                    <Route path="/shared/ViewWorkspace/:id" element={<Shareview  />} />
+                    <Route path="/shared/ViewWorkspace/:id" element={<Shareview />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projectSettings" element={<ProjectSettings />} />
                     <Route path="/Tasks" element={<Task />} />
@@ -174,7 +179,7 @@ function AppRouter() {
                     <Route path="/Calendar" element={<Calendra />} />
                     <Route path="/Team" element={<Team />} />
                     <Route path="/Profile" element={<Profile />} />
-                    <Route path="/Email-JoinWorkspace" element={<EmailBasedJoinWorkspace  />} />
+                    <Route path="/Email-JoinWorkspace" element={<EmailBasedJoinWorkspace />} />
                     <Route path="/Login" element={<Login />} />
                     {/* <Route path="/Loader" element={<Loader />} /> */}
                     <Route path="/Signup" element={<SiginUp />} />

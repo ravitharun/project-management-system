@@ -80,6 +80,8 @@ function EmailBasedJoinWorkspace() {
     const workspaceid = searchParams.get("workspaceid");
     const expiresAt = searchParams.get("expiresAt");
     const toekn = searchParams.get("toekn");
+    console.log({ AcceptEmail, workspaceid });
+
     const formatDate = (date?: string) => {
         if (!date) return "Not available";
         return new Date(date).toLocaleDateString("en-IN", {
@@ -98,7 +100,7 @@ function EmailBasedJoinWorkspace() {
                 setloading(true);
 
                 if (!AcceptEmail || !workspaceid) {
-                    toast.error("Invalid invitation link");
+                    // toast.error(`Invalid invitation link ${AcceptEmail}${workspaceid}`);
                     return;
                 }
 
@@ -112,7 +114,6 @@ function EmailBasedJoinWorkspace() {
                     toast.success("Workspace invitation verified");
                 }
             } catch (error: any) {
-                console.log(error);
                 const message =
                     error?.response?.data?.message ||
                     error?.message ||

@@ -18,14 +18,21 @@ import { toast, ToastContainer } from "react-toastify";
 import { Role } from "../types/Role";
 import { getuserInfo } from "./LocalStorage";
 import { RemoveTeamMember, UpdateRole } from "../services/ProjectRole";
+import { socket } from "../Scokets/ScoketConfig";
 
 function ProjectSettings() {
 
-
     const { state } = useLocation();
 
+
     const navigate = useNavigate();
+
+
     const { theme }: any = useContext(bgthemeContext);
+    const [DATA_WorkSpace, setDATA_WorkSpace] = useState([])
+    const data = state?.CreatedWorkSpace || DATA_WorkSpace;
+    console.log(data,'data');
+    
 
     const [ChooseIcon, setChooseIcon] = useState<string | undefined>();
 
@@ -40,7 +47,8 @@ function ProjectSettings() {
     const [openIconModal, setOpenIconModal] = useState(false);
 
 
-    const data = state?.CreatedWorkSpace;
+
+
     const [users, setusers] = useState([])
 
 
@@ -98,7 +106,21 @@ function ProjectSettings() {
     }, [data, navigate]);
 
 
+    useEffect(() => {
+        const UpdatedWorkspace = (data: any) => {
+            console.log(data, "UpdatedWorkspace");
+            setDATA_WorkSpace(data);
+            setusers(data.WorkSpacememebers);
+        };
 
+        socket.on("updatedWorkspace", UpdatedWorkspace);
+
+        return () => {
+            socket.off("updatedWorkspace", UpdatedWorkspace);
+            socket.off("connect");
+            socket.off("disconnect");
+        };
+    }, []);
     const isDark = theme === "Dark";
 
     const shell = isDark
