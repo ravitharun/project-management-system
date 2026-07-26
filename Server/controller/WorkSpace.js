@@ -287,6 +287,11 @@ const ApproveEmail = async (req, res, next) => {
             },
             { returnDocument: "true" }
         )
+console.log({
+            status: true,
+            message: "Member added to workspace successfully",
+            data: data
+        },'tharunkumar');
 
         return res.status(201).json({
             status: true,
@@ -529,6 +534,8 @@ const FetchTeamMembers = async (req, res, next) => {
 
 
         const GetTeamUsers = await Workspace.findById({ _id: SpaceId }).populate("WorkSpacememebers.id")
+        console.log(GetTeamUsers,'GetTeamUsers');
+        
 
         if (!GetTeamUsers) {
             return res.status(404).json({ message: "No Space Id found ." })

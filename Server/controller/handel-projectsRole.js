@@ -1,6 +1,7 @@
 const IsProjectExits = require("../Utils/IsprojectExits");
 const User = require("../Models/Auth");
 const Workspace = require("../Models/Workspace");
+const { getIO } = require("../scoket");
 const handelProjectRole = async (req, res) => {
     try {
 
@@ -43,10 +44,9 @@ const RemoveTeamMembers = async (req, res) => {
 
 
     try {
-
+        const io = getIO()
         const { ProjectID, id } = req.params
 
-        console.log({ ProjectID, id }, '{ id, ProjectID }');
 
 
         if (!ProjectID || !id) {
@@ -74,7 +74,10 @@ const RemoveTeamMembers = async (req, res) => {
             },
             { returnDocument: "after" }
         );
-     
+
+        console.log(updatedWorkspace, 'updatedWorkspace');
+
+        io.emit("updatedWorkspace", updatedWorkspace);
 
         return res.status(200).json({ message: "Team Member is  Removed", status: true, updatedWorkspace: updatedWorkspace })
 
