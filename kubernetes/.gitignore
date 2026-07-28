@@ -1,0 +1,13 @@
+# Kubernetes Secrets
+*-secret.yaml
+*-secret.yml
+*-Secrets.yaml
+*-Secrets.yml
+
+# Environment files
+.env
+.env.*
+
+# Local Kubernetes files
+*.local.yaml
+*.local.yml

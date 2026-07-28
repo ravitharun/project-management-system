@@ -142,6 +142,14 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
   }
 });
 
+
+
+app.get("/health", (req, res) => {
+
+
+  return res.status(200).json({ message: "Server Is running" })
+})
+
 // runBackup Db Automated @12am evryday
 cron.schedule("0 0 * * *", () => {
 

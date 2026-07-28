@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: 
+  
+
+data:
+  VITE_API: "https://project-management-system-u091.onrender.com"
+  VITE_Ui_API: "https://project-management-system-weld-eight.vercel.app/"
+
+
