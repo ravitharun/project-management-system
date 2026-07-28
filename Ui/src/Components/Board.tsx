@@ -128,7 +128,7 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
     return (
 
         <>
-
+   
 
             <DragDropContext onDragEnd={onDragEnd}>
                 <div
