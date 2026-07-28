@@ -13,11 +13,12 @@ import {
   PanelGroup,
   PanelResizeHandle,
 } from "react-resizable-panels";
+import TaskForm from "../CreateTask/TaskForm";
 // import TaskForm from "../../Task/CreateTask/TaskForm"
-function SpaceList({ spaceid }: any) {
+function SpaceList({ spaceid ,work,ismaxAndMin}: any) {
   const contexttheme = useContext(bgthemeContext);
   const { theme }: any = contexttheme;
-
+  const [CreateTask, setCreateTask] = useState<boolean>(false)
   const TasksView = useContext(ViewTaskFirst);
   const { setasks }: any = TasksView;
 
@@ -168,10 +169,8 @@ function SpaceList({ spaceid }: any) {
                         <h2 className="text-sm font-semibold">Tasks</h2>
                         <p className="text-xs opacity-70">
                           Manage your workspace tasks
-                          {true
-                            &&
-                            "efv  "
-                          }
+
+
                         </p>
                       </div>
                     </div>
@@ -270,12 +269,21 @@ function SpaceList({ spaceid }: any) {
                             </button>
                           );
                         })}
+                        <div>
+
+
+                          <button onClick={() => setCreateTask((prev) => !prev)}>Add Task</button>
+                        </div>
+
                       </div>
                     )}
                   </div>
                 </div>
               </div>
+
+
             </Panel>
+
 
             <PanelResizeHandle
               id={`space-resize-handle-${spaceid}`}
@@ -304,6 +312,16 @@ function SpaceList({ spaceid }: any) {
           </PanelGroup>
         </div>
       )}
+ 
+
+        {
+
+          CreateTask &&
+
+
+          <TaskForm onclose={() => setCreateTask(false)} maximizeParent={ismaxAndMin} projectid={work._id} CreateTask={CreateTask} />
+
+        }
     </>
   );
 }

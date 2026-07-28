@@ -38,6 +38,8 @@ const AddWorkSpaceTask = async (req, res) => {
                 priority: TaskData.priority,
                 user_refresh_token: assignedUser.googleRefreshToken,
                 dueDate: TaskData.endDate,
+                reminder:TaskData.googleCalendar.enabled,
+                reminderBefore:TaskData.googleCalendar.reminderBefore,
                 estimatedHours: TaskData.estimatedHours,
             });
         }
