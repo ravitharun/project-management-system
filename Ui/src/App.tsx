@@ -1,9 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import SideBarContext from "./Context/SideBard";
 import bgthemeContext from "./Context/ThemeContext";
 import Sidebar from "./Components/Navbar";
 import ViewWorkspace from "./Components/Task/TaskBoard/ViewWorkspace";
+import { getuserInfo } from "./Components/LocalStorage";
+import AcceptGoogleCalendar from "./Components/AcceptGoogleCalndra";
 
 
 
@@ -14,8 +16,26 @@ function App() {
   const context = useContext(bgthemeContext);
 
   const { theme }: any = context;
+
+  const [_, setIsdelay] = useState(false)
+
+
+
+  const handelPoup = () => {
+
+    setIsdelay((prev) => !prev)
+  }
+  console.log(JSON.parse(getuserInfo).googleCalendarConnected, 'JSON.parse(getuserInfo).googleCalendarConnected');
+
   return (
     <>
+
+
+      {!JSON.parse(getuserInfo).googleCalendarConnected
+        ? 
+         <AcceptGoogleCalendar  setOpen={handelPoup}>
+        </AcceptGoogleCalendar>:""
+      }
       <div
         className={`
           min-h-screen w-full overflow-hidden
@@ -43,7 +63,7 @@ function App() {
         >
           {/* <main className="flex-1 overflow-hidden"> */}
           <main className=" w-full overflow-y-auto">
-            <ViewWorkspace  />
+            <ViewWorkspace />
 
 
           </main>            </div>

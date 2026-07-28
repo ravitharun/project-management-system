@@ -60,7 +60,8 @@ function TaskForm({
     const [tags, setTags] = useState("")
     const [estimatedHours, setEstimatedHours] = useState("")
     const [progress, setProgress] = useState(0)
-
+    const [isReminder, setIsReminder] = useState<boolean>(true);
+    const [ReminderTime, setReminderTime] = useState<Number | String | any>(1);
     const [Members, setMembers] = useState([])
 
     const [loadr, setloader] = useState(false)
@@ -139,6 +140,17 @@ function TaskForm({
             progress,
             AddedBy,
             projectid,
+            "googleCalendar": {
+
+                "eventId": `Task-${nanoid()}`
+            },
+            "reminder":
+            {
+
+
+                enabled: isReminder,
+                reminderBefore: ReminderTime
+            }
         }
 
         try {
@@ -459,7 +471,7 @@ function TaskForm({
                                     classNameStyle={inputClass}
                                 />
                             </div>
-
+                            {/* Progress */}
                             <div className="md:col-span-2">
                                 <div className="mb-2 flex items-center justify-between">
                                     <label className={labelClass + " mb-0"}>
@@ -488,6 +500,63 @@ function TaskForm({
                                         className="h-full rounded-full bg-green-500 transition-all duration-500"
                                         style={{ width: `${progress}%` }}
                                     />
+                                </div>
+                            </div>
+                            {/* Google */}
+                            <div className={`grid grid-cols-1 gap-4 md:grid-cols-2 md:col-span-2 `}>
+                                {/* Google Calendar Reminder */}
+                                <div className={`flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 shadow-sm ${inputClass}`}>
+                                    <input
+                                        type="checkbox"
+                                        name="GoogleCalendarReminder"
+                                        id="GoogleCalendarReminder"
+                                        checked={isReminder ? true : false}
+                                        className="h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        onChange={() => setIsReminder((prev) => !prev)}
+                                    />
+
+                                    <label
+                                        htmlFor="GoogleCalendarReminder"
+                                        className={`flex items-center gap-2 whitespace-nowrap text-sm font-medium  ${isDark
+                                            ? "bg-gray-900 border-gray-700 text-white placeholder:text-gray-400"
+                                            : "bg-white border-gray-300 text-gray-700 placeholder:text-gray-400"
+                                            }`}
+                                    >
+                                        <span className="text-xl">📅</span>
+                                        Google Calendar Reminder
+                                    </label>
+                                </div>
+
+                                {/* Reminder Before */}
+                                <div className={` ${inputClass} rounded-xl border border-gray-200 bg-gray-50 p-4 shadow-sm`}>
+                                    <label
+                                        htmlFor="GoogleReminder"
+                                        className={`mb-2 flex items-center gap-2 whitespace-nowrap text-sm font-medium  ${inputClass}`}
+                                    >
+                                        <span className="text-xl">🔔</span>
+                                        Reminder Before
+                                    </label>
+
+                                    <div className="relative w-full">
+                                        <input
+                                            type="number"
+                                            name="GoogleReminder"
+                                            id="GoogleReminder"
+                                            placeholder="Enter minutes"
+                                            min="1"
+                                            value={ReminderTime}
+                                            required
+                                            className={`w-full rounded-lg border border-gray-300 px-4 py-3 pr-20 ${isDark
+                                                ? "bg-gray-900 border-gray-700 text-white placeholder:text-gray-400"
+                                                : "bg-white border-gray-300 text-gray-700 placeholder:text-gray-400"
+                                                } outline-none focus:border-blue-500  `}
+                                            onChange={(e) => setReminderTime(e.target.value)}
+                                        />
+
+                                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500">
+                                            minutes
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
