@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: frontend
+
+spec:
+  replicas: 10
+
+  selector:
+    matchLabels:
+      app: frontend
+
+  template:
+    metadata:
+      labels:
+        app: frontend
+
+    spec:
+      containers:
+        - name: frontend
+          image: ravitharun/project-management-frontend:1.0.0
+
+          ports:
+            - containerPort: 5173
+
+          envFrom:
+            - configMapRef:
+                name: frontend-config
+            - secretRef:
+                name: frontend-secret
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 5173
+            periodSeconds: 5
+            failureThreshold: 12
