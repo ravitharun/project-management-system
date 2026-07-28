@@ -108,14 +108,15 @@ function SiginUp() {
                 auth,
                 provider
             );
-            console.log(result)
+            console.log(result,'rs')
             const userdata :any= {
                 firebaseUID: result.user.providerData[0].uid,
                 name: result.user.providerData[0].displayName,
                 email: result.user.providerData[0].email,
                 profile: result.user.providerData[0].photoURL,
                 logintype: result.providerId,
-                type: result.user.providerId
+                type: result.user.providerId,
+                Firbaseuid:result.user.uid
             };
 
             console.log(userdata, 'userdata');

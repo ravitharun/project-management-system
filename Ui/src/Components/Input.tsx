@@ -30,7 +30,7 @@ function Input({
       required={required}
       onChange={onChange}
       accept={accept}
-      className={`w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-800 
+      className={`w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 
       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
       hover:border-gray-400 transition ${classNameStyle}`}
     />

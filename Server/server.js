@@ -27,6 +27,7 @@ const limiter = require("./RateLimiter");
 const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 const AuthTokenVerification = require("./Middleware/AuthMiddleware");
 const { runBackup } = require("./backup");
+const createGoogleCalendarEvent = require("./service/google-Calendar.service");
 const check = `${process.env.envStatus === "Local"
   ? "http://localhost:5000"
   : "https://project-management-system-u091.onrender.com"
@@ -42,6 +43,11 @@ let a = redis;
 console.log("IOREDIS:", a)
 console.log(process.env.REDIS_URL, 'process.env.REDIS_URL')
 console.log(process.env.Db, 'process.env.Db')
+console.log("++++++++++++++++++++++++++++++++++++++++++++++");
+
+console.log(process.env.GOOGLE_REDIRECT_URI, 'process.env.Db')
+console.log(process.env.GOOGLE_CLIENT_SECRET, 'process.env.Db')
+console.log(process.env.GOOGLE_CLIENT_ID, 'process.env.Db')
 
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI

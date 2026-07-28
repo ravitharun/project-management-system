@@ -2,7 +2,8 @@ const cloudinary = require("../config/Clounadry")
 const WorkSpaceTask = require("../Models/WorkSapceTask")
 const Workspace = require("../Models/Workspace")
 
-const AddcommentsSchema = require("../Models/Workspace-comments")
+const AddcommentsSchema = require("../Models/Workspace-comments");
+const createGoogleCalendarEvent = require("../service/google-Calendar.service");
 const AddWorkSpaceTask = async (req, res) => {
     try {
         const { TaskData, assignTo } = req.body;
@@ -19,6 +20,12 @@ const AddWorkSpaceTask = async (req, res) => {
         });
 
         await Createtask.save();
+        const event = await createGoogleCalendarEvent({
+            title:TaskData.taskName,
+            description:TaskData.description,
+            dueDate: TaskData.endDate
+        });
+        console.log(event, 'tharunevent');
 
         return res.status(201).json({
             message: "WorkSpaceTask Created",
@@ -26,7 +33,7 @@ const AddWorkSpaceTask = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error.message);
+        console.log(error.message, 'err');
         return res.status(500).json({ message: error.message });
     }
 };
@@ -438,7 +445,7 @@ const DeleteFile = async (req, res) => {
             { new: true }
         );
 
-        console.log(deletedFile); 
+        console.log(deletedFile);
         if (!deletedFile) {
             console.log("first")
             return res.status(404).json({ message: "" })
