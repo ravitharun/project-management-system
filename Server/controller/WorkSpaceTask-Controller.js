@@ -1,7 +1,7 @@
 const cloudinary = require("../config/Clounadry")
 const WorkSpaceTask = require("../Models/WorkSapceTask")
 const Workspace = require("../Models/Workspace")
-
+const User = require("../Models/Auth")
 const AddcommentsSchema = require("../Models/Workspace-comments");
 const createGoogleCalendarEvent = require("../service/google-Calendar.service");
 const AddWorkSpaceTask = async (req, res) => {
@@ -19,14 +19,32 @@ const AddWorkSpaceTask = async (req, res) => {
             Links: []
         });
 
-        await Createtask.save();
-        const event = await createGoogleCalendarEvent({
-            title:TaskData.taskName,
-            description:TaskData.description,
-            dueDate: TaskData.endDate
-        });
-        console.log(event, 'tharunevent');
 
+
+
+
+
+
+        const assignedUser = await User.findById(TaskData.assignTo)
+
+        // Find User by userId
+        if (assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null) {
+            const event = await createGoogleCalendarEvent({
+                title: TaskData.taskName,
+                Taskid: TaskData.Taskid,
+                status: TaskData.status,
+                tags: TaskData.tags,
+                description: TaskData.description,
+                priority: TaskData.priority,
+                user_refresh_token: assignedUser.googleRefreshToken,
+                dueDate: TaskData.endDate,
+                estimatedHours: TaskData.estimatedHours,
+            });
+        }
+
+
+
+        await Createtask.save();
         return res.status(201).json({
             message: "WorkSpaceTask Created",
             data: Createtask
