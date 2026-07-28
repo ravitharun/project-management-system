@@ -512,693 +512,696 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
         ) :
           (
 
+            <>
 
-            <div
-              className={`
+              <div
+                className={`
     w-full rounded-3xl border p-4 sm:p-6 lg:p-8
     shadow-[0_10px_40px_rgba(0,0,0,0.06)]
     backdrop-blur-sm
     ${theme === "Dark"
-                  ? "border-white/10 bg-white/[0.03]"
-                  : "border-gray-200 bg-gray-50/50"
-                }
+                    ? "border-white/10 bg-white/[0.03]"
+                    : "border-gray-200 bg-gray-50/50"
+                  }
   `}
-            >
-              <div
-                className={`
+              >
+                <div
+                  className={`
     overflow-hidden rounded-3xl shadow-lg
     ${theme === "Dark" ? "bg-[#0f172a]" : "bg-white"}
   `}
-              >
-                {/* COVER IMAGE */}
-                <div className="relative h-52 w-full sm:h-60 md:h-72">
-                  <img
-                    src={Tasks?.TaskWallpaper}
-                    alt="Cover"
-                    className="h-full w-full object-cover"
-                  />
+                >
+                  {/* COVER IMAGE */}
+                  <div className="relative h-52 w-full sm:h-60 md:h-72">
+                    <img
+                      src={Tasks?.TaskWallpaper}
+                      alt="Cover"
+                      className="h-full w-full object-cover"
+                    />
 
-                  {/* optional overlay */}
-                  <div className="absolute inset-0 bg-black/20" />
+                    {/* optional overlay */}
+                    <div className="absolute inset-0 bg-black/20" />
 
-                  {/* top-right button on image */}
-                  <div className="absolute right-4 top-4 z-10">
-                    <div className="relative">
-                      <button
-                        onClick={() => SetOpenDropDown((prev) => !prev)}
-                        className={`
+                    {/* top-right button on image */}
+                    <div className="absolute right-4 top-4 z-10">
+                      <div className="relative">
+                        <button
+                          onClick={() => SetOpenDropDown((prev) => !prev)}
+                          className={`
             flex h-11 w-11 items-center justify-center rounded-2xl border text-xl backdrop-blur-md transition-all duration-200
             ${theme === "Dark"
-                            ? "border-white/10 bg-white/10 text-white hover:bg-white/20"
-                            : "border-white/40 bg-white/70 text-gray-800 hover:bg-white"}
+                              ? "border-white/10 bg-white/10 text-white hover:bg-white/20"
+                              : "border-white/40 bg-white/70 text-gray-800 hover:bg-white"}
           `}
-                      >
-                        <HiOutlineDotsVertical fontSize={24} />
-                      </button>
-
-                      {OpenDropDown && (
-                        <div
-                          className={`
-              absolute right-0 top-14 z-50 w-64 overflow-hidden rounded-2xl border shadow-2xl
-              ${theme === "Dark"
-                              ? "border-white/10 bg-[#111827]"
-                              : "border-gray-200 bg-white"}
-            `}
                         >
+                          <HiOutlineDotsVertical fontSize={24} />
+                        </button>
+
+                        {OpenDropDown && (
                           <div
                             className={`
+              absolute right-0 top-14 z-50 w-64 overflow-hidden rounded-2xl border shadow-2xl
+              ${theme === "Dark"
+                                ? "border-white/10 bg-[#111827]"
+                                : "border-gray-200 bg-white"}
+            `}
+                          >
+                            <div
+                              className={`
                 border-b px-4 py-4
                 ${theme === "Dark" ? "border-white/10" : "border-gray-200"}
               `}
-                          >
-                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                              Task Actions
-                            </h3>
-                            <p className="mt-1 text-xs text-gray-500">
-                              Manage workspace settings
-                            </p>
-                          </div>
+                            >
+                              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                Task Actions
+                              </h3>
+                              <p className="mt-1 text-xs text-gray-500">
+                                Manage workspace settings
+                              </p>
+                            </div>
 
-                          <div className="max-h-72 overflow-y-auto p-2">
-                            {menuitems.map((item, i) => (
-                              <button
-                                key={i}
-                                className={`
+                            <div className="max-h-72 overflow-y-auto p-2">
+                              {menuitems.map((item, i) => (
+                                <button
+                                  key={i}
+                                  className={`
                     flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-all duration-200
                     ${theme === "Dark"
-                                    ? "text-gray-300 hover:bg-white/5"
-                                    : "text-gray-700 hover:bg-gray-100"}
+                                      ? "text-gray-300 hover:bg-white/5"
+                                      : "text-gray-700 hover:bg-gray-100"}
                   `}
-                                onClick={() => HandelMenu(item.label)}
-                              >
-                                <div
-                                  className={`
+                                  onClick={() => HandelMenu(item.label)}
+                                >
+                                  <div
+                                    className={`
                       flex h-9 w-9 shrink-0 items-center justify-center rounded-xl
                       ${theme === "Dark" ? "bg-white/5" : "bg-gray-100"}
                     `}
-                                >
-                                  <span className="text-[15px]">{item.icon}</span>
-                                </div>
+                                  >
+                                    <span className="text-[15px]">{item.icon}</span>
+                                  </div>
 
-                                <div className="min-w-0 flex-1">
-                                  <p className="truncate text-sm font-medium">{item.label}</p>
-                                </div>
-                              </button>
-                            ))}
+                                  <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-medium">{item.label}</p>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+
                           </div>
-
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* DATA BELOW IMAGE */}
-                <div className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-2xl text-white shadow-lg">
-                      📁
-                    </div>
+                  {/* DATA BELOW IMAGE */}
+                  <div className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-2xl text-white shadow-lg">
+                        📁
+                      </div>
 
-                    <div className="flex-1">
-                      {/* Header */}
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        {isedit ? (
-                          <input
-                            value={editTaskName}
-                            onChange={(e) => setEditTaskName(e.target.value)}
-                            className={`w-full rounded-lg border px-3 py-2 text-xl font-semibold outline-none sm:w-auto
-              ${theme === "Dark"
-                                ? "border-gray-700 bg-gray-800 text-white"
-                                : "border-gray-300 bg-white text-gray-900"
-                              }`}
-                          />
-                        ) : (
-                          <h2
-                            className={`text-xl font-bold sm:text-2xl ${theme === "Dark" ? "text-white" : "text-gray-900"
-                              }`}
-
-                            onClick={() => setedit(true)}
-                          >
-                            {editTaskName ||
-                              Tasks?.taskName ||
-                              viewtasks?.taskName ||
-                              "Task Name"}
-                          </h2>
-                        )}
-
-                        <div className="flex gap-2">
+                      <div className="flex-1">
+                        {/* Header */}
+                        <div className="flex flex-wrap items-center justify-between gap-3">
                           {isedit ? (
-                            <>
-                              <button
-                                onClick={() => setedit(false)}
-                                className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
-                              >
-                                Cancel
-                              </button>
-
-                              <button
-                                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
-                                onClick={save}
-                              >
-                                Save
-                              </button>
-                            </>
+                            <input
+                              value={editTaskName}
+                              onChange={(e) => setEditTaskName(e.target.value)}
+                              className={`w-full rounded-lg border px-3 py-2 text-xl font-semibold outline-none sm:w-auto
+              ${theme === "Dark"
+                                  ? "border-gray-700 bg-gray-800 text-white"
+                                  : "border-gray-300 bg-white text-gray-900"
+                                }`}
+                            />
                           ) : (
-                            <button
+                            <h2
+                              className={`text-xl font-bold sm:text-2xl ${theme === "Dark" ? "text-white" : "text-gray-900"
+                                }`}
+
                               onClick={() => setedit(true)}
-                              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
                             >
-                              Edit
-                            </button>
+                              {editTaskName ||
+                                Tasks?.taskName ||
+                                viewtasks?.taskName ||
+                                "Task Name"}
+                            </h2>
+                          )}
+
+                          <div className="flex gap-2">
+                            {isedit ? (
+                              <>
+                                <button
+                                  onClick={() => setedit(false)}
+                                  className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
+                                >
+                                  Cancel
+                                </button>
+
+                                <button
+                                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                                  onClick={save}
+                                >
+                                  Save
+                                </button>
+                              </>
+                            ) : (
+                              <button
+                                onClick={() => setedit(true)}
+                                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                              >
+                                Edit
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+
+                        {/* Description */}
+                        <div className="mt-4">
+                          {isedit ? (
+                            <textarea
+                              value={editTaskdescription}
+                              onChange={(e) => setEditTaskdescription(e.target.value)}
+                              rows={3}
+                              className={`w-full rounded-lg border px-3 py-2 outline-none resize-none
+        ${theme === "Dark"
+                                  ? "border-gray-700 bg-gray-800 text-white"
+                                  : "border-gray-300 bg-white text-gray-900"
+                                }`}
+                              placeholder="Enter task description..."
+                            />
+                          ) : (
+                            <p
+                              className={`text-sm leading-6 ${theme === "Dark" ? "text-gray-400" : "text-gray-600"
+                                }`}
+                              onClick={() => setedit(true)}
+
+                            >
+                              {editTaskdescription ||
+                                Tasks?.description ||
+                                viewtasks?.description ||
+                                "No description available"}
+                              <button onClick={() =>setCreateTask((prev)=>!prev)}>AddTask</button>
+
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Status Row */}
+                        <div className="mt-5 flex flex-wrap items-center gap-3">
+                          <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-semibold text-blue-700" onClick={() => setedit(true)}
+                          >
+                            {TaskStatus ? TaskStatus : Tasks?.status || "In Progress"}
+                          </span>
+
+                          <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-semibold text-green-700">
+                            ✅ Synced
+                          </span>
+
+                          {isedit && (
+                            <select
+                              value={TaskStatus}
+                              onChange={(e: any) => setTaskStatus(e.target.value)}
+                              className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 "
+                            >
+                              <option value="Todo" className="text-gray-900">📝 Todo</option>
+                              <option value="In Progress" className="text-gray-900">🚀 In Progress</option>
+                              <option value="Completed" className="text-gray-900">✅ Completed</option>
+                            </select>
                           )}
                         </div>
                       </div>
-
-
-                      {/* Description */}
-                      <div className="mt-4">
-                        {isedit ? (
-                          <textarea
-                            value={editTaskdescription}
-                            onChange={(e) => setEditTaskdescription(e.target.value)}
-                            rows={3}
-                            className={`w-full rounded-lg border px-3 py-2 outline-none resize-none
-        ${theme === "Dark"
-                                ? "border-gray-700 bg-gray-800 text-white"
-                                : "border-gray-300 bg-white text-gray-900"
-                              }`}
-                            placeholder="Enter task description..."
-                          />
-                        ) : (
-                          <p
-                            className={`text-sm leading-6 ${theme === "Dark" ? "text-gray-400" : "text-gray-600"
-                              }`}
-                            onClick={() => setedit(true)}
-
-                          >
-                            {editTaskdescription ||
-                              Tasks?.description ||
-                              viewtasks?.description ||
-                              "No description available"}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* Status Row */}
-                      <div className="mt-5 flex flex-wrap items-center gap-3">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-semibold text-blue-700" onClick={() => setedit(true)}
-                        >
-                          {TaskStatus ? TaskStatus : Tasks?.status || "In Progress"}
-                        </span>
-
-                        <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-semibold text-green-700">
-                          ✅ Synced
-                        </span>
-
-                        {isedit && (
-                          <select
-                            value={TaskStatus}
-                            onChange={(e: any) => setTaskStatus(e.target.value)}
-                            className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 "
-                          >
-                            <option value="Todo" className="text-gray-900">📝 Todo</option>
-                            <option value="In Progress" className="text-gray-900">🚀 In Progress</option>
-                            <option value="Completed" className="text-gray-900">✅ Completed</option>
-                          </select>
-                        )}
-                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              {/* TASK IMAGE PREVIEW */}
-              {(Tasks?.image || viewtasks?.image) && (
-                <div
-                  className={`
+                {/* TASK IMAGE PREVIEW */}
+                {(Tasks?.image || viewtasks?.image) && (
+                  <div
+                    className={`
       mt-4 overflow-hidden rounded-2xl border
       max-w-md transition-all duration-300
       ${theme === "Dark"
-                      ? "border-white/10 bg-white/[0.03]"
-                      : "border-gray-200 bg-gray-50"
-                    }
+                        ? "border-white/10 bg-white/[0.03]"
+                        : "border-gray-200 bg-gray-50"
+                      }
     `}
-                >
-                  <img
-                    src="https://avatars.githubusercontent.com/u/145847829?v=4&size=64"
-                    alt="Task Attachment"
-                    className="h-44 w-full object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
-                  />
+                  >
+                    <img
+                      src="https://avatars.githubusercontent.com/u/145847829?v=4&size=64"
+                      alt="Task Attachment"
+                      className="h-44 w-full object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
+                    />
 
-                  <div className="flex items-center justify-between p-3">
-                    <div>
-                      <p
-                        className={`text-sm font-medium ${theme === "Dark" ? "text-white" : "text-gray-900"
-                          }`}
-                      >
-                        Task Attachment
-                      </p>
+                    <div className="flex items-center justify-between p-3">
+                      <div>
+                        <p
+                          className={`text-sm font-medium ${theme === "Dark" ? "text-white" : "text-gray-900"
+                            }`}
+                        >
+                          Task Attachment
+                        </p>
 
-                      <p
-                        className={`text-xs ${theme === "Dark"
-                          ? "text-gray-400"
-                          : "text-gray-500"
-                          }`}
-                      >
-                        Uploaded file preview
-                      </p>
-                    </div>
+                        <p
+                          className={`text-xs ${theme === "Dark"
+                            ? "text-gray-400"
+                            : "text-gray-500"
+                            }`}
+                        >
+                          Uploaded file preview
+                        </p>
+                      </div>
 
-                    <span
-                      className={`
+                      <span
+                        className={`
           rounded-lg px-2 py-1 text-xs font-medium
           ${theme === "Dark"
-                          ? "bg-blue-500/10 text-blue-400"
-                          : "bg-blue-100 text-blue-700"
-                        }
+                            ? "bg-blue-500/10 text-blue-400"
+                            : "bg-blue-100 text-blue-700"
+                          }
         `}
-                    >
-                      Image
-                    </span>
+                      >
+                        Image
+                      </span>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
 
 
 
 
-              {/* DESCRIPTION + DETAILS */}
-              <div className="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-5">
-                <div
-                  className={`xl:col-span-5 rounded-2xl border p-5 ${theme === "Dark"
-                    ? "border-white/10 bg-white/[0.03]"
-                    : "border-gray-200 bg-gray-50/70"
-                    }`}
-                >
-                  <h3
-                    className={`mb-3 text-sm font-semibold ${theme === "Dark" ? "text-white" : "text-gray-900"
+                {/* DESCRIPTION + DETAILS */}
+                <div className="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-5">
+                  <div
+                    className={`xl:col-span-5 rounded-2xl border p-5 ${theme === "Dark"
+                      ? "border-white/10 bg-white/[0.03]"
+                      : "border-gray-200 bg-gray-50/70"
                       }`}
                   >
-                    Description
-                  </h3>
-
-                  {isedit ? (
-                    <textarea
-                      value={editTaskdescription}
-                      onChange={(e) => setEditTaskdescription(e.target.value)}
-                      rows={5}
-                      className={`w-full rounded-xl border px-4 py-3 text-sm outline-none resize-none ${theme === "Dark"
-                        ? "border-gray-700 bg-gray-800 text-white"
-                        : "border-gray-300 bg-white text-gray-900"
-                        }`}
-                      placeholder="Enter task description..."
-                    />
-                  ) : (
-                    <p
-                      className={`whitespace-pre-wrap text-sm leading-7 ${theme === "Dark" ? "text-gray-300" : "text-gray-700"
+                    <h3
+                      className={`mb-3 text-sm font-semibold ${theme === "Dark" ? "text-white" : "text-gray-900"
                         }`}
                     >
-                      {editTaskdescription ||
-                        Tasks?.description ||
-                        viewtasks?.description ||
-                        "No description available"}
-                    </p>
-                  )}
+                      Description
+                    </h3>
+
+                    {isedit ? (
+                      <textarea
+                        value={editTaskdescription}
+                        onChange={(e) => setEditTaskdescription(e.target.value)}
+                        rows={5}
+                        className={`w-full rounded-xl border px-4 py-3 text-sm outline-none resize-none ${theme === "Dark"
+                          ? "border-gray-700 bg-gray-800 text-white"
+                          : "border-gray-300 bg-white text-gray-900"
+                          }`}
+                        placeholder="Enter task description..."
+                      />
+                    ) : (
+                      <p
+                        className={`whitespace-pre-wrap text-sm leading-7 ${theme === "Dark" ? "text-gray-300" : "text-gray-700"
+                          }`}
+                      >
+                        {editTaskdescription ||
+                          Tasks?.description ||
+                          viewtasks?.description ||
+                          "No description available"}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="mt-20 w-full min-w-0 overflow-x-auto">
+                <div className="mt-20 w-full min-w-0 overflow-x-auto">
 
 
-                <TaskDetailsWithSubtaskTable theme={theme} viewtasks={viewtasks} />
+                  <TaskDetailsWithSubtaskTable theme={theme} viewtasks={viewtasks} />
 
-              </div>
-              {/* ACTIVITY */}
-              <div className="mt-10">
-                <h3
-                  className={`
+                </div>
+                {/* ACTIVITY */}
+                <div className="mt-10">
+                  <h3
+                    className={`
         mb-4 text-sm font-semibold
         ${theme === "Dark" ? "text-white" : "text-gray-900"}
       `}
-                >
-                  Recent Activity
-                </h3>
+                  >
+                    Recent Activity
+                  </h3>
 
-                <div className="space-y-3">
-                  {[
-                    { title: "Socket integration updated", time: "2 hours ago" },
-                    { title: "Dashboard widgets improved", time: "Yesterday" },
-                    { title: "Responsive issues fixed", time: "Mobile view" },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className={`
+                  <div className="space-y-3">
+                    {[
+                      { title: "Socket integration updated", time: "2 hours ago" },
+                      { title: "Dashboard widgets improved", time: "Yesterday" },
+                      { title: "Responsive issues fixed", time: "Mobile view" },
+                    ].map((item, i) => (
+                      <div
+                        key={i}
+                        className={`
             flex flex-col gap-3 rounded-2xl border px-4 py-4 sm:flex-row sm:items-start sm:justify-between
             ${theme === "Dark"
-                          ? "border-white/10 bg-white/[0.03]"
-                          : "border-gray-200 bg-gray-50/70"
-                        }
+                            ? "border-white/10 bg-white/[0.03]"
+                            : "border-gray-200 bg-gray-50/70"
+                          }
           `}
-                    >
-                      <div className="flex min-w-0 gap-3">
-                        <div className="mt-1.5 h-2.5 w-2.5 rounded-full bg-blue-500 shrink-0" />
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-medium text-gray-800 dark:text-gray-200">
-                            {item.title}
-                          </p>
-                          <p className="text-xs text-gray-500">Workspace activity update</p>
-                        </div>
-                      </div>
-
-                      <span className="text-xs text-gray-500 sm:whitespace-nowrap">
-                        {item.time}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* COMMENTS */}
-              <div className="mt-10">
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                    Comments
-                  </h3>
-                  <span className="text-xs text-gray-500">{item?.length || 0} Comments</span>
-                </div>
-
-                <div className="space-y-5">
-                  {item?.map((comment: any) => {
-                    const replies = comment.replies?.filter(
-                      (reply: any) => reply.replyToCommentId === comment.id
-                    ) || [];
-
-                    return (
-                      <div
-                        key={comment.id}
-                        className={`rounded-2xl border p-4 sm:p-5 ${theme === "Dark"
-                          ? "border-white/10 bg-white/[0.03]"
-                          : "border-gray-200 bg-white"
-                          }`}
                       >
-                        {/* Main comment */}
-                        <div className="flex gap-3">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-sm font-semibold text-white">
-                            {comment?.name?.charAt(0)}
-                          </div>
-
-                          <div className="min-w-0 flex-1">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {comment.name}
-                              </h4>
-
-                              {comment.role && (
-                                <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
-                                  {comment.role}
-                                </span>
-                              )}
-
-                              <span className="text-xs text-gray-500">{comment.time}</span>
-                            </div>
-
-                            <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                              {comment.comment}
+                        <div className="flex min-w-0 gap-3">
+                          <div className="mt-1.5 h-2.5 w-2.5 rounded-full bg-blue-500 shrink-0" />
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-medium text-gray-800 dark:text-gray-200">
+                              {item.title}
                             </p>
-
-                            <div className="mt-3 flex items-center gap-4">
-                              <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Replys(comment)}>
-                                Reply
-                              </button>
-                              <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                                Like
-                              </button>
-                              {useremail === comment.useremail && (
-                                <div className="mt-3 flex items-center gap-2">
-                                  <button
-                                    type="button"
-
-                                    className="
-        inline-flex items-center gap-1.5 rounded-full
-        border border-blue-200 bg-blue-50
-        px-3 py-1.5 text-xs font-medium text-blue-700
-        transition-all duration-200 hover:bg-blue-100
-        dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/15
-      "
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      className="h-3.5 w-3.5"
-                                    >
-                                      <path d="M12 20h9" />
-                                      <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
-                                    </svg>
-                                    Edit
-                                  </button>
-
-                                  <button
-                                    type="button"
-
-                                    className="
-        inline-flex items-center gap-1.5 rounded-full
-        border border-red-200 bg-red-50
-        px-3 py-1.5 text-xs font-medium text-red-600
-        transition-all duration-200 hover:bg-red-100
-        dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/15
-      "
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      className="h-3.5 w-3.5"
-                                    >
-                                      <path d="M3 6h18" />
-                                      <path d="M8 6V4h8v2" />
-                                      <path d="M19 6l-1 14H6L5 6" />
-                                      <path d="M10 11v6" />
-                                      <path d="M14 11v6" />
-                                    </svg>
-                                    Delete
-                                  </button>
-                                </div>
-                              )}
-                            </div>
+                            <p className="text-xs text-gray-500">Workspace activity update</p>
                           </div>
                         </div>
 
-                        {/* Replies */}
-                        {replies.length > 0 && (
-                          <div className="mt-4 ml-4 border-l border-gray-200 pl-4 sm:ml-8 dark:border-white/10">
-                            <div className="space-y-3">
-                              {replies.map((reply: any) => (
-                                <div key={reply.replyId} className="space-y-3">
-                                  <div
-                                    className={`rounded-2xl border p-4 ${theme === "Dark"
-                                      ? "border-white/10 bg-[#0f172a]"
-                                      : "border-gray-200 bg-gray-50"
-                                      }`}
-                                  >
-                                    <div className="flex gap-3">
-                                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-xs font-semibold text-white">
-                                        {reply?.name?.charAt(0)}
-                                      </div>
+                        <span className="text-xs text-gray-500 sm:whitespace-nowrap">
+                          {item.time}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-                                      <div className="min-w-0 flex-1">
-                                        <div className="flex flex-wrap items-center gap-2">
-                                          <h5 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                            {reply.name}
-                                          </h5>
+                {/* COMMENTS */}
+                <div className="mt-10">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                      Comments
+                    </h3>
+                    <span className="text-xs text-gray-500">{item?.length || 0} Comments</span>
+                  </div>
 
-                                          {reply.role && (
-                                            <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[11px] text-purple-700 dark:bg-purple-500/10 dark:text-purple-400">
-                                              {reply.role}
-                                            </span>
-                                          )}
+                  <div className="space-y-5">
+                    {item?.map((comment: any) => {
+                      const replies = comment.replies?.filter(
+                        (reply: any) => reply.replyToCommentId === comment.id
+                      ) || [];
 
-                                          <span className="text-xs text-gray-500">
-                                            {reply.time}
-                                          </span>
-                                        </div>
+                      return (
+                        <div
+                          key={comment.id}
+                          className={`rounded-2xl border p-4 sm:p-5 ${theme === "Dark"
+                            ? "border-white/10 bg-white/[0.03]"
+                            : "border-gray-200 bg-white"
+                            }`}
+                        >
+                          {/* Main comment */}
+                          <div className="flex gap-3">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-sm font-semibold text-white">
+                              {comment?.name?.charAt(0)}
+                            </div>
 
-                                        <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                                          {reply.reply}
-                                        </p>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                  {comment.name}
+                                </h4>
 
-                                        <div className="mt-3 flex items-center gap-4">
-                                          <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Replys(reply)}>
-                                            Reply
-                                          </button>
-                                          <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                                            Likes
-                                          </button>
+                                {comment.role && (
+                                  <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
+                                    {comment.role}
+                                  </span>
+                                )}
 
-                                          {useremail == reply.useremail && <>
+                                <span className="text-xs text-gray-500">{comment.time}</span>
+                              </div>
 
+                              <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                                {comment.comment}
+                              </p>
 
-                                            <button>Delte</button>
-                                          </>}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                              <div className="mt-3 flex items-center gap-4">
+                                <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Replys(comment)}>
+                                  Reply
+                                </button>
+                                <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                  Like
+                                </button>
+                                {useremail === comment.useremail && (
+                                  <div className="mt-3 flex items-center gap-2">
+                                    <button
+                                      type="button"
 
-                                  {/* Nested replies */}
-                                  {reply.Nestedreplies?.length > 0 && (
-                                    <div className="ml-4 border-l border-gray-200 pl-4 dark:border-white/10">
-                                      <div className="space-y-3">
-                                        {reply.Nestedreplies.map((nested: any) => (
-                                          <div
-                                            key={nested.replyId}
-                                            className={`rounded-2xl border p-4 ${theme === "Dark"
-                                              ? "border-white/10 bg-white/[0.02]"
-                                              : "border-gray-200 bg-white"
-                                              }`}
-                                          >
-                                            <div className="flex gap-3">
-                                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-400 text-xs font-semibold text-white">
-                                                {nested?.name?.charAt(0)}
-                                              </div>
-
-                                              <div className="min-w-0 flex-1">
-                                                <div className="flex flex-wrap items-center gap-2">
-                                                  <h6 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                                    {nested.name}
-                                                  </h6>
-                                                  <span className="text-xs text-gray-500">
-                                                    {nested.time}
-                                                  </span>
-                                                </div>
-
-                                                <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                                                  {nested.reply}
-                                                </p>
-                                              </div>
-                                            </div>
-                                            <div className="mt-3 flex items-center gap-4">
-                                              <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Reply(nested)}>
-                                                Reply
-                                              </button>
-                                              <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                                                Like
-                                              </button>
-                                              {useremail === nested.useremail && (
-                                                <div className="mt-3 flex items-center gap-2">
-                                                  <button
-                                                    type="button"
-                                                    // onClick={() => handleEditNestedReply(nested)}
-                                                    className="
+                                      className="
         inline-flex items-center gap-1.5 rounded-full
         border border-blue-200 bg-blue-50
         px-3 py-1.5 text-xs font-medium text-blue-700
         transition-all duration-200 hover:bg-blue-100
         dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/15
       "
-                                                  >
-                                                    <svg
-                                                      xmlns="http://www.w3.org/2000/svg"
-                                                      viewBox="0 0 24 24"
-                                                      fill="none"
-                                                      stroke="currentColor"
-                                                      strokeWidth="2"
-                                                      className="h-3.5 w-3.5"
-                                                    >
-                                                      <path d="M12 20h9" />
-                                                      <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
-                                                    </svg>
-                                                    Edit
-                                                  </button>
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        className="h-3.5 w-3.5"
+                                      >
+                                        <path d="M12 20h9" />
+                                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
+                                      </svg>
+                                      Edit
+                                    </button>
 
-                                                  <button
-                                                    type="button"
-                                                    // onClick={() => handleDeleteNestedReply(nested)}
-                                                    className="
+                                    <button
+                                      type="button"
+
+                                      className="
         inline-flex items-center gap-1.5 rounded-full
         border border-red-200 bg-red-50
         px-3 py-1.5 text-xs font-medium text-red-600
         transition-all duration-200 hover:bg-red-100
         dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/15
       "
-                                                  >
-                                                    <svg
-                                                      xmlns="http://www.w3.org/2000/svg"
-                                                      viewBox="0 0 24 24"
-                                                      fill="none"
-                                                      stroke="currentColor"
-                                                      strokeWidth="2"
-                                                      className="h-3.5 w-3.5"
-                                                    >
-                                                      <path d="M3 6h18" />
-                                                      <path d="M8 6V4h8v2" />
-                                                      <path d="M19 6l-1 14H6L5 6" />
-                                                      <path d="M10 11v6" />
-                                                      <path d="M14 11v6" />
-                                                    </svg>
-                                                    Delete
-                                                  </button>
-                                                </div>
-                                              )}
-                                            </div>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              ))}
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        className="h-3.5 w-3.5"
+                                      >
+                                        <path d="M3 6h18" />
+                                        <path d="M8 6V4h8v2" />
+                                        <path d="M19 6l-1 14H6L5 6" />
+                                        <path d="M10 11v6" />
+                                        <path d="M14 11v6" />
+                                      </svg>
+                                      Delete
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
 
-                {/* Add comment */}
-                <div
-                  className={`mt-8 rounded-2xl border p-4 sm:p-5 ${theme === "Dark"
-                    ? "border-white/10 bg-white/[0.03]"
-                    : "border-gray-200 bg-white"
-                    }`}
-                >
-                  <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
-                    Add Comment
-                  </h4>
+                          {/* Replies */}
+                          {replies.length > 0 && (
+                            <div className="mt-4 ml-4 border-l border-gray-200 pl-4 sm:ml-8 dark:border-white/10">
+                              <div className="space-y-3">
+                                {replies.map((reply: any) => (
+                                  <div key={reply.replyId} className="space-y-3">
+                                    <div
+                                      className={`rounded-2xl border p-4 ${theme === "Dark"
+                                        ? "border-white/10 bg-[#0f172a]"
+                                        : "border-gray-200 bg-gray-50"
+                                        }`}
+                                    >
+                                      <div className="flex gap-3">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-xs font-semibold text-white">
+                                          {reply?.name?.charAt(0)}
+                                        </div>
 
-                  <label className="sr-only" htmlFor="commentBox">
-                    Write your comment
-                  </label>
+                                        <div className="min-w-0 flex-1">
+                                          <div className="flex flex-wrap items-center gap-2">
+                                            <h5 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                              {reply.name}
+                                            </h5>
 
-                  <textarea
-                    id="commentBox"
-                    rows={4}
-                    placeholder="Write your comment here..."
-                    onChange={(e) => setpostname(e.target.value)}
-                    value={postmessage}
-                    className={`w-full resize-none rounded-2xl border px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500/20 ${theme === "Dark"
-                      ? "border-white/10 bg-[#0f172a] text-white placeholder:text-gray-500 focus:border-blue-500/40"
-                      : "border-gray-200 bg-gray-50 text-black placeholder:text-gray-400 focus:border-blue-400"
+                                            {reply.role && (
+                                              <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[11px] text-purple-700 dark:bg-purple-500/10 dark:text-purple-400">
+                                                {reply.role}
+                                              </span>
+                                            )}
+
+                                            <span className="text-xs text-gray-500">
+                                              {reply.time}
+                                            </span>
+                                          </div>
+
+                                          <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                                            {reply.reply}
+                                          </p>
+
+                                          <div className="mt-3 flex items-center gap-4">
+                                            <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Replys(reply)}>
+                                              Reply
+                                            </button>
+                                            <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                              Likes
+                                            </button>
+
+                                            {useremail == reply.useremail && <>
+
+
+                                              <button>Delte</button>
+                                            </>}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Nested replies */}
+                                    {reply.Nestedreplies?.length > 0 && (
+                                      <div className="ml-4 border-l border-gray-200 pl-4 dark:border-white/10">
+                                        <div className="space-y-3">
+                                          {reply.Nestedreplies.map((nested: any) => (
+                                            <div
+                                              key={nested.replyId}
+                                              className={`rounded-2xl border p-4 ${theme === "Dark"
+                                                ? "border-white/10 bg-white/[0.02]"
+                                                : "border-gray-200 bg-white"
+                                                }`}
+                                            >
+                                              <div className="flex gap-3">
+                                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-400 text-xs font-semibold text-white">
+                                                  {nested?.name?.charAt(0)}
+                                                </div>
+
+                                                <div className="min-w-0 flex-1">
+                                                  <div className="flex flex-wrap items-center gap-2">
+                                                    <h6 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                      {nested.name}
+                                                    </h6>
+                                                    <span className="text-xs text-gray-500">
+                                                      {nested.time}
+                                                    </span>
+                                                  </div>
+
+                                                  <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                                                    {nested.reply}
+                                                  </p>
+                                                </div>
+                                              </div>
+                                              <div className="mt-3 flex items-center gap-4">
+                                                <button className="text-xs font-medium text-blue-600 hover:text-blue-700" onClick={() => Reply(nested)}>
+                                                  Reply
+                                                </button>
+                                                <button className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                                  Like
+                                                </button>
+                                                {useremail === nested.useremail && (
+                                                  <div className="mt-3 flex items-center gap-2">
+                                                    <button
+                                                      type="button"
+                                                      // onClick={() => handleEditNestedReply(nested)}
+                                                      className="
+        inline-flex items-center gap-1.5 rounded-full
+        border border-blue-200 bg-blue-50
+        px-3 py-1.5 text-xs font-medium text-blue-700
+        transition-all duration-200 hover:bg-blue-100
+        dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/15
+      "
+                                                    >
+                                                      <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        className="h-3.5 w-3.5"
+                                                      >
+                                                        <path d="M12 20h9" />
+                                                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
+                                                      </svg>
+                                                      Edit
+                                                    </button>
+
+                                                    <button
+                                                      type="button"
+                                                      // onClick={() => handleDeleteNestedReply(nested)}
+                                                      className="
+        inline-flex items-center gap-1.5 rounded-full
+        border border-red-200 bg-red-50
+        px-3 py-1.5 text-xs font-medium text-red-600
+        transition-all duration-200 hover:bg-red-100
+        dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/15
+      "
+                                                    >
+                                                      <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        className="h-3.5 w-3.5"
+                                                      >
+                                                        <path d="M3 6h18" />
+                                                        <path d="M8 6V4h8v2" />
+                                                        <path d="M19 6l-1 14H6L5 6" />
+                                                        <path d="M10 11v6" />
+                                                        <path d="M14 11v6" />
+                                                      </svg>
+                                                      Delete
+                                                    </button>
+                                                  </div>
+                                                )}
+                                              </div>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Add comment */}
+                  <div
+                    className={`mt-8 rounded-2xl border p-4 sm:p-5 ${theme === "Dark"
+                      ? "border-white/10 bg-white/[0.03]"
+                      : "border-gray-200 bg-white"
                       }`}
-                  />
+                  >
+                    <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
+                      Add Comment
+                    </h4>
 
-                  <div className="mt-4 flex justify-end">
-                    <button
-                      onClick={postComment}
-                      className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-                    >
-                      main Post Comment
-                    </button>
+                    <label className="sr-only" htmlFor="commentBox">
+                      Write your comment
+                    </label>
+
+                    <textarea
+                      id="commentBox"
+                      rows={4}
+                      placeholder="Write your comment here..."
+                      onChange={(e) => setpostname(e.target.value)}
+                      value={postmessage}
+                      className={`w-full resize-none rounded-2xl border px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500/20 ${theme === "Dark"
+                        ? "border-white/10 bg-[#0f172a] text-white placeholder:text-gray-500 focus:border-blue-500/40"
+                        : "border-gray-200 bg-gray-50 text-black placeholder:text-gray-400 focus:border-blue-400"
+                        }`}
+                    />
+
+                    <div className="mt-4 flex justify-end">
+                      <button
+                        onClick={postComment}
+                        className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                      >
+                        Post Comment
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
+            </>
           )}
       </div >
       {CreateTask && <TaskForm CreateTask={CreateTask} onclose={() => setCreateTask(false)} projectid={projectid} />}

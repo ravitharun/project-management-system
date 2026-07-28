@@ -2,11 +2,29 @@ const { google } = require("googleapis");
 
 const createGoogleCalendarEvent = async ({
     title,
+    Taskid,
+    status,
+    tags,
     description,
-    dueDate,
+    priority,
     user_refresh_token,
+    dueDate,
+    estimatedHours,
 }) => {
     try {
+
+        console.log({
+            title,
+            Taskid,
+            status,
+            tags,
+            description,
+            priority,
+            user_refresh_token,
+            dueDate,
+            estimatedHours
+        }, 'heycheck');
+
         if (!user_refresh_token) {
             throw new Error("Google Calendar is not connected for this user.");
         }
@@ -27,11 +45,19 @@ const createGoogleCalendarEvent = async ({
         });
 
         const startDate = new Date(dueDate);
-        const endDate = new Date(startDate.getTime() + 30 * 60 * 1000); // 30 minutes
+        const endDate = new Date(startDate.getTime() + 30 * 60 * 1000); // 30 MIn
 
         const event = {
             summary: title,
-            description: description,
+            description: `
+${description}
+
+Task ID: ${Taskid}
+Status: ${status}
+Priority: ${priority}
+Tags: ${Array.isArray(tags) ? tags.join(", ") : tags}
+Estimated Hours: ${estimatedHours}
+  `,
             start: {
                 dateTime: startDate.toISOString(),
                 timeZone: "Asia/Kolkata",
