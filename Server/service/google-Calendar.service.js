@@ -10,6 +10,8 @@ const createGoogleCalendarEvent = async ({
     user_refresh_token,
     dueDate,
     estimatedHours,
+    reminder,
+    reminderBefore
 }) => {
     try {
 
@@ -22,7 +24,9 @@ const createGoogleCalendarEvent = async ({
             priority,
             user_refresh_token,
             dueDate,
-            estimatedHours
+            estimatedHours,
+            reminderBefore,
+            reminder
         }, 'heycheck');
 
         if (!user_refresh_token) {
@@ -66,7 +70,19 @@ Estimated Hours: ${estimatedHours}
                 dateTime: endDate.toISOString(),
                 timeZone: "Asia/Kolkata",
             },
-        };
+
+        }
+        if (reminder) {
+            event.reminders = {
+                useDefault: false,
+                overrides: [
+                    {
+                        method: "popup",
+                        minutes: reminder.reminderBefore,
+                    },
+                ],
+            };
+        }
 
         const response = await calendar.events.insert({
             calendarId: "primary",

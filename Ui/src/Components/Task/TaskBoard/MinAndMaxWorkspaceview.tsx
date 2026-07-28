@@ -485,7 +485,8 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
                   minWidth: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <SpaceList spaceid={workspace._id} />
+                                                <SpaceList spaceid={workspace._id} work={workspace} ismaxAndMin={ismaxAndMin} />
+                
               </div>
             )}
 
