@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: server
+
+spec:
+  replicas: 10
+
+  selector:
+    matchLabels:
+      app: server
+
+  template:
+    metadata:
+      labels:
+        app: server
+
+    spec:
+      containers:
+        - name: server
+          image: ravitharun/project-management-server:1.0.0
+
+          ports:
+            - containerPort: 5000
+
+          envFrom:
+            - configMapRef:
+                name: backend-config
+
+            - secretRef:
+                name: backend-secret

@@ -32,7 +32,35 @@ const WorkSpaceTask = new mongoose.Schema(
             enum: ["todo", "inprogress", "review", "Completed"],
             default: "todo",
         },
+        dueDate: {
+            type: Date
+        },
 
+        reminder: {
+            enabled: {
+                type: Boolean,
+                default: false
+            },
+            reminderTime: {
+                type: Number,
+                default: 30
+            }
+        },
+
+        googleCalendar: {
+            eventId: {
+                type: String
+            },
+            calendarId: {
+                type: String,
+                default: "primary"
+            },
+            syncStatus: {
+                type: String,
+                enum: ["pending", "synced", "failed"],
+                default: "pending"
+            }
+        },
         isTicketOpen: {
             type: Boolean,
             default: true,
@@ -61,7 +89,7 @@ const WorkSpaceTask = new mongoose.Schema(
 
         startDate: { type: Date, default: Date.now() },
 
-        endDate: { type: Date, default: Date.now()},
+        endDate: { type: Date, default: Date.now() },
 
         SubTask: [SubTaskSchema],
 
