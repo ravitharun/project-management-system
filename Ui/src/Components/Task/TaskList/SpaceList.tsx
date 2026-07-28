@@ -13,7 +13,7 @@ import {
   PanelGroup,
   PanelResizeHandle,
 } from "react-resizable-panels";
-
+// import TaskForm from "../../Task/CreateTask/TaskForm"
 function SpaceList({ spaceid }: any) {
   const contexttheme = useContext(bgthemeContext);
   const { theme }: any = contexttheme;
@@ -150,8 +150,8 @@ function SpaceList({ spaceid }: any) {
                 >
                   <div
                     className={`flex h-16 items-center justify-between border-b px-4${isDark
-                        ? "border-white/10 bg-[#0f172a] text-white"
-                        : "border-gray-200 bg-gray-50 text-gray-800"
+                      ? "border-white/10 bg-[#0f172a] text-white"
+                      : "border-gray-200 bg-gray-50 text-gray-800"
                       }`}
                   >
                     <div className="flex items-center gap-3">
@@ -168,6 +168,10 @@ function SpaceList({ spaceid }: any) {
                         <h2 className="text-sm font-semibold">Tasks</h2>
                         <p className="text-xs opacity-70">
                           Manage your workspace tasks
+                          {true
+                            &&
+                            "efv  "
+                          }
                         </p>
                       </div>
                     </div>

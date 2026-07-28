@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const { GetEmpNameGenById } = require("../Utils/EmpIDGenrator");
 const EmailQueue = require("../Queues/Producer");
 const redis = require("../config/redis");
+const { google } = require("googleapis");
 // const EmailQueue = require("../service/Producer");
 const saltRounds = 10;
 const AuthNewAccount = async (req, res) => {
@@ -26,7 +27,8 @@ const AuthNewAccount = async (req, res) => {
             userEmail: req.body.email,
             userPassword: haspassowrd,
             logintype: req.body.logintype,
-            type: req.body.type
+            type: req.body.type,
+            Firbaseuid: req.body.Firbaseuid
         })
         await saveuser.save()
         // Queues system
@@ -55,7 +57,7 @@ const Login = async (req, res) => {
     try {
         // role, email, password
         const { email, password, type } = req.query
-        console.log( email, password, type , 'req.query')
+        console.log(email, password, type, 'req.query')
         console.log(req.query.type, 'req.query.type')
         const isExits = await UserSchema.findOne({ userEmail: email })
         if (!isExits) {
@@ -92,4 +94,78 @@ const Login = async (req, res) => {
     }
 
 }
-module.exports = { AuthNewAccount, Login }
+
+const Google_CalndrLogin = async (req, res) => {
+    try {
+        const { uid } = req.query;
+
+        console.log(req.query, "req.querytharun");
+
+        const oauth2Client = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET,
+            process.env.GOOGLE_REDIRECT_URI
+        );
+
+        const url = oauth2Client.generateAuthUrl({
+            access_type: "offline",
+            prompt: "consent",
+            scope: [
+                "https://www.googleapis.com/auth/calendar.events"
+            ],
+            state: uid
+        });
+
+        res.redirect(url);
+
+    } catch (error) {
+        console.log(error.message);
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+const Google_CalendarCallback = async (req, res) => {
+    try {
+        const { code, state } = req.query;
+
+        console.log("CODE:", code);
+        // console.log("FIREBASE UID:", uid)
+        console.log("FIREBASE UID:", state);
+
+        const oauth2Client = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET,
+            process.env.GOOGLE_REDIRECT_URI
+        );
+
+        const { tokens } = await oauth2Client.getToken(code);
+
+        console.log(tokens, "Google Tokens");
+
+        const update = await UserSchema.findOneAndUpdate({ Firbaseuid: state }, {
+
+            googleRefreshToken: tokens.refresh_token,
+            googleCalendarConnected: true
+
+        }, { new: true })
+
+        res.redirect("http://localhost:5173");
+
+
+    } catch (error) {
+        console.log("CALLBACK ERROR:", error.response?.data || error.message);
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+
+
+module.exports = { AuthNewAccount, Login, Google_CalndrLogin, Google_CalendarCallback }
