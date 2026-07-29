@@ -29,11 +29,11 @@ const worker = new Worker(
                 return await SendWelcomEmail(job.data);
             }
             if (job.name === "WorkspaceAcceptInvitation") {
-                console.log("Sending WorkspaceAcceptInvitation Email");
+                console.log("Sending WorkspaceAcceptInvitation Email5");
                 return await workspaceAcceptInvitation(job.data);
             }
 
-            throw new Error(`Unknown job name: ${job.name}`); // ✅ IMPORTANT
+            throw new Error(`Unknown job name: ${job.name}`); 
         } catch (error) {
             console.log("Worker Error:", error.message);
             throw error;
