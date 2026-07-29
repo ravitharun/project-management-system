@@ -26,6 +26,7 @@ const AddWorkSpaceTask = async (req, res) => {
 
 
         const assignedUser = await User.findById(TaskData.assignTo)
+console.log(assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null,'assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null');
 
         // Find User by userId
         if (assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null) {
