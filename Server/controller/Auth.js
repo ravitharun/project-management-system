@@ -153,7 +153,8 @@ const Google_CalendarCallback = async (req, res) => {
 
         }, { new: true })
 
-        res.redirect("http://localhost:5173");
+        res.redirect(process.env.Server_Prod == "Local" ? "http://localhost:5173" : process.env.Ui_API);
+
 
 
     } catch (error) {
