@@ -171,7 +171,7 @@ const Google_CalendarCallback = async (req, res) => {
 
 
         const encodedUser = encodeURIComponent(JSON.stringify(update));
-        console.log(encodedUser, 'encodedUser');
+     
 
 
         res.redirect(

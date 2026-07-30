@@ -1,5 +1,5 @@
 const { google } = require("googleapis");
-
+const WorkSpaceTasks = require("../Models/WorkSapceTask")
 const createGoogleCalendarEvent = async ({
     title,
     Taskid,
@@ -11,11 +11,13 @@ const createGoogleCalendarEvent = async ({
     dueDate,
     estimatedHours,
     reminder,
-    reminderBefore
+    reminderBefore,
+    task
 }) => {
     try {
 
         console.log({
+            "Dbtask":task,
             title,
             Taskid,
             status,
@@ -88,6 +90,17 @@ Estimated Hours: ${estimatedHours}
             calendarId: "primary",
             requestBody: event,
         });
+
+     
+
+        const dt = await WorkSpaceTasks.findOneAndUpdate({ _id: task }, {
+            googleEventId: response.data.id
+        });
+
+
+        console.log(dt, 'dt');
+
+
 
         return response.data;
     } catch (error) {

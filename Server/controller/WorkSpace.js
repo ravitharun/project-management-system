@@ -6,11 +6,13 @@ const WorkspaceStar = require("../Models/WorkspaceStar")
 const EmailQueue = require("../Queues/Producer")
 const worker = require("../Queues/Worker")
 const cloudinary = require("../config/Clounadry")
-
+const { getIO } = require("../scoket");
 const CreateWorkSpace = async (req, res) => {
     try {
+
+        const io = getIO()
         const { updatedData } = req.body
-        console.log(updatedData, 'updatedData')
+        console.log(updatedData.useremail, 'updatedData')
         console.log(updatedData?.workspaceBackground, 'workspaceBackground')
         const saveWorkspace = new Workspace({
             ...updatedData,
@@ -26,6 +28,14 @@ const CreateWorkSpace = async (req, res) => {
             }
         });
         await saveWorkspace.save()
+
+
+        const UserCreatedWOrkSpace = await Workspace.find({ "createby.userEmail": updatedData.useremail })
+        console.log(UserCreatedWOrkSpace,'UserCreatedWOrkSpace');
+        
+        io.emit("Createworkspace", UserCreatedWOrkSpace)
+
+
         return res.status(200).json({ message: "workspace Created", status: true })
 
     } catch (error) {
@@ -287,11 +297,11 @@ const ApproveEmail = async (req, res, next) => {
             },
             { returnDocument: "true" }
         )
-console.log({
+        console.log({
             status: true,
             message: "Member added to workspace successfully",
             data: data
-        },'tharunkumar');
+        }, 'tharunkumar');
 
         return res.status(201).json({
             status: true,
@@ -534,8 +544,8 @@ const FetchTeamMembers = async (req, res, next) => {
 
 
         const GetTeamUsers = await Workspace.findById({ _id: SpaceId }).populate("WorkSpacememebers.id")
-        console.log(GetTeamUsers,'GetTeamUsers');
-        
+        console.log(GetTeamUsers, 'GetTeamUsers');
+
 
         if (!GetTeamUsers) {
             return res.status(404).json({ message: "No Space Id found ." })

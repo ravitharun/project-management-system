@@ -4,13 +4,15 @@ const Workspace = require("../Models/Workspace")
 const User = require("../Models/Auth")
 const AddcommentsSchema = require("../Models/Workspace-comments");
 const createGoogleCalendarEvent = require("../service/google-Calendar.service");
+const WorkSapceTask = require("../Models/WorkSapceTask");
+const { getIO } = require("../scoket");
 const AddWorkSpaceTask = async (req, res) => {
     try {
         const { TaskData, assignTo } = req.body;
         console.log(req.body, 'req.body')
         console.log(TaskData, 'TaskData')
         console.log(TaskData.assignTo, 'assignTo')
-
+        const io = getIO()
         const Createtask = new WorkSpaceTask({
             ...TaskData,
             assignTo: TaskData.assignTo || null,
@@ -20,18 +22,12 @@ const AddWorkSpaceTask = async (req, res) => {
         });
 
 
-
+        await Createtask.save();
 
 
 
 
         const assignedUser = await User.findById(TaskData.assignTo)
-        console.log(assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null, 'assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null');
-        console.log({
-            googleCalendarConnected: assignedUser.googleCalendarConnected,
-            googleRefreshToken: assignedUser.googleRefreshToken,
-            refreshTokenLength: assignedUser.googleRefreshToken?.length,
-        });
 
         // Find User by userId
         if (assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null) {
@@ -47,12 +43,27 @@ const AddWorkSpaceTask = async (req, res) => {
                 reminder: TaskData.googleCalendar.enabled,
                 reminderBefore: TaskData.googleCalendar.reminderBefore,
                 estimatedHours: TaskData.estimatedHours,
+                task: Createtask._id
             });
+
+
         }
 
 
+        console.log(req.body.projectid, 'req.body.projectid');
 
-        await Createtask.save();
+        const fetchAll = await WorkSapceTask.find({ projectid: TaskData.projectid })
+
+
+
+        console.log(fetchAll, 'tharunkumrchek');
+        console.log(fetchAll.length, 'tharunkumrcheklen');
+
+
+        io.emit("fetchAllTask", fetchAll)
+
+
+
         return res.status(201).json({
             message: "WorkSpaceTask Created",
             data: Createtask
