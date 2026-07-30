@@ -165,10 +165,20 @@ const Google_CalendarCallback = async (req, res) => {
 
         }, { returnDocument: 'after' })
 
-        console.log(update,'update');
-        
-        io.emit("UpdatedUserInfo",update)
-        res.redirect(process.env.Server_Prod == "Local" ? "http://localhost:5173" : process.env.Ui_API);
+        console.log(update, 'update');
+
+        io.emit("UpdatedUserInfo", update)
+
+
+        const encodedUser = encodeURIComponent(JSON.stringify(update));
+        console.log(encodedUser, 'encodedUser');
+
+
+        res.redirect(
+            process.env.Server_Prod == "Local"
+                ? `http://localhost:5173?User=${encodedUser}`
+                : `${process.env.Ui_API}?User=${encodedUser}`
+        );
 
 
 

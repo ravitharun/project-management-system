@@ -25,11 +25,33 @@ import TaskLayout from "../Components/Task/TaskLayout";
 function AppRouter() {
     const navigate = useNavigate();
 
+
+
+
+
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+
+        const user = params.get("User");
+
+        if (user) {
+            const parsedUser = JSON.parse(decodeURIComponent(user));
+
+            localStorage.setItem("userinfo", JSON.stringify(parsedUser));
+
+            // Optional: remove the query string
+            window.history.replaceState({}, "", window.location.pathname);
+        }
+    }, []);
+
+
+
     useEffect(() => {
 
         const UpdatedUserInfo = (data: any) => {
-            console.log(data,'USerinodata');
-            
+            console.log(data, 'USerinodata');
+
 
             localStorage.setItem("userinfo", JSON.stringify(data))
 
@@ -128,14 +150,9 @@ function AppRouter() {
             console.log("Disconnected from server");
         });
         socket.on("ProjectInfoUpload", handelProjectInfoUpload)
-        // const UpdatedWorkspace = (data: any) => {
-        //     console.log(data, "UpdatedWorkspace");
-        // };
 
-        // socket.on("updatedWorkspace", UpdatedWorkspace);
         return () => {
 
-            // socket.off("updatedWorkspace", UpdatedWorkspace);
             socket.off("UpdatedUserInfo", UpdatedUserInfo);
             socket.off("NewTask", handelTask);
             socket.off("task_updated", handelcheck);
