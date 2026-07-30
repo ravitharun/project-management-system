@@ -27,6 +27,12 @@ function AppRouter() {
 
     useEffect(() => {
 
+        const UpdatedUserInfo = (data: any) => {
+
+            localStorage.setItem("userinfo", data)
+
+        }
+
         const handleCheckuserOnline = (data: any) => {
 
             const msg =
@@ -92,6 +98,7 @@ function AppRouter() {
         };
 
         socket.on("onlineUser", handleCheckuserOnline);
+        socket.on("UpdatedUserInfo", UpdatedUserInfo);
         socket.on("AddProjectMembers", handleAddProjectMembers);
         socket.on("handelprojectStatus", handelprojectStatus);
         socket.on("offlineUser", handleCheckuserOffline);
@@ -125,8 +132,9 @@ function AppRouter() {
 
         // socket.on("updatedWorkspace", UpdatedWorkspace);
         return () => {
-            
+
             // socket.off("updatedWorkspace", UpdatedWorkspace);
+            socket.off("UpdatedUserInfo", UpdatedUserInfo);
             socket.off("NewTask", handelTask);
             socket.off("task_updated", handelcheck);
             socket.off("handelprojectStatus", handelprojectStatus);
