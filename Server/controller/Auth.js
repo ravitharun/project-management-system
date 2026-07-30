@@ -99,6 +99,15 @@ const Google_CalndrLogin = async (req, res) => {
     try {
         const { uid } = req.query;
 
+
+        if(!uid){
+
+
+            console.log({messgae:"UID IS MISSING"},'UID');
+            
+            return res.status(404).json({messgae:"UID IS MISSING"})
+        }
+
         console.log(req.query, "req.querytharun");
 
         const oauth2Client = new google.auth.OAuth2(
