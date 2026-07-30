@@ -28,6 +28,8 @@ function AppRouter() {
     useEffect(() => {
 
         const UpdatedUserInfo = (data: any) => {
+            console.log(data,'USerinodata');
+            
 
             localStorage.setItem("userinfo", JSON.stringify(data))
 
