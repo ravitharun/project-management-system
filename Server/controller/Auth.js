@@ -164,6 +164,9 @@ const Google_CalendarCallback = async (req, res) => {
             googleCalendarConnected: true
 
         }, { returnDocument: 'after' })
+
+        console.log(update,'update');
+        
         io.emit("UpdatedUserInfo",update)
         res.redirect(process.env.Server_Prod == "Local" ? "http://localhost:5173" : process.env.Ui_API);
 
