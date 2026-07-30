@@ -26,7 +26,12 @@ const AddWorkSpaceTask = async (req, res) => {
 
 
         const assignedUser = await User.findById(TaskData.assignTo)
-console.log(assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null,'assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null');
+        console.log(assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null, 'assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null');
+        console.log({
+            googleCalendarConnected: assignedUser.googleCalendarConnected,
+            googleRefreshToken: assignedUser.googleRefreshToken,
+            refreshTokenLength: assignedUser.googleRefreshToken?.length,
+        });
 
         // Find User by userId
         if (assignedUser.googleCalendarConnected && assignedUser.googleRefreshToken != null) {
@@ -39,8 +44,8 @@ console.log(assignedUser.googleCalendarConnected && assignedUser.googleRefreshTo
                 priority: TaskData.priority,
                 user_refresh_token: assignedUser.googleRefreshToken,
                 dueDate: TaskData.endDate,
-                reminder:TaskData.googleCalendar.enabled,
-                reminderBefore:TaskData.googleCalendar.reminderBefore,
+                reminder: TaskData.googleCalendar.enabled,
+                reminderBefore: TaskData.googleCalendar.reminderBefore,
                 estimatedHours: TaskData.estimatedHours,
             });
         }
