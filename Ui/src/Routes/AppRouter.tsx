@@ -29,7 +29,7 @@ function AppRouter() {
 
         const UpdatedUserInfo = (data: any) => {
 
-            localStorage.setItem("userinfo", data)
+            localStorage.setItem("userinfo", JSON.stringify(data))
 
         }
 
