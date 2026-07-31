@@ -324,6 +324,7 @@ function SpaceList({ spaceid, work, ismaxAndMin }: any) {
               minSize={35}
             >
               <div className="h-full w-full min-w-0 overflow-hidden">
+               
                 <ViewTask
                   projectid={spaceid}
                   theme={theme}

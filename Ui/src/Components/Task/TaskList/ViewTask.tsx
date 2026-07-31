@@ -23,6 +23,7 @@ import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDel
 import bgthemeContext from "../../../Context/ThemeContext";
 import { instance } from "../../../services/apiservices";
 import { checkuser, useremail } from "../../LocalStorage";
+import { userRfToken } from "../../users";
 // import { instance } from "../../../services/apiservices";
 function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   const context = useContext(bgthemeContext);
@@ -234,14 +235,16 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
 
   const HandelDeleteTask = async () => {
     const TasksId = Tasks.TaskId
-    alert(TasksId)
+    const GoogleEventId=Tasks.googleEventId
     if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 
 
     try {
+        const tkn=JSON.parse(userRfToken).googleRefreshToken
 
-      const response = await HandelTaskDelete(TasksId)
+        
+      const response = await HandelTaskDelete(TasksId,GoogleEventId,tkn)
       console.log(response.status)
       if (response.status == 200) {
 
@@ -257,7 +260,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   }
   const DuplicateTask = async () => {
     const TasksId = Tasks.TaskId
-    console.log(TasksId)
+
     if (!TasksId) { return GlobalToast("Some Thing Went Wrong", "error") }
 
 
@@ -320,17 +323,22 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
         break;
     }
   }
+    const user=localStorage.getItem("userinfo")
 
+  const save = async (item: any) => {
 
-  const save = async () => {
     try {
-      const data = {
+
+      const data:any = {
         editTaskName: !editTaskName ? Tasks?.taskName || viewtasks?.taskName : editTaskName,
         editTaskdescription: !editTaskdescription ? Tasks?.description || viewtasks?.description : editTaskdescription,
         taskid: Tasks?.TaskId,
-        taskStatus: !TaskStatus ? Tasks.TaskStatus || viewtasks?.TaskStatus : TaskStatus
+        taskStatus: !TaskStatus ? Tasks.TaskStatus || viewtasks?.TaskStatus : TaskStatus,
+        GoogleeventId: item.googleEventId,
+        userRfTokne: user
       }
-      console.log(data)
+      console.log(data, 'dat');
+
 
       const response = await instance.put(`/api/Task/${Tasks.TaskId}/edit`, { data: data })
       console.log(response, 'responseEitTask')
@@ -338,7 +346,9 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
         return GlobalToast(response?.data?.message, "success")
       }
     } catch (error: any) {
-      const status = error.response.status
+      console.log(error,'error');
+      
+      const status:any = error?.response.status
       if (status == 500) {
 
         return GlobalToast("Server Error", "error")
@@ -660,7 +670,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
 
                                 <button
                                   className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
-                                  onClick={save}
+                                  onClick={() => save(Tasks)}
                                 >
                                   Save
                                 </button>
@@ -702,7 +712,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
                                 Tasks?.description ||
                                 viewtasks?.description ||
                                 "No description available"}
-                              <button onClick={() =>setCreateTask((prev)=>!prev)}>AddTask</button>
+                              <button onClick={() => setCreateTask((prev) => !prev)}>AddTask</button>
 
                             </p>
                           )}

@@ -1,5 +1,6 @@
 const { google } = require("googleapis");
-const WorkSpaceTasks = require("../Models/WorkSapceTask")
+const WorkSpaceTasks = require("../Models/WorkSapceTask");
+
 const createGoogleCalendarEvent = async ({
     title,
     Taskid,
@@ -16,39 +17,12 @@ const createGoogleCalendarEvent = async ({
 }) => {
     try {
 
-        console.log({
-            "Dbtask":task,
-            title,
-            Taskid,
-            status,
-            tags,
-            description,
-            priority,
-            user_refresh_token,
-            dueDate,
-            estimatedHours,
-            reminderBefore,
-            reminder
-        }, 'heycheck');
+
 
         if (!user_refresh_token) {
             throw new Error("Google Calendar is not connected for this user.");
         }
 
-        const auth = new google.auth.OAuth2(
-            process.env.GOOGLE_CLIENT_ID,
-            process.env.GOOGLE_CLIENT_SECRET,
-            process.env.GOOGLE_REDIRECT_URI
-        );
-
-        auth.setCredentials({
-            refresh_token: user_refresh_token,
-        });
-
-        const calendar = google.calendar({
-            version: "v3",
-            auth,
-        });
 
         const startDate = new Date(dueDate);
         const endDate = new Date(startDate.getTime() + 30 * 60 * 1000); // 30 MIn
@@ -85,13 +59,26 @@ Estimated Hours: ${estimatedHours}
                 ],
             };
         }
+        const auth = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET,
+            process.env.GOOGLE_REDIRECT_URI
+        );
 
+        auth.setCredentials({
+            refresh_token: user_refresh_token,
+        });
+
+        const calendar = google.calendar({
+            version: "v3",
+            auth,
+        });
         const response = await calendar.events.insert({
             calendarId: "primary",
             requestBody: event,
         });
 
-     
+
 
         const dt = await WorkSpaceTasks.findOneAndUpdate({ _id: task }, {
             googleEventId: response.data.id

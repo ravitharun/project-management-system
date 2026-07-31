@@ -6,6 +6,8 @@ const AddcommentsSchema = require("../Models/Workspace-comments");
 const createGoogleCalendarEvent = require("../service/google-Calendar.service");
 const WorkSapceTask = require("../Models/WorkSapceTask");
 const { getIO } = require("../scoket");
+const UpdateGoogleCalendarEvent = require("../service/updateGoogleCalendarEvent");
+const DeleteGoogleCalendarEvent = require("../service/DeleteGoogleCalendarEvent");
 const AddWorkSpaceTask = async (req, res) => {
     try {
         const { TaskData, assignTo } = req.body;
@@ -344,15 +346,15 @@ const UpdateTaskWallpaper = async (req, res, next) => {
 const DeleteTask = async (req, res, next) => {
 
     try {
-        const { taskid } = req.params
-        console.log(taskid, 'taskid to delete')
-        if (!taskid) {
-            const taskidNotFound = new Error("taskid is missing.")
+        const { taskid, user, Eventid } = req.params;
+        console.log(req.params, 'taskid to delete')
+        const token = decodeURIComponent(req.params.user);
+
+        if (!taskid || !user || !Eventid) {
+            const taskidNotFound = new Error("Something is missing.")
             taskidNotFound.status = 404
             return next(taskidNotFound)
         }
-
-
         const IsexitstaskDeleted = await WorkSpaceTask.findOneAndDelete({ TaskId: taskid })
         if (IsexitstaskDeleted == null) {
             return res.status(404).json({ message: "Task is not Found to Delete it" })
@@ -360,7 +362,7 @@ const DeleteTask = async (req, res, next) => {
 
         console.log(IsexitstaskDeleted)
 
-
+        const response = await DeleteGoogleCalendarEvent(Eventid, token)
         return res.status(200).json({ message: "Task deleted successfully" })
     } catch (error) {
         console.log(error.message)
@@ -416,16 +418,22 @@ const DuplicateTask = async (req, res, next) => {
 };
 const edittask = async (req, res, next) => {
     try {
+        const io = getIO()
         const { taskid } = req.params
         console.log(taskid, 'taskid edit')
         const { data } = req.body
-        console.log(data, 'data edit')
-
 
 
         const updatetask = await WorkSpaceTask.findOneAndUpdate({ TaskId: taskid }, { taskName: data.editTaskName, description: data.editTaskdescription, TaskStatus: data.taskStatus }, { returnDocument: "after" })
-        console.log(updatetask)
-        return res.status(201).json({ message: "Task Updated", updated: updatetask })
+        console.log(updatetask, 'updatetask')
+
+        io.emit("RealtimeUpdatedTask", updatetask)
+
+        const response = await UpdateGoogleCalendarEvent(data.GoogleeventId, updatetask, JSON.parse(data.userRfTokne).googleRefreshToken)
+        if (response && updatetask) {
+
+            return res.status(201).json({ message: "Task Updated", updated: updatetask })
+        }
     } catch (error) {
         console.log(error.message)
         next(error)
