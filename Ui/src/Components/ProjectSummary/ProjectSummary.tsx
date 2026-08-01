@@ -242,7 +242,6 @@ const ProjectSummary = () => {
         },
     ];
 
-    // const progress :any= 80;
     const taskStatus = [
         { label: "Completed", value: 40, color: "bg-green-500" },
         { label: "In Progress", value: 8, color: "bg-yellow-500" },
