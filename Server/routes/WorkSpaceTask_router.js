@@ -9,7 +9,7 @@ WorkSpaceTaskRouter.post("/AddWorkSpaceTask", AuthTokenVerification, AddWorkSpac
 WorkSpaceTaskRouter.post("/Addcomments", AuthTokenVerification, Addcomments)
 WorkSpaceTaskRouter.put("/AddRelpys", AuthTokenVerification, AddRelpys)
 WorkSpaceTaskRouter.post("/AddSubTasks", AuthTokenVerification, AddSubTask)
-WorkSpaceTaskRouter.delete("/:taskid/Delete", AuthTokenVerification, DeleteTask)
+WorkSpaceTaskRouter.delete("/:taskid/:user/:Eventid/Delete", AuthTokenVerification, DeleteTask)
 WorkSpaceTaskRouter.delete("/:id/DeleteFile", AuthTokenVerification, DeleteFile)
 WorkSpaceTaskRouter.post("/:taskid/DuplicateTask", AuthTokenVerification, DuplicateTask)
 WorkSpaceTaskRouter.put("/:taskid/edit", AuthTokenVerification, edittask)

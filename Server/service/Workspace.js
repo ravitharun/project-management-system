@@ -1,9 +1,8 @@
 const { resend } = require("./Email")
 
 const workspaceAcceptInvitation = async (data) => {
-    console.log(data.data.workspace._id, 'data.data.workspace._id')
+    console.log(data, 'tharunid')
     const response = data.data.arr_email.map(async (emails) => {
-        console.log({ emails, "@tharun": data }, 'workspaceAcceptInvitation_id')
 
         await resend.emails.send({
             from: "Taskora <taskoraSystem@resend.dev>",
@@ -30,8 +29,8 @@ const workspaceAcceptInvitation = async (data) => {
             <div style="margin-top: 30px;">
                 <a
                 href=${process.env.envStatus === "Local"
-                    ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace._id}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
-                    : `${process.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace._id}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
+                    ? `http://localhost:5173/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
+                    : `${process.env.LiveUI}/Email-JoinWorkspace?workspaceid=${data.data.workspace}&AcceptEmail=${emails}&toekn=${data.token}&expiresAt=${data.expiresAt}`
                 }
                     style="
                         background: #4f46e5;

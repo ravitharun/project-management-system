@@ -14,8 +14,9 @@ import {
   PanelResizeHandle,
 } from "react-resizable-panels";
 import TaskForm from "../CreateTask/TaskForm";
+import { socket } from "../../../Scokets/ScoketConfig";
 // import TaskForm from "../../Task/CreateTask/TaskForm"
-function SpaceList({ spaceid ,work,ismaxAndMin}: any) {
+function SpaceList({ spaceid, work, ismaxAndMin }: any) {
   const contexttheme = useContext(bgthemeContext);
   const { theme }: any = contexttheme;
   const [CreateTask, setCreateTask] = useState<boolean>(false)
@@ -28,6 +29,28 @@ function SpaceList({ spaceid ,work,ismaxAndMin}: any) {
   const [viewtasks, setviewtaks] = useState<any>(null);
 
   const isDark = theme === "Dark";
+
+  useEffect(() => {
+    const handeltask = (data: any) => {
+
+      console.log(data, 'web');
+      setTaskListView(data)
+
+
+    }
+
+
+    socket.on("fetchAllTask", handeltask)
+    return () => {
+
+      socket.off("fetchAllTask", handeltask);
+    }
+
+  }, [])
+
+
+ 
+
 
   useEffect(() => {
     const FetchTasks = async () => {
@@ -301,6 +324,7 @@ function SpaceList({ spaceid ,work,ismaxAndMin}: any) {
               minSize={35}
             >
               <div className="h-full w-full min-w-0 overflow-hidden">
+               
                 <ViewTask
                   projectid={spaceid}
                   theme={theme}
@@ -312,16 +336,16 @@ function SpaceList({ spaceid ,work,ismaxAndMin}: any) {
           </PanelGroup>
         </div>
       )}
- 
-
-        {
-
-          CreateTask &&
 
 
-          <TaskForm onclose={() => setCreateTask(false)} maximizeParent={ismaxAndMin} projectid={work._id} CreateTask={CreateTask} />
+      {
 
-        }
+        CreateTask &&
+
+
+        <TaskForm onclose={() => setCreateTask(false)} maximizeParent={ismaxAndMin} projectid={work._id} CreateTask={CreateTask} />
+
+      }
     </>
   );
 }

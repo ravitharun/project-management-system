@@ -6,6 +6,7 @@ const { GetEmpNameGenById } = require("../Utils/EmpIDGenrator");
 const EmailQueue = require("../Queues/Producer");
 const redis = require("../config/redis");
 const { google } = require("googleapis");
+const { getIO } = require("../scoket");
 // const EmailQueue = require("../service/Producer");
 const saltRounds = 10;
 const AuthNewAccount = async (req, res) => {
@@ -99,6 +100,15 @@ const Google_CalndrLogin = async (req, res) => {
     try {
         const { uid } = req.query;
 
+
+        if (!uid) {
+
+
+            console.log({ messgae: "UID IS MISSING" }, 'UID');
+
+            return res.status(404).json({ messgae: "UID IS MISSING" })
+        }
+
         console.log(req.query, "req.querytharun");
 
         const oauth2Client = new google.auth.OAuth2(
@@ -130,6 +140,8 @@ const Google_CalndrLogin = async (req, res) => {
 
 const Google_CalendarCallback = async (req, res) => {
     try {
+
+        const io = getIO()
         const { code, state } = req.query;
 
         console.log("CODE:", code);
@@ -151,9 +163,22 @@ const Google_CalendarCallback = async (req, res) => {
             googleRefreshToken: tokens.refresh_token,
             googleCalendarConnected: true
 
-        }, { new: true })
+        }, { returnDocument: 'after' })
 
-        res.redirect(process.env.Server_Prod == "Local" ? "http://localhost:5173" : process.env.Ui_API);
+        console.log(update, 'update');
+
+        io.emit("UpdatedUserInfo", update)
+
+
+        const encodedUser = encodeURIComponent(JSON.stringify(update));
+     
+
+
+        res.redirect(
+            process.env.Server_Prod == "Local"
+                ? `http://localhost:5173?User=${encodedUser}`
+                : `${process.env.Ui_API}?User=${encodedUser}`
+        );
 
 
 

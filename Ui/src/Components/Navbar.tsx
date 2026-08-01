@@ -31,6 +31,7 @@ import StartMenuList from "./StartMenuList";
 import { IoClose } from "react-icons/io5";
 import { FaGear } from "react-icons/fa6";
 import ClickedWorkSpace from "../Context/ClickedWorkSpace";
+import { socket } from "../Scokets/ScoketConfig";
 
 type Props = {
     page?: string;
@@ -64,6 +65,36 @@ function Sidebar({ page }: Props) {
     // const { work }: any = workspaceProvider;
     const work: any = ClickedSpace
     console.log(work, 'work from navabr')
+
+
+
+
+
+    useEffect(() => {
+
+
+        const Handelworkspace = (data: any) => {
+            console.log(data, 'data Createworkspace');
+
+
+
+
+            setworkspace(data)
+        }
+
+
+
+        socket.on("Createworkspace", Handelworkspace)
+
+
+
+        return () => {
+
+            socket.off("Createworkspace", Handelworkspace)
+
+
+        }
+    }, [])
     useEffect(() => {
         const UpdateIdBg = () => {
             if (work) {
@@ -77,7 +108,7 @@ function Sidebar({ page }: Props) {
     const menuItems = [
         { name: "For You", icon: <FaUserCircle />, href: "/" },
         { name: "Star", icon: <CiStar /> },
-        { name: "Space", icon: <FaLayerGroup />, href: "/projects" },
+        { name: "Space", icon: <FaLayerGroup />, },
 
     ];
 
@@ -99,8 +130,8 @@ function Sidebar({ page }: Props) {
                 setspacejson(response?.data?.data || []);
             } catch (error: any) {
                 console.error(error.response.status, 'err nav');
-                if(error.response.status==429){
-                    return  toast.info(error.response.data.message)
+                if (error.response.status == 429) {
+                    return toast.info(error.response.data.message)
                 }
                 if (error.response.status == 401) {
                     return checkuser()
@@ -140,7 +171,7 @@ function Sidebar({ page }: Props) {
     const handelSelectSpace = (data: any) => {
         setworkspcaeid(data._id)
 
-        navaigte("/workspace", { state: { data:data } })
+        navaigte("/workspace", { state: { data: data } })
         setClickedSpace(data)
         console.log(data, 'data')
     }

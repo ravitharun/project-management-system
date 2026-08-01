@@ -48,7 +48,7 @@ const WorkSpaceTask = new mongoose.Schema(
                 type: String,
                 enum: ["popup", "email"],
                 default: "popup",
-                min:1
+                min: 1
             }
         },
 
@@ -97,10 +97,11 @@ const WorkSpaceTask = new mongoose.Schema(
         taskName: { type: String, required: true },
 
         description: { type: String, required: true },
+        googleEventId: { type: String, default: null },
 
-        startDate: { type: Date, default: Date.now},
+        startDate: { type: Date, default: Date.now },
 
-        endDate: { type: Date, default: Date.now},
+        endDate: { type: Date, default: Date.now },
         SubTask: [SubTaskSchema],
 
         assignTo: {
