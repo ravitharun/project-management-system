@@ -12,7 +12,7 @@ import AcceptGoogleCalendar from "./Components/AcceptGoogleCalndra";
 
 function App() {
 
-  const sidebar = useContext(SideBarContext);
+  const sidebaropen:any = useContext(SideBarContext);
   const context = useContext(bgthemeContext);
 
   const { theme }: any = context;
@@ -25,7 +25,6 @@ function App() {
 
     setIsdelay((prev) => !prev)
   }
-  console.log(JSON.parse(getuserInfo).googleCalendarConnected, 'JSON.parse(getuserInfo).googleCalendarConnected');
 
   return (
     <>
@@ -55,7 +54,7 @@ function App() {
             min-h-screen w-full
             pt-[72px]
             
-            ${sidebar?.issidebaropen
+            ${sidebaropen.sidebaropen
               ? "md:ml-[260px]"
               : "md:ml-[88px]"
             }

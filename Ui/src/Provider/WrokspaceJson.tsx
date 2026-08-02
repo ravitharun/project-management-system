@@ -3,7 +3,6 @@ import CreatedspaceData from '../Context/CreatedWorkspace'
 
 function WrokspaceJson({ children }: any) {
     const [SpaceJson, setspacejson] = useState<any>([])
-    console.log(SpaceJson, 'SpaceJson provider')
     return (
         <>
 
