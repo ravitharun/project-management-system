@@ -66,6 +66,8 @@ function Sidebar({ page }: Props) {
     const work: any = ClickedSpace
     console.log(work, 'work from navabr')
 
+    const redirect = useNavigate()
+
 
 
 
@@ -134,7 +136,7 @@ function Sidebar({ page }: Props) {
                     return toast.info(error.response.data.message)
                 }
                 if (error.response.status == 401) {
-                    return checkuser()
+                    return checkuser(redirect)
                     // redirect("")
 
                 }
@@ -186,7 +188,7 @@ function Sidebar({ page }: Props) {
         } catch (error: any) {
             console.error(error.message)
             if (error.response.status == 401) {
-                return checkuser()
+                return checkuser(redirect)
                 // redirect("")
 
             }
