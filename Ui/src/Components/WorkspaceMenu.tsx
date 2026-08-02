@@ -1,7 +1,7 @@
 import { CiMenuKebab } from "react-icons/ci";
 
-function WorkspaceMenu({ setopenProjects, SetBackground, openproject, itm, from }: any) {
-    console.log({ setopenProjects, SetBackground, openproject, itm, from },'hi')
+function WorkspaceMenu({ setopenProjects, SetBackground, openproject, itm }: any) {
+
 
     return (
         <>
