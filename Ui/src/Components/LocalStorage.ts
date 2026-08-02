@@ -13,7 +13,7 @@ export const Usertoekn = (navigate: any, toast: any) => {
     return navigate(window.location.pathname)
 }
 // };
-export const checkuser = (redirect:any) => {
+export const checkuser = (redirect?:any) => {
     const tokenRemove: any = localStorage.removeItem("LoginToken")
     const Removeuserinfo: any = localStorage.removeItem("userinfo")
     if (!tokenRemove && !Removeuserinfo) {
