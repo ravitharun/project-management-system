@@ -1,17 +1,17 @@
-import {  useState } from "react";
+import { useState } from "react";
 import SideBarContext from "../Context/SideBard";
 
 
 
 const UserProvider = ({ children }: any) => {
 
-    const [sidebaropen, SetisSidebaropen] = useState(false);
+    const [sidebaropen, SetisSidebaropen] = useState(true);
 
     return (
-     <SideBarContext.Provider
-        value={{ sidebaropen, SetisSidebaropen }}
+        <SideBarContext.Provider
+            value={{ sidebaropen, SetisSidebaropen }}
         >
-        {children}
+            {children}
         </SideBarContext.Provider>
     );
 };
