@@ -32,6 +32,7 @@ import { IoClose } from "react-icons/io5";
 import { FaGear } from "react-icons/fa6";
 import ClickedWorkSpace from "../Context/ClickedWorkSpace";
 import { socket } from "../Scokets/ScoketConfig";
+import HoverlistMenu from "./Hover-listMenu";
 
 type Props = {
     page?: string;
@@ -42,7 +43,7 @@ export type theme = "Dark" | "Ligth";
 function Sidebar({ page }: Props) {
     const [open, setOpen] = useState(false);
     const [isOpenPanelItems, setisOpenPanelItems] = useState<boolean>(false);
-        const { sidebaropen, SetisSidebaropen }: any = useContext(SideBarContext);
+    const { sidebaropen, SetisSidebaropen }: any = useContext(SideBarContext);
     const [issidebaropen, setisSidebaropen] = useState<boolean>(sidebaropen);
     const [openSpace, setOpenSpace] = useState(true);
     const [isworkspace, setisworkspace] = useState<boolean>(false);
@@ -54,21 +55,20 @@ function Sidebar({ page }: Props) {
     const CreatedSpaceJson = useContext(CreatedspaceData)
     // const workSpaceData = useContext(WorkspaceData)
     const { ClickedSpace, setClickedSpace }: any = contextSpace
-    console.log(ClickedSpace, 'ClickedSpace')
-    // const { setwork }: any = workSpaceData
     const workspaceMenuRef = useRef<HTMLDivElement | null>(null);
     const { theme }: any = context || {};
     const { setspacejson }: any = CreatedSpaceJson
     const userPanelRef = useRef<HTMLDivElement | null>(null);
     const [workspaceid, setworkspcaeid] = useState("")
     const [StarMenu, setStarMenu] = useState<boolean>(false)
-
+    const [HoverElement, setHoverElement] = useState<Object>({})
+    const [onHoverElement, setonHoverElement] = useState<boolean>(false)
     const work: any = ClickedSpace
 
 
     const redirect = useNavigate()
 
-    console.log(sidebaropen, 'sidebaropen    ')
+
 
 
 
@@ -154,7 +154,6 @@ function Sidebar({ page }: Props) {
     const navigate = useNavigate()
     const handleProjectSetting = (CreatedWorkSpace: any) => {
 
-        console.log(CreatedWorkSpace)
 
         if (!CreatedWorkSpace) {
             return
@@ -175,7 +174,6 @@ function Sidebar({ page }: Props) {
 
         navaigte("/workspace", { state: { data: data } })
         setClickedSpace(data)
-        console.log(data, 'data')
     }
 
     // handelDeleteWorkspace
@@ -195,7 +193,25 @@ function Sidebar({ page }: Props) {
 
         }
     }
-    console.log(JSON.parse(getuserInfo)?.userProfile)
+
+
+    const sidebaronhover = (data: object) => {
+        console.log(data,'data');
+        
+
+
+        setHoverElement(data)
+        setonHoverElement(true)
+
+
+    }
+    const sidebaronLeavehover = (data: object) => {
+
+
+        setHoverElement(data)
+        setonHoverElement(false)
+    }
+
     return (
         <>
             {/* ================= NAVBAR ================= */}
@@ -259,7 +275,7 @@ function Sidebar({ page }: Props) {
                         <div
                             className="w-9 h-9 rounded-full  flex items-center justify-center font-semibold text-white cursor-pointer"
                             onClick={() => setisOpenPanelItems((prev) => !prev)}
-                        // onMouseEnter={() => setisOpenPanelItems(true)}
+                 
                         >
                             <img src={JSON.parse(getuserInfo)?.userProfile} alt={JSON.parse(getuserInfo)?.Username} title={JSON.parse(getuserInfo).Username} />
                         </div>
@@ -286,19 +302,19 @@ function Sidebar({ page }: Props) {
                 className={`
           fixed top-16 left-0 h-[calc(100vh-64px)]
           flex flex-col transition-all duration-300 z-50
-              overflow-hidden
+              overflow-visible
           ${theme === "Dark"
                         ? "bg-[#111827] border-r border-gray-800 text-white"
                         : "bg-[#FBFBFB] border-r border-gray-200 text-gray-900"
                     }
           w-[270px]
-        //   ${issidebaropen ? "md:w-[270px]" : "md:w-[85px]"}
-        ${issidebaropen ? "md:w-[270px]" : "md:w-0"}
+       
+         ${issidebaropen ? "md:w-[270px]" : "md:w-[80px]"}
           ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
             >
                 {/* ================= MENU ================= */}
-                <div className="relative flex">
+                <div className="relative flex group">
 
                     {/* ================= SIDEBAR ================= */}
                     <div className="w-[260px]">
@@ -321,6 +337,12 @@ function Sidebar({ page }: Props) {
                                                     : "hover:bg-gray-100"
                                             }
                         `}
+
+
+                                        onMouseEnter={() => sidebaronhover(item)}
+                                        onMouseLeave={() => sidebaronLeavehover(item)}
+
+
                                         onClick={() => {
 
                                             if (item.name === "Star") {
@@ -336,6 +358,8 @@ function Sidebar({ page }: Props) {
                                                 SetBackground(false);
                                             }
                                         }}
+
+
                                     >
 
                                         {/* LEFT */}
@@ -635,9 +659,10 @@ hover:translate-x-1
                                         )}
                                 </div>
                             ))}
+                             
                         </div>
+    
                     </div>
-
                     {/* ================= OUTSIDE STAR MENU ================= */}
                     {StarMenu && (
                         <div
@@ -657,7 +682,7 @@ hover:translate-x-1
                         </div>
                     )}
 
-
+{!issidebaropen && onHoverElement && <HoverlistMenu HoverElement={HoverElement} />}
 
                 </div>
 
@@ -700,6 +725,9 @@ hover:translate-x-1
                 )
             }
             {isworkspace && <TemplatesUi setisworkspace={setisworkspace} />}
+
+
+            {!issidebaropen && onHoverElement && <HoverlistMenu HoverElement={HoverElement} />}
         </>
     );
 }
