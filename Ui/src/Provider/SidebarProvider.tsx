@@ -5,11 +5,11 @@ import SideBarContext from "../Context/SideBard";
 
 const UserProvider = ({ children }: any) => {
 
-    const [issidebaropen, setisSidebaropen] = useState(false);
+    const [sidebaropen, SetisSidebaropen] = useState(false);
 
     return (
      <SideBarContext.Provider
-        value={{ issidebaropen, setisSidebaropen }}
+        value={{ sidebaropen, SetisSidebaropen }}
         >
         {children}
         </SideBarContext.Provider>

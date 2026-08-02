@@ -47,7 +47,7 @@ function Sidebar({ page }: Props) {
     const [isworkspace, setisworkspace] = useState<boolean>(false);
     const [isSetBackground, SetBackground] = useState<boolean>(false);
     const [Workspace, setworkspace] = useState<any[]>([]);
-    const sidebar = useContext(SideBarContext);
+    const { sidebaropen, SetisSidebaropen }: any = useContext(SideBarContext);
     const context = useContext(bgthemeContext);
     const contextSpace = useContext(ClickedWorkSpace);
     const CreatedSpaceJson = useContext(CreatedspaceData)
@@ -61,14 +61,13 @@ function Sidebar({ page }: Props) {
     const userPanelRef = useRef<HTMLDivElement | null>(null);
     const [workspaceid, setworkspcaeid] = useState("")
     const [StarMenu, setStarMenu] = useState<boolean>(false)
-    // const workspaceProvider = useContext(WorkspaceData);
-    // const { work }: any = workspaceProvider;
+
     const work: any = ClickedSpace
-    console.log(work, 'work from navabr')
+
 
     const redirect = useNavigate()
 
-
+    console.log(sidebaropen, 'sidebaropen    ')
 
 
 
@@ -76,7 +75,6 @@ function Sidebar({ page }: Props) {
 
 
         const Handelworkspace = (data: any) => {
-            console.log(data, 'data Createworkspace');
 
 
 
@@ -120,14 +118,14 @@ function Sidebar({ page }: Props) {
     };
 
     useEffect(() => {
-        sidebar?.setisSidebaropen(issidebaropen);
-    }, [issidebaropen, sidebar]);
+        setisSidebaropen(issidebaropen);
+    }, [issidebaropen,]);
 
     useEffect(() => {
         const Fetchapi = async () => {
             try {
                 const response = await fetchworkspace();
-                console.log(response, 'response')
+
                 setworkspace(response?.data?.data || []);
                 setspacejson(response?.data?.data || []);
             } catch (error: any) {
@@ -149,7 +147,8 @@ function Sidebar({ page }: Props) {
     const [selectedWorkspace, setSelectedWorkspace] = useState<any | null>(null);
 
     const HandelOpenCloseSideBar = () => {
-        setisSidebaropen((prev) => !prev);
+        setisSidebaropen((prev) => !prev); // these is for open close
+        SetisSidebaropen((prev: any) => !prev)   // context to get the boolean values use in anpother page
     };
     const navigate = useNavigate()
     const handleProjectSetting = (CreatedWorkSpace: any) => {
@@ -286,12 +285,14 @@ function Sidebar({ page }: Props) {
                 className={`
           fixed top-16 left-0 h-[calc(100vh-64px)]
           flex flex-col transition-all duration-300 z-50
+              overflow-hidden
           ${theme === "Dark"
                         ? "bg-[#111827] border-r border-gray-800 text-white"
                         : "bg-[#FBFBFB] border-r border-gray-200 text-gray-900"
                     }
           w-[270px]
-          ${issidebaropen ? "md:w-[270px]" : "md:w-[85px]"}
+        //   ${issidebaropen ? "md:w-[270px]" : "md:w-[85px]"}
+        ${issidebaropen ? "md:w-[270px]" : "md:w-0"}
           ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
             >

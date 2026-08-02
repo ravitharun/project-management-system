@@ -13,21 +13,21 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ClickedWorkSpace from "../../../Context/ClickedWorkSpace";
 import bgthemeContext from "../../../Context/ThemeContext";
+import SideBarContext from "../../../Context/SideBard";
 
 
 function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
-   const context = useContext(bgthemeContext);
-    const { theme }: any = context
+  const context = useContext(bgthemeContext);
+  const { theme }: any = context
 
   const navi = useNavigate()
-  console.log(CurrentView, 'workspace?.icon')
 
- const contextSpace = useContext(ClickedWorkSpace);
-    // const workSpaceData = useContext(WorkspaceData)
-    // const { ClickedSpace, setClickedSpace }: any = contextSpace
-    const {  setClickedSpace }: any = contextSpace
+  const contextSpace = useContext(ClickedWorkSpace);
+
+  const { setClickedSpace }: any = contextSpace
   const [AddMembers, setAddMembers] = useState<boolean>(false)
 
+  const SetisSidebaropen: any = useContext(SideBarContext);
 
 
   return (
@@ -38,7 +38,8 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
         className={`relative min-h-screen overflow-hidden transition-all duration-500 ${theme === "Dark"
           ? "bg-[#0b1020] text-white"
           : "bg-[#f5f7fb] text-black"
-          }`}
+          }
+         `}
 
         style={{
           position: ismaxAndMin ? "fixed" : "relative",
@@ -85,6 +86,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
 
               navi("/")
               setClickedSpace([])
+              SetisSidebaropen(true)
 
               setCurrentView("")
             }}
@@ -485,8 +487,8 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
                   minWidth: ismaxAndMin ? "100%" : "",
                 }}
               >
-                                                <SpaceList spaceid={workspace._id} work={workspace} ismaxAndMin={ismaxAndMin} />
-                
+                <SpaceList spaceid={workspace._id} work={workspace} ismaxAndMin={ismaxAndMin} />
+
               </div>
             )}
 
@@ -510,7 +512,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
                   height: ismaxAndMin ? "100%" : "",
                 }}
               >
-                <MyCalendar  />
+                <MyCalendar />
               </div>
             )}
 
