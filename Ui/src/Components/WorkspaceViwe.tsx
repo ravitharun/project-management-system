@@ -52,7 +52,6 @@ function WorkspaceViwe({  SpaceJson }: any) {
 
 
   const ViewedWworkspace = async (w: any) => {
-    console.log(w, 'ViewedWworkspace')
     try {
       const response = await View(JSON.parse(getuserInfo)._id, w._id)
       return response

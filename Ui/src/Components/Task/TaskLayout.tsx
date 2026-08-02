@@ -7,9 +7,10 @@ import axios from "axios";
 import MinAndMaxWorkspaceView from "./TaskBoard/MinAndMaxWorkspaceview";
 import ShareMinAndMaxWorkspaceView from "../Share/ShareMinAndMaxWorkspaceView";
 import bgthemeContext from "../../Context/ThemeContext";
+import SideBarContext from "../../Context/SideBard";
 
 function TaskLayout() {
-     const context = useContext(bgthemeContext);
+    const context = useContext(bgthemeContext);
     const { theme }: any = context
     const stats = useLocation()
 
@@ -23,7 +24,7 @@ function TaskLayout() {
 
         const checkData = () => {
             if (w == undefined) {
-               return navigate("/")
+                return navigate("/")
             }
         }
         checkData()
@@ -31,6 +32,7 @@ function TaskLayout() {
 
     const CreatedSpaceJson = useContext(CreatedspaceData);
     const CreatedSharespaceView = useContext(SharespaceView);
+    const sidebaropen: any = useContext(SideBarContext);
     const [ismaxAndMin, setMaxAndMin] = useState<boolean>(false)
     const [isSetBackground, SetBackground] = useState<boolean>(false);
     console.log(isSetBackground, 'isSetBackground')
@@ -143,50 +145,50 @@ function TaskLayout() {
         };
     }, []);
 
-    const columns =
-        SpaceJsonView || workspace?.columns?.map((c: any) => c.name) ||
-        SpaceJsonView || workspace?.workspaceSetup?.statuses || [
-            "Backlog",
-            "To Do",
-            "In Progress",
-            "In Review",
-            "Done",
-        ];
+    // const columns =
+    //     SpaceJsonView || workspace?.columns?.map((c: any) => c.name) ||
+    //     SpaceJsonView || workspace?.workspaceSetup?.statuses || [
+    //         "Backlog",
+    //         "To Do",
+    //         "In Progress",
+    //         "In Review",
+    //         "Done",
+    //     ];
 
-    const tasks =
-        SpaceJsonView?.tasks || workspace?.tasks || [
-            {
-                id: 1,
-                title: "Setup project structure",
-                status: "Backlog",
-                priority: "Low",
-            },
-            {
-                id: 2,
-                title: "Design UI system",
-                status: "To Do",
-                priority: "Medium",
-            },
-            {
-                id: 3,
-                title: "Connect API",
-                status: "In Progress",
-                priority: "High",
-            },
-            {
-                id: 4,
-                title: "Fix bugs",
-                status: "In Review",
-                priority: "Medium",
-            },
-            {
-                id: 5,
-                title: "Deploy",
-                status: "Done",
-                priority: "Low",
-            },
-        ];
-    console.log(tasks, columns, tasks, 'Dummytasks')
+    // const tasks =
+    //     SpaceJsonView?.tasks || workspace?.tasks || [
+    //         {
+    //             id: 1,
+    //             title: "Setup project structure",
+    //             status: "Backlog",
+    //             priority: "Low",
+    //         },
+    //         {
+    //             id: 2,
+    //             title: "Design UI system",
+    //             status: "To Do",
+    //             priority: "Medium",
+    //         },
+    //         {
+    //             id: 3,
+    //             title: "Connect API",
+    //             status: "In Progress",
+    //             priority: "High",
+    //         },
+    //         {
+    //             id: 4,
+    //             title: "Fix bugs",
+    //             status: "In Review",
+    //             priority: "Medium",
+    //         },
+    //         {
+    //             id: 5,
+    //             title: "Deploy",
+    //             status: "Done",
+    //             priority: "Low",
+    //         },
+    //     ];
+
 
     const priorityColor = (p: string) => {
         if (p === "High") return "bg-red-500";
@@ -219,8 +221,17 @@ function TaskLayout() {
         <>
 
 
-            <Sidebar ></Sidebar>
-            <div className="mt-2 ml-64">
+            {/* <Sidebar ></Sidebar> */}
+
+
+            <Sidebar />
+            <div className={`
+      transition-all duration-300
+    ${sidebaropen.sidebaropen
+                    ? "md:ml-[270px] md:w-[calc(100%-270px)]"
+                    : "md:ml-20 md:w-full"
+                }
+    `}>
 
                 {ismaxAndMin ?
                     <>
@@ -258,7 +269,10 @@ function TaskLayout() {
             </div>
 
 
-        </>)
+        </>
+
+
+    )
 }
 
 export default TaskLayout
