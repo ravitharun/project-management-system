@@ -42,12 +42,13 @@ export type theme = "Dark" | "Ligth";
 function Sidebar({ page }: Props) {
     const [open, setOpen] = useState(false);
     const [isOpenPanelItems, setisOpenPanelItems] = useState<boolean>(false);
-    const [issidebaropen, setisSidebaropen] = useState<boolean>(true);
+        const { sidebaropen, SetisSidebaropen }: any = useContext(SideBarContext);
+    const [issidebaropen, setisSidebaropen] = useState<boolean>(sidebaropen);
     const [openSpace, setOpenSpace] = useState(true);
     const [isworkspace, setisworkspace] = useState<boolean>(false);
     const [isSetBackground, SetBackground] = useState<boolean>(false);
     const [Workspace, setworkspace] = useState<any[]>([]);
-    const { sidebaropen, SetisSidebaropen }: any = useContext(SideBarContext);
+
     const context = useContext(bgthemeContext);
     const contextSpace = useContext(ClickedWorkSpace);
     const CreatedSpaceJson = useContext(CreatedspaceData)
