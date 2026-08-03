@@ -10,12 +10,27 @@ import {
     FaArrowRight,
 } from "react-icons/fa";
 import {
+    ResponsiveContainer,
+    PieChart,
+    Pie,
+    Cell,
+    Tooltip,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    LineChart,
+    Line,
+} from "recharts";
+import {
     FaBell,
     FaClipboardCheck,
     FaCommentAlt,
-    // FaArrowUp,
+
     FaFire,
 } from "react-icons/fa";
+import { LabelList } from "recharts";
 import {
     FaTasks,
     FaCheckCircle,
@@ -34,13 +49,16 @@ import { useContext, useEffect, useState } from "react";
 import bgthemeContext from "../../Context/ThemeContext";
 import TaskForm from "../Task/CreateTask/TaskForm";
 import AddPeopleWorkspace from "../Task/AddPeople-workspace/AddPeopleWorkspace";
+import { instance } from "../../services/apiservices";
+import { checkuser } from "../LocalStorage";
+import { useNavigate } from "react-router-dom";
 
 const ProjectSummary = ({ data, setCurrentView }: any) => {
-    console.log(data, 'hcheck');
-
+    // console.log(data, 'hcheck');
+    const redirect = useNavigate()
     const [_, setQuickAction] = useState<String | any>("")
 
-
+    const [summary, setsummary] = useState<Object|any>({})
     const [isTaskOpen, setistaskOpen] = useState<Boolean>(false)
 
     const [inviteMember, setinviteMember] = useState<Boolean>(false)
@@ -55,7 +73,11 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
 
             try {
 
-                console.log("/api/Analytcs/:projectId/summary");
+                const response = await instance.get(`/api/Analytcs/${data.workspace._id}/summary`)
+                setsummary(response.data.data);
+                console.log(response.data,'response.data');
+                
+
 
 
             }
@@ -66,11 +88,24 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
 
                 console.log(error);
 
+
+                const status = error.response.status
+
+                if (status == 500) {
+
+                    return checkuser(redirect)
+                }
+
             }
         }
         FetchSummery()
     }, [])
+console.log(summary,'summary');
 
+    
+    
+    
+    
     const assignedTasks = [
         {
             title: "Implement Login API",
@@ -201,16 +236,6 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
             size: "800 KB",
         },
     ];
-    const project = {
-        name: "College LMS",
-        description:
-            "Learning Management System for colleges to manage students, faculty, attendance and assessments.",
-        status: "Active",
-        projectLead: "Ravi Tharun",
-        startDate: "01 Aug 2026",
-        dueDate: "30 Nov 2026",
-        created: "25 Jul 2026",
-    };
 
     const stats = [
         {
@@ -250,27 +275,38 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
             color: "bg-purple-500",
         },
     ];
-
     const taskStatus = [
-        { label: "Completed", value: 40, color: "bg-green-500" },
-        { label: "In Progress", value: 8, color: "bg-yellow-500" },
-        { label: "To Do", value: 2, color: "bg-blue-500" },
+        {
+            label: "Completed",
+            value: 40,
+            color: "#22c55e", // Green
+        },
+        {
+            label: "In Progress",
+            value: 8,
+            color: "#facc15", // Yellow
+        },
+        {
+            label: "Todo",
+            value: 2,
+            color: "#3b82f6", // Blue
+        },
     ];
 
     const priorities = [
-        { label: "High", value: 12, color: "bg-red-500" },
-        { label: "Medium", value: 25, color: "bg-yellow-500" },
-        { label: "Low", value: 13, color: "bg-green-500" },
+        { label: "High", value: 12, color: "#ef4444" },
+        { label: "Medium", value: 8, color: "#f59e0b" },
+        { label: "Low", value: 5, color: "#22c55e" },
     ];
 
     const weeklyProgress = [
-        { day: "Mon", value: 30 },
-        { day: "Tue", value: 45 },
-        { day: "Wed", value: 55 },
-        { day: "Thu", value: 70 },
-        { day: "Fri", value: 85 },
-        { day: "Sat", value: 95 },
-        { day: "Sun", value: 80 },
+        { day: "Mon", value: 8 },
+        { day: "Tue", value: 12 },
+        { day: "Wed", value: 15 },
+        { day: "Thu", value: 10 },
+        { day: "Fri", value: 18 },
+        { day: "Sat", value: 14 },
+        { day: "Sun", value: 20 },
     ];
     const sprint = {
         name: "Sprint 12",
@@ -335,7 +371,7 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
             status: "Upcoming",
         },
     ];
-
+    const total: Number | any = taskStatus.reduce((sum, item) => sum + item.value, 0);
 
     // HandelQuickActions
 
@@ -415,8 +451,8 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
                             {/* Project Image */}
 
                             <img
-                                src="https://images.unsplash.com/photo-1556761175-b413da4baf72"
-                                alt="Project"
+                                src={summary?.workspaceicon?.img}
+                                alt={summary?.workspaceicon?.name||"icon name"}
                                 className="w-16 h-16 rounded-xl object-cover shadow-sm"
                             />
 
@@ -437,12 +473,12 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
                                             }
                         `}
                                     >
-                                        {project.name}
+                                        {summary?.workspaceSetup?.workspaceName||"Name"}
                                     </h1>
 
 
                                     <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
-                                        {project.status}
+                                        {summary?.status||"Status"}
                                     </span>
 
 
@@ -456,7 +492,7 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
 
 
                                     <img
-                                        src="https://randomuser.me/api/portraits/men/32.jpg"
+                                        src=""
                                         alt="John Doe"
                                         className="w-8 h-8 rounded-full object-cover"
                                     />
@@ -487,7 +523,7 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
                                                 }
                             `}
                                         >
-                                            John Doe
+                                           {summary?.workspaceSetup?.createby?.userEmail||"userEmail"}
                                         </span>
 
 
@@ -512,7 +548,7 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
                                         }
                     `}
                                 >
-                                    {project.description}
+                                    {summary?.description||"summary"}
                                 </p>
 
 
@@ -557,19 +593,19 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
                                 {
                                     icon: <FaCalendarAlt size={20} />,
                                     title: "Start Date",
-                                    value: project.startDate,
+                                    value: summary?.startDate|| Date(),
                                     color: "bg-green-100 text-green-600"
                                 },
                                 {
                                     icon: <FaRegCalendarCheck size={20} />,
                                     title: "Due Date",
-                                    value: project.dueDate,
+                                    value:summary?.startDate|| Date(),
                                     color: "bg-red-100 text-red-600"
                                 },
                                 {
                                     icon: <FaCalendarAlt size={20} />,
                                     title: "Created",
-                                    value: project.created,
+                                    value: summary?.startDate|| Date(),
                                     color: "bg-purple-100 text-purple-600"
                                 }
                             ].map((item) => (
@@ -702,322 +738,253 @@ ${theme === "Dark"
 
             </div>
             {/* Charts Section */}
-            {/* page2 */}
-            <div className="grid xl:grid-cols-3 gap-6 mt-8">
+            {/* ================= PAGE 2 ================= */}
 
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-10">
 
-                {/* Task Status */}
+                {/* ================= Task Status ================= */}
 
                 <div
-                    className={`
-rounded-2xl p-6 shadow-sm
-
-${theme === "Dark"
-                            ? "bg-[#0f172a]"
-                            : "bg-gray-200"
-                        }
-`}
+                    className={`rounded-2xl p-6 shadow-lg border transition-all ${theme === "Dark"
+                        ? "bg-[#0f172a] border-slate-800"
+                        : "bg-white border-gray-200"
+                        }`}
                 >
 
-                    <h2
-                        className={`
-text-lg font-semibold mb-5
-
-${theme === "Dark"
-                                ? "text-white"
-                                : "text-slate-800"
-                            }
-`}
-                    >
+                    <h2 className="text-xl font-semibold mb-6">
                         Task Status
                     </h2>
 
+                    <div className="relative h-72">
 
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
 
-                    <div className="flex justify-center">
-
-                        <div className="relative w-48 h-48">
-
-
-                            <div
-                                className="w-full h-full rounded-full"
-                                style={{
-                                    background:
-                                        "conic-gradient(#22c55e 0% 80%, #facc15 80% 96%, #3b82f6 96% 100%)",
-                                }}
-                            />
-
-
-
-                            <div
-                                className={`
-absolute inset-5 rounded-full 
-flex flex-col justify-center items-center
-
-${theme === "Dark"
-                                        ? "bg-[#020817]"
-                                        : "bg-gray-200"
-                                    }
-`}
-                            >
-
-
-                                <h1 className="text-3xl font-bold">
-                                    50
-                                </h1>
-
-
-                                <p
-                                    className={
-                                        theme === "Dark"
-                                            ? "text-slate-400"
-                                            : "text-gray-500"
-                                    }
+                                <Pie
+                                    data={taskStatus}
+                                    dataKey="value"
+                                    nameKey="label"
+                                    innerRadius={70}
+                                    outerRadius={95}
+                                    paddingAngle={4}
+                                    cornerRadius={8}
+                                    startAngle={90}
+                                    endAngle={-270}
+                                    stroke="none"
+                                    label
                                 >
-                                    Total
-                                </p>
+                                    {taskStatus.map((item, index) => (
+                                        <Cell
+                                            key={index}
+                                            fill={item.color}
+                                        />
+                                    ))}
+                                </Pie>
 
+                                <Tooltip />
 
-                            </div>
+                            </PieChart>
+                        </ResponsiveContainer>
 
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+
+                            <h1 className="text-4xl font-bold">
+                                {total}
+                            </h1>
+
+                            <p
+                                className={
+                                    theme === "Dark"
+                                        ? "text-slate-400"
+                                        : "text-gray-500"
+                                }
+                            >
+                                Total Tasks
+                            </p>
 
                         </div>
 
-
                     </div>
 
+                    <div className="space-y-4 mt-4">
 
+                        {taskStatus.map((item) => (
 
-                    <div className="space-y-4 mt-8">
+                            <div
+                                key={item.label}
+                                className="flex justify-between items-center"
+                            >
 
+                                <div className="flex items-center gap-3">
 
-                        {
-                            taskStatus.map((item) => (
-
-                                <div
-                                    key={item.label}
-                                    className="flex justify-between items-center"
-                                >
-
-
-                                    <div className="flex items-center gap-3">
-
-
-                                        <span
-                                            className={`w-4 h-4 rounded-full ${item.color}`}
-                                        />
-
-
-                                        <span
-                                            className={
-                                                theme === "Dark"
-                                                    ? "text-slate-300"
-                                                    : "text-slate-700"
-                                            }
-                                        >
-                                            {item.label}
-                                        </span>
-
-
-                                    </div>
-
-
-                                    <span className="font-semibold">
-                                        {item.value}
-                                    </span>
-
-
-                                </div>
-
-                            ))
-                        }
-
-
-                    </div>
-
-
-                </div>
-
-
-
-
-
-                {/* Priority */}
-
-
-                <div
-                    className={`
-rounded-2xl p-6 shadow-sm
-
-${theme === "Dark"
-                            ? "bg-[#0f172a]"
-                            : "bg-gray-200"
-                        }
-`}
-                >
-
-
-                    <h2
-                        className="
-text-xl 
-font-semibold 
-mb-6
-"
-                    >
-                        Priority Distribution
-                    </h2>
-
-
-
-                    <div className="space-y-6">
-
-
-                        {
-                            priorities.map((item) => (
-
-                                <div key={item.label}>
-
-
-                                    <div className="flex justify-between mb-2">
-
-
-                                        <span>
-                                            {item.label}
-                                        </span>
-
-
-                                        <span>
-                                            {item.value}
-                                        </span>
-
-
-                                    </div>
-
-
-
-                                    <div
-                                        className={`
-w-full h-3 rounded-full
-
-${theme === "Dark"
-                                                ? "bg-slate-700"
-                                                : "bg-gray-300"
-                                            }
-`}
-                                    >
-
-
-                                        <div
-
-                                            className={`${item.color} h-3 rounded-full`}
-
-                                            style={{
-                                                width: `${(item.value / 25) * 100}%`
-                                            }}
-
-                                        />
-
-
-                                    </div>
-
-
-
-                                </div>
-
-                            ))
-                        }
-
-
-                    </div>
-
-
-                </div>
-
-
-
-
-
-                {/* Weekly Progress */}
-
-
-                <div
-                    className={`
-rounded-2xl p-6 shadow-sm
-
-${theme === "Dark"
-                            ? "bg-[#0f172a]"
-                            : "bg-gray-200"
-                        }
-`}
-                >
-
-
-                    <h2
-                        className="
-text-xl 
-font-semibold 
-mb-6
-"
-                    >
-                        Weekly Progress
-                    </h2>
-
-
-
-                    <div className="flex justify-between items-end h-64">
-
-
-                        {
-                            weeklyProgress.map((item) => (
-
-                                <div
-                                    key={item.day}
-                                    className="flex flex-col items-center gap-3"
-                                >
-
-
-                                    <div
-                                        className="
-bg-blue-500 
-rounded-t-lg 
-w-10 
-hover:bg-blue-600 
-transition-all
-"
+                                    <span
+                                        className="w-3 h-3 rounded-full"
                                         style={{
-                                            height: `${item.value * 2}px`
+                                            background: item.color,
                                         }}
                                     />
 
-
-
                                     <span
                                         className={
-                                            `
-text-sm
-
-${theme === "Dark"
-                                                ? "text-slate-400"
-                                                : "text-gray-600"
-                                            }
-`
+                                            theme === "Dark"
+                                                ? "text-slate-300"
+                                                : "text-slate-700"
                                         }
                                     >
-                                        {item.day}
+                                        {item.label}
                                     </span>
-
 
                                 </div>
 
-                            ))
-                        }
+                                <span className="font-semibold">
+                                    {item.value}
+                                </span>
 
+                            </div>
+
+                        ))}
 
                     </div>
 
+                </div>
+
+
+
+                {/* ================= Priority ================= */}
+
+                <div
+                    className={`rounded-2xl p-6 shadow-lg border transition-all ${theme === "Dark"
+                        ? "bg-[#0f172a] border-slate-800"
+                        : "bg-white border-gray-200"
+                        }`}
+                >
+
+                    <h2 className="text-xl font-semibold mb-6">
+                        Priority Distribution
+                    </h2>
+
+                    <div className="h-80">
+
+                        <ResponsiveContainer width="100%" height="100%">
+
+                            <BarChart
+                                data={priorities}
+                                layout="vertical"
+                                margin={{
+                                    top: 5,
+                                    right: 20,
+                                    left: 10,
+                                    bottom: 5,
+                                }}
+
+                            >
+
+                                <CartesianGrid strokeDasharray="3 3" />
+
+                                <XAxis type="number" />
+
+                                <YAxis
+                                    type="category"
+                                    dataKey="label"
+                                />
+
+                                <Tooltip />
+
+                                <Bar
+                                    dataKey="value"
+                                    radius={[0, 8, 8, 0]}
+
+                                >
+                                    <LabelList
+                                        dataKey="value"
+                                        position="right"
+                                        style={{
+                                            fill: theme === "Dark" ? "#fff" : "#111827",
+                                            fontWeight: 600,
+                                            fontSize: 14,
+                                        }}
+                                    />
+
+                                    {priorities.map((item, index) => (
+
+                                        <Cell
+                                            key={index}
+                                            fill={item.color}
+
+                                        />
+
+                                    ))}
+
+                                </Bar>
+
+                            </BarChart>
+
+                        </ResponsiveContainer>
+
+                    </div>
 
                 </div>
 
+
+
+                {/* ================= Weekly Progress ================= */}
+
+                <div
+                    className={`rounded-2xl p-6 shadow-lg border transition-all ${theme === "Dark"
+                        ? "bg-[#0f172a] border-slate-800"
+                        : "bg-white border-gray-200"
+                        }`}
+                >
+
+                    <h2 className="text-xl font-semibold mb-6">
+                        Weekly Progress
+                    </h2>
+
+                    <div className="h-80">
+
+                        <ResponsiveContainer width="100%" height="100%">
+
+                            <LineChart
+                                data={weeklyProgress}
+                            >
+
+                                <CartesianGrid strokeDasharray="3 3" />
+
+                                <XAxis dataKey="day" />
+
+                                <YAxis />
+
+                                <Tooltip />
+
+                                <Line
+                                    type="monotone"
+                                    dataKey="value"
+                                    stroke="#3b82f6"
+                                    strokeWidth={3}
+                                    dot={{
+                                        r: 5,
+                                    }}
+                                    activeDot={{
+                                        r: 7,
+                                    }}
+                                />
+                                <LabelList
+                                    dataKey="value"
+                                    position="top"
+                                    style={{
+                                        fill: theme === "Dark" ? "#ffffff" : "#111827",
+                                        fontSize: 12,
+                                        fontWeight: 600,
+                                    }}
+                                />
+
+                            </LineChart>
+
+                        </ResponsiveContainer>
+
+                    </div>
+
+                </div>
 
             </div>
             {/* pag3 */}
