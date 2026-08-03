@@ -30,11 +30,20 @@ import {
 } from "react-icons/fa";
 import { MdPendingActions } from "react-icons/md";
 
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import bgthemeContext from "../../Context/ThemeContext";
+import TaskForm from "../Task/CreateTask/TaskForm";
+import AddPeopleWorkspace from "../Task/AddPeople-workspace/AddPeopleWorkspace";
 
-const ProjectSummary = () => {
+const ProjectSummary = ({ data, setCurrentView }: any) => {
+    console.log(data, 'hcheck');
 
+    const [_, setQuickAction] = useState<String | any>("")
+
+
+    const [isTaskOpen, setistaskOpen] = useState<Boolean>(false)
+
+    const [inviteMember, setinviteMember] = useState<Boolean>(false)
 
     const { theme }: any = useContext(bgthemeContext)
     useEffect(() => {
@@ -242,7 +251,6 @@ const ProjectSummary = () => {
         },
     ];
 
-    // const progress :any= 80;
     const taskStatus = [
         { label: "Completed", value: 40, color: "bg-green-500" },
         { label: "In Progress", value: 8, color: "bg-yellow-500" },
@@ -327,9 +335,53 @@ const ProjectSummary = () => {
             status: "Upcoming",
         },
     ];
+
+
+    // HandelQuickActions
+
+
+    const HandelQuickActions = (title: any) => {
+
+        setQuickAction(title)
+
+
+
+        switch (title) {
+            case "Create Task":
+
+
+                setistaskOpen((prev) => !prev)
+
+
+
+                break;
+            case "Invite Member":
+
+                setinviteMember(true)
+
+
+                break;
+            case "Open Calendar":
+                console.log(title);
+                setCurrentView('Calendar')
+
+
+                break;
+
+            default:
+                console.log(title);
+                setCurrentView('Reports')
+
+                break;
+        }
+    }
+
+
+
     return (
         <>
-
+            {isTaskOpen && <TaskForm AddedBy={data.workspace.workspaceSetup.createby} projectid={data.workspace._id} onclose={() => setistaskOpen((prev) => !prev)} maximizeParent={data.ismaxAndMin} CreateTask={isTaskOpen} />}
+            {inviteMember && <AddPeopleWorkspace closesetAddMembers={() => setinviteMember(false)} workspace={data} />}
             <div
                 className={`
         min-h-screen p-6
@@ -1676,98 +1728,42 @@ ${theme === "Dark"
 
                 {/* Quick Actions */}
 
-
                 <div
-                    className={`
-rounded-2xl
-shadow-sm
-p-5
-
-${theme === "Dark"
-                            ? "bg-[#0f172a]"
-                            : "bg-gray-200"
-                        }
-`}
+                    className={`rounded-2xl p-5 shadow-sm border transition-colors ${theme === "Dark"
+                        ? "bg-slate-900 border-slate-800"
+                        : "bg-white border-gray-200"
+                        }`}
                 >
-
-
-                    <h2 className="text-lg font-bold mb-5">
-                        Quick Actions
-                    </h2>
-
-
-
-
-                    <div className="grid grid-cols-2 gap-3">
-
-
-                        {
-                            quickActions.map((item) => (
-
-
-                                <button
-                                    key={item.title}
-
-                                    className={`
-rounded-xl
-p-4
-border
-transition
-hover:shadow-md
-
-${theme === "Dark"
-                                            ? "border-slate-700 hover:bg-[#020817]"
-                                            : "border-gray-300"
-                                        }
-`}
-                                >
-
-
-
-                                    <div
-                                        className={`
-${item.color}
-w-10 h-10
-rounded-xl
-flex
-items-center
-justify-center
-text-black
-mb-3
-mx-auto
-`}
-                                    >
-
-                                        {item.icon}
-
-                                    </div>
-
-
-
-
-
-                                    <h4 className="text-sm font-medium text-center">
-                                        {item.title}
-                                    </h4>
-
-
-
-
-                                </button>
-
-
-                            ))
-                        }
-
-
-
+                    <div className="flex items-center justify-between mb-5">
+                        <h2 className="text-lg font-semibold">Quick Actions</h2>
                     </div>
 
+                    <div className="grid grid-cols-2 gap-3">
+                        {quickActions.map((item) => (
+                            <button
+                                key={item.title}
+                                onClick={() => HandelQuickActions(item.title)}
+                                className={`group rounded-xl p-4 border transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${theme === "Dark"
+                                    ? "border-slate-700 bg-slate-800/60 hover:bg-slate-800"
+                                    : "border-gray-200 bg-gray-50 hover:bg-white"
+                                    }`}
+                            >
+                                <div
+                                    className={`w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-3 transition-transform group-hover:scale-105 ${item.color}`}
+                                >
+                                    {item.icon}
+                                </div>
 
-
+                                <h4
+                                    className={`text-sm font-medium text-center ${theme === "Dark" ? "text-slate-200" : "text-gray-700"
+                                        }`}
+                                >
+                                    {item.title}
+                                </h4>
+                            </button>
+                        ))}
+                    </div>
                 </div>
-
-
 
             </div>
 

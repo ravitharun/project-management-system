@@ -1,14 +1,10 @@
 import { nanoid } from "nanoid"
 import { instance } from "./apiservices"
 
-
-export const HandelTaskDelete = async (taskid: any,GoogleEventId:any,tkn:any) => {
+export const HandelTaskDelete = async (taskid: any) => {
     try {
-        // console.log(JSON.parse(userRfToken).googleRefreshToken, 'taskid api')
-
-       const response = instance.delete(
-  `/api/Task/${taskid}/${encodeURIComponent(tkn)}/${GoogleEventId}/Delete`
-);
+        console.log(taskid, 'taskid api')
+        const response = instance.delete(`/api/Task/${taskid}/Delete`)
         return response
     } catch (error) {
         throw error

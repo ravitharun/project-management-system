@@ -17,7 +17,7 @@ function App() {
 
   const { theme }: any = context;
 
-  const [isdelay, setIsdelay] = useState(false)
+  const [_, setIsdelay] = useState(false)
 
 
 
@@ -30,10 +30,10 @@ function App() {
     <>
 
 
-      {!JSON.parse(getuserInfo).googleCalendarConnected && !isdelay
-        &&
+      {!JSON.parse(getuserInfo).googleCalendarConnected
+        ? 
          <AcceptGoogleCalendar  setOpen={handelPoup}>
-        </AcceptGoogleCalendar>
+        </AcceptGoogleCalendar>:""
       }
       <div
         className={`

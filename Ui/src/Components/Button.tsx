@@ -4,14 +4,13 @@ type buttonProps = {
   classaName: string,
   OnclickEvent?: () => any,
   Icon?: any,
-  title?: string,
-  disabled?: Boolean | undefined | any
+  title?: string
 }
 
-function Button({ type, Btnname, classaName, OnclickEvent, Icon, title, disabled }: buttonProps) {
+function Button({ type, Btnname, classaName, OnclickEvent, Icon, title }: buttonProps) {
   return (
     <>
-      <button disabled={disabled} type={type} onClick={OnclickEvent} className={classaName} title={title}>{Btnname} {Icon ? Icon : ""}</button>
+      <button type={type} onClick={OnclickEvent} className={classaName} title={title}>{Btnname} {Icon ? Icon : ""}</button>
 
     </>
   )
