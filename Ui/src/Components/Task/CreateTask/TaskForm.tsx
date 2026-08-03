@@ -23,9 +23,9 @@ import { checkuser } from "../../LocalStorage"
 import { instance } from "../../../services/apiservices"
 import Input from "../../Input"
 import Loader from "../../Loader"
+import GlobalToast from "../../GlobalToast"
 import { nanoid } from "nanoid"
 import bgthemeContext from "../../../Context/ThemeContext"
-import { AiOutlineLoading3Quarters } from "react-icons/ai"
 
 type Props = {
     AddedBy?: string | null
@@ -33,20 +33,26 @@ type Props = {
     onclose?: () => void
     theme?: "Dark" | "Light",
     maximizeParent?: boolean,
-    CreateTask?: boolean
+    CreateTask?: boolean |any
 }
 
 function TaskForm({
     onclose,
     AddedBy,
     projectid,
-    // theme,
     maximizeParent,
     CreateTask
 }: Props) {
     const context = useContext(bgthemeContext);
     const { theme }: any = context
 
+    console.log({
+        onclose,
+        AddedBy,
+        projectid,
+        maximizeParent,
+        CreateTask
+    }, 'projectid')
     const [maximize, setMaximize] = useState(false)
     const [assignOpen, setAssignOpen] = useState(false)
     const [taskName, setTaskName] = useState("")
@@ -87,6 +93,7 @@ function TaskForm({
         }
         fetchTeamMembers()
     }, [])
+    console.log(Members)
     useEffect(() => {
 
         const handleKeyDown = (e: any) => {
@@ -116,7 +123,7 @@ function TaskForm({
     }, []);
 
 
-    const selectedMember: any = Members.find((m: any) => m?.id?._id === assignTo)
+    const selectedMember: any = Members.find((m: any) => m?.id._id === assignTo)
     console.log(selectedMember, 'selectedMember')
 
     const isDark = theme === "Dark"
@@ -138,7 +145,6 @@ function TaskForm({
             progress,
             AddedBy,
             projectid,
-            
             "googleCalendar": {
 
                 "eventId": `Task-${nanoid()}`
@@ -153,19 +159,15 @@ function TaskForm({
         }
 
         try {
-            setloader(true)
             const response = await instance.post("/api/Task/AddWorkSpaceTask", { TaskData })
             if (response?.status === 201) {
-                return toast.success(
-                    "Task created successfully. Added to the assigned team member's Google Calendar."
-                );
-
+                return GlobalToast("Task Created Successfully", "success");
             }
-            setloader(false)
         }
         catch (error: any) {
 
-            setloader(false)
+
+            console.log(error?.response?.data.message)
             toast.error(
                 error?.response?.data?.message || error?.message || "Something went wrong"
             )
@@ -173,12 +175,6 @@ function TaskForm({
             if (error?.response?.status === 401) {
                 checkuser()
             }
-
-        }
-
-
-        finally {
-            setloader(false)
         }
     }
 
@@ -193,7 +189,6 @@ function TaskForm({
     const cardClass = isDark
         ? "bg-[#0f172a] text-white border border-gray-800"
         : "bg-white text-gray-800 border border-gray-200"
-    console.log(Members, 'Members');
 
     return (
         <>
@@ -363,12 +358,12 @@ function TaskForm({
                                                         }`}
                                                 >
                                                     <img
-                                                        src={member?.id?.userProfile}
-                                                        alt={member?.id?.Username}
+                                                        src={member.id.userProfile}
+                                                        alt={member.id.Username}
                                                         className="h-9 w-9 rounded-full object-cover"
                                                     />
                                                     <div className="flex flex-col">
-                                                        <span className="font-medium">{member?.id?.Username}</span>
+                                                        <span className="font-medium">{member.id.Username}</span>
                                                         <span className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
                                                             Team member
                                                         </span>
@@ -589,39 +584,15 @@ function TaskForm({
                                     OnclickEvent={onclose}
                                 />
 
-                                {/* <Button
+                                <Button
                                     Btnname={
                                         <span className="flex items-center gap-2">
                                             <FaPlus />
-
-
-
-                                            {loadr ? "Adding" : "Add Task"}
+                                            Add Task
                                         </span>
                                     }
                                     classaName="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl shadow-md transition"
                                     type="submit"
-                                    OnclickEvent={() => { }}
-                                /> */}
-                                <Button
-                                    Btnname={
-                                        <span className="flex items-center gap-2">
-                                            {loadr ? (
-                                                <>
-                                                    <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin" />
-                                                    <span>Adding Task...</span>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <FaPlus className="transition-transform duration-300 group-hover:rotate-90" />
-                                                    <span>Add Task</span>
-                                                </>
-                                            )}
-                                        </span>
-                                    }
-                                    classaName="group bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-5 py-2.5 rounded-xl shadow-md transition-all duration-300"
-                                    type="submit"
-                                    disabled={loadr}
                                     OnclickEvent={() => { }}
                                 />
                             </div>
