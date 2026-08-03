@@ -186,7 +186,6 @@ const MyTable = ({ spaceid }: any) => {
     ];
     return (
         <>
-        <h1>tharun</h1>
             {/* POPUP */}
             {popupPos.show && (
                 <div

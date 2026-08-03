@@ -13,11 +13,16 @@ import ViewedActivity from "./UserActivity/ViewedActivity";
 import { Link } from "react-router-dom";
 import TemplatesUi from "./Summary-Templates/TemplatesUi";
 import bgthemeContext from "../Context/ThemeContext";
+import SideBarContext from "../Context/SideBard";
 
 
-function WorkspaceViwe({  SpaceJson }: any) {
-   const context = useContext(bgthemeContext);
-      const { theme }: any = context
+
+function WorkspaceViwe({ SpaceJson }: any) {
+  const context = useContext(bgthemeContext);
+
+  const { sidebaropen }: any = useContext(SideBarContext);
+
+  const { theme }: any = context
 
 
   const [type, settype] = useState("Recommended");
@@ -68,13 +73,20 @@ function WorkspaceViwe({  SpaceJson }: any) {
   return (
     <>
 
-      {/* <ApiLoader theme="Dark"></ApiLoader> */}
+
       <div
         className={`
     min-h-screen
-    w-full
-    px-3 md:px-5
+    transition-all
+    duration-300
+    px-3
+    md:px-5
     py-4
+
+    ${sidebaropen
+            ? "md:pl-[290px]"
+            : "md:pl-[105px]"
+          }
 
     ${theme === "Dark"
             ? "bg-[#0B1120] text-white"
@@ -94,7 +106,7 @@ function WorkspaceViwe({  SpaceJson }: any) {
         font-bold
         tracking-tight
       ">
-              Your Workspaces 
+              Your Workspaces
             </h1>
 
             <p
@@ -108,7 +120,7 @@ function WorkspaceViwe({  SpaceJson }: any) {
                 }
         `}
             >
-              Manage your teams, projects, and collaboration spaces
+              Manage your teams, projects, and collaboration spaces -{sidebaropen ? "open" : "cl"}
             </p>
           </div>
 

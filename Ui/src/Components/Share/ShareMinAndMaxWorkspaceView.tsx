@@ -13,8 +13,8 @@ import { useContext } from "react";
 
 
 function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, work, workspace, setwork, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
-    const context = useContext(bgthemeContext);
-    const { theme }: any = context
+     const context = useContext(bgthemeContext);
+        const { theme }: any = context
     console.log("share page Ui")
 
     return (
@@ -462,9 +462,7 @@ function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, wo
                                     minWidth: ismaxAndMin ? "100%" : "",
                                 }}
                             >
-                                <SpaceList spaceid={workspace._id} work={workspace} ismaxAndMin={ismaxAndMin} />
-
-
+                                <SpaceList />
                             </div>
                         )}
 
@@ -488,7 +486,7 @@ function ShareMinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, wo
                                     height: ismaxAndMin ? "100%" : "",
                                 }}
                             >
-                                <MyCalendar />
+                                <MyCalendar  />
                             </div>
                         )}
 
