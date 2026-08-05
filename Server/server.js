@@ -9,6 +9,7 @@ const cors = require("cors");
 const connectDb = require("./config/Db");
 const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator");
 const ProjectsRoute = require("./routes/HandelProjectRouter");
+const SprintRouter = require("./routes/SprintRouter");
 const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
 const NotificatonsRouter = require("./routes/NotificatonsRouter");
 const FetchTeamRouter = require("./routes/FetchTeamRouter");
@@ -76,6 +77,7 @@ app.use("/api/WorkSpace", CreateWorkSpaceRouter)
 app.use("/api/Task", WorkSpaceTaskRouter)
 app.use("/api/comments", Comments)
 app.use("/api/project-roles", handelProjectRoleRouter)
+app.use("/api/sprints", SprintRouter)
 // /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)
