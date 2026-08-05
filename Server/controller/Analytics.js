@@ -7,17 +7,13 @@ const FetchView = async (req, res) => {
 
 
     try {
-        const { projectId } = req.params
-        console.log(projectId, 'projectId');
-
+        const { projectId,userid } = req.params
+        console.log(req.params, 'projectId');
         const ProjectInfo = await WorkspaceSchema.findById({ _id: projectId }).populate('WorkSpacememebers.id')
         console.log(ProjectInfo, 'ProjectInfo');
-
-        // const TeamMembers = ProjectInfo?.WorkSpacememebers.length
-
-
         const ProjectTask = await WorkSpaceTask.find({ projectid: projectId })
-        console.log(ProjectTask, 'ProjectTask');
+        const GetuseridTask=await WorkSpaceTask.find({ assignTo: userid })
+        console.log(GetuseridTask, 'GetuseridTask');
         const tasktodo = ProjectTask.filter((task) => task.ProjectTask == "todo")
         const taskCompleted = ProjectTask.filter((task) => task.ProjectTask == "Completed")
         const taskInProgress = ProjectTask.filter((task) => task.ProjectTask == "inprogress")
@@ -25,11 +21,9 @@ const FetchView = async (req, res) => {
         const TaskLow = ProjectTask.filter((task) => task.Priority == "Low")
         const TaskMedium = ProjectTask.filter((task) => task.Priority == "Medium")
         const TaskHigh = ProjectTask.filter((task) => task.Priority == "High")
-
-
-
         const Summary = {
             ProjectInfo,
+            "GetuseridTask":GetuseridTask,
             "TotalTask": ProjectTask.length,
             "taskCompleted": taskCompleted.length,
             "taskInProgress": taskInProgress.length,
@@ -48,7 +42,7 @@ const FetchView = async (req, res) => {
         return res.status(200).json({ message: "Summary", data: Summary, status: true })
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error.message,'tharun');
 
         return res.status(500).json({ message: "Server Error" })
         // return res.status(200).json({ message: "Summary", data: ProjectInfo, status: true})

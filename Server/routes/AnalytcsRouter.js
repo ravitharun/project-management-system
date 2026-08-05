@@ -5,5 +5,5 @@ const { ViewdAt, FetchView } = require("../controller/Analytics")
 
 
 // /api/Analytcs/:projectId/summary
-AnalytcsRouter.get("/:projectId/summary", AuthTokenVerification,FetchView)
+AnalytcsRouter.get("/:projectId/:userid/summary", AuthTokenVerification,FetchView)
 module.exports = AnalytcsRouter
