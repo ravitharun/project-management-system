@@ -973,6 +973,7 @@ ${theme === "Dark"
                                                 r: 7,
                                             }}
                                         />
+                                        
                                         <LabelList
                                             dataKey="value"
                                             position="top"
