@@ -15,12 +15,13 @@ import ClickedWorkSpace from "../../../Context/ClickedWorkSpace";
 import bgthemeContext from "../../../Context/ThemeContext";
 import SideBarContext from "../../../Context/SideBard";
 import ProjectSummary from "../../ProjectSummary/ProjectSummary";
+import Backlog from "../../projectSprint/Backlog";
 
 
 function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
   const context = useContext(bgthemeContext);
   const { theme }: any = context
-  const data:any = { HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }
+  const data: any = { HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }
   const navi = useNavigate()
 
   const contextSpace = useContext(ClickedWorkSpace);
@@ -460,7 +461,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
 
             {CurrentView == "Summary" &&
               // <h1>{CurrentView} View Adding Soon</h1>
-              <ProjectSummary  data={data} setCurrentView={setCurrentView}/>
+              <ProjectSummary data={data} setCurrentView={setCurrentView} />
             }
 
             {CurrentView == "Timeline" && (
@@ -503,7 +504,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
             }
 
             {CurrentView == "Backlog" &&
-              <h1>{CurrentView} View Adding Soon</h1>
+              <Backlog />
             }
 
             {CurrentView == "Calendar" && (
