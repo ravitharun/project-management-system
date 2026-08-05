@@ -77,6 +77,11 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
     const [TaskCompleted, SetTaskCompleted] = useState<Number | any>(0)
     const [TotalTasks, SetTotaltask] = useState<Number | any>(0)
     const [TaskInprogress, SetTaskInprogress] = useState<Number | any>(0)
+
+
+    const [PriorityLow, setLow] = useState<String | any>("")
+    const [PriorityHigh, sethigh] = useState<String | any>("")
+    const [PriorityMeidum, setMedium] = useState<String | any>("")
     const stats = [
         {
             title: "Total Tasks",
@@ -137,6 +142,9 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
                 console.log(response.data, 'response.data');
 
                 setSummaryPageLoading(false)
+                setLow(response.data.data.TaskLow)
+                sethigh(response.data.data.Taskhigh)
+                setMedium(response.data.data.Taskmedium)
                 // setSummaryPageLoading(true)
 
 
@@ -322,12 +330,12 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
             color: "#3b82f6",
         },
     ];
-
     const priorities = [
-        { label: "High", value: 12, color: "#ef4444" },
-        { label: "Medium", value: 8, color: "#f59e0b" },
-        { label: "Low", value: 5, color: "#22c55e" },
+        { label: "Low", value: PriorityLow, color: "#22c55e" },
+        { label: "Medium", value: PriorityMeidum, color: "#f59e0b" },
+        { label: "High", value: PriorityHigh, color: "#ef4444" },
     ];
+    console.log(priorities,'priorities')
 
     const weeklyProgress = [
         { day: "Mon", value: 8 },
@@ -413,10 +421,10 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
         }
     }
 
-const chartTotal = taskStatus.reduce(
-  (sum, item) => sum + item.value,
-  0
-);
+    const chartTotal = taskStatus.reduce(
+        (sum, item) => sum + item.value,
+        0
+    );
     const ProgressData: any = [
         {
             name: "Progress",
@@ -811,52 +819,51 @@ ${theme === "Dark"
                                 Task Status
                             </h2>
 
-                       <div className="relative h-72">
-  {chartTotal > 0 ? (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
-        <Pie
-          data={taskStatus}
-          dataKey="value"
-          nameKey="label"
-          innerRadius={70}
-          outerRadius={95}
-          paddingAngle={4}
-          cornerRadius={8}
-          startAngle={90}
-          endAngle={-270}
-          stroke="none"
-        >
-          {taskStatus.map((item) => (
-            <Cell key={item.label} fill={item.color} />
-          ))}
-        </Pie>
+                            <div className="relative h-72">
+                                {chartTotal > 0 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <PieChart>
+                                            <Pie
+                                                data={taskStatus}
+                                                dataKey="value"
+                                                nameKey="label"
+                                                innerRadius={70}
+                                                outerRadius={95}
+                                                paddingAngle={4}
+                                                cornerRadius={8}
+                                                startAngle={90}
+                                                endAngle={-270}
+                                                stroke="none"
+                                            >
+                                                {taskStatus.map((item) => (
+                                                    <Cell key={item.label} fill={item.color} />
+                                                ))}
+                                            </Pie>
 
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
-  ) : (
-    <div className="flex h-full items-center justify-center">
-      <div
-        className={`w-44 h-44 rounded-full border-8 flex flex-col items-center justify-center ${
-          theme === "Dark"
-            ? "border-slate-700 bg-slate-800"
-            : "border-gray-200 bg-gray-50"
-        }`}
-      >
-        <h2 className="text-3xl font-bold">{TotalTasks}</h2>
-        <p className="text-sm text-gray-500">No Progress</p>
-      </div>
-    </div>
-  )}
+                                            <Tooltip />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="flex h-full items-center justify-center">
+                                        <div
+                                            className={`w-44 h-44 rounded-full border-8 flex flex-col items-center justify-center ${theme === "Dark"
+                                                ? "border-slate-700 bg-slate-800"
+                                                : "border-gray-200 bg-gray-50"
+                                                }`}
+                                        >
+                                            <h2 className="text-3xl font-bold">{TotalTasks}</h2>
+                                            <p className="text-sm text-gray-500">No Progress</p>
+                                        </div>
+                                    </div>
+                                )}
 
-  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-    <h1 className="text-4xl font-bold">{TotalTasks}</h1>
-    <p className={theme === "Dark" ? "text-slate-400" : "text-gray-500"}>
-      Total Tasks
-    </p>
-  </div>
-</div>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                    <h1 className="text-4xl font-bold">{TotalTasks}</h1>
+                                    <p className={theme === "Dark" ? "text-slate-400" : "text-gray-500"}>
+                                        Total Tasks
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
 

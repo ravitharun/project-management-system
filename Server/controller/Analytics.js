@@ -22,6 +22,12 @@ const FetchView = async (req, res) => {
         const taskCompleted = ProjectTask.filter((task) => task.ProjectTask == "Completed")
         const taskInProgress = ProjectTask.filter((task) => task.ProjectTask == "inprogress")
         const Taskreview = ProjectTask.filter((task) => task.ProjectTask == "review")
+        const TaskLow = ProjectTask.filter((task) => task.Priority == "Low")
+        const TaskMedium = ProjectTask.filter((task) => task.Priority == "Medium")
+        const TaskHigh = ProjectTask.filter((task) => task.Priority == "High")
+
+
+
         const Summary = {
             ProjectInfo,
             "TotalTask": ProjectTask.length,
@@ -29,10 +35,15 @@ const FetchView = async (req, res) => {
             "taskInProgress": taskInProgress.length,
             "tasktodo": tasktodo.length,
             "TeamMembers": ProjectInfo?.WorkSpacememebers.length,
-            "Taskreview":Taskreview.length
+            "Taskreview": Taskreview.length,
+            "TaskLow": TaskLow.length,
+            "Taskhigh": TaskHigh.length,
+            "Taskmedium": TaskMedium.length
 
 
         }
+        console.log(Summary, 'SummaryTharun');
+
 
         return res.status(200).json({ message: "Summary", data: Summary, status: true })
     } catch (error) {
