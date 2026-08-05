@@ -34,7 +34,7 @@ function AppRouter() {
                     ? "You are online"
                     : `${data?.userId.Username || "Someone"} is online`;
 
-            return toast.success(msg)
+            return console.log(msg)
         };
 
         const handleCheckuserOffline = (data: any) => {

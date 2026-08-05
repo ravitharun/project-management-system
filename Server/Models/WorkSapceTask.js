@@ -26,6 +26,7 @@ const SubTaskSchema = new mongoose.Schema({
 const WorkSpaceTask = new mongoose.Schema(
     {
         projectid: { type: String, required: true, index: true },
+        Priority:{type:String,default:"Low",enum:["Low","Medium","High"]},
 
         TaskStatus: {
             type: String,
@@ -103,7 +104,6 @@ const WorkSpaceTask = new mongoose.Schema(
 
         endDate: { type: Date, default: Date.now },
         SubTask: [SubTaskSchema],
-
         assignTo: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

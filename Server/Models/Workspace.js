@@ -73,7 +73,18 @@ const WorkspaceSchema = new mongoose.Schema({
     ],
 
 
-    workspaceSetup: workspaceSetupSchema
+    workspaceSetup: workspaceSetupSchema,
+    ProjectStatus: {
+        type: String, default: 'NOT_STARTED', enum: [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "ON_HOLD",
+            "IN_REVIEW",
+            "COMPLETED",
+            "CANCELLED",
+        ]
+    },
+    isProjectStatus: { type: String, default: false, enum: ["SUPER_ADMIN", "ADMIN", "TEAM_LEAD", "MEMBER"] }
 }, {
     timestamps: true
 });
