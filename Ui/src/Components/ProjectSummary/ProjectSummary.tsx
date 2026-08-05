@@ -53,7 +53,7 @@ import bgthemeContext from "../../Context/ThemeContext";
 import TaskForm from "../Task/CreateTask/TaskForm";
 import AddPeopleWorkspace from "../Task/AddPeople-workspace/AddPeopleWorkspace";
 import { instance } from "../../services/apiservices";
-import { checkuser } from "../LocalStorage";
+import { checkuser, getuserInfo } from "../LocalStorage";
 import { useNavigate } from "react-router-dom";
 import SummaryPageLoader from "../SummaryLoader";
 
@@ -70,7 +70,9 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
     const [inviteMember, setinviteMember] = useState<Boolean>(false)
     const { theme }: any = useContext(bgthemeContext)
 
-
+    const [YourTask, setYourTask] = useState<any>([])
+    console.log(YourTask, 'YourTask.length');
+    // taskName,description,,endDate,Priority,YourTask
 
     const [ProjectMembers, setProjectMembers] = useState<Number | any>(0)
     const [TaskOverdue, SetTaskOverdue] = useState<Number | any>(0)
@@ -129,11 +131,14 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
 
             try {
                 setSummaryPageLoading(true)
+                console.log(getuserInfo, 'getuserInfo');
 
-                const response = await instance.get(`/api/Analytcs/${data.workspace._id}/summary`)
+
+                const response = await instance.get(`/api/Analytcs/${data.workspace._id}/${JSON.parse(getuserInfo)._id}/summary`)
                 // console.log(response.data.data, 'ProjectInfo');
 
                 setsummary(response.data.data.ProjectInfo);
+                setYourTask(response.data.data.GetuseridTask);
                 setProjectMembers(response.data.data.TeamMembers);
                 SetTaskOverdue(response.data.data.Taskreview);
                 SetTotaltask(response.data.data.TotalTask);
@@ -174,26 +179,6 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
 
 
 
-    const assignedTasks = [
-        {
-            title: "Implement Login API",
-            priority: "High",
-            due: "Today",
-            progress: 90,
-        },
-        {
-            title: "Create Dashboard UI",
-            priority: "Medium",
-            due: "Tomorrow",
-            progress: 60,
-        },
-        {
-            title: "Calendar Integration",
-            priority: "Low",
-            due: "08 Aug",
-            progress: 25,
-        },
-    ];
 
     const notifications = [
         "Akash assigned you a new task.",
@@ -220,8 +205,8 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
         },
     ];
 
-    const GetStartDate = (date = new Date()) => {
-
+    const GetStartDate = (date = new Date(),) => {
+        // const TaskInfo = {}
         if (!date) return '-';
 
         return new Date(date).toLocaleDateString("en-GB", {
@@ -229,6 +214,8 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
             month: "short",
             year: "numeric",
         });
+
+
     };
     const quickActions = [
         {
@@ -335,7 +322,7 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
         { label: "Medium", value: PriorityMeidum, color: "#f59e0b" },
         { label: "High", value: PriorityHigh, color: "#ef4444" },
     ];
-    console.log(priorities,'priorities')
+    console.log(priorities, 'priorities')
 
     const weeklyProgress = [
         { day: "Mon", value: 8 },
@@ -2018,7 +2005,7 @@ hover:text-blue-600
 
 
                         {/* Assigned To Me */}
-
+                        {/* taskName,description,,endDate,Priority,YourTask */}
                         <div
                             className={`
 rounded-2xl
@@ -2053,11 +2040,10 @@ ${theme === "Dark"
 
 
                                 {
-                                    assignedTasks.map(task => (
-
+                                    YourTask.map((task: any) => (
 
                                         <div
-                                            key={task.title}
+                                            key={task.taskName}
 
                                             className={`
 border
@@ -2078,7 +2064,8 @@ ${theme === "Dark"
 
 
                                                 <h4 className="text-sm font-semibold">
-                                                    {task.title}
+                                                    {task?.taskName || "TaskName"}
+                                                    {task?.description || "description"}
                                                 </h4>
 
 
@@ -2090,10 +2077,10 @@ px-2
 py-1
 rounded-full
 
-${task.priority === "High"
+${task.Priority === "High"
                                                             ? "bg-red-100 text-red-600"
 
-                                                            : task.priority === "Medium"
+                                                            : task.Priority === "Medium"
                                                                 ? "bg-yellow-100 text-yellow-600"
 
                                                                 : "bg-green-100 text-green-600"
@@ -2101,7 +2088,7 @@ ${task.priority === "High"
 
 `}
                                                 >
-                                                    {task.priority}
+                                                    {task?.Priority || "Low"}
                                                 </span>
 
 
@@ -2121,7 +2108,7 @@ ${theme === "Dark"
                                                     }
 `}
                                             >
-                                                Due {task.due}
+                                                Due {GetStartDate(task?.endDate)}
                                             </p>
 
 
@@ -2148,7 +2135,7 @@ h-2
 rounded-full
 "
                                                     style={{
-                                                        width: `${task.progress}%`
+                                                        width: `${task.progress || 0}%`
                                                     }}
                                                 />
 
@@ -2159,8 +2146,6 @@ rounded-full
 
 
                                         </div>
-
-
                                     ))
                                 }
 
