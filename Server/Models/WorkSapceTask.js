@@ -26,6 +26,7 @@ const SubTaskSchema = new mongoose.Schema({
 const WorkSpaceTask = new mongoose.Schema(
     {
         projectid: { type: String, required: true, index: true },
+        SprintId:{type:String,default:null},
         Priority: { type: String, default: "Low", enum: ["Low", "Medium", "High"] },
         progress: { type: String, default: 0 },
         TaskStatus: {

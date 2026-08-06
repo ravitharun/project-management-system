@@ -504,7 +504,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
             }
 
             {CurrentView == "Backlog" &&
-              <Backlog />
+              <Backlog  workspaceid={workspace}/>
             }
 
             {CurrentView == "Calendar" && (
