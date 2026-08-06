@@ -14,19 +14,7 @@ const Sprints = ({ workspaceid }: any) => {
 
 
 
-    // const GetDateFormat = (date: any) => {
-    //     console.log(date, 'datedatedate');
 
-    //     if (!date) return "-"
-    //     const a = new Date(date).toLocaleString("en-IN", {
-    //         day: "2-digit",
-    //         month: "short",
-    //         year: "numeric",
-    //         hour: "2-digit",
-    //         minute: "2-digit",
-    //     });
-    //     console.log(a, 'tharun');
-    // }
     const modules = [AllCommunityModule];
     const { theme }: any = useContext(bgthemeContext)
     const redirect = useNavigate()

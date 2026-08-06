@@ -1,19 +1,53 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MyTable from "../Task/TaskList/MyTable";
 import bgthemeContext from "../../Context/ThemeContext";
 import SprintForm from "./SprintForm";
 import Sprints from "./SprintsTable";
+import { instance } from "../../services/apiservices";
+import { checkuser } from "../LocalStorage";
+import { useNavigate } from "react-router-dom";
+import { DueDate, GetDateFormat } from "../DateFormat";
 
 const Backlog = ({ workspaceid }: any) => {
     const [SprintPoupForm, setSprintPoupForm] = useState<boolean>(false)
     const { theme }: any = useContext(bgthemeContext);
-
+    const redirect = useNavigate()
     const isDark = theme === "Dark";
     const handelSprintForm = () => {
 
         setSprintPoupForm((prev) => !prev)
 
     }
+
+
+    const [ActiveSprint, setActiveSprint] = useState<any>()
+    console.log(ActiveSprint, 'ActiveSprint');
+
+    useEffect(() => {
+
+
+        const fetchActiveSprint = async () => {
+
+            try {
+                const response = await instance.get(`/api/sprints/${workspaceid._id}/Activesprint`)
+                console.log(response.data.data[0], 'ActiveSprintActiveSprint');
+                setActiveSprint(response.data.data[0])
+
+            } catch (error: any) {
+
+
+                const status = error.response.status;
+
+
+                if (status == 401) { return checkuser(redirect) }
+
+            }
+        }
+
+
+        fetchActiveSprint()
+    }, [workspaceid])
+
     return (
         <>
             <SprintForm spaceid={workspaceid._id} SprintPoupForm={SprintPoupForm} onClick={handelSprintForm} />
@@ -117,14 +151,14 @@ const Backlog = ({ workspaceid }: any) => {
                             </span>
 
                             <h2 className="text-2xl font-bold mt-2">
-                                Sprint 1
+                                {ActiveSprint?.SprintName || "Sprint Name"}
                             </h2>
 
                             <p
                                 className={`text-sm mt-1 ${isDark ? "text-gray-400" : "text-gray-500"
                                     }`}
                             >
-                                User Authentication
+                                {ActiveSprint?.SprintDescription || "Sprint Description"}
                             </p>
 
                         </div>
@@ -145,7 +179,7 @@ const Backlog = ({ workspaceid }: any) => {
                                             : "bg-green-100 text-green-700"
                                         }`}
                                 >
-                                    Active
+                                    {!ActiveSprint?.ActiveSprint ? "Active" : "Not Active"}
                                 </span>
 
                             </div>
@@ -157,7 +191,7 @@ const Backlog = ({ workspaceid }: any) => {
                                     Duration
                                 </span>
 
-                                <span>10 Aug - 24 Aug</span>
+                                <span>  {GetDateFormat(ActiveSprint?.SprintStartDate)} - {GetDateFormat(ActiveSprint?.SprintEndDate)} {DueDate(ActiveSprint?.SprintStartDate)}</span>
 
                             </div>
 
@@ -179,7 +213,7 @@ const Backlog = ({ workspaceid }: any) => {
 
                                     <span>Progress</span>
 
-                                    <span>65%</span>
+                                    <span>{ActiveSprint?.SprintProgress || 0}%</span>
 
                                 </div>
 
@@ -188,7 +222,7 @@ const Backlog = ({ workspaceid }: any) => {
                                         }`}
                                 >
 
-                                    <div className="bg-blue-500 h-3 rounded-full w-[65%]" />
+                                    <div className={`bg-blue-500 h-3 rounded-full w-[${Number(ActiveSprint?.SprintProgress) || 0}%]`} />
 
                                 </div>
 
@@ -246,19 +280,19 @@ const Backlog = ({ workspaceid }: any) => {
                                 </h3>
 
                                 <p className={isDark ? "text-gray-400 text-sm" : "text-gray-600 text-sm"}>
-                                    Complete user authentication and dashboard
-                                    before the sprint deadline.
+                                    {ActiveSprint?.SprintGoal || "Sprint Goal"}
                                 </p>
 
                             </div>
 
                             {/* Button */}
                             <button
-                                className={`w-full py-3 rounded-xl transition-all duration-300 font-medium
+                                className={`w-full py-3 rounded-xl transition-all duration-300 font-medium hover:cursor-not-allowed
                             ${isDark
                                         ? "bg-blue-600 hover:bg-blue-500 text-white"
                                         : "bg-slate-900 hover:bg-black text-white"
                                     }`}
+                                disabled={true}
                             >
                                 View Sprint Board
                             </button>
