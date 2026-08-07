@@ -20,6 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Shareview from "../Components/Shareview";
 import EmailBasedJoinWorkspace from "../Components/EmailApproval/EmailBasedJoinWorkspace";
 import TaskLayout from "../Components/Task/TaskLayout";
+import { Toaster } from "react-hot-toast";
 // import Layout from "../Components/Layout";
 
 function AppRouter() {
@@ -151,6 +152,8 @@ function AppRouter() {
 
     return (
         <>
+              <Toaster position="bottom-center"  />
+
             <ToastContainer position="top-center"
                 autoClose={5000}
                 hideProgressBar={false}

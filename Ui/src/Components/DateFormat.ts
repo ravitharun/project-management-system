@@ -1,4 +1,4 @@
-    export const GetDateFormat = (date: any) => {
+    export const GetDateFormat = (date:  string | number | Date) => {
         console.log(date, 'GetDateFormat');
 
         if (!date) return "-"
@@ -15,10 +15,20 @@
         
     }
 
+export const GetDueDays = (endDate: string | number | Date) => {
+    const today = new Date();
+    const end = new Date(endDate);
+
+    today.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+
+    return Math.ceil(
+        (end.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+    );
+};
 
 
-
-  export const DueDate = ( endDate:any) => {
+  export const DueDate = ( endDate:any|String|number) => {
     const today:any = new Date();
     const end :any= new Date(endDate);
 
