@@ -6,7 +6,7 @@ import Sprints from "./SprintsTable";
 import { instance } from "../../services/apiservices";
 import { checkuser } from "../LocalStorage";
 import { useNavigate } from "react-router-dom";
-import { DueDate, GetDateFormat } from "../DateFormat";
+import { DueDate, GetDateFormat, GetDueDays } from "../DateFormat";
 
 const Backlog = ({ workspaceid }: any) => {
     const [SprintPoupForm, setSprintPoupForm] = useState<boolean>(false)
@@ -191,7 +191,15 @@ const Backlog = ({ workspaceid }: any) => {
                                     Duration
                                 </span>
 
-                                <span>  {GetDateFormat(ActiveSprint?.SprintStartDate)} - {GetDateFormat(ActiveSprint?.SprintEndDate)} {DueDate(ActiveSprint?.SprintStartDate)}</span>
+                                <span>  {GetDateFormat(ActiveSprint?.SprintStartDate)} - {GetDateFormat(ActiveSprint?.SprintEndDate)} <p
+                                    className={
+                                        GetDueDays(ActiveSprint?.SprintEndDate) <= 1
+                                            ? "text-red-500"
+                                            : "text-green-500"
+                                    }
+                                >
+                                    {DueDate(ActiveSprint?.SprintEndDate)}
+                                </p></span>
 
                             </div>
 
