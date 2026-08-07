@@ -42,8 +42,8 @@ const GetSprint = async (req, res) => {
 
 
         const Sprints = await SprintSchema.find({ ProjectId: spaceid })
-        console.log(Sprints.length,'Sprintslen');
-        
+        console.log(Sprints.length, 'Sprintslen');
+
 
 
         if (Sprint.length == 0) {
@@ -61,4 +61,32 @@ const GetSprint = async (req, res) => {
     }
 }
 
-module.exports = { CreateSprint, GetSprint }
+
+
+const GetActiveSprint = async (req, res) => {
+
+
+
+    try {
+        const { spaceid } = req.params
+
+        if (!spaceid) { return res.status(404).json({ message: "ProjectID is missing ...." }) }
+        const ActiveSprint = await SprintSchema.find( {
+            $and: [{ ProjectId: spaceid },
+                {
+                SprintActive: true
+            }]
+        })
+        console.log(ActiveSprint, "ActiveSprint")
+        if (!ActiveSprint) { return res.status(404).json({ message: "No ActiveSprints." }) }
+        return res.status(200).json({ message: "ActiveSprint", data: ActiveSprint, status: true })
+    } catch (error) {
+
+
+        console.log(error.message);
+
+        return res.status(500).json({ message: "server error F", status: false })
+
+    }
+}
+module.exports = { CreateSprint, GetSprint, GetActiveSprint }
