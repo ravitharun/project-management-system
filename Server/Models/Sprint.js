@@ -20,11 +20,19 @@ const SprintSchema = new mongoose.Schema(
             required: true,
             trim: true,
         },
+        SprintTasks: {
+            type: String,
+            default: "0"
+        },
 
         SprintDescription: {
             type: String,
             default: "",
             trim: true,
+        },
+        SprintProgress: {
+            type: String,
+            default: "0",
         },
 
         SprintStartDate: {
