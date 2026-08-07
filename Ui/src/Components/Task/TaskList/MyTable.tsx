@@ -29,7 +29,7 @@ export type RowData = {
 };
 
 const MyTable = ({ spaceid }: any) => {
- 
+
     const context = useContext(bgthemeContext);
     const { theme }: any = context
     const timeoutRef = useRef<any>(null);
@@ -47,6 +47,8 @@ const MyTable = ({ spaceid }: any) => {
         const FetchTasks = async () => {
             try {
                 const response = await fetchtaskApi(spaceid);
+                console.log(response, 'responseresponse');
+
 
                 const formattedData = response.data.message.map((item: any) => ({
                     taskid: item.Taskid,
@@ -60,7 +62,9 @@ const MyTable = ({ spaceid }: any) => {
                     Files: item.Files,
                     Links: item.Links,
                 }));
-                setrowData(formattedData);
+                console.log(response, "formattedData");
+                const FilterbySprintnull = formattedData.filter((fil:any) => fil.SprintId == null)
+                setrowData(FilterbySprintnull);
             } catch (error) {
                 console.log(error);
             }
@@ -69,12 +73,32 @@ const MyTable = ({ spaceid }: any) => {
         FetchTasks();
     }, []);
 
+
+    const HandelSprint = () => {
+
+
+        alert("hi")
+    }
     const columnDefs: ColDef[] = [
         {
-            headerName: "",
+            headerName: "Sprint ID",
             field: "expand",
             width: 50,
-            cellRenderer: "agGroupCellRenderer",
+            // cellRenderer: "agGroupCellRenderer",
+            editable: false,
+
+            cellRenderer: (params: any) => {
+                return (
+                    <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${params.data.SprintId
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-600"
+                            }`}
+                    >
+                        {params.data.SprintId ? "Assigned" : "Backlog"}
+                    </span>
+                );
+            },
         },
         {
             field: "taskid",
@@ -177,13 +201,30 @@ const MyTable = ({ spaceid }: any) => {
 
             cellRenderer: (params: any) => {
                 return (
-                    <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700">
-                        {params.value}
-                    </button>
+                    <>
+
+                        <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+                            {params.value}
+                        </button>
+                        <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700" onClick={HandelSprint}>
+                            Add Sprint
+                        </button>
+                    </>
                 );
             },
         },
     ];
+    const handleRowDragMove = (params: any) => {
+        console.log("Dragging:", params.node.data);
+    };
+
+    const handleRowDragEnd = (params: any) => {
+        console.log("Dropped:", params.node.data);
+    };
+
+
+
+
     return (
         <>
             {/* POPUP */}
@@ -209,8 +250,18 @@ const MyTable = ({ spaceid }: any) => {
                         : "ag-theme-alpine"
                         } w-full h-[500px] rounded-xl`}
                 >
+
+
                     <AgGridReact
                         rowData={rowData}
+
+                        // Drag
+                        rowDragManaged={true}
+                        rowDragEntireRow={true}
+                        animateRows={true}
+                        onRowDragMove={handleRowDragMove}
+                        onRowDragEnd={handleRowDragEnd}
+
                         masterDetail={true}
 
                         isRowMaster={(data: any) => {
@@ -225,7 +276,19 @@ const MyTable = ({ spaceid }: any) => {
                             },
                         }}
 
-                        columnDefs={columnDefs}
+                        columnDefs={[
+                            {
+                                headerName: "",
+                                width: 60,
+                                rowDrag: true,
+                                pinned: "left",
+                                sortable: false,
+                                filter: false,
+                                resizable: false,
+                            },
+                            ...columnDefs,
+                        ]}
+
                         domLayout="autoHeight"
                         suppressHorizontalScroll={true}
 
@@ -247,13 +310,10 @@ const MyTable = ({ spaceid }: any) => {
                                 columnDefs: [
                                     { field: "TaskId", headerName: "SubTask TaskId" },
                                     { field: "taskName", headerName: "SubTask Name" },
-
                                     {
                                         field: "AssiginMember",
-                                        headerName: "Assigin Member",
-
+                                        headerName: "Assign Member",
                                         cellRenderer: (params: any) => {
-                                            console.log(params.data, 'params')
                                             return (
                                                 <div
                                                     className="inline-block"
@@ -265,7 +325,7 @@ const MyTable = ({ spaceid }: any) => {
                                                             y: e.clientY,
                                                             show: true,
                                                             userInof: {
-                                                                username: params.value
+                                                                username: params.value,
                                                             },
                                                         });
                                                     }}
@@ -286,11 +346,6 @@ const MyTable = ({ spaceid }: any) => {
                                             );
                                         },
                                     },
-
-
-
-
-
                                     { field: "SubTaskStatus", headerName: "SubTask Status" },
                                     { field: "taskPriority", headerName: "SubTask Priority" },
                                 ],
@@ -303,8 +358,6 @@ const MyTable = ({ spaceid }: any) => {
                                     editable: true,
                                     filter: true,
                                 },
-
-                                suppressHorizontalScroll: false,
                             },
 
                             getDetailRowData: (params: any) => {
