@@ -10,7 +10,11 @@ import { ModuleRegistry } from "ag-grid-community";
 import { AllCommunityModule } from "ag-grid-community";
 import { MasterDetailModule, RowGroupingModule } from "ag-grid-enterprise";
 import bgthemeContext from "../../../Context/ThemeContext";
-
+import { instance } from "../../../services/apiservices";
+import { checkuser } from "../../LocalStorage";
+import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "sonner";
+import { socket } from "../../../Scokets/ScoketConfig"
 
 ModuleRegistry.registerModules([
     AllCommunityModule,
@@ -28,7 +32,16 @@ export type RowData = {
     SubTask?: any[];
 };
 
-const MyTable = ({ spaceid }: any) => {
+
+type info = {
+    ActiveSprintId?: any,
+    spaceid: any
+}
+
+const MyTable = ({ spaceid, ActiveSprintId }: info) => {
+    // console.log(ActiveSprintId,'ActiveSprintId');
+
+    const redirect = useNavigate()
 
     const context = useContext(bgthemeContext);
     const { theme }: any = context
@@ -63,7 +76,7 @@ const MyTable = ({ spaceid }: any) => {
                     Links: item.Links,
                 }));
                 console.log(response, "formattedData");
-                const FilterbySprintnull = formattedData.filter((fil:any) => fil.SprintId == null)
+                const FilterbySprintnull = formattedData.filter((fil: any) => fil.SprintId == null)
                 setrowData(FilterbySprintnull);
             } catch (error) {
                 console.log(error);
@@ -73,11 +86,69 @@ const MyTable = ({ spaceid }: any) => {
         FetchTasks();
     }, []);
 
+    useEffect(() => {
 
-    const HandelSprint = () => {
+
+        const handelUpdatedActvieSprint = (data: any) => {
+            console.log('web scket data', data);
+            const formattedData = data.map((item: any) => ({
+                taskid: item.Taskid,
+                taskname: item.taskName,
+                status: item.status || "Pending",
+                priority: item.priority || "Low",
+                AssignedTo: item.AssignedTo || "Unassigned",
+                action: "View",
+                _id: item._id,
+                SubTask: item.SubTask || [],
+                Files: item.Files,
+                Links: item.Links,
+            }));
+            const FilterbySprintnull = formattedData.filter((fil: any) => fil.SprintId == null)
+            setrowData(FilterbySprintnull);
+
+          
 
 
-        alert("hi")
+        }
+
+
+        socket.on("UpdatedActvieSprint", handelUpdatedActvieSprint)
+
+        return () => {
+
+            socket.off("UpdatedActvieSprint", handelUpdatedActvieSprint)
+
+
+        }
+    }, [])
+    const HandelSprint = async (TaskId: any,) => {
+
+
+
+
+        try {
+
+            const response = await instance.put(`/api/sprints/${TaskId.data._id}/${ActiveSprintId._id}/${spaceid}/UpdateTasksprint`)
+
+            console.log(response.data.message);
+            toast.success(response.data.message)
+
+
+
+
+        } catch (error: any) {
+
+            const status = error.response.status
+            const Err_msg = error.response.message
+
+            if (status == 500) {
+                return toast.error(Err_msg)
+            }
+            if (status == 401) {
+                return checkuser(redirect)
+            }
+
+        }
     }
     const columnDefs: ColDef[] = [
         {
@@ -206,7 +277,7 @@ const MyTable = ({ spaceid }: any) => {
                         <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700">
                             {params.value}
                         </button>
-                        <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700" onClick={HandelSprint}>
+                        <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700" onClick={() => HandelSprint(params)}>
                             Add Sprint
                         </button>
                     </>
@@ -227,6 +298,7 @@ const MyTable = ({ spaceid }: any) => {
 
     return (
         <>
+            <Toaster></Toaster>
             {/* POPUP */}
             {popupPos.show && (
                 <div

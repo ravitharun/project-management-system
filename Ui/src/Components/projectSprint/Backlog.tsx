@@ -132,7 +132,7 @@ const Backlog = ({ workspaceid }: any) => {
                         {/* Backlog Table */}
                         <div className="overflow-x-auto p-3 sm:p-5">
                             <div className="min-w-[650px]">
-                                <MyTable spaceid={workspaceid._id} />
+                                <MyTable spaceid={workspaceid._id} ActiveSprintId={ActiveSprint} />
                             </div>
                         </div>
                     </section>

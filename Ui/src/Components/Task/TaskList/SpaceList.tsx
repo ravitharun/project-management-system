@@ -109,7 +109,7 @@ function SpaceList({ spaceid }: any) {
         </div>
       </div>
 
-      {CurrentView === "list" && <MyTable theme={theme} spaceid={spaceid} />}
+      {CurrentView === "list" && <MyTable  spaceid={spaceid} />}
 
       {CurrentView === "grid" && (
         <div
