@@ -1,5 +1,6 @@
 const Sprint = require("../Models/Sprint");
 const SprintSchema = require("../Models/Sprint");
+const WorkSpaceTask = require("../Models/WorkSapceTask");
 const { getIO } = require("../scoket");
 
 const CreateSprint = async (req, res) => {
@@ -117,16 +118,16 @@ const UpdateSprintStatus = async (req, res) => {
             });
         }
 
-        // const ActiveSprint = await SprintSchema.findByIdAndUpdate({ _id: spaceid }, {
-        //     SprintActive: true,
-        //     SprintStatus: "ACTIVE"
-        // }, { returnDocument: "after" })
-        // if (!ActiveSprint) { return res.status(404).json({ message: "No ActiveSprints." }) }
+        const ActiveSprint = await SprintSchema.findByIdAndUpdate({ _id: spaceid }, {
+            SprintActive: true,
+            SprintStatus: "ACTIVE"
+        }, { returnDocument: "after" })
+        if (!ActiveSprint) { return res.status(404).json({ message: "No ActiveSprints." }) }
 
 
-        // const getActiveSprint = await SprintSchema.find({ ProjectId: ProjectId })
+        const getActiveSprint = await SprintSchema.find({ ProjectId: ProjectId })
 
-        // io.emit("ActvieSprint", getActiveSprint)
+        io.emit("ActvieSprint", getActiveSprint)
         return res.status(200).json({ message: "Started New Sprint", data: ActiveSprint, status: true })
     } catch (error) {
 
@@ -138,4 +139,48 @@ const UpdateSprintStatus = async (req, res) => {
     }
 
 }
-module.exports = { CreateSprint, GetSprint, GetActiveSprint, UpdateSprintStatus }
+
+
+
+const AddtaskInActiveSprint = async (req, res) => {
+
+
+    try {
+
+        const io = getIO()
+
+
+        const { TaskId, Sprintid, ProjectId } = req.params
+
+        console.log(req.params, 'req.params');
+
+        if (!Sprintid || !TaskId) { return res.status(404).json({ message: "Sprintid &&  TaskId is missing ...." }) }
+
+
+
+        const checkisAnySpint = await WorkSpaceTask.findByIdAndUpdate({ _id: TaskId }, { SprintId: Sprintid }, { returnDocument: "after" })
+        const getActiveSprint = await WorkSpaceTask.find({ $and: [
+
+            { projectid: ProjectId },
+            { SprintId: null }
+        ]
+        })
+
+    io.emit("UpdatedActvieSprint", getActiveSprint)
+console.log(getActiveSprint, 'getActiveSprint');
+
+return res.status(200).json({ message: "Started New Sprint", data: [], status: true })
+    } catch (error) {
+
+
+    console.log(error.message);
+
+    return res.status(500).json({ message: "server error ", status: false })
+
+}
+
+
+
+}
+
+module.exports = { CreateSprint, GetSprint, GetActiveSprint, UpdateSprintStatus, AddtaskInActiveSprint }
