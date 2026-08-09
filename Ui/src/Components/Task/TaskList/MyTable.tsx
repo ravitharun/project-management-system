@@ -15,6 +15,7 @@ import { checkuser } from "../../LocalStorage";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 import { socket } from "../../../Scokets/ScoketConfig"
+import { ListChecks, PlusCircle } from "lucide-react";
 
 ModuleRegistry.registerModules([
     AllCommunityModule,
@@ -106,7 +107,7 @@ const MyTable = ({ spaceid, ActiveSprintId }: info) => {
             const FilterbySprintnull = formattedData.filter((fil: any) => fil.SprintId == null)
             setrowData(FilterbySprintnull);
 
-          
+
 
 
         }
@@ -273,13 +274,21 @@ const MyTable = ({ spaceid, ActiveSprintId }: info) => {
             cellRenderer: (params: any) => {
                 return (
                     <>
+                        <div className="flex gap-5">
 
-                        <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700">
-                            {params.value}
-                        </button>
-                        <button className="px-3 py-1 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700" onClick={() => HandelSprint(params)}>
-                            Add Sprint
-                        </button>
+                            <button className="px-3 py-1 text-xs rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 inline-flex items-center gap-1.5">
+                                <ListChecks size={14} />
+                                {params.value}
+                            </button>
+
+                            <button
+                                className="px-3 py-1 text-xs rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 inline-flex items-center gap-1.5"
+                                onClick={() => HandelSprint(params)}
+                            >
+                                <PlusCircle size={14} />
+                                Add Sprint
+                            </button>
+                        </div>
                     </>
                 );
             },
