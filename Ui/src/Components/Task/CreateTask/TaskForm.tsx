@@ -33,7 +33,7 @@ type Props = {
     onclose?: () => void
     theme?: "Dark" | "Light",
     maximizeParent?: boolean,
-    CreateTask?: boolean |any
+    CreateTask?: boolean | any
 }
 
 function TaskForm({
@@ -52,7 +52,7 @@ function TaskForm({
         projectid,
         maximizeParent,
         CreateTask
-    }, 'projectid')
+    }, 'RAVITharun')
     const [maximize, setMaximize] = useState(false)
     const [assignOpen, setAssignOpen] = useState(false)
     const [taskName, setTaskName] = useState("")
