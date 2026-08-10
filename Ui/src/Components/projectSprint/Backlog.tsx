@@ -15,7 +15,7 @@ const Backlog = ({ workspaceid }: any) => {
     const [SprintPoupForm, setSprintPoupForm] = useState<boolean>(false)
     const { theme }: any = useContext(bgthemeContext);
 
-    const [PoupOpen, setPoupOpen] = useState<boolean>(false)
+    const [PoupOpen, _] = useState<boolean>(false)
     const redirect = useNavigate()
     const isDark = theme === "Dark";
     const handelSprintForm = () => {
