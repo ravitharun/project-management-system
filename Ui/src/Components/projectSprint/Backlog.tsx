@@ -8,10 +8,14 @@ import { checkuser } from "../LocalStorage";
 import { useNavigate } from "react-router-dom";
 import { DueDate, GetDateFormat, GetDueDays } from "../DateFormat";
 import Board from "../Board";
+import TaskForm from "../Task/CreateTask/TaskForm";
+import { userRfToken } from "../users";
 
 const Backlog = ({ workspaceid }: any) => {
     const [SprintPoupForm, setSprintPoupForm] = useState<boolean>(false)
     const { theme }: any = useContext(bgthemeContext);
+
+    const [PoupOpen, _] = useState<boolean>(false)
     const redirect = useNavigate()
     const isDark = theme === "Dark";
     const handelSprintForm = () => {
@@ -52,8 +56,20 @@ const Backlog = ({ workspaceid }: any) => {
         100,
         Math.max(0, Number(ActiveSprint?.SprintProgress) || 0)
     );
+    console.log(userRfToken, 'userRfToken');
+    const  HandelPoup = () => {
+        setSprintPoupForm((prev) => !prev)
+    }
+
     return (
         <>
+
+            {!PoupOpen &&
+
+                <TaskForm AddedBy={JSON.parse(userRfToken)._id} projectid={workspaceid._id} onclose={HandelPoup} CreateTask={SprintPoupForm} />
+
+            }
+     
             <SprintForm
                 spaceid={workspaceid?._id}
                 SprintPoupForm={SprintPoupForm}
@@ -94,7 +110,7 @@ const Backlog = ({ workspaceid }: any) => {
                         >
                             <div>
                                 <h2 className="text-lg font-semibold sm:text-xl">
-                                    Backlog Tasks
+                                    Backlog Tasks ({ActiveSprint?.length == 0 ? "0" : "0"})
                                 </h2>
 
                                 <p
@@ -123,6 +139,8 @@ const Backlog = ({ workspaceid }: any) => {
                                         ? "bg-blue-600 hover:bg-blue-500"
                                         : "bg-slate-900 hover:bg-black"
                                         }`}
+                                    onClick={HandelPoup
+                                    }
                                 >
                                     + Create Task
                                 </button>
