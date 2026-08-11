@@ -95,10 +95,9 @@ app.get("/workspace/share", async (req, res) => {
 
     const { id } = req.query;
 
-    console.log(id, 'shareid');
+    // console.log(id, 'shareid');
 
     const spaceresponse = await Workspace.findById(id);
-    console.log(spaceresponse, 'spaceresponsespaceresponsespaceresponsespaceresponsespaceresponsespaceresponse')
 
     if (!spaceresponse) {
       return res.status(404).json({
@@ -106,10 +105,7 @@ app.get("/workspace/share", async (req, res) => {
         message: "Workspace not found",
       });
     }
-    console.log({
-      success: true,
-      data: spaceresponse,
-    }, 'heytharun')
+ 
     return res.status(200).json({
       data: spaceresponse,
     });
@@ -134,7 +130,7 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
 
       const error = new Error("Username Is required.");
 
-      error.status = 404;
+      error.status = 400;
 
       return next(error);
     }

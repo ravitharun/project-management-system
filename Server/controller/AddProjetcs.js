@@ -137,7 +137,7 @@ const ManageMembersProject = async (req, res) => {
         await redis.DEL("Projects")
         console.log(data.userid, data.projectsid)
         if (!data.projectsid) {
-            return res.status(404).json({ message: "Something went Wrong" })
+            return res.status(400).json({ message: "Something went Wrong" })
         }
         if (data.userid.length == 0) {
             return res.status(404).json({ message: "More Than 1 Members are required to added in these project" })
