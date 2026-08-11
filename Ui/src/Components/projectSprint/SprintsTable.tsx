@@ -365,7 +365,7 @@ const Sprints = ({ workspaceid }: any) => {
 
         <>
 
-            <Toaster position="bottom-center" richColors />
+            {/* <Toaster position="bottom-center" richColors /> */}
 
             <AgGridProvider modules={modules}>
                 <div

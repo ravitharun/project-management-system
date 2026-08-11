@@ -197,7 +197,7 @@ const Backlog = ({ workspaceid }: any) => {
                                 </span>
 
                                 <span
-                                    className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${ActiveSprint?.ActiveSprint
+                                    className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${ActiveSprint?.SprintActive
                                         ? isDark
                                             ? "bg-green-900/30 text-green-400"
                                             : "bg-green-100 text-green-700"
@@ -206,9 +206,11 @@ const Backlog = ({ workspaceid }: any) => {
                                             : "bg-gray-100 text-gray-600"
                                         }`}
                                 >
-                                    {ActiveSprint?.ActiveSprint
+                                    {ActiveSprint?.SprintActive
                                         ? "Active"
                                         : "Not Active"}
+
+                                        {/* {ActiveSprint?.ActiveSprint?"true":} */}
                                 </span>
                             </div>
 
