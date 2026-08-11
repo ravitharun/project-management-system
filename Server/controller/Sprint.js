@@ -154,7 +154,7 @@ const AddtaskInActiveSprint = async (req, res) => {
 
         console.log(req.params, 'req.params');
 
-        if (!Sprintid || !TaskId) { return res.status(404).json({ message: "Sprintid &&  TaskId is missing ...." }) }
+        if (!Sprintid || !TaskId) { return res.status(400).json({ message: "Sprintid &&  TaskId is missing ...." }) }
 
 
 

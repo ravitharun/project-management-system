@@ -91,7 +91,7 @@ const FetchTasks = async (req, res, next) => {
         // const spaceid = "6a1e8587848d4471d14a554a"
         if (!spaceid) {
             const spaceid = new Error("spaceid is required to fetch tasks")
-            spaceid.status = 404
+            spaceid.status = 400
             return spaceid
         }
 
@@ -179,7 +179,7 @@ const AddRelpys = async (req, res) => {
         console.log(req.body, 'replys')
 
         if (!req.body.TaskId) {
-            return res.status(404).json({
+            return res.status(400).json({
                 message: "TaskId is Missing"
             });
         }
@@ -277,7 +277,7 @@ const UploadSubTaskFile = async (req, res, next) => {
 
         if (!req.file.path) {
             const FileNotFoundTask = new Error("File is required")
-            FileNotFoundTask.status = 404
+            FileNotFoundTask.status = 400
             return next(FileNotFoundTask)
         }
         const Isexitstask = await WorkSpaceTask.findOne({ TaskId: req.body.Taskid })
@@ -352,7 +352,7 @@ const DeleteTask = async (req, res, next) => {
 
         if (!taskid || !user || !Eventid) {
             const taskidNotFound = new Error("Something is missing.")
-            taskidNotFound.status = 404
+            taskidNotFound.status = 400
             return next(taskidNotFound)
         }
         const IsexitstaskDeleted = await WorkSpaceTask.findOneAndDelete({ TaskId: taskid })
@@ -380,7 +380,7 @@ const DuplicateTask = async (req, res, next) => {
         console.log(req.body, 'body')
 
         if (!taskid) {
-            return res.status(404).json({ message: "TaskId is missing to duplicate" });
+            return res.status(400).json({ message: "TaskId is missing to duplicate" });
         }
 
         const IsduplicateTask = await WorkSpaceTask.findOne({ TaskId: taskid });
@@ -478,7 +478,7 @@ const DeleteFile = async (req, res) => {
 
         if (!id) {
 
-            return res.status(404).json({ message: "Try again later" })
+            return res.status(400).json({ message: "Try again later" })
         }
         const deletedFile = await WorkSpaceTask.findOneAndUpdate(
             { "Files._id": id },

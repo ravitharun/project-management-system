@@ -106,7 +106,7 @@ const Google_CalndrLogin = async (req, res) => {
 
             console.log({ messgae: "UID IS MISSING" }, 'UID');
 
-            return res.status(404).json({ messgae: "UID IS MISSING" })
+            return res.status(400).json({ messgae: "UID IS MISSING" })
         }
 
         console.log(req.query, "req.querytharun");
