@@ -10,7 +10,7 @@ import bgthemeContext from "../../Context/ThemeContext";
 import { socket } from "../../Scokets/ScoketConfig";
 // import { toast, ToastContainer } from "react-toastify";
 // import { toast, ToastContainer } from "react-toastify";
-import { toast, Toaster } from "sonner";
+import { toast} from "sonner";
 
 
 
@@ -365,7 +365,7 @@ const Sprints = ({ workspaceid }: any) => {
 
         <>
 
-            <Toaster position="bottom-center" richColors />
+            {/* <Toaster position="bottom-center" richColors /> */}
 
             <AgGridProvider modules={modules}>
                 <div
