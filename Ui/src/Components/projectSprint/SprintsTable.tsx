@@ -10,7 +10,7 @@ import bgthemeContext from "../../Context/ThemeContext";
 import { socket } from "../../Scokets/ScoketConfig";
 // import { toast, ToastContainer } from "react-toastify";
 // import { toast, ToastContainer } from "react-toastify";
-import { toast, Toaster } from "sonner";
+import { toast} from "sonner";
 
 
 
