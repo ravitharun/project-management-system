@@ -179,7 +179,7 @@ const handelCustomUoploadIcon = async (req, res) => {
         console.log(req.body.AddedBy, 'by')
         console.log(req.body.workspaceSpaceId)
         if (!req.body.workspaceSpaceId || !req.body.AddedBy) {
-            return res.status(404).json({ message: "SomeThing went Wrong." })
+            return res.status(400).json({ message: "SomeThing went Wrong." })
         }
         const Uploaded_url = await cloudinary.uploader.upload(req.file.path)
         const isExitSpaceId = await Workspace.findByIdAndUpdate({ _id: req.body.workspaceSpaceId }, { icon: Uploaded_url?.secure_url }, { returnDocument: "after" })

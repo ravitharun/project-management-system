@@ -32,15 +32,17 @@ const UploadFiles = async (req, res) => {
             userinof: `${data.userEmail}`,
             projectid: `${data.projectId}`
         })
-        console.log({
-            message: `${data.projectId} : uploaded the Files By ${data.Username}`,
-            userinof: `${data.userEmail}`,
-            projectid: `${data.projectId}`
-        })
+        // console.log({
+        //     message: `${data.projectId} : uploaded the Files By ${data.Username}`,
+        //     userinof: `${data.userEmail}`,
+        //     projectid: `${data.projectId}`
+        // })
         // console.log("saved")
         return res.status(201).json({ message: 'File uploaded.' })
     } catch (error) {
         console.log(error)
+
+        return res.status(500).json({message:"Server Error",status:false})
 
     }
 }
@@ -52,7 +54,7 @@ const FetchUploadFiles = async (req, res) => {
         const { projectsid } = req.query
         console.log(projectsid, 'projectsid')
         if (!projectsid) {
-            return res.status(404).json({ message: "Prj Id is Missing." })
+            return res.status(400).json({ message: "Prj Id is Missing." })
 
         }
         const getByPrjId = await ProjectFileUload.find({ projectId: projectsid })
