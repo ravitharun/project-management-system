@@ -41,7 +41,7 @@ type info = {
 
 const MyTable = ({ spaceid, ActiveSprintId }: info) => {
     // console.log(ActiveSprintId,'ActiveSprintId');
-    alert("MyTable")
+    // alert("MyTable")
 
     const redirect = useNavigate()
 
