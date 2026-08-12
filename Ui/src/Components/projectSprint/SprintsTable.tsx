@@ -16,6 +16,7 @@ import { toast} from "sonner";
 
 
 const Sprints = ({ workspaceid }: any) => {
+    alert("Sprint")
 
     const tasks = [
         {
