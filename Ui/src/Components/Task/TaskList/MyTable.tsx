@@ -76,7 +76,7 @@ const MyTable = ({ spaceid, ActiveSprintId }: info) => {
                     SubTask: item.SubTask || [],
                     Files: item.Files,
                     Links: item.Links,
-                    SprintId: item.SprintId
+                    SprintId: item?.SprintId
                 }));
                 // console.log(formattedData, "formattedData");
                 const FilterbySprintnull = formattedData.filter((fil: any) => fil?.SprintId == null)
