@@ -8,6 +8,7 @@ import MinAndMaxWorkspaceView from "./TaskBoard/MinAndMaxWorkspaceview";
 import ShareMinAndMaxWorkspaceView from "../Share/ShareMinAndMaxWorkspaceView";
 import bgthemeContext from "../../Context/ThemeContext";
 import SideBarContext from "../../Context/SideBard";
+import { instance } from "../../services/apiservices";
 
 function TaskLayout() {
     const context = useContext(bgthemeContext);
@@ -94,9 +95,7 @@ function TaskLayout() {
 
         async function fetchWorkspace() {
             try {
-                const res = await axios.get(
-                    `http://localhost:5000/workspace/share?id=6a1e8587848d4471d14a554a`
-                );
+                const res = await instance.get(`/workspace/share?id=6a1e8587848d4471d14a554a`)
                 // console.log(res.data.data, 'res.data.data')
                 setSpaceJsonView(res.data.data);
             } catch (err) {
