@@ -250,13 +250,13 @@ const Backlog = ({ workspaceid }: any) => {
                                     {ActiveSprint?.SprintEndDate && (
                                         <div
                                             className={`mt-1 text-xs font-medium ${GetDueDays(
-                                                ActiveSprint.SprintEndDate
+                                                ActiveSprint?.SprintEndDate
                                             ) <= 1
                                                 ? "text-red-500"
                                                 : "text-green-500"
                                                 }`}
                                         >
-                                            {DueDate(ActiveSprint.SprintEndDate)}
+                                            {DueDate(ActiveSprint?.SprintEndDate)}
                                         </div>
                                     )}
                                 </div>
