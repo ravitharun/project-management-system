@@ -59,7 +59,7 @@ const Backlog = ({ workspaceid }: any) => {
         100,
         Math.max(0, Number(ActiveSprint?.SprintProgress) || 0)
     );
-    console.log(userRfToken, 'userRfToken');
+    // console.log(userRfToken, 'userRfToken');
     const  HandelPoup = () => {
         setSprintPoupForm((prev) => !prev)
     }

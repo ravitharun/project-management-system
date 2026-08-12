@@ -46,13 +46,7 @@ function TaskForm({
     const context = useContext(bgthemeContext);
     const { theme }: any = context
 
-    console.log({
-        onclose,
-        AddedBy,
-        projectid,
-        maximizeParent,
-        CreateTask
-    }, 'RAVITharun')
+    
     const [maximize, setMaximize] = useState(false)
     const [assignOpen, setAssignOpen] = useState(false)
     const [taskName, setTaskName] = useState("")
