@@ -80,7 +80,7 @@ const MyTable = ({ spaceid, ActiveSprintId }: info) => {
                 }));
                 // console.log(formattedData, "formattedData");
                 const FilterbySprintnull = formattedData.filter((fil: any) => fil?.SprintId == null)
-                // console.log(FilterbySprintnull,'FilterbySprintnull');
+                console.log(FilterbySprintnull,'FilterbySprintnull');
 
                 setrowData(FilterbySprintnull);
             } catch (error) {
