@@ -13,7 +13,7 @@ import { userRfToken } from "../users";
 
 const Backlog = ({ workspaceid }: any) => {
 
-        alert("Backlog")
+        // alert("Backlog")
 
     const [SprintPoupForm, setSprintPoupForm] = useState<boolean>(false)
     const { theme }: any = useContext(bgthemeContext);

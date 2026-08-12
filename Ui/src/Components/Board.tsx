@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchtaskApi } from "../services/taskApi";
 import { Add } from "../store/TaskStore";
 export default function Board({ work, spacetasks, ismaxAndMin }: any) {
-    alert("Borad")
+    // alert("Borad")
     const ThemeCOntext = useContext(bgthemeContext)
     const { theme }: any = ThemeCOntext
     console.log(spacetasks, 'spacetasks')

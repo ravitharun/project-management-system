@@ -16,7 +16,7 @@ import { toast} from "sonner";
 
 
 const Sprints = ({ workspaceid }: any) => {
-    alert("Sprint")
+    // alert("Sprint")
 
     const tasks = [
         {
@@ -335,7 +335,7 @@ const Sprints = ({ workspaceid }: any) => {
             console.log(response.data, 'tharun');
 
 
-            
+
 
         } catch (error: any) {
 
