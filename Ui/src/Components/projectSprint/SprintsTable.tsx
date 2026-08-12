@@ -121,7 +121,6 @@ const Sprints = ({ workspaceid }: any) => {
     const { theme }: any = useContext(bgthemeContext)
     const redirect = useNavigate()
 
-    console.log(tasks, 'tasks');
 
     const [Sprints, setSprint] = useState<any>(tasks)
     useEffect(() => {
@@ -316,13 +315,13 @@ const Sprints = ({ workspaceid }: any) => {
 
 
                         <button
-                            onClick={() => HandelSprint(params.data._id)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${params.data.SprintActive
+                            onClick={() => HandelSprint(params?.data._id)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${params?.data?.SprintActive
                                 ? "bg-red-500 hover:bg-red-600"
                                 : "bg-green-500 hover:bg-green-600"
                                 }`}
                         >
-                            {params.data.SprintActive ? "Stop Sprint" : "Start Sprint"}
+                            {params?.data?.SprintActive ? "Stop Sprint" : "Start Sprint"}
                         </button>                    </>
                 )
             }
@@ -332,7 +331,7 @@ const Sprints = ({ workspaceid }: any) => {
 
     const HandelSprint = async (Sprintid: any) => {
         try {
-            const response = await instance.put(`/api/sprints/${Sprintid}/${workspaceid._id}/Updatesprint`)
+            const response = await instance.put(`/api/sprints/${Sprintid}/${workspaceid?._id}/Updatesprint`)
             console.log(response.data, 'tharun');
 
         } catch (error: any) {
@@ -387,7 +386,7 @@ const Sprints = ({ workspaceid }: any) => {
                         // Master Detail
                         masterDetail={true}
                         isRowMaster={(data: any) =>
-                            data?.SubTask && data.SubTask.length > 0
+                            data?.SubTask && data?.SubTask?.length > 0
                         }
 
                         autoGroupColumnDef={{
