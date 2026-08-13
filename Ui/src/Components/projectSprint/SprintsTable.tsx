@@ -10,7 +10,7 @@ import bgthemeContext from "../../Context/ThemeContext";
 import { socket } from "../../Scokets/ScoketConfig";
 // import { toast, ToastContainer } from "react-toastify";
 // import { toast, ToastContainer } from "react-toastify";
-import { toast} from "sonner";
+import { toast, Toaster } from "sonner";
 
 
 
@@ -314,15 +314,25 @@ const Sprints = ({ workspaceid }: any) => {
                     <>
 
 
-                        <button
+                                 
+                        
+                            {params?.data?.SprintActive ? <button onClick={() => UpdateSprintStatus(params)}>Stop Sprint</button> : 
+                            
+                            
+                            
+                            
+                            
+                                <button
                             onClick={() => HandelSprint(params?.data._id)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${params?.data?.SprintActive
                                 ? "bg-red-500 hover:bg-red-600"
                                 : "bg-green-500 hover:bg-green-600"
                                 }`}
-                        >
-                            {params?.data?.SprintActive ? "Stop Sprint" : "Start Sprint"}
-                        </button>                    </>
+                        >Start Sprint
+                        </button>      
+                            }
+                        
+                         </>
                 )
             }
         }
@@ -362,11 +372,54 @@ const Sprints = ({ workspaceid }: any) => {
         }
     }
 
+
+    const UpdateSprintStatus = async (params: any) => {
+        console.log(params.data._id, 'params');
+
+
+
+        try {
+            const response = await instance.get(`/api/sprints/${params.data._id}/${workspaceid._id}/UpdateTasksprint`)
+            console.log(response.data, 'response');
+
+
+            if(response.data.status==200){
+                return toast.success(response.data.message)
+            }
+
+        } catch (error: any) {
+            const error_status = error.response.status
+
+            const err_msg = error.response.data.message
+
+            if (error_status == 500) {
+
+                return toast.error(err_msg)
+
+            }
+
+            if (error_status == 400) {
+
+                return toast.error(err_msg)
+
+            }
+            if (error_status == 401) {
+
+                return checkuser(redirect)
+
+            }
+
+
+
+        }
+    }
+
     return (
 
 
 
         <>
+            <Toaster />
 
             {/* <Toaster position="bottom-center" richColors /> */}
 

@@ -46,7 +46,7 @@ function TaskForm({
     const context = useContext(bgthemeContext);
     const { theme }: any = context
 
-    
+
     const [maximize, setMaximize] = useState(false)
     const [assignOpen, setAssignOpen] = useState(false)
     const [taskName, setTaskName] = useState("")
@@ -407,9 +407,12 @@ function TaskForm({
                                     onChange={(e) => setStatus(e.target.value)}
                                     className={inputClass}
                                 >
-                                    <option>Pending</option>
-                                    <option>In Progress</option>
-                                    <option>Completed</option>
+                                    {["todo", "inprogress", "review", "Completed"].map((st) => (
+
+
+                                        <option value={st}>{st}</option>
+                                    ))}
+
                                 </select>
                             </div>
 

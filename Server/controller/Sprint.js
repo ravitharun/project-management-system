@@ -1,5 +1,6 @@
 const Sprint = require("../Models/Sprint");
 const SprintSchema = require("../Models/Sprint");
+const WorkSapceTask = require("../Models/WorkSapceTask");
 const WorkSpaceTask = require("../Models/WorkSapceTask");
 const { getIO } = require("../scoket");
 
@@ -159,28 +160,75 @@ const AddtaskInActiveSprint = async (req, res) => {
 
 
         const checkisAnySpint = await WorkSpaceTask.findByIdAndUpdate({ _id: TaskId }, { SprintId: Sprintid }, { returnDocument: "after" })
-        const getActiveSprint = await WorkSpaceTask.find({ $and: [
+        const getActiveSprint = await WorkSpaceTask.find({
+            $and: [
 
-            { projectid: ProjectId },
-            { SprintId: null }
-        ]
+                { projectid: ProjectId },
+                { SprintId: null }
+            ]
         })
 
-    io.emit("UpdatedActvieSprint", getActiveSprint)
-console.log(getActiveSprint, 'getActiveSprint');
+        io.emit("UpdatedActvieSprint", getActiveSprint)
+        console.log(getActiveSprint, 'getActiveSprint');
 
-return res.status(200).json({ message: "Started New Sprint", data: [], status: true })
+        return res.status(200).json({ message: "Started New Sprint", data: [], status: true })
     } catch (error) {
 
 
-    console.log(error.message);
+        console.log(error.message);
 
-    return res.status(500).json({ message: "server error ", status: false })
+        return res.status(500).json({ message: "server error ", status: false })
+
+    }
+
+
 
 }
 
 
 
-}
 
-module.exports = { CreateSprint, GetSprint, GetActiveSprint, UpdateSprintStatus, AddtaskInActiveSprint }
+const stopActiveSprint = async (req, res) => {
+
+    try {
+        const io = getIO()
+
+        const { Sprintid,spaceid } = req.params
+        console.log({Sprintid,spaceid}, 'sprintidsprintid');
+
+        if (!Sprintid||!spaceid) {
+            return res.status(400).json({ message: "Some thing went Wrong.." })
+
+        }
+
+
+
+
+        const GettaskBysprintid = await WorkSapceTask.find({ SprintId: Sprintid })
+        const taskst = ["todo", "inprogress", "review", "Completed"]
+        const filtertaskStatus = GettaskBysprintid.filter((tasks) => taskst.includes(tasks.TaskStatus))
+        console.log(filtertaskStatus, 'filtertaskStatus');
+        if (filtertaskStatus.length >= 1) {
+            return res.status(409).json({
+                success: false,
+                message: "Sprint cannot be completed. Some tasks are not completed."
+            });
+        }
+
+        const ActiveSprint = await SprintSchema.findByIdAndUpdate({ _id: spaceid }, {
+            SprintActive: false,
+            SprintStatus: "DEACTIVE"
+        }, { returnDocument: "after" })
+
+
+
+        const getUpdtatedsprint=await SprintSchema.findById({ _id: spaceid })
+        io.emit("UpdatedSprint",getUpdtatedsprint)
+        return res.status(200).json({ message: 'Sprint Updated..',data:getUpdtatedsprint,status:true })
+
+    } catch (error) {
+        return res.status(500).json({ message: 'server error',status:false })
+
+    }
+}
+module.exports = { CreateSprint, GetSprint, GetActiveSprint, UpdateSprintStatus, AddtaskInActiveSprint, stopActiveSprint }

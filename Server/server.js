@@ -105,7 +105,7 @@ app.get("/workspace/share", async (req, res) => {
         message: "Workspace not found",
       });
     }
- 
+
     return res.status(200).json({
       data: spaceresponse,
     });
