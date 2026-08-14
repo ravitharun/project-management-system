@@ -151,6 +151,9 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
 
 app.get("/api/health", (req, res) => {
 
+  const dt = new Date()
+
+  console.log(dt.toTimeString(), 'hit evry 5 min');
 
   return res.status(200).json({ message: "Server Is running" })
 })
