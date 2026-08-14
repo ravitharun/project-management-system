@@ -117,7 +117,7 @@ function TaskForm({
     }, []);
 
 
-    const selectedMember: any = Members.find((m: any) => m?.id._id === assignTo)
+    const selectedMember: any = Members.find((m: any) => m?.id?._id === assignTo)
     console.log(selectedMember, 'selectedMember')
 
     const isDark = theme === "Dark"
@@ -342,7 +342,7 @@ function TaskForm({
                                                     key={member?.id?._id}
                                                     type="button"
                                                     onClick={() => {
-                                                        console.log(member.id._id, 'iduser')
+                                                        // console.log(member.id._id, 'iduser')
                                                         setAssignTo(member?.id?._id)
                                                         setAssignOpen(false)
                                                     }}
