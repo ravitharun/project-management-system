@@ -155,7 +155,7 @@ app.get("/api/health", (req, res) => {
 
   console.log(dt.toTimeString(), 'hit evry 5 min');
 
-  return res.status(200).json({ message: "Server Is running" })
+  return res.status(200).json({ message: ` Server is running : ${dt.toTimeString()}` })
 })
 
 // runBackup Db Automated @12am evryday
