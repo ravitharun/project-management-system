@@ -316,7 +316,10 @@ const Sprints = ({ workspaceid }: any) => {
 
                                  
                         
-                            {params?.data?.SprintActive ? <button onClick={() => UpdateSprintStatus(params)}>Stop Sprint</button> : 
+                            {params?.data?.SprintActive ? <button onClick={() => UpdateSprintStatus(params)}  className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${params?.data?.SprintActive
+                                ? "bg-red-500 hover:bg-red-600"
+                                : "bg-green-500 hover:bg-green-600"
+                                }`}>Stop Sprint</button> : 
                             
                             
                             
@@ -399,6 +402,11 @@ const Sprints = ({ workspaceid }: any) => {
             }
 
             if (error_status == 400) {
+
+                return toast.error(err_msg)
+
+            }
+            if (error_status == 409) {
 
                 return toast.error(err_msg)
 
