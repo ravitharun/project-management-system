@@ -149,7 +149,7 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
 
 
 
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
 
 
   return res.status(200).json({ message: "Server Is running" })
