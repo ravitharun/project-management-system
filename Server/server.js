@@ -29,6 +29,7 @@ const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 const AuthTokenVerification = require("./Middleware/AuthMiddleware");
 const { runBackup } = require("./backup");
 const createGoogleCalendarEvent = require("./service/google-Calendar.service");
+const FetchTaskCalendar = require("./routes/GetTaskCalendarRouter");
 const check = `${process.env.envStatus === "Local"
   ? "http://localhost:5000"
   : "https://project-management-system-u091.onrender.com"
@@ -79,6 +80,7 @@ app.use("/api/comments", Comments)
 app.use("/api/project-roles", handelProjectRoleRouter)
 
 app.use("/api/sprints", SprintRouter)
+app.use("/api/Calendar", FetchTaskCalendar)
 // /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)
