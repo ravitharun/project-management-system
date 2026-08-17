@@ -22,7 +22,7 @@ import Progress from "../../progress";
 
 function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
   const context = useContext(bgthemeContext);
-  const Check = true
+  const Check = false
   const { theme }: any = context
   const data: any = { HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }
   const navi = useNavigate()

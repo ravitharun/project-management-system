@@ -37,6 +37,7 @@ function MyCalendar({ ProjectId }: any) {
         const Err_msg = error?.response?.data?.message
 
 
+        console.error(Err_msg);
 
 
         if (status == 401) {
