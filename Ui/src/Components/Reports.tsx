@@ -10,7 +10,7 @@ import {
   MoreHorizontal,
   TrendingUp,
   Users,
-  Zap,
+  // Zap,
 } from "lucide-react";
 
 import bgthemeContext from "../Context/ThemeContext";

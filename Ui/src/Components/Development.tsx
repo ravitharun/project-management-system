@@ -1,20 +1,20 @@
-import React, { useContext, useState } from "react";
+import  { useContext, useState } from "react";
 import {
   GitCommit,
   GitBranch,
   GitPullRequest,
   Rocket,
   CircleCheck,
-  CircleX,
+  // CircleX,
   Clock3,
-  User,
+  // User,
   Search,
   Filter,
   ExternalLink,
   MoreHorizontal,
-  Plus,
+  // Plus,
   Code2,
-  Terminal,
+  // Terminal,
 } from "lucide-react";
 import bgthemeContext from "../Context/ThemeContext";
 

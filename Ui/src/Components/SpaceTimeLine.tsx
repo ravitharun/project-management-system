@@ -6,12 +6,11 @@ import {
   Plus,
   Search,
   User,
-  CheckCircle2,
-  Circle,
+
   Milestone,
   Flag,
-  GitBranch,
-  MoreHorizontal,
+  // GitBranch,
+  // MoreHorizontal,
 } from "lucide-react";
 
 import bgthemeContext from "../Context/ThemeContext";

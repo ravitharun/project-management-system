@@ -1,5 +1,4 @@
 import { Plus, Rocket } from 'lucide-react'
-import React from 'react'
 
 function RealesPages({isTheme}:any) {
   return (
