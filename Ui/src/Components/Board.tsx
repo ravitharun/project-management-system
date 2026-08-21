@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchtaskApi } from "../services/taskApi";
 import { Add } from "../store/TaskStore";
 export default function Board({ work, spacetasks, ismaxAndMin }: any) {
+    // alert("Borad")
     const ThemeCOntext = useContext(bgthemeContext)
     const { theme }: any = ThemeCOntext
     console.log(spacetasks, 'spacetasks')
@@ -146,14 +147,14 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
                 >
 
                     {/* EMPTY STATE */}
-                    {data.columnOrder?.length === 0 ? (
+                    {data?.columnOrder?.length === 0 ? (
                         <div className="text-gray-500 p-6">
                             Loading board...
                         </div>
                     ) : (
-                        data.columnOrder.map((colId: any) => {
-                            const column = data.columns[colId];
-                            console.log(column, 'columncolumn')
+                        data?.columnOrder.map((colId: any) => {
+                            const column = data?.columns[colId];
+                            // console.log(column, 'columncolumn')
                             if (!column) return null;
 
                             // const tasks = column.taskIds.map(
@@ -162,7 +163,7 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
 
                             // console.log(tasks,'tasks')
                             return (
-                                <Droppable droppableId={column.id} key={column.id}>
+                                <Droppable droppableId={column?.id} key={column?.id}>
                                     {(provided) => (
                                         <div
                                             ref={provided.innerRef}
@@ -184,19 +185,19 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
                                                 }
                 `}
 
-                                            onMouseEnter={() => sethoverid(column.id)}
+                                            onMouseEnter={() => sethoverid(column?.id)}
                                             onMouseLeave={() => sethoverid("backlog")}
                                         >
                                             {/* HEADER */}
                                             <h2 className="font-mono mb-3 ">
-                                                {column.title}
+                                                {column?.title}
                                             </h2>
                                             {/* SCROLLABLE TASK AREA */}
                                             <div className="flex-1 overflow-y-auto pr-1 space-y-3">
 
                                                 {/* EMPTY STATE */}
-                                                {count.length === 0 ? (
-                                                    Hoverid === column.id && (
+                                                {count?.length === 0 ? (
+                                                    Hoverid === column?.id && (
                                                         <div className="flex items-center justify-center h-full">
                                                             <button
                                                                 className="
@@ -218,8 +219,8 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
                                                 ) : (
                                                     Bycount?.map((task: any, index: number) => (
                                                         <Draggable
-                                                            key={task.id}
-                                                            draggableId={task.id}
+                                                            key={task?.id}
+                                                            draggableId={task?.id}
                                                             index={index}
                                                         >
                                                             {(provided, snapshot) => (
@@ -265,7 +266,7 @@ export default function Board({ work, spacetasks, ismaxAndMin }: any) {
             </DragDropContext>
             {CreateTask
 
-                && <TaskForm onclose={() => setCreateTask(false)} maximizeParent={ismaxAndMin} projectid={work._id} CreateTask={CreateTask}
+                && <TaskForm onclose={() => setCreateTask(false)} maximizeParent={ismaxAndMin} projectid={work?._id} CreateTask={CreateTask}
 
                 ></TaskForm>
             }

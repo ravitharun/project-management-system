@@ -8,9 +8,10 @@ import {
   Sparkles,
 } from "lucide-react";
 import { instance } from "../../services/apiservices";
-import { getuserInfo } from "../LocalStorage";
+import { checkuser, getuserInfo } from "../LocalStorage";
 import type { WorkspaceIcon, WorkspaceMember, WorkspaceSetup } from "../EmailApproval/EmailBasedJoinWorkspace";
 import bgthemeContext from "../../Context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -56,6 +57,7 @@ type ViewedWorkspace = {
 };
 
 type UserView = {
+  UserView:any,
   UserId: Userid;
   createdAt: string;
   updatedAt: string;
@@ -66,10 +68,10 @@ function ViewedActivity() {
    const context = useContext(bgthemeContext);
       const { theme }: any = context
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [spaces, setSpaces] = useState<UserView>();
+  const [spaces, setSpaces] = useState<UserView|any>();
 
 
-
+const redirect=useNavigate()
   const isDark = theme === "Dark";
 
   useEffect(() => {
@@ -77,15 +79,21 @@ function ViewedActivity() {
 
 
       try {
-        const response = await instance.get("/api/Analytcs/", {
+        const response = await instance.get("/api/Analytcs/api/Analytcs", {
           params: {
             userid: JSON.parse(getuserInfo)._id
           }
         })
-        console.log(response?.data?.data, 'tharun')
-        setSpaces(response?.data?.data)
+        console.log(response?.data?.data[0].viewedWorkspaces, 'tharun')
+        setSpaces(response?.data?.data[0]?.viewedWorkspaces)
       } catch (error: any) {
-        console.log(error.message)
+        // console.log(error.response.status,'errir')
+        // console.log(error,'errir')
+
+
+        if(error.response.status==401 ){
+          return checkuser(redirect)
+        }
 
       }
     }
@@ -191,7 +199,7 @@ function ViewedActivity() {
           </div>
 
           <div className="space-y-3">
-            {spaces?.viewedWorkspaces?.map((w: any, i: number) => {
+            {spaces?.map((w: any, i: number) => {
 
 
               return (

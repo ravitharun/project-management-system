@@ -11,9 +11,10 @@ import { useNavigate } from "react-router-dom";
 import MinAndMaxWorkspaceView from "./MinAndMaxWorkspaceview";
 import SharespaceView from "../../../Context/ShareViewContext";
 import ShareMinAndMaxWorkspaceView from "../../Share/ShareMinAndMaxWorkspaceView";
-import axios from "axios";
+// import axios from "axios";
 import ClickedWorkSpace from "../../../Context/ClickedWorkSpace";
 import bgthemeContext from "../../../Context/ThemeContext";
+import { instance } from "../../../services/apiservices";
 
 
 
@@ -89,9 +90,7 @@ ${url}/shared/ViewWorkspace?id=${id}`,
 
     async function fetchWorkspace() {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/workspace/share?id=6a1e8587848d4471d14a554a`
-        );
+        const res = await instance.get(`/workspace/share?id=6a1e8587848d4471d14a554a`)
         // console.log(res.data.data, 'res.data.data')
         setSpaceJsonView(res.data.data);
       } catch (err) {

@@ -46,13 +46,7 @@ function TaskForm({
     const context = useContext(bgthemeContext);
     const { theme }: any = context
 
-    console.log({
-        onclose,
-        AddedBy,
-        projectid,
-        maximizeParent,
-        CreateTask
-    }, 'RAVITharun')
+
     const [maximize, setMaximize] = useState(false)
     const [assignOpen, setAssignOpen] = useState(false)
     const [taskName, setTaskName] = useState("")
@@ -123,7 +117,7 @@ function TaskForm({
     }, []);
 
 
-    const selectedMember: any = Members.find((m: any) => m?.id._id === assignTo)
+    const selectedMember: any = Members.find((m: any) => m?.id?._id === assignTo)
     console.log(selectedMember, 'selectedMember')
 
     const isDark = theme === "Dark"
@@ -348,7 +342,7 @@ function TaskForm({
                                                     key={member?.id?._id}
                                                     type="button"
                                                     onClick={() => {
-                                                        console.log(member.id._id, 'iduser')
+                                                        // console.log(member.id._id, 'iduser')
                                                         setAssignTo(member?.id?._id)
                                                         setAssignOpen(false)
                                                     }}
@@ -413,9 +407,12 @@ function TaskForm({
                                     onChange={(e) => setStatus(e.target.value)}
                                     className={inputClass}
                                 >
-                                    <option>Pending</option>
-                                    <option>In Progress</option>
-                                    <option>Completed</option>
+                                    {["todo", "inprogress", "review", "Completed"].map((st) => (
+
+
+                                        <option value={st}>{st}</option>
+                                    ))}
+
                                 </select>
                             </div>
 

@@ -12,6 +12,9 @@ import TaskForm from "../Task/CreateTask/TaskForm";
 import { userRfToken } from "../users";
 
 const Backlog = ({ workspaceid }: any) => {
+
+        // alert("Backlog")
+
     const [SprintPoupForm, setSprintPoupForm] = useState<boolean>(false)
     const { theme }: any = useContext(bgthemeContext);
 
@@ -56,7 +59,7 @@ const Backlog = ({ workspaceid }: any) => {
         100,
         Math.max(0, Number(ActiveSprint?.SprintProgress) || 0)
     );
-    console.log(userRfToken, 'userRfToken');
+    // console.log(userRfToken, 'userRfToken');
     const  HandelPoup = () => {
         setSprintPoupForm((prev) => !prev)
     }

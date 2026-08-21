@@ -84,7 +84,8 @@ const WorkspaceSchema = new mongoose.Schema({
             "CANCELLED",
         ]
     },
-    isProjectStatus: { type: String, default: false, enum: ["SUPER_ADMIN", "ADMIN", "TEAM_LEAD", "MEMBER"] }
+    isDevelop:{type: Boolean, default: false,},
+    isProjectStatus: { type: String, default: 'TEAM_LEAD', enum: ["SUPER_ADMIN", "ADMIN", "TEAM_LEAD", "MEMBER"] }
 }, {
     timestamps: true
 });

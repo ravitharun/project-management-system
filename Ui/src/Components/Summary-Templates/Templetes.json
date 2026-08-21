@@ -88,7 +88,7 @@
   {
     "id": "kanban",
     "name": "Kanban",
-    "isDevelop": true,
+    "isDevelop": false,
     "badge": "Popular",
     "image": "https://www.mobilelive.ca/wp-content/uploads/2022/08/Kanban_Image3.jpg",
     "icon": "/Logo.png",

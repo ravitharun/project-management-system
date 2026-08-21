@@ -29,6 +29,7 @@ const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 const AuthTokenVerification = require("./Middleware/AuthMiddleware");
 const { runBackup } = require("./backup");
 const createGoogleCalendarEvent = require("./service/google-Calendar.service");
+const FetchTaskCalendar = require("./routes/GetTaskCalendarRouter");
 const check = `${process.env.envStatus === "Local"
   ? "http://localhost:5000"
   : "https://project-management-system-u091.onrender.com"
@@ -79,6 +80,7 @@ app.use("/api/comments", Comments)
 app.use("/api/project-roles", handelProjectRoleRouter)
 
 app.use("/api/sprints", SprintRouter)
+app.use("/api/Calendar", FetchTaskCalendar)
 // /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)
@@ -105,7 +107,7 @@ app.get("/workspace/share", async (req, res) => {
         message: "Workspace not found",
       });
     }
- 
+
     return res.status(200).json({
       data: spaceresponse,
     });
@@ -149,10 +151,13 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
 
 
 
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
 
+  const dt = new Date()
 
-  return res.status(200).json({ message: "Server Is running" })
+  console.log(dt.toTimeString(), 'hit evry 5 min');
+
+  return res.status(200).json({ message: ` Server is running : ${dt.toTimeString()}` })
 })
 
 // runBackup Db Automated @12am evryday

@@ -16,7 +16,7 @@ type ActionType =
 type ActionProps = {
     title: string|any;
     description: string|any;
-    type: ActionType | string|any;
+    type?: ActionType | string|any;
 };
 
 function ActionLoading({
