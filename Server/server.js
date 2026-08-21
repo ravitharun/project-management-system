@@ -151,14 +151,14 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
 
 
 
-app.get("/api/health", (req, res) => {
+// app.get("/api/health", (req, res) => {
 
-  const dt = new Date()
+//   const dt = new Date()
 
-  console.log(dt.toTimeString(), 'hit evry 5 min');
+//   console.log(dt.toTimeString(), 'hit evry 5 min');
 
-  return res.status(200).json({ message: ` Server is running : ${dt.toTimeString()}` })
-})
+//   return res.status(200).json({ message: ` Server is running : ${dt.toTimeString()}` })
+// })
 
 // runBackup Db Automated @12am evryday
 cron.schedule("0 0 * * *", () => {
