@@ -18,11 +18,16 @@ import ProjectSummary from "../../ProjectSummary/ProjectSummary";
 import Backlog from "../../projectSprint/Backlog";
 // import ActionLoading from "../../ActionLoading";
 import Progress from "../../progress";
+import Pages from "../../ProjectPage/MainPages";
+import Forms from "../../FormsPages/Forms";
+import Development from "../../Development";
+import Reports from "../../Reports";
+import Goals from "../../Goals";
 
 
 function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
   const context = useContext(bgthemeContext);
-  const Check = true
+  const Check = false
   const { theme }: any = context
   const data: any = { HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }
   const navi = useNavigate()
@@ -479,11 +484,13 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
             )}
 
             {CurrentView == "Development" &&
-              <h1>{CurrentView} View Adding Soon</h1>
+              // <h1>{CurrentView} View Adding Soon</h1>
+              <Development/>
             }
 
             {CurrentView == "Forms" &&
-              <h1>{CurrentView} View Adding Soon</h1>
+              // <h1>{CurrentView} View Adding Soon</h1>
+              <Forms/>
             }
 
             {CurrentView == "List" && (
@@ -499,11 +506,12 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
             )}
 
             {CurrentView == "Pages" &&
-              <h1>{CurrentView} View Adding Soon</h1>
+              // <h1>{CurrentView} View Adding Soon</h1>
+              <Pages />
             }
 
             {CurrentView == "Reports" &&
-              <h1>{CurrentView} View Adding Soon</h1>
+            <Reports/>
             }
 
             {CurrentView == "Backlog" &&
@@ -523,7 +531,8 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
             )}
 
             {CurrentView == "Goals" &&
-              <h1>{CurrentView} View Adding Soon</h1>
+              // <h1>{CurrentView} View Adding Soon</h1>
+              <Goals/>
             }
 
             {CurrentView == "Board" && (

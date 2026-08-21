@@ -12,8 +12,10 @@ const CreateWorkSpace = async (req, res) => {
 
         const io = getIO()
         const { updatedData } = req.body
-        console.log(updatedData.useremail, 'updatedData')
-        console.log(updatedData?.workspaceBackground, 'workspaceBackground')
+        console.log(req.body, ' req.body');
+
+        // console.log(updatedData.useremail, 'updatedData')
+        // console.log(updatedData?.workspaceBackground, 'workspaceBackground')
         const saveWorkspace = new Workspace({
             ...updatedData,
             // detailedInfo: updatedData?.detailedInfo,
@@ -31,15 +33,15 @@ const CreateWorkSpace = async (req, res) => {
 
 
         const UserCreatedWOrkSpace = await Workspace.find({ "createby.userEmail": updatedData.useremail })
-        console.log(UserCreatedWOrkSpace,'UserCreatedWOrkSpace');
-        
+        console.log(UserCreatedWOrkSpace, 'UserCreatedWOrkSpace');
+
         io.emit("Createworkspace", UserCreatedWOrkSpace)
 
 
         return res.status(200).json({ message: "workspace Created", status: true })
 
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message, 'errr')
         return res.status(500).json({ message: error.message, status: false })
     }
 }
