@@ -16,7 +16,6 @@ import {
 
 
 
-import { Socket } from "socket.io-client";
 import { socket } from "../../../Scokets/ScoketConfig";
 // import TaskForm from "../../Task/CreateTask/TaskForm"
 function SpaceList({ spaceid }: any) {
