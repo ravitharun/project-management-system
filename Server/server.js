@@ -11,6 +11,7 @@ const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator"
 const ProjectsRoute = require("./routes/HandelProjectRouter");
 const SprintRouter = require("./routes/SprintRouter");
 const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
+const Activity_Router = require("./routes/Activity-Router");
 const NotificatonsRouter = require("./routes/NotificatonsRouter");
 const FetchTeamRouter = require("./routes/FetchTeamRouter");
 const AnalytcsRouter = require("./routes/AnalytcsRouter");
@@ -30,6 +31,7 @@ const AuthTokenVerification = require("./Middleware/AuthMiddleware");
 const { runBackup } = require("./backup");
 const createGoogleCalendarEvent = require("./service/google-Calendar.service");
 const FetchTaskCalendar = require("./routes/GetTaskCalendarRouter");
+const SaveActiviy = require("./controller/Activity-Controller");
 const check = `${process.env.envStatus === "Local"
   ? "http://localhost:5000"
   : "https://project-management-system-u091.onrender.com"
@@ -63,7 +65,7 @@ console.log(envStatusurl, 'envStatusurl')
 console.log("Task id :" + TaskId("Task"))
 console.log("emp id : " + GetEmpNameGenById(""))
 console.log("Project id : " + ProjetcId())
-app.use(limiter)
+// app.use(limiter)
 // /api/ProjectfileUploads/upload
 // Routes
 
@@ -81,6 +83,7 @@ app.use("/api/project-roles", handelProjectRoleRouter)
 
 app.use("/api/sprints", SprintRouter)
 app.use("/api/Calendar", FetchTaskCalendar)
+app.use("/api/Activity", Activity_Router)
 // /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)
@@ -150,15 +153,14 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
 });
 
 
+// app.get("/api/health", (req, res) => {
 
-app.get("/api/health", (req, res) => {
+//   const dt = new Date()
 
-  const dt = new Date()
+//   console.log(dt.toTimeString(), 'hit evry 5 min');
 
-  console.log(dt.toTimeString(), 'hit evry 5 min');
-
-  return res.status(200).json({ message: ` Server is running : ${dt.toTimeString()}` })
-})
+//   return res.status(200).json({ message: ` Server is running : ${dt.toTimeString()}` })
+// })
 
 // runBackup Db Automated @12am evryday
 cron.schedule("0 0 * * *", () => {

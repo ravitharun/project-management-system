@@ -3,6 +3,7 @@ const SprintSchema = require("../Models/Sprint");
 const WorkSapceTask = require("../Models/WorkSapceTask");
 const WorkSpaceTask = require("../Models/WorkSapceTask");
 const { getIO } = require("../scoket");
+const SaveActiviy = require("./Activity-Controller");
 
 const CreateSprint = async (req, res) => {
 
@@ -193,10 +194,10 @@ const stopActiveSprint = async (req, res) => {
     try {
         const io = getIO()
 
-        const { Sprintid,spaceid } = req.params
-        console.log({Sprintid,spaceid}, 'sprintidsprintid');
+        const { Sprintid, spaceid } = req.params
+        console.log({ Sprintid, spaceid }, 'sprintidsprintid');
 
-        if (!Sprintid||!spaceid) {
+        if (!Sprintid || !spaceid) {
             return res.status(400).json({ message: "Some thing went Wrong.." })
 
         }
@@ -222,13 +223,44 @@ const stopActiveSprint = async (req, res) => {
 
 
 
-        const getUpdtatedsprint=await SprintSchema.findById({ _id: spaceid })
-        io.emit("UpdatedSprint",getUpdtatedsprint)
-        return res.status(200).json({ message: 'Sprint Updated..',data:getUpdtatedsprint,status:true })
+        const getUpdtatedsprint = await SprintSchema.findById({ _id: spaceid })
+        io.emit("UpdatedSprint", getUpdtatedsprint)
+        return res.status(200).json({ message: 'Sprint Updated..', data: getUpdtatedsprint, status: true })
 
     } catch (error) {
-        return res.status(500).json({ message: 'server error',status:false })
+        return res.status(500).json({ message: 'server error', status: false })
 
     }
 }
-module.exports = { CreateSprint, GetSprint, GetActiveSprint, UpdateSprintStatus, AddtaskInActiveSprint, stopActiveSprint }
+
+
+
+
+// checking
+const testing = async (req, res) => {
+    try {
+        const { data } = req.body;
+
+        const response = await SaveActiviy(data);
+
+        console.log(response);
+
+        if (response === 201) {
+            return res.status(200).json({
+                message: "Activity added successfully"
+            });
+        }
+
+        return res.status(400).json({
+            message: "Activity could not be added"
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Server error"
+        });
+    }
+};
+module.exports = { CreateSprint, GetSprint, testing, GetActiveSprint, UpdateSprintStatus, AddtaskInActiveSprint, stopActiveSprint }

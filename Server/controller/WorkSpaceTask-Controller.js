@@ -3,11 +3,14 @@ const WorkSpaceTask = require("../Models/WorkSapceTask")
 const Workspace = require("../Models/Workspace")
 const User = require("../Models/Auth")
 const AddcommentsSchema = require("../Models/Workspace-comments");
+
+
 const createGoogleCalendarEvent = require("../service/google-Calendar.service");
 const WorkSapceTask = require("../Models/WorkSapceTask");
 const { getIO } = require("../scoket");
 const UpdateGoogleCalendarEvent = require("../service/updateGoogleCalendarEvent");
 const DeleteGoogleCalendarEvent = require("../service/DeleteGoogleCalendarEvent");
+const SaveActiviy = require("../controller/Activity-Controller")
 const AddWorkSpaceTask = async (req, res) => {
     try {
         const { TaskData, assignTo } = req.body;
@@ -375,9 +378,12 @@ const DeleteTask = async (req, res, next) => {
 // Duplicate Task
 const DuplicateTask = async (req, res, next) => {
     try {
+        const io = getIO()
         const { taskid } = req.params;
-        console.log(taskid, 'taskid')
         console.log(req.body, 'body')
+        if (!req.body.data) {
+            return res.status(400).json({ message: "some thing went wrong" })
+        }
 
         if (!taskid) {
             return res.status(400).json({ message: "TaskId is missing to duplicate" });
@@ -406,6 +412,17 @@ const DuplicateTask = async (req, res, next) => {
         });
 
         await Add.save();
+
+
+        await SaveActiviy(req.body.data)
+
+
+
+
+        const getTasks = await WorkSpaceTask.find({ projectid: req.body.data.projectId })
+        console.log(getTasks, 'getTasks');
+
+        io.emit("Project_Tasks", { getTasks })
 
         return res.status(200).json({
             message: "Task duplicated successfully. You can now edit the copied task."
