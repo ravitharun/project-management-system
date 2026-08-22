@@ -13,6 +13,10 @@ import {
   PanelGroup,
   PanelResizeHandle,
 } from "react-resizable-panels";
+
+
+
+import { socket } from "../../../Scokets/ScoketConfig";
 // import TaskForm from "../../Task/CreateTask/TaskForm"
 function SpaceList({ spaceid }: any) {
   const contexttheme = useContext(bgthemeContext);
@@ -27,6 +31,24 @@ function SpaceList({ spaceid }: any) {
   const [viewtasks, setviewtaks] = useState<any>(null);
 
   const isDark = theme === "Dark";
+
+
+  useEffect(() => {
+    const handelTasks = (data: any) => {
+
+
+      setTaskListView(data.getTasks)
+
+
+    }
+    socket.on("Project_Tasks", handelTasks)
+
+    return () => {
+      socket.off("disconnect");
+      socket.off("Project_Tasks", handelTasks);
+    }
+  }, [])
+
 
   useEffect(() => {
     const FetchTasks = async () => {
@@ -109,7 +131,7 @@ function SpaceList({ spaceid }: any) {
         </div>
       </div>
 
-      {CurrentView === "list" && <MyTable  spaceid={spaceid} />}
+      {CurrentView === "list" && <MyTable spaceid={spaceid} />}
 
       {CurrentView === "grid" && (
         <div
@@ -168,10 +190,7 @@ function SpaceList({ spaceid }: any) {
                         <h2 className="text-sm font-semibold">Tasks</h2>
                         <p className="text-xs opacity-70">
                           Manage your workspace tasks
-                          {true
-                            &&
-                            "efv  "
-                          }
+
                         </p>
                       </div>
                     </div>

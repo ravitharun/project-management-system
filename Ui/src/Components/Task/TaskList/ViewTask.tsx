@@ -264,7 +264,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
 
     try {
 
-      const response = await HandelDuplicateTask(TasksId)
+      const response = await HandelDuplicateTask(TasksId,Tasks)
       console.log(response.status)
       if (response.status == 200) {
 
