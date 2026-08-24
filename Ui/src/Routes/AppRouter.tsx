@@ -22,6 +22,8 @@ import EmailBasedJoinWorkspace from "../Components/EmailApproval/EmailBasedJoinW
 import TaskLayout from "../Components/Task/TaskLayout";
 import { Toaster } from "react-hot-toast";
 import PageNotFound from "../Components/PageNotFound";
+import Settings from "../Components/Settings";
+
 // import Layout from "../Components/Layout";
 
 function AppRouter() {
@@ -175,6 +177,7 @@ function AppRouter() {
 
                     {/* <Route path="shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} /> */}
                     <Route path="/shared/ViewWorkspace/:id" element={<Shareview />} />
+                    <Route path="/Settings" element={<Settings />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projectSettings" element={<ProjectSettings />} />
                     <Route path="/Tasks" element={<Task />} />
