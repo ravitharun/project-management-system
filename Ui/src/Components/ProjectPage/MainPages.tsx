@@ -20,7 +20,7 @@ import RealesPages from "./RealesPages";
 import MileStonespages from "./MileStonespages";
 import Automation from "./Automation";
 import WorkLoadPages from "./WorkLoadPages";
-import Settings from "../Settings";
+// import Settings from "../Settings";
 
 const pages = [
     {
