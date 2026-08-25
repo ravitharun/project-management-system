@@ -36,22 +36,12 @@ const check = `${process.env.envStatus === "Local"
   ? "http://localhost:5000"
   : "https://project-management-system-u091.onrender.com"
   }/api/workspace/approve-workspace-invite/?workspaceid=spaceId&AcceptEmail=useremail`;
-console.log(check, 'check Email')
 
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
 }
 const isProd = process.env.envStatus === "Prod";
 console.log(isProd, 'checkispord')
-let a = redis;
-console.log("IOREDIS:", a)
-console.log(process.env.REDIS_URL, 'process.env.REDIS_URL')
-console.log(process.env.Db, 'process.env.Db')
-console.log("++++++++++++++++++++++++++++++++++++++++++++++");
-
-console.log(process.env.GOOGLE_REDIRECT_URI, 'process.env.Db')
-console.log(process.env.GOOGLE_CLIENT_SECRET, 'process.env.Db')
-console.log(process.env.GOOGLE_CLIENT_ID, 'process.env.Db')
 
 // cors
 const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" : process.env.LiveUI
@@ -60,15 +50,9 @@ const envStatusurl = process.env.envStatus == "Local" ? "http://localhost:5173" 
 
 app.use(cors({ origin: [envStatusurl, 'https://taskora-system.netlify.app'] }));
 
-console.log("--------- check the id's -----")
-console.log(envStatusurl, 'envStatusurl')
-console.log("Task id :" + TaskId("Task"))
-console.log("emp id : " + GetEmpNameGenById(""))
-console.log("Project id : " + ProjetcId())
 // app.use(limiter)
 // /api/ProjectfileUploads/upload
 // Routes
-
 app.use("/api/auth", AuthRouter);
 app.use("/api/ManageProject", ProjectsRoute);
 app.use("/api/ProjectfileUpload", FileUploadRouter)

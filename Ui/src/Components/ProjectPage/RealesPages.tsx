@@ -1,9 +1,16 @@
 import { Plus, Rocket } from 'lucide-react'
 
-function RealesPages({isTheme}:any) {
-  return (
-   <>
-   
+import CustomRealseForm from './CustomRealseForm';
+import { useState } from 'react';
+
+function RealesPages({ isTheme }: any) {
+
+    const [IsRealseForm, setIsRealseForm] = useState(false);
+
+    return (
+        <>
+
+
             <div className="mt-10">
 
                 <div className="mb-4 flex items-center justify-between">
@@ -29,6 +36,8 @@ function RealesPages({isTheme}:any) {
                             ? "bg-white text-gray-900"
                             : "bg-gray-900 text-white"
                             }`}
+
+                        onClick={() => setIsRealseForm((prev) => !prev)}
                     >
                         <Plus size={16} />
                         New Release
@@ -95,10 +104,12 @@ function RealesPages({isTheme}:any) {
 
                 </div>
             </div>
-   
-   
-   </>
-  )
+
+            {IsRealseForm && <CustomRealseForm onClose={() => setIsRealseForm(false)} />}
+
+
+        </>
+    )
 }
 
 export default RealesPages

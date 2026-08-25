@@ -9,6 +9,7 @@ import {
 
 import bgthemeContext from "../Context/ThemeContext"
 import { checkuser, getuserInfo } from "./LocalStorage"
+import { Link } from "react-router-dom"
 
 
 function UserPanel() {
@@ -109,7 +110,7 @@ function UserPanel() {
                     </button>
 
                     {/* SETTINGS */}
-
+<Link to="/Settings">
                     <button
                         className={`
                             w-full flex items-center gap-3
@@ -130,6 +131,8 @@ function UserPanel() {
                         </span>
 
                     </button>
+</Link>
+
 
                     {/* THEME */}
 

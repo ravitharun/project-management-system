@@ -196,8 +196,8 @@ function Sidebar({ page }: Props) {
 
 
     const sidebaronhover = (data: object) => {
-        console.log(data,'data');
-        
+        console.log(data, 'data');
+
 
 
         setHoverElement(data)
@@ -267,7 +267,7 @@ function Sidebar({ page }: Props) {
                     >
                         <FaBell className="text-lg" />
                         <span className="absolute -top-1 -right-1 bg-red-500 text-[10px] px-1.5 py-[1px] rounded-full text-white">
-                            3
+                            30
                         </span>
                     </button>
 
@@ -275,7 +275,7 @@ function Sidebar({ page }: Props) {
                         <div
                             className="w-9 h-9 rounded-full  flex items-center justify-center font-semibold text-white cursor-pointer"
                             onClick={() => setisOpenPanelItems((prev) => !prev)}
-                 
+
                         >
                             <img src={JSON.parse(getuserInfo)?.userProfile} alt={JSON.parse(getuserInfo)?.Username} title={JSON.parse(getuserInfo).Username} />
                         </div>
@@ -659,9 +659,9 @@ hover:translate-x-1
                                         )}
                                 </div>
                             ))}
-                             
+
                         </div>
-    
+
                     </div>
                     {/* ================= OUTSIDE STAR MENU ================= */}
                     {StarMenu && (
@@ -682,7 +682,7 @@ hover:translate-x-1
                         </div>
                     )}
 
-{!issidebaropen && onHoverElement && <HoverlistMenu HoverElement={HoverElement} />}
+                    {!issidebaropen && onHoverElement && <HoverlistMenu HoverElement={HoverElement} />}
 
                 </div>
 
