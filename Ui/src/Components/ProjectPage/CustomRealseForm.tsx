@@ -38,6 +38,13 @@ function CustomRealseForm({ onClose }: any) {
     const [Status, setStatus] = useState<TypeStatus | any>()
 
 
+console.log({
+    version,
+    RealseDescprition,
+    RealseName,
+    Release_Date,
+    Status,Version
+});
 
     const AddNewRealse = async (projectId: any) => {
         try {
@@ -332,8 +339,6 @@ function CustomRealseForm({ onClose }: any) {
                         </button>
 
                         <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700 sm:w-auto"
-
-
                             onClick={AddNewRealse}
                             disabled={true}
                         >
