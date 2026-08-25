@@ -10,6 +10,7 @@ const connectDb = require("./config/Db");
 const { GetEmpNameGenById, TaskId, ProjetcId } = require("./Utils/EmpIDGenrator");
 const ProjectsRoute = require("./routes/HandelProjectRouter");
 const SprintRouter = require("./routes/SprintRouter");
+const ProjectsVersionRoter = require("./routes/ProjectsVersionRoter");
 const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
 const Activity_Router = require("./routes/Activity-Router");
 const NotificatonsRouter = require("./routes/NotificatonsRouter");
@@ -68,6 +69,7 @@ app.use("/api/project-roles", handelProjectRoleRouter)
 app.use("/api/sprints", SprintRouter)
 app.use("/api/Calendar", FetchTaskCalendar)
 app.use("/api/Activity", Activity_Router)
+app.use('/api/projects',ProjectsVersionRoter)
 // /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)

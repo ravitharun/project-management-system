@@ -7,6 +7,11 @@ function RealesPages({ isTheme }: any) {
 
     const [IsRealseForm, setIsRealseForm] = useState(false);
 
+
+
+
+
+    
     return (
         <>
 
