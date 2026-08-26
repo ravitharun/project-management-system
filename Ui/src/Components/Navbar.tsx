@@ -67,7 +67,7 @@ function Sidebar({ page }: Props) {
     const work: any = ClickedSpace
 
 
-    const redirect = useNavigate()
+
 
 
 

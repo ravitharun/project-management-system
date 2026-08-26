@@ -1,9 +1,8 @@
 import { Scheduler } from "@aldabil/react-scheduler";
 import bgthemeContext from "../../../Context/ThemeContext";
 import { useContext, useEffect, useState } from "react";
-import { checkuser } from "../../LocalStorage";
-import { useNavigate } from "react-router-dom";
-import { toast, Toaster } from "sonner";
+
+import {  Toaster } from "sonner";
 import { instance } from "../../../services/apiservices";
 import { ShowToast } from "../../toastHelper";
 
@@ -13,9 +12,7 @@ function MyCalendar({ ProjectId }: any) {
   const context = useContext(bgthemeContext);
   const { theme }: any = context
 
-  const redirect = useNavigate()
 
-  const isTheme = theme === 'Dark'
 
 
   const [tasks, settasks] = useState<any>([])

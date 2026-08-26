@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import { instance } from "../services/apiservices";
 import toast from "react-hot-toast";
-import { checkuser, getuserInfo } from "./LocalStorage";
+import {  getuserInfo } from "./LocalStorage";
 import { validateProject } from "../types/errortype";
 import { ShowToast } from "./toastHelper";
 

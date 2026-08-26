@@ -1,11 +1,11 @@
 import Sidebar from "../Components/Navbar";
 import { Bell, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { CurrentDateFucntion, timeAgo } from "../Components/timeAgo ";
-// import toast from "react-hot-toast";
+
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { instance } from "../services/apiservices";
-import { checkuser } from "../Components/LocalStorage";
+
 import { ShowToast } from "../Components/toastHelper";
 
 function Notifications() {

@@ -10,7 +10,7 @@ import {
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CheckCircle } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
-import { toast } from "react-toastify";
+
 import { instance } from "../../services/apiservices";
 import bgthemeContext from "../../Context/ThemeContext";
 import { ShowToast } from "../toastHelper";

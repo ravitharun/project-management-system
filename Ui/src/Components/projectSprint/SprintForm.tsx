@@ -9,13 +9,13 @@ import {
     FaChevronDown,
     FaSignal
 } from "react-icons/fa";
-import { checkuser, getuserInfo } from "../LocalStorage";
+import {  getuserInfo } from "../LocalStorage";
 import { instance } from "../../services/apiservices";
-import { useNavigate } from "react-router-dom";
+
 import { ShowToast } from "../toastHelper";
 
 const SprintForm = ({ spaceid, onClick, SprintPoupForm }: any) => {
-    const redirect = useNavigate()
+
     const [SprintName, setSprintName] = useState<String | any>("")
     const [SprintGoal, setSprintGoal] = useState<String | any>("")
     const [SprintStartDate, setSprintStartDate] = useState<String | any>("")

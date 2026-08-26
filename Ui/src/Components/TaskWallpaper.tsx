@@ -11,7 +11,7 @@ import bgthemeContext from "../Context/ThemeContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { instance } from "../services/apiservices";
-import { checkuser } from "./LocalStorage";
+
 import { ShowToast } from "./toastHelper";
 
 type WallpaperPopupProps = {

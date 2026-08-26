@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import bgthemeContext from "../../Context/ThemeContext"
 import { IoClose } from "react-icons/io5"
-import { checkuser, useremail } from "../LocalStorage"
+import {  useremail } from "../LocalStorage"
 import { instance } from "../../services/apiservices"
 import { WorkSpaceIcon } from "../../types/workspaceIcon"
 import { ShowToast } from "../toastHelper"

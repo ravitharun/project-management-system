@@ -22,7 +22,7 @@ import WallpaperPopup from "../../TaskWallpaper";
 import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDelete";
 import bgthemeContext from "../../../Context/ThemeContext";
 import { instance } from "../../../services/apiservices";
-import { checkuser, useremail } from "../../LocalStorage";
+import {  useremail } from "../../LocalStorage";
 import { ShowToast } from "../../toastHelper";
 // import { instance } from "../../../services/apiservices";
 function ViewTask({ viewtasks, TaskListView, projectid }: any) {

@@ -16,14 +16,14 @@ import {
     FaCompress,
 } from "react-icons/fa"
 
-import toast, { Toaster } from "react-hot-toast"
+import  { Toaster } from "react-hot-toast"
 
 import Button from "../../Button"
-import { checkuser } from "../../LocalStorage"
+
 import { instance } from "../../../services/apiservices"
 import Input from "../../Input"
 import Loader from "../../Loader"
-import GlobalToast from "../../GlobalToast"
+
 import { nanoid } from "nanoid"
 import bgthemeContext from "../../../Context/ThemeContext"
 import { ShowToast } from "../../toastHelper"
