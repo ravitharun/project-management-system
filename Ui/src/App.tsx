@@ -7,7 +7,7 @@ import ViewWorkspace from "./Components/Task/TaskBoard/ViewWorkspace";
 import { getuserInfo } from "./Components/LocalStorage";
 import AcceptGoogleCalendar from "./Components/AcceptGoogleCalndra";
 
-
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 
 function App() {
@@ -28,8 +28,7 @@ function App() {
 
   return (
     <>
-
-
+  <SpeedInsights />
       {!JSON.parse(getuserInfo).googleCalendarConnected
         ? 
          <AcceptGoogleCalendar  setOpen={handelPoup}>
