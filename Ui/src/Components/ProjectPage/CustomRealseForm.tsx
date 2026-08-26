@@ -166,7 +166,7 @@ console.log({
                                 <input
                                     type="text"
                                     placeholder="e.g. Version 1.4.0"
-                                    onChange={(e) => setRealseName(e.target.value)}
+                                    onChange={(e:any) => setRealseName(e.target.value)}
                                     className={`w-full rounded-lg border py-2.5 pl-9 pr-3 text-sm outline-none transition ${is_theme
                                         ? "border-gray-700 bg-gray-800 text-white placeholder:text-gray-500 focus:border-indigo-500"
                                         : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:border-indigo-500"
@@ -187,7 +187,7 @@ console.log({
                             <input
                                 type="text"
                                 placeholder="e.g. v1.4.0"
-                                onChange={(e) => setVersion(e.target.value)}
+                                onChange={(e:any) => setVersion(e.target.value)}
 
                                 className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition ${is_theme
                                     ? "border-gray-700 bg-gray-800 text-white placeholder:text-gray-500 focus:border-indigo-500"
@@ -214,7 +214,7 @@ console.log({
                                 <textarea
                                     rows={3}
                                     placeholder="Describe what's included in this release..."
-                                    onChange={(e) => setRealseDescprition(e.target.value)}
+                                    onChange={(e:any) => setRealseDescprition(e.target.value)}
 
                                     className={`w-full resize-none rounded-lg border py-2.5 pl-9 pr-3 text-sm outline-none transition ${is_theme
                                         ? "border-gray-700 bg-gray-800 text-white placeholder:text-gray-500 focus:border-indigo-500"
@@ -243,7 +243,7 @@ console.log({
 
                                     <input
                                         type="date"
-                                        onChange={(e) => setRelease_Date(e.target.value)}
+                                        onChange={(e:any) => setRelease_Date(e.target.value)}
 
                                         className={`w-full rounded-lg border py-2.5 pl-9 pr-2 text-sm outline-none ${is_theme
                                             ? "border-gray-700 bg-gray-800 text-white focus:border-indigo-500"
@@ -270,7 +270,7 @@ console.log({
 
 
                                     // onChange={}
-                                    onChange={(e) => setStatus(e.target.value)}
+                                    onChange={(e:any) => setStatus(e.target.value)}
 
                                 >
 
