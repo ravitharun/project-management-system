@@ -35,12 +35,12 @@ function Login() {
 
         try {
             const response = await AuthLoginAccount({ email, password })
-            console.log(response, 'response')
+        
             if (response.status == 403) {
                 console.log(response.data.errmessage, 'errmessage')
             }
             if (response.status == 200) {
-                console.log(response.data.token)
+     
                 localStorage.setItem("LoginToken", response.data.token);
                 localStorage.setItem("userinfo", JSON.stringify(response.data.userinfo));
                 setresponsetext({ message: response.data.message, types: "success" })

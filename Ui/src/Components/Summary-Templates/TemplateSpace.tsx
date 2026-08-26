@@ -4,6 +4,7 @@ import { IoClose } from "react-icons/io5"
 import { checkuser, useremail } from "../LocalStorage"
 import { instance } from "../../services/apiservices"
 import { WorkSpaceIcon } from "../../types/workspaceIcon"
+import { ShowToast } from "../toastHelper"
 
 function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
     const context = useContext(bgthemeContext)
@@ -67,7 +68,7 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
         const updatedData = {
             ...templates,
             workspaceName: workspaceName,
-            workspaceicon:WorkSpaceIcon[0],
+            workspaceicon: WorkSpaceIcon[0],
             workspaceDescription: workspaceDescription,
             createby: {
                 userEmail: useremail
@@ -101,12 +102,12 @@ function TemplateSpace({ SettemplatesChoosed, templatename, templates }: any) {
                 }, 2500);
             }
         } catch (error: any) {
-               console.error(error.message)
-                if (error.response.status == 401) {
-                               return    checkuser()
-                                   // redirect("")
-               
-                               }
+            console.error(error.message)
+            return ShowToast(
+                error.message,
+                error.response.status,
+                "error"
+            );
 
         }
 

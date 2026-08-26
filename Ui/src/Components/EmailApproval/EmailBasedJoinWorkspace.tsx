@@ -13,6 +13,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { instance } from "../../services/apiservices";
 import bgthemeContext from "../../Context/ThemeContext";
+import { ShowToast } from "../toastHelper";
 
 export type WorkspaceMember = {
     _id?: string;
@@ -111,18 +112,23 @@ function EmailBasedJoinWorkspace() {
 
                 if (response?.status) {
                     setprojects(response?.data?.data);
-                    toast.success("Workspace invitation verified");
+                    // toast.success("Workspace invitation verified");
+                    return ShowToast(
+                        "Workspace invitation verified",
+                        response?.status,
+                        "Error"
+                    );
                 }
-            } catch (error: any) {
-                const message =
-                    error?.response?.data?.message ||
-                    error?.message ||
-                    "Something went wrong";
 
-                if (error?.response?.data?.status == 400) {
-                    return toast.error(message)
-                }
-                toast.error(message);
+
+            } catch (error: any) {
+
+                return ShowToast(
+                    error?.response?.data?.message,
+                    error?.response.status,
+                    "Error"
+                );
+
             } finally {
                 setloading(false);
             }

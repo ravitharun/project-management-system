@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { instance } from "../services/apiservices";
 import { checkuser } from "../Components/LocalStorage";
+import { ShowToast } from "../Components/toastHelper";
 
 function Notifications() {
 
@@ -20,11 +21,11 @@ function Notifications() {
 
             } catch (error: any) {
                 console.error(error)
-                if (error.response.status == 401) {
-                  return  checkuser()
-                    // redirect("")
-
-                }
+                return ShowToast(
+                                   error?.response?.data?.message,
+                                   error?.response?.status,
+                                   "error"
+                               );
 
             }
 

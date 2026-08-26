@@ -8,6 +8,7 @@ import {
 import { instance } from "../../../services/apiservices";
 import { toast } from "react-toastify";
 import bgthemeContext from "../../../Context/ThemeContext";
+import { ShowToast } from "../../toastHelper";
 
 function AddPeopleWorkspace({ closesetAddMembers, workspace }: any) {
     const [emails, setEmails] = useState("");
@@ -27,7 +28,14 @@ function AddPeopleWorkspace({ closesetAddMembers, workspace }: any) {
             }
             const response = await instance.post("/api/WorkSpace/AddTOWorkSpace", { data })
             if (response.status == 200) {
-                toast.success("Email Sent.")
+                // toast.success("Email Sent.")
+
+
+                ShowToast(
+                    'Email Sent.',
+                    response.status,
+                    "sucesss"
+                );
                 if (response.data.Samemember) {
                     setTimeout(() => {
                         return toast.info(response.data.Samemember)
@@ -37,9 +45,17 @@ function AddPeopleWorkspace({ closesetAddMembers, workspace }: any) {
         } catch (error: any) {
 
             console.log(error?.response.status)
-            if (error?.response.status == 400) {
-                return toast.info(error?.response?.data?.message)
-            }
+
+
+            return ShowToast(
+                error?.response.data.message,
+                error?.response.status,
+                "error"
+            );
+            
+            // if (error?.response.status == 400) {
+            //     return toast.info(error?.response?.data?.message)
+            // }
 
 
             // console.log(error?.response?.status)

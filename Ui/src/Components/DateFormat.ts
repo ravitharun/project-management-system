@@ -1,5 +1,5 @@
     export const GetDateFormat = (date:  string | number | Date) => {
-        console.log(date, 'GetDateFormat');
+
 
         if (!date) return "-"
         const a = new Date(date).toLocaleString("en-IN", {
@@ -9,7 +9,7 @@
             // hour: "2-digit",
             // minute: "2-digit",
         });
-        console.log(a,'tharun');
+   
         
         return a
         

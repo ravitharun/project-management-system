@@ -1,4 +1,4 @@
-import {  useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   Eye,
   Clock3,
@@ -8,10 +8,11 @@ import {
   Sparkles,
 } from "lucide-react";
 import { instance } from "../../services/apiservices";
-import { checkuser, getuserInfo } from "../LocalStorage";
+import { getuserInfo } from "../LocalStorage";
 import type { WorkspaceIcon, WorkspaceMember, WorkspaceSetup } from "../EmailApproval/EmailBasedJoinWorkspace";
 import bgthemeContext from "../../Context/ThemeContext";
-import { useNavigate } from "react-router-dom";
+
+import { ShowToast } from "../toastHelper";
 
 
 
@@ -57,7 +58,7 @@ type ViewedWorkspace = {
 };
 
 type UserView = {
-  UserView:any,
+  UserView: any,
   UserId: Userid;
   createdAt: string;
   updatedAt: string;
@@ -65,13 +66,13 @@ type UserView = {
 };
 
 function ViewedActivity() {
-   const context = useContext(bgthemeContext);
-      const { theme }: any = context
+  const context = useContext(bgthemeContext);
+  const { theme }: any = context
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [spaces, setSpaces] = useState<UserView|any>();
+  const [spaces, setSpaces] = useState<UserView | any>();
 
 
-const redirect=useNavigate()
+
   const isDark = theme === "Dark";
 
   useEffect(() => {
@@ -84,16 +85,17 @@ const redirect=useNavigate()
             userid: JSON.parse(getuserInfo)._id
           }
         })
-        console.log(response?.data?.data[0].viewedWorkspaces, 'tharun')
+
         setSpaces(response?.data?.data[0]?.viewedWorkspaces)
       } catch (error: any) {
         // console.log(error.response.status,'errir')
         // console.log(error,'errir')
 
-
-        if(error.response.status==401 ){
-          return checkuser(redirect)
-        }
+        return ShowToast(
+          error?.response?.data?.message,
+          error?.response?.status,
+          "error"
+        );
 
       }
     }

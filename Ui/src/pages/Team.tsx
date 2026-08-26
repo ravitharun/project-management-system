@@ -12,6 +12,7 @@ import { departments } from "../types/Dept";
 import { checkuser, useremail } from "../Components/LocalStorage";
 import { socket } from "../Scokets/ScoketConfig";
 import Progress from "../Components/progress";
+import { ShowToast } from "../Components/toastHelper";
 
 
 
@@ -38,11 +39,11 @@ function Team() {
 
       } catch (error: any) {
         console.error(error.message);
-        if (error.response.status == 401) {
-          return checkuser()
-          // redirect("")
-
-        }
+        return ShowToast(
+          error?.response?.data?.message,
+          error?.response?.status,
+          "error"
+        );
       }
     };
 

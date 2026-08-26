@@ -14,6 +14,7 @@ import { instance } from "../services/apiservices";
 import toast from "react-hot-toast";
 import { checkuser, getuserInfo } from "./LocalStorage";
 import { validateProject } from "../types/errortype";
+import { ShowToast } from "./toastHelper";
 
 type Props = {
   onclick: () => void;
@@ -105,11 +106,11 @@ function AddProjectForm({ onclick }: Props) {
       return response
 
     } catch (error: any) {
-      if (error.response.status == 401) {
-        return checkuser()
-        // redirect("")
-
-      }
+      return ShowToast(
+        error?.response?.data?.message,
+        error?.response?.status,
+        "error"
+      );
 
     }
   };
