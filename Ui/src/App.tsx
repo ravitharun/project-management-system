@@ -12,7 +12,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
 
-  const sidebaropen:any = useContext(SideBarContext);
+  const sidebaropen: any = useContext(SideBarContext);
   const context = useContext(bgthemeContext);
 
   const { theme }: any = context;
@@ -28,11 +28,11 @@ function App() {
 
   return (
     <>
-  <SpeedInsights />
+      <SpeedInsights />
       {!JSON.parse(getuserInfo).googleCalendarConnected
-        ? 
-         <AcceptGoogleCalendar  setOpen={handelPoup}>
-        </AcceptGoogleCalendar>:""
+        ?
+        <AcceptGoogleCalendar setOpen={handelPoup}>
+        </AcceptGoogleCalendar> : ""
       }
       <div
         className={`
