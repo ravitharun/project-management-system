@@ -1,12 +1,13 @@
-import {  useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FiEye, FiStar } from 'react-icons/fi'
 import { FetchStarWorkspace } from '../services/FetchStarSpace';
 import { useremail } from './LocalStorage';
 import bgthemeContext from '../Context/ThemeContext';
+import { ShowToast } from './toastHelper';
 
 function StaredWrokspace() {
-     const context = useContext(bgthemeContext);
-        const { theme }: any = context
+    const context = useContext(bgthemeContext);
+    const { theme }: any = context
 
     const [StarWorkspace, setStarWorkspace] = useState([])
     const [id, setid] = useState<number | null>(null)
@@ -21,11 +22,11 @@ function StaredWrokspace() {
                 console.log(response, 'res')
                 setStarWorkspace(response.data.Stardata)
             } catch (error: any) {
-                const errStatus = error?.response.status
-                if (errStatus == 404) {
-                    return setStarWorkspace([])
-                }
-
+                return ShowToast(
+                    error?.response?.data?.message,
+                    error?.response?.status,
+                    "error"
+                );
 
                 return console.log(error)
 

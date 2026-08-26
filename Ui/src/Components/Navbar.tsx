@@ -33,6 +33,7 @@ import { FaGear } from "react-icons/fa6";
 import ClickedWorkSpace from "../Context/ClickedWorkSpace";
 import { socket } from "../Scokets/ScoketConfig";
 import HoverlistMenu from "./Hover-listMenu";
+import { ShowToast } from "./toastHelper";
 
 type Props = {
     page?: string;
@@ -66,7 +67,7 @@ function Sidebar({ page }: Props) {
     const work: any = ClickedSpace
 
 
-    const redirect = useNavigate()
+
 
 
 
@@ -130,15 +131,21 @@ function Sidebar({ page }: Props) {
                 setworkspace(response?.data?.data || []);
                 setspacejson(response?.data?.data || []);
             } catch (error: any) {
-                console.error(error.response.status, 'err nav');
-                if (error.response.status == 429) {
-                    return toast.info(error.response.data.message)
-                }
-                if (error.response.status == 401) {
-                    return checkuser(redirect)
-                    // redirect("")
+                // console.error(error.response.status, 'err nav');
+                // if (error.response.status == 429) {
+                //     return toast.info(error.response.data.message)
+                // }
+                // if (error.response.status == 401) {
+                //     return checkuser(redirect)
+                //     // redirect("")
 
-                }
+                // }
+
+                return ShowToast(
+                    error?.response?.data?.message,
+                    error?.response?.status,
+                    "error"
+                );
             }
         };
 
@@ -187,11 +194,11 @@ function Sidebar({ page }: Props) {
             }
         } catch (error: any) {
             console.error(error.message)
-            if (error.response.status == 401) {
-                return checkuser(redirect)
-                // redirect("")
-
-            }
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
 
         }
     }

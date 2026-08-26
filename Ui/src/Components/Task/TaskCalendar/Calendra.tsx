@@ -1,10 +1,10 @@
 import { Scheduler } from "@aldabil/react-scheduler";
 import bgthemeContext from "../../../Context/ThemeContext";
 import { useContext, useEffect, useState } from "react";
-import { checkuser } from "../../LocalStorage";
-import { useNavigate } from "react-router-dom";
-import { toast, Toaster } from "sonner";
+
+import {  Toaster } from "sonner";
 import { instance } from "../../../services/apiservices";
+import { ShowToast } from "../../toastHelper";
 
 function MyCalendar({ ProjectId }: any) {
   // console.log(ProjectId,'ProjectId');
@@ -12,9 +12,7 @@ function MyCalendar({ ProjectId }: any) {
   const context = useContext(bgthemeContext);
   const { theme }: any = context
 
-  const redirect = useNavigate()
 
-  const isTheme = theme === 'Dark'
 
 
   const [tasks, settasks] = useState<any>([])
@@ -27,7 +25,7 @@ function MyCalendar({ ProjectId }: any) {
         const response = await instance.get(`/api/Calendar/${ProjectId._id}`)
 
 
-        console.log(response?.data?.data)
+        // console.log(response?.data?.data)
         settasks(response?.data?.data)
 
 
@@ -37,46 +35,50 @@ function MyCalendar({ ProjectId }: any) {
         const Err_msg = error?.response?.data?.message
 
 
-        console.error(Err_msg);
+        // console.error(Err_msg);
 
 
-        if (status == 401) {
-          toast.error('Session Expired', {
-            description: 'Please log in again to continue.',
-            unstyled: true,
-            classNames: {
-              toast: `${isTheme
-                ? "bg-red-600 text-white border border-red-500 rounded-xl shadow-xl p-4"
-                : "bg-white text-red-800 border border-red-200 rounded-xl shadow-lg p-4"
-                }`,
+        // if (status == 401) {
+        //   toast.error('Session Expired', {
+        //     description: 'Please log in again to continue.',
+        //     unstyled: true,
+        //     classNames: {
+        //       toast: `${isTheme
+        //         ? "bg-red-600 text-white border border-red-500 rounded-xl shadow-xl p-4"
+        //         : "bg-white text-red-800 border border-red-200 rounded-xl shadow-lg p-4"
+        //         }`,
 
-              title: `${isTheme
-                ? "font-semibold text-white"
-                : "font-semibold text-red-900"
-                }`,
+        //       title: `${isTheme
+        //         ? "font-semibold text-white"
+        //         : "font-semibold text-red-900"
+        //         }`,
 
-              description: `${isTheme
-                ? "text-sm text-red-100 mt-1"
-                : "text-sm text-red-600 mt-1"
-                }`,
+        //       description: `${isTheme
+        //         ? "text-sm text-red-100 mt-1"
+        //         : "text-sm text-red-600 mt-1"
+        //         }`,
 
-              closeButton: `${isTheme
-                ? "text-white hover:text-red-200"
-                : "text-red-500 hover:text-red-700"
-                }`,
-            }
-          }
-
-
-
+        //       closeButton: `${isTheme
+        //         ? "text-white hover:text-red-200"
+        //         : "text-red-500 hover:text-red-700"
+        //         }`,
+        //     }
+        //   }
 
 
 
-          );
 
-          return checkuser(redirect)
-        }
 
+
+        //   );
+
+        //   return checkuser(redirect)
+        // }
+        return ShowToast(
+          Err_msg,
+          status,
+          "error"
+        );
 
 
 

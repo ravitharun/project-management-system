@@ -3,9 +3,10 @@ import bgthemeContext from "../Context/ThemeContext"
 import { useContext, useState } from "react"
 import { instance } from "../services/apiservices"
 import { toast, ToastContainer } from "react-toastify"
-import { checkuser, useremail } from "./LocalStorage"
+import {  useremail } from "./LocalStorage"
 import { allowedtype } from "../types/CustomUploadFormat"
 import UploadingLoader from "./UploadingLoader"
+import { ShowToast } from "./toastHelper"
 
 function WorkspacePanel({ SetBackground, id }: any) {
 
@@ -47,12 +48,12 @@ function WorkspacePanel({ SetBackground, id }: any) {
             }
 
         } catch (error: any) {
-            console.error(error.message, 'err')
-            if (error.response.status == 401) {
-               return checkuser()
-                // redirect("")
-
-            }
+            console.error(error.message)
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
 
         }
     }
@@ -88,19 +89,11 @@ function WorkspacePanel({ SetBackground, id }: any) {
 
         } catch (error: any) {
             console.error(error.name)
-            if (error?.response?.data?.message) {
-                toast.error(error.response.data.message);
-return
-            }
-            if (error?.response?.data?.status) {
-             return   toast.error(error.response.data.message);
-
-            }
-            if (error.response.status == 401) {
-              return  checkuser()
-                // redirect("")
-
-            }
+          return ShowToast(
+                    error?.response?.data?.message,
+                    error?.response?.status,
+                    "error"
+                );
 
         }
         finally { setisuploading(false) }

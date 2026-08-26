@@ -22,7 +22,8 @@ import WallpaperPopup from "../../TaskWallpaper";
 import { HandelDuplicateTask, HandelTaskDelete } from "../../../services/TaskDelete";
 import bgthemeContext from "../../../Context/ThemeContext";
 import { instance } from "../../../services/apiservices";
-import { checkuser, useremail } from "../../LocalStorage";
+import {  useremail } from "../../LocalStorage";
+import { ShowToast } from "../../toastHelper";
 // import { instance } from "../../../services/apiservices";
 function ViewTask({ viewtasks, TaskListView, projectid }: any) {
   const context = useContext(bgthemeContext);
@@ -264,7 +265,7 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
 
     try {
 
-      const response = await HandelDuplicateTask(TasksId,Tasks)
+      const response = await HandelDuplicateTask(TasksId, Tasks)
       console.log(response.status)
       if (response.status == 200) {
 
@@ -338,17 +339,13 @@ function ViewTask({ viewtasks, TaskListView, projectid }: any) {
         return GlobalToast(response?.data?.message, "success")
       }
     } catch (error: any) {
-      const status = error.response.status
-      if (status == 500) {
-
-        return GlobalToast("Server Error", "error")
-
-      }
-
-
-      if (status == 401) {
-        return checkuser()
-      }
+      const Status = error.response.status
+      const Message = error.response.data.message
+      return ShowToast(
+        Message,
+        Status,
+        "error"
+      );
 
 
     }

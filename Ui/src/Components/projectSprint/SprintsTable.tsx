@@ -11,6 +11,7 @@ import { socket } from "../../Scokets/ScoketConfig";
 // import { toast, ToastContainer } from "react-toastify";
 // import { toast, ToastContainer } from "react-toastify";
 import { toast, Toaster } from "sonner";
+import { ShowToast } from "../toastHelper";
 
 
 
@@ -314,28 +315,28 @@ const Sprints = ({ workspaceid }: any) => {
                     <>
 
 
-                                 
-                        
-                            {params?.data?.SprintActive ? <button onClick={() => UpdateSprintStatus(params)}  className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${params?.data?.SprintActive
-                                ? "bg-red-500 hover:bg-red-600"
-                                : "bg-green-500 hover:bg-green-600"
-                                }`}>Stop Sprint</button> : 
-                            
-                            
-                            
-                            
-                            
-                                <button
-                            onClick={() => HandelSprint(params?.data._id)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${params?.data?.SprintActive
-                                ? "bg-red-500 hover:bg-red-600"
-                                : "bg-green-500 hover:bg-green-600"
-                                }`}
-                        >Start Sprint
-                        </button>      
-                            }
-                        
-                         </>
+
+
+                        {params?.data?.SprintActive ? <button onClick={() => UpdateSprintStatus(params)} className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${params?.data?.SprintActive
+                            ? "bg-red-500 hover:bg-red-600"
+                            : "bg-green-500 hover:bg-green-600"
+                            }`}>Stop Sprint</button> :
+
+
+
+
+
+                            <button
+                                onClick={() => HandelSprint(params?.data._id)}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${params?.data?.SprintActive
+                                    ? "bg-red-500 hover:bg-red-600"
+                                    : "bg-green-500 hover:bg-green-600"
+                                    }`}
+                            >Start Sprint
+                            </button>
+                        }
+
+                    </>
                 )
             }
         }
@@ -345,7 +346,8 @@ const Sprints = ({ workspaceid }: any) => {
     const HandelSprint = async (Sprintid: any) => {
         try {
             const response = await instance.put(`/api/sprints/${Sprintid}/${workspaceid?._id}/Updatesprint`)
-            console.log(response.data, 'tharun');
+            // console.log(response.data, 'tharun');
+            return response.data
 
 
 
@@ -356,38 +358,38 @@ const Sprints = ({ workspaceid }: any) => {
             const status = error.response.status
             const error_msg = error.response.data.message
 
-            if (status == 400) {
-                return toast.custom(() => (
-                    <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 shadow-lg">
-                        <p className="font-medium text-red-700">
-                            {error_msg}.
-                        </p>
-                    </div>
-                ));
-            }
+            return ShowToast(
+                error_msg,
+                status,
+                "error"
+            );
 
-            if (status == 401) {
+            // if (status == 401) {
 
 
-                return checkuser(redirect)
-            }
+            //     return checkuser(redirect)
+            // }
 
         }
     }
 
 
     const UpdateSprintStatus = async (params: any) => {
-        console.log(params.data._id, 'params');
+       
 
 
 
         try {
             const response = await instance.get(`/api/sprints/${params.data._id}/${workspaceid._id}/UpdateTasksprint`)
-            console.log(response.data, 'response');
 
 
-            if(response.data.status==200){
-                return toast.success(response.data.message)
+
+            if (response.data.status == 200) {
+                return ShowToast(
+                    response.data.message,
+                    response.data.status,
+                    "error"
+                );
             }
 
         } catch (error: any) {

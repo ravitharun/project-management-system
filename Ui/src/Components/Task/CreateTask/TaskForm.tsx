@@ -16,16 +16,17 @@ import {
     FaCompress,
 } from "react-icons/fa"
 
-import toast, { Toaster } from "react-hot-toast"
+import  { Toaster } from "react-hot-toast"
 
 import Button from "../../Button"
-import { checkuser } from "../../LocalStorage"
+
 import { instance } from "../../../services/apiservices"
 import Input from "../../Input"
 import Loader from "../../Loader"
-import GlobalToast from "../../GlobalToast"
+
 import { nanoid } from "nanoid"
 import bgthemeContext from "../../../Context/ThemeContext"
+import { ShowToast } from "../../toastHelper"
 
 type Props = {
     AddedBy?: string | null
@@ -155,20 +156,32 @@ function TaskForm({
         try {
             const response = await instance.post("/api/Task/AddWorkSpaceTask", { TaskData })
             if (response?.status === 201) {
-                return GlobalToast("Task Created Successfully", "success");
+                // return GlobalToast("Task Created Successfully", "success");
+                return ShowToast(
+                    'Task Created Successfully',
+                    response?.data?.status,
+                    "success"
+                );
             }
         }
         catch (error: any) {
 
 
-            console.log(error?.response?.data.message)
-            toast.error(
-                error?.response?.data?.message || error?.message || "Something went wrong"
-            )
+            // console.log(error?.response?.data.message)
+            // toast.error(
+            //     error?.response?.data?.message || error?.message || "Something went wrong"
+            // )
 
-            if (error?.response?.status === 401) {
-                checkuser()
-            }
+            // if (error?.response?.status === 401) {
+            //     checkuser()
+            // }
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
+
+
         }
     }
 

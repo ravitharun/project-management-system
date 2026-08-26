@@ -53,9 +53,10 @@ import bgthemeContext from "../../Context/ThemeContext";
 import TaskForm from "../Task/CreateTask/TaskForm";
 import AddPeopleWorkspace from "../Task/AddPeople-workspace/AddPeopleWorkspace";
 import { instance } from "../../services/apiservices";
-import { checkuser, getuserInfo } from "../LocalStorage";
-import { useNavigate } from "react-router-dom";
+
 import SummaryPageLoader from "../SummaryLoader";
+import { ShowToast } from "../toastHelper";
+import { getuserInfo } from "../LocalStorage";
 
 const ProjectSummary = ({ data, setCurrentView }: any) => {
     // console.log(data, 'hcheck');
@@ -63,7 +64,7 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
 
 
     const [SummaryPageLoading, setSummaryPageLoading] = useState<boolean>(false)
-    const redirect = useNavigate()
+
     const [_, setQuickAction] = useState<String | any>("")
     const [summary, setsummary] = useState<Object | any>({})
     const [isTaskOpen, setistaskOpen] = useState<Boolean>(false)
@@ -131,7 +132,7 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
 
             try {
                 setSummaryPageLoading(true)
-                console.log(getuserInfo, 'getuserInfo');
+
 
 
                 const response = await instance.get(`/api/Analytcs/${data.workspace._id}/${JSON.parse(getuserInfo)._id}/summary`)
@@ -144,7 +145,7 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
                 SetTotaltask(response.data.data.TotalTask);
                 SetTaskCompleted(response.data.data.taskCompleted);
                 SetTaskInprogress(response.data.data.taskInProgress);
-                console.log(response.data, 'response.data');
+
 
                 setSummaryPageLoading(false)
                 setLow(response.data.data.TaskLow)
@@ -163,12 +164,18 @@ const ProjectSummary = ({ data, setCurrentView }: any) => {
                 console.log(error);
 
 
-                const status = error.response.status
+                const status = error?.response?.status
 
-                if (status == 401) {
 
-                    return checkuser(redirect)
-                }
+                return ShowToast(
+                    error?.response?.data?.message,
+                    status,
+                    "error"
+                );
+                // if (status == 401) {
+
+                //     return checkuser(redirect)
+                // }
 
             }
         }
@@ -973,7 +980,7 @@ ${theme === "Dark"
                                                 r: 7,
                                             }}
                                         />
-                                        
+
                                         <LabelList
                                             dataKey="value"
                                             position="top"
