@@ -3,6 +3,7 @@ import ClickedWorkSpace, { type contextClickedSpace } from "../Context/ClickedWo
 
 function ClickedSpaceProvider({ children }: { children: React.ReactNode }) {
     const [ClickedSpace, setClickedSpace] =
+      
         useState<contextClickedSpace["ClickedSpace"]>([]);
 
     return (

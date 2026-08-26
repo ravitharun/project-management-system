@@ -11,7 +11,8 @@ import bgthemeContext from "../Context/ThemeContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { instance } from "../services/apiservices";
-import { checkuser } from "./LocalStorage";
+
+import { ShowToast } from "./toastHelper";
 
 type WallpaperPopupProps = {
     open?: boolean;
@@ -56,11 +57,11 @@ const WallpaperPopup = ({
                 setSearchedImages(response.data.results)
 
             } catch (error: any) {
-                if (error.response.status == 401) {
-                    return checkuser()
-                    // redirect("")
-
-                }
+                return ShowToast(
+                    error?.response?.data?.message,
+                    error?.response?.status,
+                    "error"
+                );
 
             }
         }
@@ -116,14 +117,11 @@ const WallpaperPopup = ({
                 return onClose()
             }
         } catch (error: any) {
-            console.log(error?.response?.data?.message);
-            console.log(error?.response?.data);
-            console.log(error?.response?.status);
-            if (error.response.status == 401) {
-                return checkuser()
-                // redirect("")
-
-            }
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
         }
     };
 

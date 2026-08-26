@@ -3,10 +3,11 @@ import { WorkSpaceIcon } from "../types/workspaceIcon"
 import { useContext, useState } from "react"
 import { instance } from "../services/apiservices"
 import { toast } from "react-toastify"
-import { checkuser, useremail } from "./LocalStorage"
+import {  useremail } from "./LocalStorage"
 import { allowedtype } from "../types/CustomUploadFormat"
 import UploadingLoader from "./UploadingLoader"
 import bgthemeContext from "../Context/ThemeContext"
+import { ShowToast } from "./toastHelper"
 
 function Chooseicon({
     close,
@@ -14,7 +15,7 @@ function Chooseicon({
 }: any) {
     const [choosed, setchoosed] = useState("")
 
- const context = useContext(bgthemeContext);
+    const context = useContext(bgthemeContext);
     const { theme }: any = context
     const [isuploading, setisuploading] = useState<boolean>(false)
     const handleUpdateIcon = async () => {
@@ -38,11 +39,11 @@ function Chooseicon({
 
         } catch (error: any) {
             console.error(error.message)
-            if (error.response.status == 401) {
-             return   checkuser()
-                // redirect("")
-
-            }
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
 
         }
 
@@ -97,12 +98,11 @@ function Chooseicon({
 
                 return toast.info(error?.response?.data?.message)
             }
-            if (error.response.status == 401) {
-               return checkuser()
-                // redirect("")
-
-            }
-
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
         } finally {
             setisuploading(false);
         }

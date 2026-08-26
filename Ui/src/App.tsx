@@ -7,12 +7,13 @@ import ViewWorkspace from "./Components/Task/TaskBoard/ViewWorkspace";
 import { getuserInfo } from "./Components/LocalStorage";
 import AcceptGoogleCalendar from "./Components/AcceptGoogleCalndra";
 
-
+import { SpeedInsights } from "@vercel/speed-insights/react"
+import { Analytics } from "@vercel/analytics/react"
 
 
 function App() {
 
-  const sidebaropen:any = useContext(SideBarContext);
+  const sidebaropen: any = useContext(SideBarContext);
   const context = useContext(bgthemeContext);
 
   const { theme }: any = context;
@@ -28,12 +29,12 @@ function App() {
 
   return (
     <>
-
-
+      <SpeedInsights />
+      <Analytics />
       {!JSON.parse(getuserInfo).googleCalendarConnected
-        ? 
-         <AcceptGoogleCalendar  setOpen={handelPoup}>
-        </AcceptGoogleCalendar>:""
+        ?
+        <AcceptGoogleCalendar setOpen={handelPoup}>
+        </AcceptGoogleCalendar> : ""
       }
       <div
         className={`

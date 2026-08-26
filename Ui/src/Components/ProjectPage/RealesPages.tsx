@@ -1,20 +1,52 @@
 import { Plus, Rocket } from 'lucide-react'
 
 import CustomRealseForm from './CustomRealseForm';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { instance } from "../../services/apiservices";
+import ClickedWorkSpace from '../../Context/ClickedWorkSpace';
+
+import ApiLoader from '../ApiLoader';
+
 
 function RealesPages({ isTheme }: any) {
+    const { ClickedSpace }: any = useContext(ClickedWorkSpace)
+    // console.log(ClickedSpace_id);
 
     const [IsRealseForm, setIsRealseForm] = useState(false);
 
+    const [loader, setloader] = useState<boolean>(false)
+    useEffect(() => {
+        const FetchVersions = async () => {
+
+
+            try {
+                setloader(true)
+                const response = await instance.get(`/api/projects/${ClickedSpace._id} `)
+                console.log(response.data.message);
+                setloader(false)
+
+            } catch (error: any) {
+
+            }
+
+            finally {
+
+                setloader(false)
+            }
+        }
+        FetchVersions()
+    }, [])
 
 
 
 
-    
+
     return (
         <>
-
+            {loader && <ApiLoader
+                texttype="Loading Releases"
+                text="Please wait while we fetch all project releases..."
+            />}
 
             <div className="mt-10">
 
@@ -53,59 +85,61 @@ function RealesPages({ isTheme }: any) {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 
-                    {[
-                        {
-                            version: "v1.0.0",
-                            name: "Initial Release",
-                            status: "Released",
-                        },
-                        {
-                            version: "v1.1.0",
-                            name: "Attendance Feature",
-                            status: "In Progress",
-                        },
-                        {
-                            version: "v2.0.0",
-                            name: "Online Examination",
-                            status: "Planned",
-                        },
-                    ].map((release) => (
+                    {
 
-                        <div
-                            key={release.version}
-                            className={`rounded-xl border p-5 ${isTheme
-                                ? "border-gray-800 bg-gray-900"
-                                : "border-gray-200 bg-white"
-                                }`}
-                        >
-
-                            <Rocket size={22} />
-
-                            <h3
-                                className={`mt-4 font-semibold ${isTheme ? "text-white" : "text-gray-900"
-                                    }`}
-                            >
-                                {release.version}
-                            </h3>
-
-                            <p className="mt-1 text-sm text-gray-500">
-                                {release.name}
-                            </p>
+                        [
+                            {
+                                version: "v1.0.0",
+                                name: "Initial Release",
+                                status: "Released",
+                            },
+                            {
+                                version: "v1.1.0",
+                                name: "Attendance Feature",
+                                status: "In Progress",
+                            },
+                            {
+                                version: "v2.0.0",
+                                name: "Online Examination",
+                                status: "Planned",
+                            },
+                        ].map((release: any) => (
 
                             <div
-                                className={`mt-4 text-xs ${release.status === "Released"
-                                    ? "text-green-500"
-                                    : release.status === "In Progress"
-                                        ? "text-blue-500"
-                                        : "text-gray-500"
+                                key={release.version}
+                                className={`rounded-xl border p-5 ${isTheme
+                                    ? "border-gray-800 bg-gray-900"
+                                    : "border-gray-200 bg-white"
                                     }`}
                             >
-                                {release.status}
+
+                                <Rocket size={22} />
+
+                                <h3
+                                    className={`mt-4 font-semibold ${isTheme ? "text-white" : "text-gray-900"
+                                        }`}
+                                >
+                                    {release.version}
+                                </h3>
+
+                                <p className="mt-1 text-sm text-gray-500">
+                                    {release.name}
+                                </p>
+
+                                <div
+                                    className={`mt-4 text-xs ${release.status === "Released"
+                                        ? "text-green-500"
+                                        : release.status === "In Progress"
+                                            ? "text-blue-500"
+                                            : "text-gray-500"
+                                        }`}
+                                >
+                                    {release.status}
+                                </div>
+
                             </div>
 
-                        </div>
-
-                    ))}
+                        ))}
 
                 </div>
             </div>

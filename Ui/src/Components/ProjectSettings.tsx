@@ -19,6 +19,7 @@ import { Role } from "../types/Role";
 import { getuserInfo } from "./LocalStorage";
 import { RemoveTeamMember, UpdateRole } from "../services/ProjectRole";
 import { socket } from "../Scokets/ScoketConfig";
+import { ShowToast } from "./toastHelper";
 
 function ProjectSettings() {
 
@@ -31,8 +32,8 @@ function ProjectSettings() {
     const { theme }: any = useContext(bgthemeContext);
     const [DATA_WorkSpace, setDATA_WorkSpace] = useState([])
     const data = state?.CreatedWorkSpace || DATA_WorkSpace;
-    console.log(data,'data');
-    
+    console.log(data, 'data');
+
 
     const [ChooseIcon, setChooseIcon] = useState<string | undefined>();
 
@@ -76,21 +77,13 @@ function ProjectSettings() {
 
             } catch (error: any) {
                 console.log(error.response, 'error.response')
-                const status_Code: number = error.response.status
-                const status_message: string = error.response.data.message
-                console.log(status_Code, status_message);
-                if (status_Code == 400) {
-                    // return GlobalToast(status_message, "error")
-                    return toast.error(status_message)
-                }
-                if (status_Code == 404) {
-                    // return GlobalToast(status_message, "error")
-                    return toast.error(status_message)
-                }
-                if (status_Code == 500) {
-                    // return GlobalToast(status_message, "error")
-                    return toast.error('server error')
-                }
+                // const status_Code: number = error.response.status
+                // const status_message: string = error.response.data.message
+                return ShowToast(
+                    error?.response?.data?.message,
+                    error?.response?.status,
+                    "error"
+                );
             }
 
         }
@@ -151,21 +144,11 @@ function ProjectSettings() {
 
 
         } catch (error: any) {
-            const status: Number = error.response.status
-            const Err_message: string = error.response.data.message
-
-            console.log({ status, Err_message });
-
-            if (status == 404) {
-
-                return toast.info(Err_message)
-            }
-
-            if (status == 500) {
-
-
-                return toast.error(Err_message)
-            }
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
 
         }
     }
@@ -184,21 +167,11 @@ function ProjectSettings() {
                 return toast.success(resposne.data.message)
             }
         } catch (error: any) {
-            const status: Number = error.response.status
-            const Err_message: string = error.response.data.message
-
-            console.log({ status, Err_message });
-
-            if (status == 404) {
-
-                return toast.info(Err_message)
-            }
-
-            if (status == 500) {
-
-
-                return toast.error(Err_message)
-            }
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
 
         }
     }

@@ -4,7 +4,8 @@ import { MdOutlineClose } from "react-icons/md";
 import { instance } from "../services/apiservices";
 // import toast from "react-hot-toast";
 import { toast, ToastContainer } from "react-toastify";
-import { checkuser } from "./LocalStorage";
+
+import { ShowToast } from "./toastHelper";
 
 type ProjectIdProps = {
     projectsid: string;
@@ -56,12 +57,11 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
 
                 setusers(response.data.message)
             } catch (error: any) {
-                if (error.response.status == 401) {
-                    return checkuser()
-                    // redirect("")
-
-                }
-
+                return ShowToast(
+                    error?.response?.data?.message,
+                    error?.response?.status,
+                    "error"
+                );
             }
         }
         fetchMembers()
@@ -99,9 +99,11 @@ function AddMembers({ projectsid, onclose }: ProjectIdProps) {
             }
         } catch (error: any) {
             console.error(error.message)
-            if (error.status == 404) {
-                toast.info("More Than 1 Members are required to added in these project")
-            }
+            return ShowToast(
+                error?.response?.data?.message,
+                error?.response?.status,
+                "error"
+            );
 
         }
 

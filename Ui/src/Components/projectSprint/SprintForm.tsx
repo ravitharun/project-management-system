@@ -9,12 +9,13 @@ import {
     FaChevronDown,
     FaSignal
 } from "react-icons/fa";
-import { checkuser, getuserInfo } from "../LocalStorage";
+import {  getuserInfo } from "../LocalStorage";
 import { instance } from "../../services/apiservices";
-import { useNavigate } from "react-router-dom";
+
+import { ShowToast } from "../toastHelper";
 
 const SprintForm = ({ spaceid, onClick, SprintPoupForm }: any) => {
-    const redirect = useNavigate()
+
     const [SprintName, setSprintName] = useState<String | any>("")
     const [SprintGoal, setSprintGoal] = useState<String | any>("")
     const [SprintStartDate, setSprintStartDate] = useState<String | any>("")
@@ -34,19 +35,35 @@ const SprintForm = ({ spaceid, onClick, SprintPoupForm }: any) => {
     const HandelSprintCreation = async (e: any) => {
         e.preventDefault()
         if (isInputCheck) {
+            return ShowToast(
+                'Fill the SprintInformation.',
+                400,
+                "error"
+            );
+            // return alert("Fill the SprintInformation")
 
-            return alert("Fill the SprintInformation")
+
 
 
 
         }
 
         if (SprintStartDate === SprintEndDate) {
-            return alert("Sprint start date and end date should not be the same.");
+            // return alert("Sprint start date and end date should not be the same.");
+            return ShowToast(
+                'Sprint start date and end date should not be the same.',
+                400,
+                "error"
+            );
         }
 
         if (new Date(SprintEndDate) < new Date(SprintStartDate)) {
-            return alert("Sprint end date must be after the sprint start date.");
+            // return alert("Sprint end date must be after the sprint start date.");
+            return ShowToast(
+                'Sprint end date must be after the sprint start date.',
+                400,
+                "error"
+            )
         }
 
         const Creation_sprint: any = {
@@ -65,7 +82,7 @@ const SprintForm = ({ spaceid, onClick, SprintPoupForm }: any) => {
         }
 
 
-        console.log(Creation_sprint, 'Creation_sprint');
+
 
 
 
@@ -74,17 +91,23 @@ const SprintForm = ({ spaceid, onClick, SprintPoupForm }: any) => {
             const response = await instance.post("/api/sprints/sprints", { Creation_sprint: Creation_sprint })
             console.log(response, 'response');
             if (response.status == 200) {
-                alert("Sprint is Created")
-                return onClick()
+
+                return ShowToast(
+                    'Sprint is Created',
+                    response?.status,
+                    "sucess"
+                );
+                // return onClick()
             }
 
 
         } catch (error: any) {
             const status = error.response.status
-            if (status == 401) {
-
-                return checkuser(redirect)
-            }
+            return ShowToast(
+                error?.response?.data?.message,
+                status,
+                "Error"
+            );
         }
 
 

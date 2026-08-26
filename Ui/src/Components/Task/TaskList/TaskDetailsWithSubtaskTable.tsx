@@ -20,6 +20,7 @@ import { nanoid } from "nanoid";
 import { toast, ToastContainer } from "react-toastify";
 import TaskFiles from "./TaskFiles";
 import bgthemeContext from "../../../Context/ThemeContext";
+import { ShowToast } from "../../toastHelper";
 
 export default function SubTaskWithFiles({ viewtasks }: any) {
   const context = useContext(bgthemeContext);
@@ -42,7 +43,7 @@ export default function SubTaskWithFiles({ viewtasks }: any) {
   console.log(setActiveTaskId, setUploadedFiles)
   const [rowData, setrowdata] = useState<any>([]);
   // const [Data, setdata] = useState<any>(viewtasks.Files);
-  
+
   console.log(file, 'file')
   console.log(activeTaskId, 'activeTaskIdcls')
   // console.log(setdata, 'setdata')
@@ -135,11 +136,13 @@ export default function SubTaskWithFiles({ viewtasks }: any) {
       console.log(errmessage, 'tharun')
 
 
-      if (errstatus == 404) {
-        return alert(errmessage)
-      }
+      return ShowToast(
+        errmessage,
+        errstatus,
+        "error"
+      );
 
-      return errmessage + errstatus
+      // return 
 
     }
     finally { setfileUpload(false) }
@@ -218,8 +221,8 @@ export default function SubTaskWithFiles({ viewtasks }: any) {
               📁 Uploaded Files
               <span
                 className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${isDark
-                    ? "bg-gray-700 text-gray-200"
-                    : "bg-gray-100 text-gray-700"
+                  ? "bg-gray-700 text-gray-200"
+                  : "bg-gray-100 text-gray-700"
                   }`}
               >
                 {viewtasks?.Files?.length || 0}

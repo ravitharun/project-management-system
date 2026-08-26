@@ -11,11 +11,11 @@ import { AllCommunityModule } from "ag-grid-community";
 import { MasterDetailModule, RowGroupingModule } from "ag-grid-enterprise";
 import bgthemeContext from "../../../Context/ThemeContext";
 import { instance } from "../../../services/apiservices";
-import { checkuser } from "../../LocalStorage";
-import { useNavigate } from "react-router-dom";
+
 import { toast, Toaster } from "sonner";
 import { socket } from "../../../Scokets/ScoketConfig"
 import { ListChecks, PlusCircle } from "lucide-react";
+import { ShowToast } from "../../toastHelper";
 
 ModuleRegistry.registerModules([
     AllCommunityModule,
@@ -43,7 +43,7 @@ const MyTable = ({ spaceid, ActiveSprintId }: info) => {
     // console.log(ActiveSprintId,'ActiveSprintId');
     // alert("MyTable")
 
-    const redirect = useNavigate()
+    // const redirect = useNavigate()
 
     const context = useContext(bgthemeContext);
     const { theme }: any = context
@@ -80,7 +80,7 @@ const MyTable = ({ spaceid, ActiveSprintId }: info) => {
                 }));
                 // console.log(formattedData, "formattedData");
                 const FilterbySprintnull = formattedData.filter((fil: any) => fil?.SprintId == null)
-                console.log(FilterbySprintnull,'FilterbySprintnull');
+                console.log(FilterbySprintnull, 'FilterbySprintnull');
 
                 setrowData(FilterbySprintnull);
             } catch (error) {
@@ -146,12 +146,11 @@ const MyTable = ({ spaceid, ActiveSprintId }: info) => {
             const status = error.response.status
             const Err_msg = error.response.message
 
-            if (status == 500) {
-                return toast.error(Err_msg)
-            }
-            if (status == 401) {
-                return checkuser(redirect)
-            }
+            return ShowToast(
+                Err_msg,
+                status,
+                "error"
+            );
 
         }
     }

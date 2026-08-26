@@ -10,6 +10,7 @@ import { useContext, useState } from "react";
 import { instance } from "../../../services/apiservices";
 import GlobalToast from "../../GlobalToast";
 import ApiLoader from "../../ApiLoader";
+import { ShowToast } from "../../toastHelper";
 
 ModuleRegistry.registerModules([
     AllCommunityModule,
@@ -136,17 +137,25 @@ function TaskFiles({ file }: any) {
             console.log(Status, 'Status')
             const Message: string = error?.response.data.message
             console.log(Message, 'Message')
-            if (Status === 404) {
-                return GlobalToast("try Again", 'error')
-            }
-            if (Status == 500) {
-                // return alert("Try again")
-                return GlobalToast("Server error", 'error')
-            }
-            if (Status == 401) {
-                // return alert("Try again")
-                return GlobalToast("Server error", 'error')
-            }
+
+
+            return ShowToast(
+                Message,
+                Status,
+                "error"
+            );
+
+            // if (Status === 404) {
+            //     return GlobalToast("try Again", 'error')
+            // }
+            // if (Status == 500) {
+            //     // return alert("Try again")
+            //     return GlobalToast("Server error", 'error')
+            // }
+            // if (Status == 401) {
+            //     // return alert("Try again")
+            //     return GlobalToast("Server error", 'error')
+            // }
 
 
         } finally {

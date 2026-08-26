@@ -4,22 +4,22 @@ import bgthemeContext from "../../Context/ThemeContext";
 import SprintForm from "./SprintForm";
 import Sprints from "./SprintsTable";
 import { instance } from "../../services/apiservices";
-import { checkuser } from "../LocalStorage";
-import { useNavigate } from "react-router-dom";
+
 import { DueDate, GetDateFormat, GetDueDays } from "../DateFormat";
 import Board from "../Board";
 import TaskForm from "../Task/CreateTask/TaskForm";
 import { userRfToken } from "../users";
+import { ShowToast } from "../toastHelper";
 
 const Backlog = ({ workspaceid }: any) => {
 
-        // alert("Backlog")
+    // alert("Backlog")
 
     const [SprintPoupForm, setSprintPoupForm] = useState<boolean>(false)
     const { theme }: any = useContext(bgthemeContext);
 
     const [PoupOpen, _] = useState<boolean>(false)
-    const redirect = useNavigate()
+
     const isDark = theme === "Dark";
     const handelSprintForm = () => {
 
@@ -29,7 +29,7 @@ const Backlog = ({ workspaceid }: any) => {
 
 
     const [ActiveSprint, setActiveSprint] = useState<any>()
-    console.log(ActiveSprint, 'ActiveSprint');
+
 
     useEffect(() => {
 
@@ -38,7 +38,6 @@ const Backlog = ({ workspaceid }: any) => {
 
             try {
                 const response = await instance.get(`/api/sprints/${workspaceid._id}/Activesprint`)
-                console.log(response.data.data[0], 'ActiveSprintActiveSprint');
                 setActiveSprint(response.data.data[0])
 
             } catch (error: any) {
@@ -47,7 +46,12 @@ const Backlog = ({ workspaceid }: any) => {
                 const status = error.response.status;
 
 
-                if (status == 401) { return checkuser(redirect) }
+                // if (status == 401) { return checkuser(redirect) }
+                return ShowToast(
+                    error?.response?.data?.message,
+                    status,
+                    "Error"
+                );
 
             }
         }
@@ -60,7 +64,7 @@ const Backlog = ({ workspaceid }: any) => {
         Math.max(0, Number(ActiveSprint?.SprintProgress) || 0)
     );
     // console.log(userRfToken, 'userRfToken');
-    const  HandelPoup = () => {
+    const HandelPoup = () => {
         setSprintPoupForm((prev) => !prev)
     }
 
@@ -72,7 +76,7 @@ const Backlog = ({ workspaceid }: any) => {
                 <TaskForm AddedBy={JSON.parse(userRfToken)._id} projectid={workspaceid._id} onclose={HandelPoup} CreateTask={SprintPoupForm} />
 
             }
-     
+
             <SprintForm
                 spaceid={workspaceid?._id}
                 SprintPoupForm={SprintPoupForm}
@@ -213,7 +217,7 @@ const Backlog = ({ workspaceid }: any) => {
                                         ? "Active"
                                         : "Not Active"}
 
-                                        {/* {ActiveSprint?.ActiveSprint?"true":} */}
+                                    {/* {ActiveSprint?.ActiveSprint?"true":} */}
                                 </span>
                             </div>
 
