@@ -69,7 +69,7 @@ app.use("/api/project-roles", handelProjectRoleRouter)
 app.use("/api/sprints", SprintRouter)
 app.use("/api/Calendar", FetchTaskCalendar)
 app.use("/api/Activity", Activity_Router)
-app.use('/api/projects',ProjectsVersionRoter)
+app.use('/api/projects', ProjectsVersionRoter)
 // /api/Task/AddWorkSpaceTask
 // client.connectRedis()
 app.use(ErrorMiddleware)
@@ -137,6 +137,12 @@ app.get("/username", AuthTokenVerification, async (req, res, next) => {
 
   }
 });
+
+app.get("/", (req, res) => {
+
+
+  return res.status(200).json({ message: "Server is Working" })
+})
 
 
 // app.get("/api/health", (req, res) => {
