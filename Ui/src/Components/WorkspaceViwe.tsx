@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import TemplatesUi from "./Summary-Templates/TemplatesUi";
 import bgthemeContext from "../Context/ThemeContext";
 import SideBarContext from "../Context/SideBard";
+import ClickedWorkSpace from "../Context/ClickedWorkSpace";
 
 
 
@@ -23,7 +24,7 @@ function WorkspaceViwe({ SpaceJson }: any) {
   const { sidebaropen }: any = useContext(SideBarContext);
 
   const { theme }: any = context
-
+  const { setClickedSpace }: any = useContext(ClickedWorkSpace)
 
   const [type, settype] = useState("Recommended");
   const [id, setid] = useState<number | null>(null);
@@ -222,7 +223,12 @@ function WorkspaceViwe({ SpaceJson }: any) {
                         key={i}
                         onMouseEnter={() => setid(i)}
                         onMouseLeave={() => setid(null)}
-                        onClick={() => ViewedWworkspace(w)}
+                        onClick={() => {
+
+                          setClickedSpace(w)
+                          ViewedWworkspace(w)
+
+                        }}
 
                         className={`
         w-full max-w-[820px] mx-auto

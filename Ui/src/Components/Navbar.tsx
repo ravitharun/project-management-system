@@ -170,6 +170,8 @@ function Sidebar({ page }: Props) {
 
     // setSelectSpace
     const handelSelectSpace = (data: any) => {
+
+
         setworkspcaeid(data._id)
 
         navaigte("/workspace", { state: { data: data } })

@@ -7,13 +7,16 @@ import {
     Calendar,
     Sparkles,
     Plus,
-    CheckCircle2,
+    CircleX,
+    CircleCheck,
 } from "lucide-react";
-import { useContext, useState, version } from "react";
+import { useContext, useEffect, useState } from "react";
 import bgthemeContext from "../../Context/ThemeContext";
 import { toast, Toaster } from "sonner";
 import { instance } from "../../services/apiservices";
 import ClickedWorkSpace from "../../Context/ClickedWorkSpace";
+import { getuserInfo } from "../LocalStorage";
+import { socket } from "../../Scokets/ScoketConfig";
 type Userintputs = String |
     any |
     Number |
@@ -21,7 +24,7 @@ type Userintputs = String |
 
 
 
-const Types: any = ["Planned", "In Progress", "Realsed"]
+const Types: any = ["Planned", "In Progress", "Released", "Archived"]
 
 type TypeStatus = "Planned" | "In Progress" | "Realsed"
 function CustomRealseForm({ onClose }: any) {
@@ -34,57 +37,141 @@ function CustomRealseForm({ onClose }: any) {
     const [Version, setVersion] = useState<Userintputs>()
     const [RealseName, setRealseName] = useState<Userintputs>()
     const [RealseDescprition, setRealseDescprition] = useState<Userintputs>()
-    const [Release_Date, setRelease_Date] = useState<Userintputs>()
+    const [releaseDate, setRelease_Date] = useState<Userintputs>()
     const [Status, setStatus] = useState<TypeStatus | any>()
+    const [Started, setStarted_Date] = useState<TypeStatus | any>()
+    const [ReleaseNotes, setReleaseNotes] = useState<TypeStatus | any>()
+    useEffect(() => {
+        const HandelRealse = (data: any) => {
+
+            return data
+
+        }
+
+        socket.on("releases:all", HandelRealse)
+
+        return () => {
+            socket.off("releases:all", HandelRealse)
+
+        }
+    }, [])
 
 
-console.log({
-    version,
-    RealseDescprition,
-    RealseName,
-    Release_Date,
-    Status,Version
-});
-
-    const AddNewRealse = async (projectId: any) => {
+    const AddNewRealse = async () => {
         try {
 
 
 
-            if (ClickedSpace._id) {
+
+            if (!ClickedSpace._id) {
                 return toast.info("Some Thing Went Wrong..")
+            }
+
+            const Project_Realse = {
+                // version,
+                RealseDescprition,
+                RealseName,
+                Started,
+                releaseDate,
+                ReleaseNotes,
+                Status, Version,
+                RealseBy_id: JSON.parse(getuserInfo)._id
+            }
+
+            console.log(Project_Realse, 'Project_Realse');
+
+            const response_version = await instance.post(`/api/projects/${ClickedSpace._id}/release-versions`, { Project_Realse: Project_Realse })
+            console.log(response_version, 'response_version');
+            if (response_version.status === 201) {
+                return toast.custom(() => (
+                    <div className="flex items-center gap-3 rounded-lg border border-green-500/30 bg-gray-900 px-4 py-3 text-white shadow-lg">
+                        <CircleCheck
+                            size={22}
+                            className="shrink-0 text-green-400"
+                        />
+
+                        <div>
+                            <p className="font-semibold text-green-400">Release Created</p>
+                            <p className="text-sm text-gray-300">
+                                {response_version.data.message}
+                            </p>
+                        </div>
+                    </div>
+                ));
+            }
+        } catch (error: any) {
+            const status = error?.response?.status;
+            const err_message = error?.response?.data?.message
+            console.log({ status, err_message });
+
+            if (status == 400) {
+
+
+                return toast.custom(() => (
+                    <div className="flex items-center gap-3 rounded-lg bg-gray-900 px-4 py-3 text-white shadow-lg border border-red-500/30">
+                        <CircleX
+                            size={22}
+                            className="shrink-0 text-red-400"
+                        />
+
+                        <div>
+                            <p className="font-semibold text-red-400">Error - {status}</p>
+                            <p className="text-sm text-gray-300">
+                                {err_message}
+                            </p>
+                        </div>
+                    </div>
+                ));
             }
 
 
 
 
-            const response_version = -await instance.post(` /api/projects/${projectId}/release-versions`)
-            console.log(response_version, 'response_version');
+            if (status == 403) {
 
-        } catch (error) {
 
-            return toast.custom(() => (
-                <div className="flex items-center gap-3 rounded-lg bg-gray-900 px-4 py-3 text-white shadow-lg">
-                    <CheckCircle2
-                        size={22}
-                        className="shrink-0 text-green-400"
-                    />
+                return toast.custom(() => (
+                    <div className="flex items-center gap-3 rounded-lg bg-gray-900 px-4 py-3 text-white shadow-lg border border-red-500/30">
+                        <CircleX
+                            size={22}
+                            className="shrink-0 text-red-400"
+                        />
 
-                    <div>
-                        <p className="font-semibold">Error</p>
-                        <p className="text-sm text-gray-300">
-                            There is An Error . Try Again Later
-                        </p>
+                        <div>
+                            <p className="font-semibold text-red-400">Error - {status}</p>
+                            <p className="text-sm text-gray-300">
+                                {err_message}
+                            </p>
+                        </div>
                     </div>
-                </div>
-            ));
+                ));
+            }
+
+            if (status == 500) {
 
 
+                return toast.custom(() => (
+                    <div className="flex items-center gap-3 rounded-lg bg-gray-900 px-4 py-3 text-white shadow-lg border border-red-500/30">
+                        <CircleX
+                            size={22}
+                            className="shrink-0 text-red-400"
+                        />
+
+                        <div>
+                            <p className="font-semibold text-red-400">Error - {status}</p>
+                            <p className="text-sm text-gray-300">
+                                {err_message}
+                            </p>
+                        </div>
+                    </div>
+                ));
+            }
         }
 
 
 
     }
+
     return (
         <>
             <Toaster closeButton></Toaster>
@@ -120,7 +207,7 @@ console.log({
                                     className={`text-base font-semibold ${is_theme ? "text-white" : "text-gray-900"
                                         }`}
 
-                                // onClick={() => Submit("12345")}
+
 
                                 >
                                     Create Release
@@ -166,7 +253,7 @@ console.log({
                                 <input
                                     type="text"
                                     placeholder="e.g. Version 1.4.0"
-                                    onChange={(e:any) => setRealseName(e.target.value)}
+                                    onChange={(e: any) => setRealseName(e.target.value)}
                                     className={`w-full rounded-lg border py-2.5 pl-9 pr-3 text-sm outline-none transition ${is_theme
                                         ? "border-gray-700 bg-gray-800 text-white placeholder:text-gray-500 focus:border-indigo-500"
                                         : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:border-indigo-500"
@@ -187,7 +274,7 @@ console.log({
                             <input
                                 type="text"
                                 placeholder="e.g. v1.4.0"
-                                onChange={(e:any) => setVersion(e.target.value)}
+                                onChange={(e: any) => setVersion(e.target.value)}
 
                                 className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition ${is_theme
                                     ? "border-gray-700 bg-gray-800 text-white placeholder:text-gray-500 focus:border-indigo-500"
@@ -214,7 +301,7 @@ console.log({
                                 <textarea
                                     rows={3}
                                     placeholder="Describe what's included in this release..."
-                                    onChange={(e:any) => setRealseDescprition(e.target.value)}
+                                    onChange={(e: any) => setRealseDescprition(e.target.value)}
 
                                     className={`w-full resize-none rounded-lg border py-2.5 pl-9 pr-3 text-sm outline-none transition ${is_theme
                                         ? "border-gray-700 bg-gray-800 text-white placeholder:text-gray-500 focus:border-indigo-500"
@@ -224,8 +311,46 @@ console.log({
                             </div>
                         </div>
 
+
+
+
+
+
+
+
                         {/* Date + Status */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+
+                            {/* Started Date */}
+                            <div>
+                                <label
+                                    className={`mb-1.5 block text-xs font-medium ${is_theme ? "text-gray-300" : "text-gray-700"
+                                        }`}
+                                >
+                                    Started Date
+                                </label>
+
+                                <div className="relative">
+                                    <Calendar
+                                        size={16}
+                                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                                    />
+
+                                    <input
+                                        type="date"
+                                        onChange={(e: any) => setStarted_Date(e.target.value)}
+
+                                        className={`w-full rounded-lg border py-2.5 pl-9 pr-2 text-sm outline-none ${is_theme
+                                            ? "border-gray-700 bg-gray-800 text-white focus:border-indigo-500"
+                                            : "border-gray-300 bg-white text-gray-900 focus:border-indigo-500"
+                                            }`}
+                                    />
+                                </div>
+                            </div>
+
+
+
                             {/* Release Date */}
                             <div>
                                 <label
@@ -243,7 +368,7 @@ console.log({
 
                                     <input
                                         type="date"
-                                        onChange={(e:any) => setRelease_Date(e.target.value)}
+                                        onChange={(e: any) => setRelease_Date(e.target.value)}
 
                                         className={`w-full rounded-lg border py-2.5 pl-9 pr-2 text-sm outline-none ${is_theme
                                             ? "border-gray-700 bg-gray-800 text-white focus:border-indigo-500"
@@ -270,7 +395,7 @@ console.log({
 
 
                                     // onChange={}
-                                    onChange={(e:any) => setStatus(e.target.value)}
+                                    onChange={(e: any) => setStatus(e.target.value)}
 
                                 >
 
@@ -278,7 +403,7 @@ console.log({
 
 
 
-                                    {Types.map((itm: any, idx: any) => (
+                                    {Types?.map((itm: any, idx: any) => (
 
 
 
@@ -287,6 +412,40 @@ console.log({
                                 </select>
                             </div>
                         </div>
+
+
+
+
+                        {/* Release Notes */}
+                        <div className="mb-4">
+                            <label
+                                className={`mb-1.5 block text-xs font-medium ${is_theme ? "text-gray-300" : "text-gray-700"
+                                    }`}
+                            >
+                                Release Notes
+                            </label>
+
+                            <div className="relative">
+                                <FileText
+                                    size={16}
+                                    className="absolute left-3 top-3 text-gray-400"
+                                />
+
+                                <textarea
+                                    rows={3}
+                                    placeholder="Release Notes..."
+                                    onChange={(e: any) => setReleaseNotes(e.target.value)}
+
+                                    className={`w-full resize-none rounded-lg border py-2.5 pl-9 pr-3 text-sm outline-none transition ${is_theme
+                                        ? "border-gray-700 bg-gray-800 text-white placeholder:text-gray-500 focus:border-indigo-500"
+                                        : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:border-indigo-500"
+                                        }`}
+                                />
+                            </div>
+                        </div>
+
+
+
 
                         {/* Release Highlights */}
                         <div
@@ -340,7 +499,7 @@ console.log({
 
                         <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700 sm:w-auto"
                             onClick={AddNewRealse}
-                            disabled={true}
+                        // disabled={true}
                         >
                             <Plus size={16} />
                             Create Release

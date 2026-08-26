@@ -3,6 +3,7 @@ import { Plus, Rocket } from 'lucide-react'
 import CustomRealseForm from './CustomRealseForm';
 import { useState } from 'react';
 
+
 function RealesPages({ isTheme }: any) {
 
     const [IsRealseForm, setIsRealseForm] = useState(false);
@@ -11,7 +12,8 @@ function RealesPages({ isTheme }: any) {
 
 
 
-    
+
+
     return (
         <>
 
