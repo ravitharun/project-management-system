@@ -7,8 +7,7 @@ import {
     Calendar,
     Sparkles,
     Plus,
-    CircleX,
-    CircleCheck,
+
 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import bgthemeContext from "../../Context/ThemeContext";
@@ -17,6 +16,7 @@ import { instance } from "../../services/apiservices";
 import ClickedWorkSpace from "../../Context/ClickedWorkSpace";
 import { getuserInfo } from "../LocalStorage";
 import { socket } from "../../Scokets/ScoketConfig";
+import { ShowToast } from "../toastHelper";
 type Userintputs = String |
     any |
     Number |
@@ -83,89 +83,25 @@ function CustomRealseForm({ onClose }: any) {
             const response_version = await instance.post(`/api/projects/${ClickedSpace._id}/release-versions`, { Project_Realse: Project_Realse })
             console.log(response_version, 'response_version');
             if (response_version.status === 201) {
-                return toast.custom(() => (
-                    <div className="flex items-center gap-3 rounded-lg border border-green-500/30 bg-gray-900 px-4 py-3 text-white shadow-lg">
-                        <CircleCheck
-                            size={22}
-                            className="shrink-0 text-green-400"
-                        />
+                return ShowToast(
+                    response_version.data.message,
+                    response_version.status,
+                    "Success"
+                );
 
-                        <div>
-                            <p className="font-semibold text-green-400">Release Created</p>
-                            <p className="text-sm text-gray-300">
-                                {response_version.data.message}
-                            </p>
-                        </div>
-                    </div>
-                ));
             }
         } catch (error: any) {
             const status = error?.response?.status;
             const err_message = error?.response?.data?.message
-            console.log({ status, err_message });
-
-            if (status == 400) {
 
 
-                return toast.custom(() => (
-                    <div className="flex items-center gap-3 rounded-lg bg-gray-900 px-4 py-3 text-white shadow-lg border border-red-500/30">
-                        <CircleX
-                            size={22}
-                            className="shrink-0 text-red-400"
-                        />
-
-                        <div>
-                            <p className="font-semibold text-red-400">Error - {status}</p>
-                            <p className="text-sm text-gray-300">
-                                {err_message}
-                            </p>
-                        </div>
-                    </div>
-                ));
-            }
+            return ShowToast(
+                err_message,
+                status,
+                "Error"
+            );
 
 
-
-
-            if (status == 403) {
-
-
-                return toast.custom(() => (
-                    <div className="flex items-center gap-3 rounded-lg bg-gray-900 px-4 py-3 text-white shadow-lg border border-red-500/30">
-                        <CircleX
-                            size={22}
-                            className="shrink-0 text-red-400"
-                        />
-
-                        <div>
-                            <p className="font-semibold text-red-400">Error - {status}</p>
-                            <p className="text-sm text-gray-300">
-                                {err_message}
-                            </p>
-                        </div>
-                    </div>
-                ));
-            }
-
-            if (status == 500) {
-
-
-                return toast.custom(() => (
-                    <div className="flex items-center gap-3 rounded-lg bg-gray-900 px-4 py-3 text-white shadow-lg border border-red-500/30">
-                        <CircleX
-                            size={22}
-                            className="shrink-0 text-red-400"
-                        />
-
-                        <div>
-                            <p className="font-semibold text-red-400">Error - {status}</p>
-                            <p className="text-sm text-gray-300">
-                                {err_message}
-                            </p>
-                        </div>
-                    </div>
-                ));
-            }
         }
 
 

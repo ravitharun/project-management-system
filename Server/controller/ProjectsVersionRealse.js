@@ -64,4 +64,34 @@ const CreateRealse = async (req, res) => {
 
 
 
-module.exports = CreateRealse
+const Fetch__Version_Realses = async (req, res) => {
+
+
+    try {
+
+
+        const { projectId } = req.params
+        console.log(projectId, 'ProjectId');
+
+
+        if (!projectId) {
+
+
+            return res.status(400).json({ message: "ProjectId is missing.." })
+
+        }
+
+        const GetAllRealses = await ProjectRelease.find({ projectId: projectId })
+
+        return res.status(200).json({ message: "Version Realese", data: GetAllRealses, status: true })
+
+    } catch (error) {
+        console.log(error.message);
+
+        return res.status(500).json({ message: "server error", status: false })
+
+    }
+}
+
+
+module.exports = { CreateRealse, Fetch__Version_Realses }
