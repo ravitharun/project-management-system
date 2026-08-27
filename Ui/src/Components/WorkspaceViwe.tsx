@@ -15,10 +15,11 @@ import TemplatesUi from "./Summary-Templates/TemplatesUi";
 import bgthemeContext from "../Context/ThemeContext";
 import SideBarContext from "../Context/SideBard";
 import ClickedWorkSpace from "../Context/ClickedWorkSpace";
+import ApiLoader from "./ApiLoader";
 
 
 
-function WorkspaceViwe({ SpaceJson }: any) {
+function WorkspaceViwe({ SpaceJson, isLoading }: any) {
   const context = useContext(bgthemeContext);
 
   const { sidebaropen }: any = useContext(SideBarContext);
@@ -32,6 +33,10 @@ function WorkspaceViwe({ SpaceJson }: any) {
   // const workSpaceData = useContext(WorkspaceData)
   // const { ClickedSpace, setClickedSpace }: any = contextSpace
 
+  if (isLoading) {
+
+    return <ApiLoader texttyoe="Fetching workspaces..." text="workspace" />
+  }
   const filters = [
     "Recommended",
     "For you",
@@ -121,7 +126,7 @@ function WorkspaceViwe({ SpaceJson }: any) {
                 }
         `}
             >
-              Manage your teams, projects, and collaboration spaces -{sidebaropen ? "open" : "cl"}
+              Manage your teams, projects, and collaboration spaces
             </p>
           </div>
 
