@@ -13,13 +13,13 @@ export const Usertoekn = (navigate: any, toast: any) => {
     return navigate(window.location.pathname)
 }
 // };
-export const checkuser = (redirect?:any) => {
+export const checkuser = () => {
     const tokenRemove: any = localStorage.removeItem("LoginToken")
     const Removeuserinfo: any = localStorage.removeItem("userinfo")
     if (!tokenRemove && !Removeuserinfo) {
 
-        return redirect( "/login")
+        return window.location.href == "/login"
     }
 
-    return redirect ("/")
+    return window.location.href = "/"
 };

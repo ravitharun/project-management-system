@@ -1,15 +1,19 @@
 
 import { CircleX, CircleCheck } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
 import { toast, Toaster } from "sonner";
 import { checkuser } from "./LocalStorage";
 
 export const ShowToast = (
     message: string,
     statusCode: number,
-    type: string
+    type: string,
+    // navigate: any
 ) => {
-    const redirect = useNavigate();
+
+
+    console.log({ message, statusCode, type }, 'chek')
+
     const isSuccess = statusCode === 200 || statusCode === 201;
     <Toaster position="bottom-right"></Toaster>
     toast.custom(() => (
@@ -37,10 +41,13 @@ export const ShowToast = (
         statusCode == 401 &&
 
 
-            checkuser(redirect)
+            checkuser()
 
 
     }
 
 
 };
+
+
+

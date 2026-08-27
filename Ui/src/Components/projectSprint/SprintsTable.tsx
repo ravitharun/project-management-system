@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { instance } from "../../services/apiservices";
-import { useNavigate } from "react-router-dom";
+
 import { checkuser } from "../LocalStorage";
 import { AgGridReact, AgGridProvider } from "ag-grid-react";
 import type { ColDef } from "ag-grid-community";
@@ -120,7 +120,7 @@ const Sprints = ({ workspaceid }: any) => {
 
     const modules = [AllCommunityModule];
     const { theme }: any = useContext(bgthemeContext)
-    const redirect = useNavigate()
+
 
 
     const [Sprints, setSprint] = useState<any>(tasks)
@@ -141,7 +141,7 @@ const Sprints = ({ workspaceid }: any) => {
                 const status = error.response.status
 
 
-                if (status == 401) { return checkuser(redirect) }
+                if (status == 401) { return checkuser() }
 
 
             }
@@ -415,7 +415,7 @@ const Sprints = ({ workspaceid }: any) => {
             }
             if (error_status == 401) {
 
-                return checkuser(redirect)
+                return checkuser()
 
             }
 
