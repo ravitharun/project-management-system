@@ -41,20 +41,6 @@ function CustomRealseForm({ onClose }: any) {
     const [Status, setStatus] = useState<TypeStatus | any>()
     const [Started, setStarted_Date] = useState<TypeStatus | any>()
     const [ReleaseNotes, setReleaseNotes] = useState<TypeStatus | any>()
-    useEffect(() => {
-        const HandelRealse = (data: any) => {
-
-            return data
-
-        }
-
-        socket.on("releases:all", HandelRealse)
-
-        return () => {
-            socket.off("releases:all", HandelRealse)
-
-        }
-    }, [])
 
 
     const AddNewRealse = async () => {

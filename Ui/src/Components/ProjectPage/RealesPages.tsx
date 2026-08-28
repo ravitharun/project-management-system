@@ -9,21 +9,37 @@ import ApiLoader from '../ApiLoader';
 import { ShowToast } from '../toastHelper';
 import ProjectsNotfound from '../ProjectsNotfound';
 import AlertPoup from '../AlertPoup';
+import { socket } from '../../Scokets/ScoketConfig';
 
 
 function RealesPages({ isTheme }: any) {
     const { ClickedSpace }: any = useContext(ClickedWorkSpace)
-        // console.log(ClickedSpace_id)
-        // 
-        ;
+
+
+
+    const [RealseVersion, setRealseVersion] = useState<any>([])
+
+            useEffect(() => {
+        const HandelRealse = (data: any) => {
+
+            return setRealseVersion( data)
+
+        }
+
+        socket.on("releases:all", HandelRealse)
+
+        return () => {
+            socket.off("releases:all", HandelRealse)
+
+        }
+    }, [])
+
     const [isDelete, setisDelete] = useState<boolean>(false)
 
     const [IsRealseForm, setIsRealseForm] = useState(false);
 
     const [loader, setloader] = useState<boolean>(false)
 
-
-    const [RealseVersion, setRealseVersion] = useState<any>([])
     useEffect(() => {
         const FetchVersions = async () => {
 
