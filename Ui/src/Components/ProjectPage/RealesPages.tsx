@@ -22,7 +22,7 @@ function RealesPages({ isTheme }: any) {
             useEffect(() => {
         const HandelRealse = (data: any) => {
 
-            return setRealseVersion( data)
+             setRealseVersion( data)
 
         }
 
