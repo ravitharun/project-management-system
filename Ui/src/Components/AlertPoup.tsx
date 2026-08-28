@@ -7,7 +7,7 @@ import {
 import bgthemeContext from "../Context/ThemeContext";
 
 function AlertPoup({ isPoup, setisDelete }: any) {
-    // const isPoup: boolean = true;
+
 
     const { theme }: any = useContext(bgthemeContext);
     const isTheme = theme === "Dark";
