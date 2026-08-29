@@ -29,7 +29,7 @@ function App() {
   }
 
   console.log(import.meta.env.VITE_API,'VITE_API')
-  alert(import.meta.env.VITE_API)
+  // alert(import.meta.env.VITE_API)
   return (
     <>
       <SpeedInsights />

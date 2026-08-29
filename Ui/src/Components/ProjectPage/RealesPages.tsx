@@ -32,7 +32,7 @@ function RealesPages({ isTheme }: any) {
         }
     }, [])
 
-    
+
     const [isDelete, setisDelete] = useState<boolean>(false)
 
     const [IsRealseForm, setIsRealseForm] = useState(false);
@@ -214,8 +214,9 @@ function RealesPages({ isTheme }: any) {
                 </div>
             </div>
 
-            {IsRealseForm && <CustomRealseForm onClose={() => setIsRealseForm(false)} />}
+            {IsRealseForm && <CustomRealseForm onCLOSE={() => setIsRealseForm(false)} />}
 
+            
             <AlertPoup isPoup={isDelete} setisDelete={setisDelete} RealseVersionId={RealseVersionId}></AlertPoup>
         </>
     )
