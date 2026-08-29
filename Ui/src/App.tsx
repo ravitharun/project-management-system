@@ -9,6 +9,7 @@ import AcceptGoogleCalendar from "./Components/AcceptGoogleCalndra";
 
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import { Analytics } from "@vercel/analytics/react"
+import { Toaster } from "sonner";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
     <>
       <SpeedInsights />
       <Analytics />
+        <Toaster closeButton></Toaster>
       {!JSON.parse(getuserInfo).googleCalendarConnected
         ?
         <AcceptGoogleCalendar setOpen={handelPoup}>

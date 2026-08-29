@@ -5,15 +5,65 @@ import {
     Trash2,
 } from "lucide-react";
 import bgthemeContext from "../Context/ThemeContext";
+import { instance } from "../services/apiservices";
+import { ShowToast } from "./toastHelper";
+import {  Toaster } from "sonner";
 
-function AlertPoup({ isPoup, setisDelete }: any) {
+function AlertPoup({ isPoup, setisDelete, RealseVersionId }: any) {
 
 
     const { theme }: any = useContext(bgthemeContext);
     const isTheme = theme === "Dark";
 
+
+
+
+    const handelRealseVersion = async () => {
+        try {
+            if (!RealseVersionId) {
+
+                return
+            }
+            const response = await instance.delete(`/api/projects/${RealseVersionId}/delete`)
+
+
+            console.log(response, 'efrgg')
+
+            if (response.status == 200) {
+
+
+          
+                ShowToast(
+                    response.data.message,
+                    response.status,
+                    "Success"
+                );
+                return setisDelete(false)
+            }
+        } catch (error: any) {
+
+
+
+            const status = error?.response?.status
+
+            const Err_msg = error?.response?.data?.message
+
+            console.log({ status, Err_msg });
+
+            return ShowToast(
+                Err_msg,
+                status,
+                "Error"
+            );
+        }
+
+
+
+    }
+
     return (
         <>
+            <Toaster closeButton></Toaster>
             {isPoup && (
                 <div
                     className="fixed inset-0 z-50 flex min-h-screen items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
@@ -49,7 +99,7 @@ function AlertPoup({ isPoup, setisDelete }: any) {
                                         ? "bg-red-500/10 text-red-400"
                                         : "bg-red-50 text-red-600"
                                         }`}
-                                        
+
                                 >
                                     <AlertTriangle size={28} />
                                 </div>
@@ -84,7 +134,7 @@ function AlertPoup({ isPoup, setisDelete }: any) {
                                         ? "border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700"
                                         : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                                         }`}
-                                             onClick={() => setisDelete(false)}
+                                    onClick={() => setisDelete(false)}
                                 >
                                     Cancel
                                 </button>
@@ -92,6 +142,8 @@ function AlertPoup({ isPoup, setisDelete }: any) {
                                 <button
                                     type="button"
                                     className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-sm font-medium text-white transition-colors hover:bg-red-700 active:bg-red-800 sm:w-auto"
+
+                                    onClick={handelRealseVersion}
                                 >
                                     <Trash2 size={16} />
                                     Delete Version
