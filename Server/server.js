@@ -227,8 +227,8 @@ app.use(express.json());
 const envStatusurl =
   process.env.envStatus === "Local"
     ? "http://localhost:5173"
-    // : process.env.LiveUI;
-    :"https://project-management-system-weld-eight.vercel.app"
+    : process.env.LiveUI;
+    // :"https://project-management-system-weld-eight.vercel.app"
 
 app.use(
   cors({
