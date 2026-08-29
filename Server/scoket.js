@@ -5,7 +5,7 @@
 
 const { Server } = require("socket.io");
 const redis = require("./config/redis");
-const UserSchema=require("./Models/Auth")
+const UserSchema = require("./Models/Auth")
 let io;
 
 // track user sockets
@@ -16,7 +16,7 @@ const initSocket = (server) => {
     cors: {
       origin: [
         "http://localhost:5173",
-        "https://taskora-system.netlify.app","https://devserver-testing--taskora-system.netlify.app",'https://project-management-system-weld-eight.vercel.app'
+        "https://taskora-system.netlify.app", "https://devserver-testing--taskora-system.netlify.app", 'https://project-management-system-weld-eight.vercel.app', 'https://project-management-system-jsxe.vercel.app'
       ],
     },
   });
