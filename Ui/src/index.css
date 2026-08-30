@@ -12,6 +12,68 @@
   }
 }
 
+/* ============================= */
+/* GANTT DARK THEME              */
+/* ============================= */
+
+.gantt-dark {
+    color: #e5e7eb;
+}
+
+.gantt-dark * {
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+}
+
+/* Popup / Tooltip */
+.gantt-dark [role="dialog"],
+.gantt-dark .tooltip,
+.gantt-dark .popover,
+.gantt-dark .popup {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border: 1px solid #1e293b !important;
+}
+
+/* Popup text */
+.gantt-dark [role="dialog"] *,
+.gantt-dark .tooltip *,
+.gantt-dark .popover *,
+.gantt-dark .popup * {
+    color: #e5e7eb !important;
+}
+
+/* ============================= */
+/* GANTT LIGHT THEME             */
+/* ============================= */
+
+.gantt-light {
+    color: #1f2937;
+}
+
+.gantt-light * {
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+}
+
+.gantt-light [role="dialog"],
+.gantt-light .tooltip,
+.gantt-light .popover,
+.gantt-light .popup {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+.gantt-light [role="dialog"] *,
+.gantt-light .tooltip *,
+.gantt-light .popover *,
+.gantt-light .popup * {
+    color: #374151 !important;
+}
+
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;
