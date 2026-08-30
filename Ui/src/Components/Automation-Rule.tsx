@@ -39,10 +39,20 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
     const [action, setAction] = useState("");
     const [actionValue, setActionValue] = useState("");
     const [status, setStatus] = useState(true);
-    console.log(status, 'status');
 
     if (!CreateRule) return null;
+    const handleCancel = () => {
+        setRuleName("");
+        setTrigger("");
+        setConditionField("");
+        setOperator("equals");
+        setConditionValue("");
+        setAction("");
+        setActionValue("");
+        setStatus(true);
 
+        if (handelonclose) handelonclose();
+    };
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
@@ -70,29 +80,22 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
         try {
             const response = await instance.post('/api/automation/rules', { rule: rule })
             if (response.status == 201 || 200) {
+                ShowToast(response?.data?.message, response?.status, "sucess")
+                setTimeout(() => {
+                    handleCancel()
+                    if (handelonclose) return handelonclose();
+                }, 2500);
 
-                return ShowToast(response?.data?.message, response?.status, "sucess")
             }
         } catch (error: any) {
-            console.log(error?.response.status)
+            // console.error(error)
             return ShowToast(error?.response?.data?.message, error?.response?.status, "Error")
         }
 
 
     };
 
-    const handleCancel = () => {
-        setRuleName("");
-        setTrigger("");
-        setConditionField("");
-        setOperator("equals");
-        setConditionValue("");
-        setAction("");
-        setActionValue("");
-        setStatus(true);
 
-        if (handelonclose) handelonclose();
-    };
 
     return (
         <>
