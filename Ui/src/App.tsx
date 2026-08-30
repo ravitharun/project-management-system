@@ -10,6 +10,7 @@ import AcceptGoogleCalendar from "./Components/AcceptGoogleCalndra";
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import { Analytics } from "@vercel/analytics/react"
 import { Toaster } from "sonner";
+import { ReactGanttChart, type Task } from "@jaeungkim/gantt-chart";
 
 
 function App() {
@@ -28,26 +29,49 @@ function App() {
     setIsdelay((prev) => !prev)
   }
 
-  console.log(import.meta.env.VITE_API,'VITE_API')
-  // alert(import.meta.env.VITE_API)
+
+  const tasks: Task[] = [
+    {
+      id: "1",
+      name: "Project Kickoff",
+      startDate: "2026-08-28T09:00:00Z",
+      endDate: "2026-09-03T17:00:00Z",
+      parentId: null,
+      sequence: "1",
+      dependencies: [],
+    },
+    {
+      id: "2",
+      name: "Requirements Gathering",
+      startDate: "2026-09-04T09:00:00Z",
+      endDate: "2026-09-10T17:00:00Z",
+      parentId: null,
+      sequence: "2",
+      dependencies: [
+        {
+          targetId: "1",
+          type: "FS",
+        },
+      ],
+    },
+  ];
+
+
   return (
     <>
       <SpeedInsights />
       <Analytics />
-        <Toaster closeButton></Toaster>
-      {!JSON.parse(getuserInfo).googleCalendarConnected
-        ?
-        <AcceptGoogleCalendar setOpen={handelPoup}>
-        </AcceptGoogleCalendar> : ""
-      }
+      <Toaster closeButton />
+
+      {!JSON.parse(getuserInfo).googleCalendarConnected ? (
+        <AcceptGoogleCalendar setOpen={handelPoup} />
+      ) : null}
+
       <div
-        className={`
-          min-h-screen w-full overflow-hidden
-          ${theme === "Dark"
-            ? "bg-[#020817]"
-            : "bg-[#f4f6fb]"
-          }
-          `}
+        className={`min-h-screen w-full overflow-hidden ${theme === "Dark"
+          ? "bg-[#020817]"
+          : "bg-[#f4f6fb]"
+          }`}
       >
         {/* SIDEBAR */}
         <Sidebar page="For You" />
@@ -55,23 +79,40 @@ function App() {
         {/* MAIN */}
         <div
           className={`
-            transition-all duration-300
-            min-h-screen w-full
-            pt-[72px]
-            
-            ${sidebaropen.sidebaropen
+                min-h-screen w-full pt-[72px]
+                transition-all duration-300
+                ${sidebaropen.sidebaropen
               ? "md:ml-[260px]"
               : "md:ml-[88px]"
             }
             `}
         >
-          {/* <main className="flex-1 overflow-hidden"> */}
-          <main className=" w-full overflow-y-auto">
+          <main className="w-full overflow-y-auto">
+
+            {/* Workspace / Header */}
             <ViewWorkspace />
 
-
-          </main>            </div>
-
+            <div
+              className={`w-full min-w-0 p-6 ${theme === "Dark"
+                  ? "bg-[#020817]"
+                  : "bg-[#f4f6fb]"
+                }`}
+            >
+              <div className="w-full min-w-0 overflow-x-auto">
+                <ReactGanttChart
+                  tasks={tasks}
+                  height={600}
+                  width="100%"
+                  theme={theme === "Dark" ? "dark" : "light"}
+                  defaultScale="month"
+                  onTasksChange={(updated) => {
+                    console.log("Tasks updated:", updated);
+                  }}
+                />
+              </div>
+            </div>
+          </main>
+        </div>
       </div>
     </>
   )

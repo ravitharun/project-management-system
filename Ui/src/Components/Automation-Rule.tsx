@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+
 import {
     X,
     Zap,
@@ -13,9 +14,22 @@ import {
 
 } from "lucide-react";
 import bgthemeContext from "../Context/ThemeContext";
+import ClickedWorkSpace from "../Context/ClickedWorkSpace";
+import { getuserInfo } from "./LocalStorage";
+import { instance } from "../services/apiservices";
+import { ShowToast } from "./toastHelper";
+import { Toaster } from "sonner";
 
 function AutomationRule({ CreateRule, handelonclose }: any) {
+
     const { theme }: any = useContext(bgthemeContext)
+
+
+
+    const { ClickedSpace }: any = useContext(ClickedWorkSpace)
+
+
+
     const is_theme = theme === "Dark";
     const [ruleName, setRuleName] = useState("");
     const [trigger, setTrigger] = useState("");
@@ -25,10 +39,11 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
     const [action, setAction] = useState("");
     const [actionValue, setActionValue] = useState("");
     const [status, setStatus] = useState(true);
+    console.log(status, 'status');
 
     if (!CreateRule) return null;
 
-    const handleSubmit = (e:any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
 
         const rule = {
@@ -46,9 +61,22 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                 value: actionValue || null,
             },
             enabled: status,
+            projectId: ClickedSpace?._id,
+            createdBy: JSON.parse(getuserInfo)._id
         };
 
         console.log("Automation Rule:", rule);
+
+        try {
+            const response = await instance.post('/api/automation/rules', { rule: rule })
+            if (response.status == 201 || 200) {
+
+                return ShowToast(response?.data?.message, response?.status, "sucess")
+            }
+        } catch (error: any) {
+            console.log(error?.response.status)
+            return ShowToast(error?.response?.data?.message, error?.response?.status, "Error")
+        }
 
 
     };
@@ -69,6 +97,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
     return (
         <>
 
+            <Toaster closeButton></Toaster>
+
             <div
                 className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm ${is_theme ? "bg-black/60" : "bg-black/40"
                     }`}
@@ -76,30 +106,30 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                 {/* Popup */}
                 <div
                     className={`w-full max-w-2xl overflow-hidden rounded-2xl shadow-2xl ${is_theme
-                            ? "bg-[#0B1120] text-white"
-                            : "bg-white text-gray-900"
+                        ? "bg-[#0B1120] text-white"
+                        : "bg-white text-gray-900"
                         }`}
                 >
 
                     {/* Header */}
                     <div
                         className={`flex items-center justify-between border-b px-6 py-4 ${is_theme
-                                ? "border-gray-800"
-                                : "border-gray-200"
+                            ? "border-gray-800"
+                            : "border-gray-200"
                             }`}
                     >
                         <div className="flex items-center gap-3">
 
                             <div
                                 className={`flex h-10 w-10 items-center justify-center rounded-lg ${is_theme
-                                        ? "bg-indigo-500/10"
-                                        : "bg-indigo-100"
+                                    ? "bg-indigo-500/10"
+                                    : "bg-indigo-100"
                                     }`}
                             >
                                 <Zap
                                     className={`h-5 w-5 ${is_theme
-                                            ? "text-indigo-400"
-                                            : "text-indigo-600"
+                                        ? "text-indigo-400"
+                                        : "text-indigo-600"
                                         }`}
                                 />
                             </div>
@@ -107,8 +137,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                             <div>
                                 <h2
                                     className={`text-lg font-semibold ${is_theme
-                                            ? "text-white"
-                                            : "text-gray-900"
+                                        ? "text-white"
+                                        : "text-gray-900"
                                         }`}
                                 >
                                     Create Automation Rule
@@ -116,8 +146,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
 
                                 <p
                                     className={`text-xs ${is_theme
-                                            ? "text-gray-400"
-                                            : "text-gray-500"
+                                        ? "text-gray-400"
+                                        : "text-gray-500"
                                         }`}
                                 >
                                     Automate repetitive project tasks
@@ -130,8 +160,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                             type="button"
                             onClick={handelonclose}
                             className={`rounded-lg p-2 transition ${is_theme
-                                    ? "text-gray-400 hover:bg-gray-800 hover:text-white"
-                                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                                ? "text-gray-400 hover:bg-gray-800 hover:text-white"
+                                : "text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                                 }`}
                         >
                             <X size={20} />
@@ -147,8 +177,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                             <div>
                                 <label
                                     className={`mb-2 flex items-center gap-2 text-sm font-medium ${is_theme
-                                            ? "text-gray-200"
-                                            : "text-gray-700"
+                                        ? "text-gray-200"
+                                        : "text-gray-700"
                                         }`}
                                 >
                                     <Zap size={16} />
@@ -165,8 +195,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                     placeholder="e.g. Move completed tasks"
                                     required
                                     className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition ${is_theme
-                                            ? "border-gray-700 bg-[#111827] text-white placeholder:text-gray-500 focus:border-indigo-500"
-                                            : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:border-indigo-500"
+                                        ? "border-gray-700 bg-[#111827] text-white placeholder:text-gray-500 focus:border-indigo-500"
+                                        : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:border-indigo-500"
                                         }`}
                                 />
                             </div>
@@ -174,16 +204,16 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                             {/* WHEN */}
                             <div
                                 className={`rounded-xl border p-4 ${is_theme
-                                        ? "border-gray-800 bg-[#0F172A]"
-                                        : "border-gray-200 bg-gray-50/50"
+                                    ? "border-gray-800 bg-[#0F172A]"
+                                    : "border-gray-200 bg-gray-50/50"
                                     }`}
                             >
                                 <div className="mb-4 flex items-center gap-2">
 
                                     <div
                                         className={`rounded-lg p-2 ${is_theme
-                                                ? "bg-blue-500/10"
-                                                : "bg-blue-100"
+                                            ? "bg-blue-500/10"
+                                            : "bg-blue-100"
                                             }`}
                                     >
                                         <Play
@@ -199,8 +229,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                     <div>
                                         <h3
                                             className={`text-sm font-semibold ${is_theme
-                                                    ? "text-white"
-                                                    : "text-gray-900"
+                                                ? "text-white"
+                                                : "text-gray-900"
                                                 }`}
                                         >
                                             WHEN
@@ -208,8 +238,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
 
                                         <p
                                             className={`text-xs ${is_theme
-                                                    ? "text-gray-400"
-                                                    : "text-gray-500"
+                                                ? "text-gray-400"
+                                                : "text-gray-500"
                                                 }`}
                                         >
                                             Choose what starts this automation
@@ -225,8 +255,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                         }
                                         required
                                         className={`w-full appearance-none rounded-lg border px-4 py-2.5 pr-10 text-sm outline-none focus:border-indigo-500 ${is_theme
-                                                ? "border-gray-700 bg-[#111827] text-white"
-                                                : "border-gray-300 bg-white text-gray-900"
+                                            ? "border-gray-700 bg-[#111827] text-white"
+                                            : "border-gray-300 bg-white text-gray-900"
                                             }`}
                                     >
                                         <option value="">
@@ -261,8 +291,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                     <ChevronDown
                                         size={17}
                                         className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 ${is_theme
-                                                ? "text-gray-400"
-                                                : "text-gray-500"
+                                            ? "text-gray-400"
+                                            : "text-gray-500"
                                             }`}
                                     />
                                 </div>
@@ -271,8 +301,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                             {/* IF */}
                             <div
                                 className={`rounded-xl border p-4 ${is_theme
-                                        ? "border-gray-800 bg-[#0F172A]"
-                                        : "border-gray-200 bg-gray-50/50"
+                                    ? "border-gray-800 bg-[#0F172A]"
+                                    : "border-gray-200 bg-gray-50/50"
                                     }`}
                             >
                                 <div className="mb-4 flex items-center justify-between">
@@ -281,8 +311,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
 
                                         <div
                                             className={`rounded-lg p-2 ${is_theme
-                                                    ? "bg-amber-500/10"
-                                                    : "bg-amber-100"
+                                                ? "bg-amber-500/10"
+                                                : "bg-amber-100"
                                                 }`}
                                         >
                                             <GitBranch
@@ -298,8 +328,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                         <div>
                                             <h3
                                                 className={`text-sm font-semibold ${is_theme
-                                                        ? "text-white"
-                                                        : "text-gray-900"
+                                                    ? "text-white"
+                                                    : "text-gray-900"
                                                     }`}
                                             >
                                                 IF
@@ -307,8 +337,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
 
                                             <p
                                                 className={`text-xs ${is_theme
-                                                        ? "text-gray-400"
-                                                        : "text-gray-500"
+                                                    ? "text-gray-400"
+                                                    : "text-gray-500"
                                                     }`}
                                             >
                                                 Optional condition
@@ -335,8 +365,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                             setConditionField(e.target.value)
                                         }
                                         className={`rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-indigo-500 ${is_theme
-                                                ? "border-gray-700 bg-[#111827] text-white"
-                                                : "border-gray-300 bg-white text-gray-900"
+                                            ? "border-gray-700 bg-[#111827] text-white"
+                                            : "border-gray-300 bg-white text-gray-900"
                                             }`}
                                     >
                                         <option value="">Field</option>
@@ -360,8 +390,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                             setOperator(e.target.value)
                                         }
                                         className={`rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-indigo-500 ${is_theme
-                                                ? "border-gray-700 bg-[#111827] text-white"
-                                                : "border-gray-300 bg-white text-gray-900"
+                                            ? "border-gray-700 bg-[#111827] text-white"
+                                            : "border-gray-300 bg-white text-gray-900"
                                             }`}
                                     >
                                         <option value="equals">
@@ -385,8 +415,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                         }
                                         placeholder="Value"
                                         className={`rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-indigo-500 ${is_theme
-                                                ? "border-gray-700 bg-[#111827] text-white placeholder:text-gray-500"
-                                                : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400"
+                                            ? "border-gray-700 bg-[#111827] text-white placeholder:text-gray-500"
+                                            : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400"
                                             }`}
                                     />
 
@@ -396,16 +426,16 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                             {/* THEN */}
                             <div
                                 className={`rounded-xl border p-4 ${is_theme
-                                        ? "border-gray-800 bg-[#0F172A]"
-                                        : "border-gray-200 bg-gray-50/50"
+                                    ? "border-gray-800 bg-[#0F172A]"
+                                    : "border-gray-200 bg-gray-50/50"
                                     }`}
                             >
                                 <div className="mb-4 flex items-center gap-2">
 
                                     <div
                                         className={`rounded-lg p-2 ${is_theme
-                                                ? "bg-green-500/10"
-                                                : "bg-green-100"
+                                            ? "bg-green-500/10"
+                                            : "bg-green-100"
                                             }`}
                                     >
                                         <ArrowRight
@@ -421,8 +451,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                     <div>
                                         <h3
                                             className={`text-sm font-semibold ${is_theme
-                                                    ? "text-white"
-                                                    : "text-gray-900"
+                                                ? "text-white"
+                                                : "text-gray-900"
                                                 }`}
                                         >
                                             THEN
@@ -430,8 +460,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
 
                                         <p
                                             className={`text-xs ${is_theme
-                                                    ? "text-gray-400"
-                                                    : "text-gray-500"
+                                                ? "text-gray-400"
+                                                : "text-gray-500"
                                                 }`}
                                         >
                                             Choose what happens automatically
@@ -447,8 +477,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                         }
                                         required
                                         className={`w-full appearance-none rounded-lg border px-4 py-2.5 pr-10 text-sm outline-none focus:border-indigo-500 ${is_theme
-                                                ? "border-gray-700 bg-[#111827] text-white"
-                                                : "border-gray-300 bg-white text-gray-900"
+                                            ? "border-gray-700 bg-[#111827] text-white"
+                                            : "border-gray-300 bg-white text-gray-900"
                                             }`}
                                     >
                                         <option value="">
@@ -483,8 +513,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                     <ChevronDown
                                         size={17}
                                         className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 ${is_theme
-                                                ? "text-gray-400"
-                                                : "text-gray-500"
+                                            ? "text-gray-400"
+                                            : "text-gray-500"
                                             }`}
                                     />
                                 </div>
@@ -508,8 +538,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                             }
                                             required
                                             className={`mt-3 w-full rounded-lg border px-4 py-2.5 text-sm outline-none focus:border-indigo-500 ${is_theme
-                                                    ? "border-gray-700 bg-[#111827] text-white placeholder:text-gray-500"
-                                                    : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400"
+                                                ? "border-gray-700 bg-[#111827] text-white placeholder:text-gray-500"
+                                                : "border-gray-300 bg-white text-gray-900 placeholder:text-gray-400"
                                                 }`}
                                         />
                                     )}
@@ -518,8 +548,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                             {/* Status */}
                             <div
                                 className={`flex items-center justify-between rounded-xl border p-4 ${is_theme
-                                        ? "border-gray-800 bg-[#0F172A]"
-                                        : "border-gray-200 bg-gray-50/50"
+                                    ? "border-gray-800 bg-[#0F172A]"
+                                    : "border-gray-200 bg-gray-50/50"
                                     }`}
                             >
                                 <div className="flex items-center gap-3">
@@ -536,8 +566,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                     <div>
                                         <p
                                             className={`text-sm font-medium ${is_theme
-                                                    ? "text-white"
-                                                    : "text-gray-900"
+                                                ? "text-white"
+                                                : "text-gray-900"
                                                 }`}
                                         >
                                             Rule Status
@@ -545,8 +575,8 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
 
                                         <p
                                             className={`text-xs ${is_theme
-                                                    ? "text-gray-400"
-                                                    : "text-gray-500"
+                                                ? "text-gray-400"
+                                                : "text-gray-500"
                                                 }`}
                                         >
                                             Enable or disable this automation
@@ -558,16 +588,16 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                                     type="button"
                                     onClick={() => setStatus(!status)}
                                     className={`relative h-6 w-11 rounded-full transition ${status
-                                            ? "bg-green-500"
-                                            : is_theme
-                                                ? "bg-gray-700"
-                                                : "bg-gray-300"
+                                        ? "bg-green-500"
+                                        : is_theme
+                                            ? "bg-gray-700"
+                                            : "bg-gray-300"
                                         }`}
                                 >
                                     <span
                                         className={`absolute top-1 h-4 w-4 rounded-full bg-white transition ${status
-                                                ? "left-6"
-                                                : "left-1"
+                                            ? "left-6"
+                                            : "left-1"
                                             }`}
                                     />
                                 </button>
@@ -577,16 +607,16 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                         {/* Footer */}
                         <div
                             className={`flex items-center justify-end gap-3 border-t px-6 py-4 ${is_theme
-                                    ? "border-gray-800"
-                                    : "border-gray-200"
+                                ? "border-gray-800"
+                                : "border-gray-200"
                                 }`}
                         >
                             <button
                                 type="button"
                                 onClick={handleCancel}
                                 className={`rounded-lg border px-4 py-2 text-sm font-medium transition ${is_theme
-                                        ? "border-gray-700 text-gray-300 hover:bg-gray-800"
-                                        : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                                    ? "border-gray-700 text-gray-300 hover:bg-gray-800"
+                                    : "border-gray-300 text-gray-700 hover:bg-gray-100"
                                     }`}
                             >
                                 Cancel
@@ -604,6 +634,9 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
                     </form>
                 </div>
             </div>
+
+
+
         </>
     );
 }
