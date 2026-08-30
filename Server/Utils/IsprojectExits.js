@@ -1,3 +1,4 @@
+const ProjectRelease = require("../Models/ProjectRelease")
 const Workspace = require("../Models/Workspace")
 
 const IsProjectExits = async (ProjectID) => {
@@ -5,8 +6,7 @@ const IsProjectExits = async (ProjectID) => {
 
 
     const response = await Workspace.findById({ _id: ProjectID })
-    console.log(response,'response');
-    
+
 
     if (!response) {
 
@@ -15,4 +15,22 @@ const IsProjectExits = async (ProjectID) => {
     return response
 }
 
-module.exports = IsProjectExits
+
+
+const GetProjects = async (id) => {
+
+
+    if (!id) {
+        return "id is missing"
+
+
+    }
+    const response = await ProjectRelease.find({ projectId: id })
+    console.log(response.length,'response');
+    
+
+    return response
+
+
+}
+module.exports = { IsProjectExits, GetProjects }

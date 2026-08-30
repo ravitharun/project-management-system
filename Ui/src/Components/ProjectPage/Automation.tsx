@@ -1,10 +1,13 @@
 import { Plus, Zap } from "lucide-react"
+import AutomationRule from "../Automation-Rule"
+import { useState } from "react"
 
-function Automation({isTheme}:any) {
-  return (
-<>
+function Automation({ isTheme }: any) {
+    const [CreateRule, SetCreateRule] = useState<boolean>(false)
+    return (
+        <>
 
-     <div className="mt-10">
+            <div className="mt-10">
 
                 <div className="mb-4 flex items-center justify-between">
 
@@ -28,6 +31,8 @@ function Automation({isTheme}:any) {
                             ? "bg-white text-gray-900"
                             : "bg-gray-900 text-white"
                             }`}
+
+                        onClick={() => SetCreateRule((prev) => !prev)}
                     >
                         <Plus size={16} />
                         Create Rule
@@ -131,10 +136,12 @@ function Automation({isTheme}:any) {
             </div>
 
 
-</>
+            <AutomationRule CreateRule={CreateRule} handelonclose={() => SetCreateRule(false)}></AutomationRule>
+
+        </>
 
 
-)
+    )
 }
 
 export default Automation

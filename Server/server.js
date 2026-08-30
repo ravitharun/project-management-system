@@ -198,6 +198,7 @@ const handelProjectRoleRouter = require("./routes/handelProjectRole-Router");
 const CreateWorkSpaceRouter = require("./routes/CreateWorkSpace");
 const Comments = require("./routes/Comments");
 const WorkSpaceTaskRouter = require("./routes/WorkSpaceTask_router");
+const CreateAutomation_Router = require("./routes/Automation-Rule-Router");
 const FetchTaskCalendar = require("./routes/GetTaskCalendarRouter");
 
 // Config / Middleware
@@ -228,6 +229,7 @@ const envStatusurl =
   process.env.envStatus === "Local"
     ? "http://localhost:5173"
     : process.env.LiveUI;
+// :"https://project-management-system-weld-eight.vercel.app"
 
 app.use(
   cors({
@@ -264,6 +266,7 @@ app.use("/api/Notificatons", NotificatonsRouter);
 
 app.use("/api/Team", FetchTeamRouter);
 
+
 app.use("/api/Analytcs", AnalytcsRouter);
 
 app.use("/api/WorkSpace", CreateWorkSpaceRouter);
@@ -281,7 +284,7 @@ app.use("/api/Calendar", FetchTaskCalendar);
 app.use("/api/Activity", Activity_Router);
 
 app.use("/api/projects", ProjectsVersionRoter);
-
+app.use("/api/automation", CreateAutomation_Router);
 // --------------------------------------------------
 // Redis
 // --------------------------------------------------

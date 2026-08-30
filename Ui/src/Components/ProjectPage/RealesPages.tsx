@@ -14,25 +14,24 @@ import { socket } from '../../Scokets/ScoketConfig';
 
 function RealesPages({ isTheme }: any) {
     const { ClickedSpace }: any = useContext(ClickedWorkSpace)
-
-
-
     const [RealseVersion, setRealseVersion] = useState<any>([])
+    const [RealseVersionId, setRealseVersionId] = useState("")
 
-            useEffect(() => {
+    useEffect(() => {
         const HandelRealse = (data: any) => {
-
-            return setRealseVersion( data)
-
+            setRealseVersion(data)
         }
-
+        const HandelLatestVersion = (data: any) => {
+            setRealseVersion(data)
+        }
         socket.on("releases:all", HandelRealse)
-
+        socket.on("HandelLatestVersion", HandelLatestVersion)
         return () => {
             socket.off("releases:all", HandelRealse)
-
+            socket.off("HandelLatestVersion", HandelLatestVersion)
         }
     }, [])
+
 
     const [isDelete, setisDelete] = useState<boolean>(false)
 
@@ -70,7 +69,6 @@ function RealesPages({ isTheme }: any) {
         FetchVersions()
     }, [])
 
-    console.log(RealseVersion, 'RealseVersion');
 
 
 
@@ -171,7 +169,10 @@ function RealesPages({ isTheme }: any) {
                                                 ? "text-gray-400 hover:bg-red-500/10 hover:text-red-400"
                                                 : "text-gray-400 hover:bg-red-50 hover:text-red-600"
                                                 }`}
-                                            onClick={() => setisDelete((prev) => !prev)}
+                                            onClick={() => {
+                                                setisDelete((prev) => !prev)
+                                                setRealseVersionId(release?.projectId)
+                                            }}
                                         >
                                             <Trash2 size={18} />
                                         </button>
@@ -204,15 +205,19 @@ function RealesPages({ isTheme }: any) {
                                             <span>{release?.Status || "Not Released"}</span>
                                         </div>
                                     </div>
+
+
+
                                 </div>
                             ))}
 
                 </div>
             </div>
 
-            {IsRealseForm && <CustomRealseForm onClose={() => setIsRealseForm(false)} />}
+            {IsRealseForm && <CustomRealseForm onCLOSE={() => setIsRealseForm(false)} />}
 
-            <AlertPoup isPoup={isDelete} setisDelete={setisDelete}></AlertPoup>
+            
+            <AlertPoup isPoup={isDelete} setisDelete={setisDelete} RealseVersionId={RealseVersionId}></AlertPoup>
         </>
     )
 }

@@ -1,5 +1,6 @@
 const ProjectRelease = require("../Models/ProjectRelease");
 const { getIO } = require("../scoket");
+const { IsProjectExits, GetProjects } = require("../Utils/IsprojectExits");
 
 const CreateRealse = async (req, res) => {
 
@@ -94,4 +95,47 @@ const Fetch__Version_Realses = async (req, res) => {
 }
 
 
-module.exports = { CreateRealse, Fetch__Version_Realses }
+
+
+const Delete__Version_Realses = async (req, res) => {
+
+
+    try {
+        // const io=GetIo()
+        const io = getIO()
+        const { projectId } = req.params
+        console.log(projectId,'projectId tharun');
+        
+        if (!projectId) {
+
+            return res.status(400).json({ message: "ProjectId is Missing..", status: false })
+        }
+
+
+        const IsprojectExits = await IsProjectExits(projectId)
+        console.log(IsprojectExits,'IsprojectExits');
+        
+        // not exits
+        if (!IsprojectExits) {
+
+            return res.status(404).json({ message: "Project is Exits.", status: false })
+
+
+        }
+        // delte the version
+        await ProjectRelease.findOneAndDelete({ projectId: projectId })
+        // fetch the lates versions
+        const Lates_version = await GetProjects(projectId)
+
+        io.emit("HandelLatestVersion", Lates_version)
+        return res.status(200).json({ message: "Version Delted.", status: true })
+    } catch (error) {
+
+        console.log(error.message,'err');
+        
+        return res.status(500).json({ message: "server error.", status: false })
+
+    }
+}
+
+module.exports = { CreateRealse, Fetch__Version_Realses, Delete__Version_Realses }

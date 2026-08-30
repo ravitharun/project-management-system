@@ -5,17 +5,17 @@ import { toast, Toaster } from "sonner";
 import { checkuser } from "./LocalStorage";
 
 export const ShowToast = (
-    message: string,
-    statusCode: number,
-    type: string,
-    // navigate: any
+    message: string | any,
+    statusCode: number | any,
+    type: string | any,
 ) => {
 
 
     console.log({ message, statusCode, type }, 'chek')
 
     const isSuccess = statusCode === 200 || statusCode === 201;
-    <Toaster position="bottom-right"></Toaster>
+    console.log(isSuccess, 'isSuccess')
+
     toast.custom(() => (
         <div className="flex items-center gap-3 rounded-lg border border-gray-700 bg-gray-900 px-4 py-3 text-white shadow-lg">
             {isSuccess ? (
@@ -35,6 +35,8 @@ export const ShowToast = (
             </div>
         </div>
     ));
+
+    <Toaster position="bottom-right" closeButton></Toaster>
 
 
     {
