@@ -69,10 +69,10 @@ const FetchAutomationRules = async (req, res) => {
         console.log(Automation_rules)
         if (Automation_rules.length == 0) {
 
-            return res.tatus(200).json({ message: "No Automation rules Created.", status: true })
+            return res.tatus(200).json({ message: "No Automation rules Created.",data:[], status: true })
         }
 
-        return res.status(200).json({ message: "ProjectId Is missing.", status: true })
+        return res.status(200).json({ message: "Ok.",data:Automation_rules, status: true })
     } catch (error) {
         return res.status(500).json({ message: "server error", status: false })
 
