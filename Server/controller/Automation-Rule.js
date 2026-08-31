@@ -55,7 +55,29 @@ const CreateAutomation_rule = async (req, res) => {
         return res.status(500).json({ message: "server error", status: false })
     }
 }
+const FetchAutomationRules = async (req, res) => {
 
 
+    try {
+        const { projectID } = req.params
+        console.log(req.params, 'req.params')
+        if (!projectID) {
+            return res.status(400).json({ message: "ProjectId Is missing." ,status:false})
+        }
 
-module.exports = CreateAutomation_rule
+        const Automation_rules = await automationRuleSchema.find({ projectId: projectID })
+        console.log(Automation_rules)
+        if (Automation_rules.length == 0) {
+
+            return res.tatus(200).json({ message: "No Automation rules Created.", status: true })
+        }
+
+        return res.status(200).json({ message: "ProjectId Is missing.", status: true })
+    } catch (error) {
+        return res.status(500).json({ message: "server error", status: false })
+
+    }
+}
+
+
+module.exports = { CreateAutomation_rule, FetchAutomationRules }

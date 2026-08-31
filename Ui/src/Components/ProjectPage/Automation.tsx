@@ -1,9 +1,32 @@
 import { Plus, Zap } from "lucide-react"
 import AutomationRule from "../Automation-Rule"
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { instance } from "../../services/apiservices"
+import { ShowToast } from "../toastHelper"
+import ClickedWorkSpace from "../../Context/ClickedWorkSpace"
 
 function Automation({ isTheme }: any) {
     const [CreateRule, SetCreateRule] = useState<boolean>(false)
+
+    const { ClickedSpace }: any = useContext(ClickedWorkSpace)
+    useEffect(() => {
+        const FetchAutomation_rules = async () => {
+            try {
+                const response = await instance.get(`/api/automation/${ClickedSpace._id}/rules`)
+                console.log(response.data.message)
+            } catch (error: any) {
+                console.log(error?.response.data?.message, 'error?.response');
+
+
+                return ShowToast(error?.response.message, error?.response.status, "Error")
+
+            }
+
+        }
+        FetchAutomation_rules()
+
+    }, [])
+
     return (
         <>
 
