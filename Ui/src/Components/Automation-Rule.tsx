@@ -75,7 +75,6 @@ function AutomationRule({ CreateRule, handelonclose }: any) {
             createdBy: JSON.parse(getuserInfo)._id
         };
 
-        console.log("Automation Rule:", rule);
 
         try {
             const response = await instance.post('/api/automation/rules', { rule: rule })
