@@ -147,6 +147,10 @@ const Google_CalendarCallback = async (req, res) => {
         console.log("CODE:", code);
         // console.log("FIREBASE UID:", uid)
         console.log("FIREBASE UID:", state);
+        if (!state) {
+
+            return res.status(400).json({ message: "something went wrong" })
+        }
 
         const oauth2Client = new google.auth.OAuth2(
             process.env.GOOGLE_CLIENT_ID,
@@ -158,7 +162,12 @@ const Google_CalendarCallback = async (req, res) => {
 
         console.log(tokens, "Google Tokens");
 
-        const update = await UserSchema.findOneAndUpdate({ Firbaseuid: state }, {
+        const update = await UserSchema.findOneAndUpdate({
+            $or: [
+                { Firbaseuid: state },
+                { _id: state }
+            ]
+        }, {
 
             googleRefreshToken: tokens.refresh_token,
             googleCalendarConnected: true
@@ -167,11 +176,10 @@ const Google_CalendarCallback = async (req, res) => {
 
         console.log(update, 'update');
 
-        io.emit("UpdatedUserInfo", update)
 
 
         const encodedUser = encodeURIComponent(JSON.stringify(update));
-     
+
 
 
         res.redirect(
@@ -182,6 +190,9 @@ const Google_CalendarCallback = async (req, res) => {
 
 
 
+        io.emit("UpdatedUserInfo", update)
+
+        return res.status(200).json({ message: update })
     } catch (error) {
         console.log("CALLBACK ERROR:", error.response?.data || error.message);
 

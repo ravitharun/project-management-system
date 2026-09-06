@@ -2,17 +2,44 @@
 import { FcGoogle } from "react-icons/fc";
 import { MdCalendarMonth } from "react-icons/md";
 import { getuserInfo } from "./LocalStorage";
+import { useEffect } from "react";
+import { socket } from "../Scokets/ScoketConfig";
 const AcceptGoogleCalendar = ({ setOpen }: any) => {
-    
+
 
     const onConnect = () => {
 
 
-        window.location.href = `${import.meta.env.VITE_ENV === "prod" ? import.meta.env.VITE_API : "http://localhost:5000"}/api/auth/google?uid=${JSON.parse(getuserInfo).Firbaseuid}`;
+        let user = window.location.href = `${import.meta.env.VITE_ENV === "prod" ? import.meta.env.VITE_API : "http://localhost:5000"}/api/auth/google?uid=${JSON.parse(getuserInfo).Firbaseuid || JSON.parse(getuserInfo)._id}`;
+        console.log(user, 'thrru');
+
     };
 
+
+    useEffect(() => {
+
+        const handelUpdatedUserInfo = (data: any) => {
+            console.log('webscoket', data);
+
+
+
+
+            localStorage.setItem("userinfo", data)
+
+        }
+        socket.on("UpdatedUserInfo", handelUpdatedUserInfo)
+
+
+        return () => {
+
+
+            // socket.off("handel",handelUpdatedUserInfo)
+            socket.off("UpdatedUserInfo", handelUpdatedUserInfo)
+        }
+    }, [])
+
     return (
-  
+
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
             <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
 
