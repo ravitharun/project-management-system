@@ -54,7 +54,7 @@ const CreateProjects = async (req, res) => {
         await NotificationSchema.create(NotificationFormatData)
         io.emit(
             "AddedNewProject",
-            `🚀 ${data.data.username} created a new project`
+            `${data.data.username} created a new project`
         );
         return res.status(201).json({ message: "Project Created", Projected_Created: true })
     } catch (error) {

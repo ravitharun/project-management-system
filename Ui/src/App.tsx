@@ -21,7 +21,7 @@ function App() {
 
   const { theme }: any = context;
 
-  const [_, setIsdelay] = useState(false)
+  const [isdly, setIsdelay] = useState(false)
 
 
 
@@ -29,6 +29,7 @@ function App() {
 
     setIsdelay((prev) => !prev)
   }
+  console.log(isdly, 'isdly', JSON.parse(getuserInfo), 'JSON.parse(getuserInfo).googleCalendarConnected ');
 
 
 
@@ -40,7 +41,7 @@ function App() {
       <Analytics />
       <Toaster closeButton />
 
-      {!JSON.parse(getuserInfo).googleCalendarConnected ? (
+      {!JSON.parse(getuserInfo).googleCalendarConnected || isdly ? (
         <AcceptGoogleCalendar setOpen={handelPoup} />
       ) : null}
 

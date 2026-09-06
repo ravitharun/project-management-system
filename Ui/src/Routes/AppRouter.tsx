@@ -41,6 +41,7 @@ function AppRouter() {
             return console.log(msg)
         };
 
+
         const handleCheckuserOffline = (data: any) => {
 
             const msg =
@@ -103,6 +104,7 @@ function AppRouter() {
         socket.on("AddedNewProject", ToastNotify);
         socket.on("NewTask", handelTask);
         socket.on("updateTaskdate", handelupdateTaskdate)
+        // socket.on("UpdatedUserInfo", handelUpdatedUserInfo)
         const assignedProjects = ["Prj3145", "Prj99", "Prj45"];
 
         socket.on("task_updated", (data) => {
@@ -123,15 +125,12 @@ function AppRouter() {
             console.log("Disconnected from server");
         });
         socket.on("ProjectInfoUpload", handelProjectInfoUpload)
-        // const UpdatedWorkspace = (data: any) => {
-        //     console.log(data, "UpdatedWorkspace");
-        // };
 
-        // socket.on("updatedWorkspace", UpdatedWorkspace);
         return () => {
-            
-            // socket.off("updatedWorkspace", UpdatedWorkspace);
+
             socket.off("NewTask", handelTask);
+            // socket.off("UpdatedUserInfo", handelUpdatedUserInfo)
+
             socket.off("task_updated", handelcheck);
             socket.off("handelprojectStatus", handelprojectStatus);
             socket.off("AddProjectMembers", handleAddProjectMembers);
@@ -153,9 +152,22 @@ function AppRouter() {
         Usertoekn(navigate, toast);
     }, []);
 
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+
+        const encodedUser = params.get("User");
+
+        if (encodedUser) {
+            const user = JSON.parse(
+                decodeURIComponent(encodedUser)
+            );
+
+            console.log("User:", user);
+        }
+    }, []);
     return (
         <>
-              <Toaster position="bottom-center"  />
+            <Toaster position="bottom-center" />
 
             <ToastContainer position="top-center"
                 autoClose={5000}
