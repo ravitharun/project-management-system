@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   GitCommit,
   GitBranch,
@@ -18,13 +18,15 @@ import {
 } from "lucide-react";
 import bgthemeContext from "../Context/ThemeContext";
 import OauthGithuLogin from "./OauthGithuLogin";
+import { ShowToast } from "./toastHelper";
+import ClickedWorkSpace from "../Context/ClickedWorkSpace";
+import { GitPermessaionApi } from "../services/GithuPermession";
 
 
 function Development() {
   const { theme }: any = useContext(bgthemeContext);
   const istheme = theme === "Dark";
-
-  const [activeTab, setActiveTab] = useState("Activity");
+    const [activeTab, setActiveTab] = useState("Activity");
 
   const activities = [
     {
@@ -61,17 +63,38 @@ function Development() {
     },
   ];
 
-  let isGithubLogin = false;
-  const[isLogin,setIsLogin]=useState<boolean>(true)
+  let [isGithubLogin, setisGithubLogin] = useState<boolean>(false);
+  const { ClickedSpace }: any = useContext(ClickedWorkSpace) 
+    useEffect(() => {
+    const CheckGithuPermession = async () => {
+
+      try {
+        let id=ClickedSpace._id
+        const response = await GitPermessaionApi(id)
+        console.log(response);
+
+
+      } catch (error: any) {
+
+        if (error?.response?.status == 404) {
+          setisGithubLogin(true)
+          return ShowToast(error?.response?.data.message, error?.response?.status, 'Error')
+        }
+        console.log(error?.response?.data.message)
+      }
+    }
+    CheckGithuPermession()
+  }, [])
+
+
+
+  console.log(isGithubLogin, 'isGithubLogin');
+
+
   return (
     <>
-    {/* 
-    
-    oauth page save db->poupclose->api get call by pid if exits repo_selection ! oauth page show.
-    
-    
-    */}
-      {!isGithubLogin ? <OauthGithuLogin isLogin={isLogin} setIsLogin={setIsLogin}></OauthGithuLogin> :
+
+      {isGithubLogin ? <OauthGithuLogin  setisGithubLogin={setisGithubLogin}></OauthGithuLogin> :
 
         <div
           className={`min-h-screen p-6 transition-colors ${istheme
@@ -586,7 +609,9 @@ function Development() {
 
           )}
 
-        </div>}
+        </div>
+        
+        }
     </>
 
   );

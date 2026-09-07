@@ -208,6 +208,7 @@ const redis = require("./config/redis");
 const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 const AuthTokenVerification = require("./Middleware/AuthMiddleware");
 const Workspace = require("./Models/Workspace");
+const GithuPermessionRouter = require("./routes/GithubPermessionROuter");
 
 // --------------------------------------------------
 // Environment
@@ -226,7 +227,7 @@ console.log("isVercel:", isVercel);
 app.use(express.json());
 
 const envStatusurl =
-  process.env.envStatus === "Local"
+  process.env.Server_Prod === "Local"
     ? "http://localhost:5173"
     : process.env.LiveUI;
 // :"https://project-management-system-weld-eight.vercel.app"
@@ -266,7 +267,7 @@ app.use("/api/Notificatons", NotificatonsRouter);
 
 app.use("/api/Team", FetchTeamRouter);
 
-
+app.use("/api/github",GithuPermessionRouter)
 app.use("/api/Analytcs", AnalytcsRouter);
 
 app.use("/api/WorkSpace", CreateWorkSpaceRouter);

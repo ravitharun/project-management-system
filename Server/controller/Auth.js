@@ -75,7 +75,6 @@ const Login = async (req, res) => {
         const token = jwt.sign({
             data: userinfo
         }, 'secret', { expiresIn: '1h' });
-        console.log(token, 'token')
 
         // queues system
         await EmailQueue.add("SendWelcomEmail", email, {
@@ -129,7 +128,7 @@ const Google_CalndrLogin = async (req, res) => {
         res.redirect(url);
 
     } catch (error) {
-        console.log(error.message);
+        console.log(error.message,'errtharun');
 
         res.status(500).json({
             success: false,
