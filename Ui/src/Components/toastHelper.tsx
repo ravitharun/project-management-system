@@ -11,8 +11,6 @@ export const ShowToast = (
 ) => {
 
 
-    console.log({ message, statusCode, type }, 'chek')
-
     const isSuccess = statusCode === 200 || statusCode === 201;
     console.log(isSuccess, 'isSuccess')
 

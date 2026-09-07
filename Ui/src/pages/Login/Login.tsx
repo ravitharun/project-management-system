@@ -35,12 +35,12 @@ function Login() {
 
         try {
             const response = await AuthLoginAccount({ email, password })
-        
+
             if (response.status == 403) {
                 console.log(response.data.errmessage, 'errmessage')
             }
             if (response.status == 200) {
-     
+
                 localStorage.setItem("LoginToken", response.data.token);
                 localStorage.setItem("userinfo", JSON.stringify(response.data.userinfo));
                 setresponsetext({ message: response.data.message, types: "success" })
@@ -59,18 +59,23 @@ function Login() {
 
     }
     const handleGoogleLogin = async () => {
+
         const provider = new GoogleAuthProvider();
 
         try {
+            console.log("Starting Google login...");
 
-            const result = await signInWithPopup(
-                auth,
-                provider
-            );
-            console.log(result, 'resultresultresult');
+            const result = await signInWithPopup(auth, provider);
+
+            console.log("Google login successful");
+            console.log(result);
+
 
             const email = result.user.providerData[0].email
             const type = result.user.providerId
+            if (!email) {
+                throw new Error("Google account email not found");
+            }
             const response = await AuthLoginAccount({ email, type });
             console.log(response, 'response')
             if (response.data.message == "userLogedin.") {
@@ -89,9 +94,12 @@ function Login() {
             }
 
         } catch (error: any) {
-
+            console.error("FULL FIREBASE ERROR:", error);
+            console.error("CODE:", error?.code);
+            console.error("MESSAGE:", error?.message);
+            console.error("ERROR:", error);
             setresponsetext({
-                message: error.response.data.message,
+                message: error?.response?.data?.message,
                 types: "failure",
             });
         }
