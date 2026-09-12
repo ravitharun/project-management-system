@@ -1,6 +1,7 @@
 
 
 const UserGithubSchema = require("../Models/GithubPermession")
+const WorkspaceSchema = require("../Models/Workspace")
 const axios = require("axios")
 const IsLoginGithubPermession = async (req, res) => {
 
@@ -43,8 +44,7 @@ const SaveGithubPermession = async (req, res) => {
     try {
         const { data, id } = req.body
         console.log("tharun user", req.body);
-        //  validation
-        if (!data) {
+        if (!data.Pid) {
 
             return res.status(400).json({ message: "Missing..", status: false })
         }
@@ -66,6 +66,11 @@ const SaveGithubPermession = async (req, res) => {
             });
 
             await response_premession.save();
+            // save the workspace id isgithub:true
+
+            const IsworkspaceConnectUpdate = await WorkspaceSchema.findByIdAndUpdate({ _id: data.Pid }, { isGithubConnected: true }, { returnDocument: "after" })
+            console.log(IsworkspaceConnectUpdate, 'isworkspace')
+
             return res.status(201).json({
                 message: "GitHub connection created successfully",
                 data: response_premession._id,
@@ -73,24 +78,21 @@ const SaveGithubPermession = async (req, res) => {
             });
 
         }
+        else {
+            const isExit = await UserGithubSchema.findByIdAndUpdate({ _id: id }, {
+                githubAccessToken: data.user._tokenResponse.oauthAccessToken
+            }, {
+                returnDocument: "after"
 
-        const isExit = await UserGithubSchema.findByIdAndUpdate({ _id: id }, {
-            githubAccessToken: data.user._tokenResponse.oauthAccessToken
-        }, {
-            returnDocument: "after"
+            });
 
-        });
+            return res.status(200).json({
+                message: "GitHub connection Logined successfully",
+                data: isExit._id,
+                status: true
+            });
 
-
-
-
-        return res.status(201).json({
-            message: "GitHub connection Logined successfully",
-            data: isExit._id,
-            status: true
-        });
-
-
+        }
 
     } catch (error) {
         console.log(error.message, 'errtharun')
@@ -103,6 +105,8 @@ const SaveGithubPermession = async (req, res) => {
 const GithubReposelections = async (req, res) => {
     try {
         const { id } = req.query
+        console.log(req.query, 'tharun');
+
         if (!id) {
 
             return res.status(400).json({ message: "Id is missing." })
@@ -127,6 +131,12 @@ const GithubReposelections = async (req, res) => {
 
     } catch (error) {
 
+        // console.log(error.response.data,'datata');
+        if (error.response.data.status == 401) {
+
+
+            return res.status(401).json({ message: error.response.data.message, status: false })
+        }
 
         return res.status(500).json({ message: error.message, status: false })
 

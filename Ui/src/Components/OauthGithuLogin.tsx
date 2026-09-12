@@ -10,6 +10,7 @@ import { ShowToast } from "./toastHelper";
 import { Toaster } from "sonner";
 
 function OauthGithuLogin({ setisGithubLogin }: any) {
+    console.log(setisGithubLogin, 'setisGithubLogin');
 
     const { theme }: any = useContext(bgthemeContext)
 
@@ -30,7 +31,6 @@ function OauthGithuLogin({ setisGithubLogin }: any) {
                 auth,
                 provider
             );
-
             const data = {
                 "user": result,
                 "userid": JSON.parse(getuserInfo)?._id,
@@ -43,17 +43,14 @@ function OauthGithuLogin({ setisGithubLogin }: any) {
             const response = await instance.post("/api/github/access-permission", { data: data, id: id })
 
 
-
-            if (response.status === 201) {
-                setisGithubLogin(false);
-                localStorage.setItem("githubPermissionId", response.data.data)
-                return ShowToast(
-                    response.data.message,
-                    response.status,
-                    "Sucess"
-                );
-            }
-
+            console.log(response.data.data, 'responsetharun');
+            setisGithubLogin(false);
+            localStorage.setItem("githubPermissionId", response.data.data)
+            return ShowToast(
+                response.data.message,
+                response.status,
+                "Sucess"
+            );
         } catch (error: any) {
 
             return ShowToast(error?.response?.data.message, error?.response?.status, 'Error')
@@ -61,98 +58,7 @@ function OauthGithuLogin({ setisGithubLogin }: any) {
     };
 
     return (
-        // <>
-        //     <Toaster />
 
-        //     <div className="flex min-h-[80vh] items-center justify-center px-4 sm:px-6 lg:px-8">
-        //         <div
-        //             className={`w-full max-w-2xl rounded-2xl border p-6 sm:p-8 lg:p-10 ${Istheme
-        //                 ? "border-gray-700 bg-gray-900 text-white"
-        //                 : "border-gray-200 bg-white text-gray-900"
-        //                 }`}
-        //         >
-        //             <div className="text-center">
-        //                 <FiGithub
-        //                     size={64}
-        //                     className="mx-auto mb-5"
-        //                 />
-
-        //                 <h1 className="text-2xl font-bold sm:text-3xl">
-        //                     Connect Your GitHub Account
-        //                 </h1>
-
-        //                 <p
-        //                     className={`mx-auto mt-3 max-w-xl text-sm sm:text-base ${Istheme ? "text-gray-400" : "text-gray-500"
-        //                         }`}
-        //                 >
-        //                     Integrate GitHub with your workspace to manage repositories,
-        //                     track development progress, monitor pull requests, and keep
-        //                     your project data synchronized in one place.
-        //                 </p>
-        //             </div>
-
-        //             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        //                 <div
-        //                     className={`rounded-xl p-4 ${Istheme ? "bg-gray-800" : "bg-gray-50"
-        //                         }`}
-        //                 >
-        //                     <h3 className="font-semibold">Repositories</h3>
-        //                     <p className="mt-1 text-sm opacity-80">
-        //                         Link and manage project repositories.
-        //                     </p>
-        //                 </div>
-
-        //                 <div
-        //                     className={`rounded-xl p-4 ${Istheme ? "bg-gray-800" : "bg-gray-50"
-        //                         }`}
-        //                 >
-        //                     <h3 className="font-semibold">Pull Requests</h3>
-        //                     <p className="mt-1 text-sm opacity-80">
-        //                         View and track pull request activity.
-        //                     </p>
-        //                 </div>
-
-        //                 <div
-        //                     className={`rounded-xl p-4 ${Istheme ? "bg-gray-800" : "bg-gray-50"
-        //                         }`}
-        //                 >
-        //                     <h3 className="font-semibold">Commits</h3>
-        //                     <p className="mt-1 text-sm opacity-80">
-        //                         Monitor commits and development updates.
-        //                     </p>
-        //                 </div>
-
-        //                 <div
-        //                     className={`rounded-xl p-4 ${Istheme ? "bg-gray-800" : "bg-gray-50"
-        //                         }`}
-        //                 >
-        //                     <h3 className="font-semibold">Deployments</h3>
-        //                     <p className="mt-1 text-sm opacity-80">
-        //                         Keep track of releases and deployments.
-        //                     </p>
-        //                 </div>
-        //             </div>
-
-        //             <button
-        //                 onClick={HandelGithub}
-        //                 className={`mt-8 flex w-full items-center justify-center gap-3 rounded-xl px-5 py-3 text-sm font-semibold transition sm:text-base ${Istheme
-        //                     ? "bg-white text-black hover:bg-gray-200"
-        //                     : "bg-black text-white hover:bg-gray-800"
-        //                     }`}
-        //             >
-        //                 <FiGithub size={24} />
-        //                 Connect with GitHub
-        //             </button>
-
-        //             <p
-        //                 className={`mt-4 text-center text-xs sm:text-sm ${Istheme ? "text-gray-500" : "text-gray-400"
-        //                     }`}
-        //             >
-        //                 Secure OAuth authentication. We never store your GitHub password.
-        //             </p>
-        //         </div>
-        //     </div>
-        // </>
         <>
             <Toaster />
 

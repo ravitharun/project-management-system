@@ -20,6 +20,9 @@ import {
 import bgthemeContext from "../Context/ThemeContext";
 import Sidebar from "./Navbar";
 import SideBarContext from "../Context/SideBard";
+import { instance } from "../services/apiservices";
+import { ShowToast } from "./toastHelper";
+import { Toaster } from "sonner";
 
 const Settings = () => {
     const { theme }: any = useContext(bgthemeContext);
@@ -35,10 +38,12 @@ const Settings = () => {
         mentions: true,
         comments: false,
     });
+    let user: any = localStorage.getItem("userinfo")
+    console.log(user, 'user');
 
     const [profile, setProfile] = useState({
-        name: "Tharun Ravi",
-        email: "tharun@example.com",
+        name: JSON.parse(user).Username,
+        email: JSON.parse(user).userEmail,
     });
 
     const settings = [
@@ -74,128 +79,164 @@ const Settings = () => {
         },
     ];
 
+
+
+
+    // HandelAccount
+
+
+    const HandelAccount = async () => {
+
+
+        try {
+
+            const response = await instance.put("/api/setting", { profile: profile })
+            console.log(response)
+
+            return ShowToast(response?.data?.message, response?.status, "Sucess")
+        } catch (error: any) {
+
+            return ShowToast(error?.response?.data?.message, error?.response?.status, "Error")
+        }
+    }
+
+
+
     /* =========================
        ACCOUNT
     ========================= */
 
     const renderAccount = () => (
-        <div className="space-y-5 lg:space-y-6">
+        <>
 
-            <div>
-                <h2
-                    className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
-                        }`}
-                >
-                    Account
-                </h2>
 
-                <p
-                    className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                        }`}
-                >
-                    Manage your personal account information.
-                </p>
-            </div>
+            <div className="space-y-5 lg:space-y-6">
 
-            <div
-                className={`rounded-xl border p-4 sm:p-5 lg:p-6 ${isDark
-                    ? "border-gray-800 bg-[#111827]"
-                    : "border-gray-200 bg-white"
-                    }`}
-            >
-
-                <div className="mb-6 flex items-center justify-between">
-
-                    <div>
-                        <h3
-                            className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"
-                                }`}
-                        >
-                            Profile Information
-                        </h3>
-
-                        <p
-                            className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                                }`}
-                        >
-                            Update your account details.
-                        </p>
-                    </div>
-
-                    <div
-                        className={`flex h-11 w-11 items-center justify-center rounded-full ${isDark
-                            ? "bg-blue-500/10 text-blue-400"
-                            : "bg-blue-50 text-blue-600"
+                <div>
+                    <h2
+                        className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
                             }`}
                     >
-                        <FiUser size={21} />
-                    </div>
+                        Account
+                    </h2>
 
+                    <p
+                        className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
+                            }`}
+                    >
+                        Manage your personal account information.
+                    </p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <div
+                    className={`rounded-xl border p-4 sm:p-5 lg:p-6 ${isDark
+                        ? "border-gray-800 bg-[#111827]"
+                        : "border-gray-200 bg-white"
+                        }`}
+                >
 
-                    <div>
-                        <label
-                            className={`mb-2 block text-sm font-medium ${isDark
-                                ? "text-gray-300"
-                                : "text-gray-700"
+                    <div className="mb-6 flex items-center justify-between">
+
+                        <div>
+                            <h3
+                                className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"
+                                    }`}
+                            >
+                                Profile Information
+                            </h3>
+
+                            <p
+                                className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
+                                    }`}
+                            >
+                                Update your account details.
+                            </p>
+                        </div>
+
+                        <div
+                            className={`flex h-11 w-11 items-center justify-center rounded-full ${isDark
+                                ? "bg-blue-500/10 text-blue-400"
+                                : "bg-blue-50 text-blue-600"
                                 }`}
                         >
-                            Full Name
-                        </label>
+                            <FiUser size={21} />
+                        </div>
 
-                        <input
-                            type="text"
-                            value={profile.name}
-                            onChange={(e) =>
-                                setProfile({
-                                    ...profile,
-                                    name: e.target.value,
-                                })
-                            }
-                            className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 ${isDark
-                                ? "border-gray-700 bg-[#1e293b] text-white"
-                                : "border-gray-300 bg-white text-gray-900"
-                                }`}
-                        />
                     </div>
 
-                    <div>
-                        <label
-                            className={`mb-2 block text-sm font-medium ${isDark
-                                ? "text-gray-300"
-                                : "text-gray-700"
-                                }`}
-                        >
-                            Email
-                        </label>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 
-                        <input
-                            type="email"
-                            value={profile.email}
-                            onChange={(e) =>
-                                setProfile({
-                                    ...profile,
-                                    email: e.target.value,
-                                })
-                            }
-                            className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 ${isDark
-                                ? "border-gray-700 bg-[#1e293b] text-white"
-                                : "border-gray-300 bg-white text-gray-900"
-                                }`}
-                        />
+                        <div>
+                            <label
+                                className={`mb-2 block text-sm font-medium ${isDark
+                                    ? "text-gray-300"
+                                    : "text-gray-700"
+                                    }`}
+                            >
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                value={profile.name}
+                                onChange={(e) =>
+                                    setProfile({
+                                        ...profile,
+                                        name: e.target.value,
+                                    })
+                                }
+                                className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 ${isDark
+                                    ? "border-gray-700 bg-[#1e293b] text-white"
+                                    : "border-gray-300 bg-white text-gray-900"
+                                    }`}
+                            />
+                        </div>
+
+                        <div>
+                            <label
+                                className={`mb-2 block text-sm font-medium ${isDark
+                                    ? "text-gray-300"
+                                    : "text-gray-700"
+                                    }`}
+                            >
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                value={profile.email}
+                                readOnly
+
+                                onChange={(e) =>
+                                    setProfile({
+                                        ...profile,
+                                        email: e.target.value,
+                                    })
+                                }
+                                className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 ${isDark
+                                    ? "border-gray-700 bg-[#1e293b] text-white"
+                                    : "border-gray-300 bg-white text-gray-900"
+                                    } hover:cursor-not-allowed`
+
+                                }
+                                disabled
+                            />
+                        </div>
+
                     </div>
+
+                    <button className="mt-5 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+
+                        onClick={HandelAccount}
+                    >
+                        <FiSave size={16} />
+                        Save Changes
+                    </button>
 
                 </div>
+                <Toaster></Toaster>
+            </div></>
 
-                <button className="mt-5 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700">
-                    <FiSave size={16} />
-                    Save Changes
-                </button>
-
-            </div>
-        </div>
     );
 
     /* =========================
@@ -203,89 +244,102 @@ const Settings = () => {
     ========================= */
 
     const renderNotifications = () => (
-        <div className="space-y-5 lg:space-y-6">
+        <>
 
-            <div>
-                <h2
-                    className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
+            <Toaster   ></Toaster>
+            <div className="space-y-5 lg:space-y-6">
+                {/* Header */}
+                <div>
+                    <h2
+                        className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
+                            }`}
+                    >
+                        Notifications
+                    </h2>
+
+                    <p
+                        className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
+                            }`}
+                    >
+                        Choose which notifications you want to receive.
+                    </p>
+                </div>
+
+                {/* Notification Card */}
+                <div
+                    className={`divide-y overflow-hidden rounded-xl border ${isDark
+                        ? "divide-gray-800 border-gray-800 bg-[#111827]"
+                        : "divide-gray-200 border-gray-200 bg-white"
                         }`}
                 >
-                    Notifications
-                </h2>
+                    <NotificationItem
+                        icon={<FiMail />}
+                        title="Email Notifications"
+                        description="Receive important updates through email."
+                        enabled={notifications.email}
+                        onChange={() =>
+                            setNotifications({
+                                ...notifications,
+                                email: !notifications.email,
+                            })
+                        }
+                        isDark={isDark}
+                    />
 
-                <p
-                    className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                        }`}
-                >
-                    Choose which notifications you want to receive.
-                </p>
+                    <NotificationItem
+                        icon={<FiUser />}
+                        title="Task Assignments"
+                        description="Notify me when a task is assigned to me."
+                        enabled={notifications.taskAssigned}
+                        onChange={() =>
+                            setNotifications({
+                                ...notifications,
+                                taskAssigned: !notifications.taskAssigned,
+                            })
+                        }
+                        isDark={isDark}
+                    />
+
+                    <NotificationItem
+                        icon={<FiBell />}
+                        title="Mentions"
+                        description="Notify me when someone mentions me."
+                        enabled={notifications.mentions}
+                        onChange={() =>
+                            setNotifications({
+                                ...notifications,
+                                mentions: !notifications.mentions,
+                            })
+                        }
+                        isDark={isDark}
+                    />
+
+                    <NotificationItem
+                        icon={<FiEdit3 />}
+                        title="Comments"
+                        description="Notify me about comments on my tasks."
+                        enabled={notifications.comments}
+                        onChange={() =>
+                            setNotifications({
+                                ...notifications,
+                                comments: !notifications.comments,
+                            })
+                        }
+                        isDark={isDark}
+                    />
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end">
+                    <button
+                        type="button"
+                        className="w-full rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 sm:w-auto"
+                    >
+                        Save Changes
+                    </button>
+                </div>
             </div>
-
-            <div
-                className={`divide-y rounded-xl border ${isDark
-                    ? "divide-gray-800 border-gray-800 bg-[#111827]"
-                    : "divide-gray-200 border-gray-200 bg-white"
-                    }`}
-            >
-
-                <NotificationItem
-                    icon={<FiMail />}
-                    title="Email Notifications"
-                    description="Receive important updates through email."
-                    enabled={notifications.email}
-                    onChange={() =>
-                        setNotifications({
-                            ...notifications,
-                            email: !notifications.email,
-                        })
-                    }
-                    isDark={isDark}
-                />
-
-                <NotificationItem
-                    icon={<FiUser />}
-                    title="Task Assignments"
-                    description="Notify me when a task is assigned to me."
-                    enabled={notifications.taskAssigned}
-                    onChange={() =>
-                        setNotifications({
-                            ...notifications,
-                            taskAssigned: !notifications.taskAssigned,
-                        })
-                    }
-                    isDark={isDark}
-                />
-
-                <NotificationItem
-                    icon={<FiBell />}
-                    title="Mentions"
-                    description="Notify me when someone mentions me."
-                    enabled={notifications.mentions}
-                    onChange={() =>
-                        setNotifications({
-                            ...notifications,
-                            mentions: !notifications.mentions,
-                        })
-                    }
-                    isDark={isDark}
-                />
-
-                <NotificationItem
-                    icon={<FiEdit3 />}
-                    title="Comments"
-                    description="Notify me about comments on my tasks."
-                    enabled={notifications.comments}
-                    onChange={() =>
-                        setNotifications({
-                            ...notifications,
-                            comments: !notifications.comments,
-                        })
-                    }
-                    isDark={isDark}
-                />
-
-            </div>
-        </div>
+        </>
     );
 
     /* =========================
@@ -293,65 +347,70 @@ const Settings = () => {
     ========================= */
 
     const renderAppearance = () => (
-        <div className="space-y-5 lg:space-y-6">
+        <>
 
-            <div>
-                <h2
-                    className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
+            <div className="space-y-5 lg:space-y-6">
+
+                <div>
+                    <h2
+                        className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
+                            }`}
+                    >
+                        Appearance
+                    </h2>
+
+                    <p
+                        className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
+                            }`}
+                    >
+                        Customize how the application looks.
+                    </p>
+                </div>
+
+                <div
+                    className={`rounded-xl border p-4 sm:p-5 lg:p-6 ${isDark
+                        ? "border-gray-800 bg-[#111827]"
+                        : "border-gray-200 bg-white"
                         }`}
                 >
-                    Appearance
-                </h2>
 
-                <p
-                    className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                        }`}
-                >
-                    Customize how the application looks.
-                </p>
-            </div>
+                    <h3
+                        className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"
+                            }`}
+                    >
+                        Theme
+                    </h3>
 
-            <div
-                className={`rounded-xl border p-4 sm:p-5 lg:p-6 ${isDark
-                    ? "border-gray-800 bg-[#111827]"
-                    : "border-gray-200 bg-white"
-                    }`}
-            >
+                    <p
+                        className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
+                            }`}
+                    >
+                        Your current application theme.
+                    </p>
 
-                <h3
-                    className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"
-                        }`}
-                >
-                    Theme
-                </h3>
+                    <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-                <p
-                    className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                        }`}
-                >
-                    Your current application theme.
-                </p>
+                        <ThemeCard
+                            title="Light"
+                            description="Clean and bright interface"
+                            selected={!isDark}
+                            isDark={isDark}
+                        />
 
-                <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <ThemeCard
+                            title="Dark"
+                            description="Easy on the eyes"
+                            selected={isDark}
+                            isDark={isDark}
+                        />
 
-                    <ThemeCard
-                        title="Light"
-                        description="Clean and bright interface"
-                        selected={!isDark}
-                        isDark={isDark}
-                    />
-
-                    <ThemeCard
-                        title="Dark"
-                        description="Easy on the eyes"
-                        selected={isDark}
-                        isDark={isDark}
-                    />
-
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
+
     );
+
 
     /* =========================
        SECURITY
@@ -743,7 +802,6 @@ const Settings = () => {
 /* =====================================================
    NOTIFICATION ITEM
 ===================================================== */
-
 const NotificationItem = ({
     icon,
     title,
@@ -752,12 +810,13 @@ const NotificationItem = ({
     onChange,
     isDark,
 }: any) => {
-
     return (
-        <div className="flex items-center justify-between gap-4 p-4 sm:p-5">
+        <div className="flex w-full items-start gap-3 p-4 sm:items-center sm:gap-4 sm:p-5">
 
-            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+            {/* Left content */}
+            <div className="flex min-w-0 flex-1 items-start gap-3 sm:items-center sm:gap-4">
 
+                {/* Icon */}
                 <div
                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${isDark
                         ? "bg-gray-800 text-gray-300"
@@ -767,31 +826,29 @@ const NotificationItem = ({
                     {icon}
                 </div>
 
-                <div className="min-w-0">
-
+                {/* Text */}
+                <div className="min-w-0 flex-1">
                     <h3
-                        className={`text-sm font-medium ${isDark
-                            ? "text-white"
-                            : "text-gray-900"
+                        className={`break-words text-sm font-medium ${isDark ? "text-white" : "text-gray-900"
                             }`}
                     >
                         {title}
                     </h3>
 
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 break-words text-xs leading-5 text-gray-500">
                         {description}
                     </p>
-
                 </div>
-
             </div>
 
-            <Toggle
-                enabled={enabled}
-                onChange={onChange}
-                isDark={isDark}
-            />
-
+            {/* Toggle */}
+            <div className="shrink-10 pt-1 sm:pt-0">
+                <Toggle
+                    enabled={enabled}
+                    onChange={onChange}
+                    isDark={isDark}
+                />
+            </div>
         </div>
     );
 };
@@ -812,32 +869,19 @@ const Toggle = ({
             type="button"
             onClick={onChange}
             aria-label="Toggle setting"
-            className={`relative h-6 w-11 shrink-0 rounded-full transition ${enabled
+            className={`relative flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${enabled
                 ? "bg-blue-600"
                 : isDark
                     ? "bg-gray-700"
                     : "bg-gray-300"
                 }`}
         >
-
             <span
-                className={`
-                    absolute
-                    top-0.5
-                    h-5
-                    w-5
-                    rounded-full
-                    bg-white
-                    shadow-sm
-                    transition-transform
-
-                    ${enabled
-                        ? "translate-x-5"
-                        : "translate-x-0.5"
-                    }
-                `}
+                className={`absolute h-5 w-5 rounded-full bg-white shadow-sm transition-all ${enabled
+                    ? "right-0.5"
+                    : "left-0.5"
+                    }`}
             />
-
         </button>
     );
 };

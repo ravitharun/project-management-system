@@ -16,6 +16,7 @@ import {
 
 import bgthemeContext from "../../Context/ThemeContext";
 
+
 function Forms() {
   const { theme }: any = useContext(bgthemeContext);
   const istheme = theme === "Dark";
@@ -74,6 +75,7 @@ function Forms() {
   });
 
   return (
+    <>
     <div
       className={`min-h-screen p-6 transition-colors ${
         istheme
@@ -519,6 +521,9 @@ function Forms() {
       )}
 
     </div>
+{/* <CreateForm></CreateForm> */}
+    </>
+
   );
 }
 
