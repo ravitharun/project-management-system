@@ -27,7 +27,7 @@ function ProjectSettings() {
 
     const { state } = useLocation();
 
-    const [dataRepo, setRepo] = useState<String>("")
+    const [__, setRepo] = useState<String>("")
     useEffect(() => {
 
 
