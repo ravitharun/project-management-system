@@ -7,13 +7,14 @@ import ClickedWorkSpace from "../../Context/ClickedWorkSpace"
 
 function Automation({ isTheme }: any) {
     const [CreateRule, SetCreateRule] = useState<boolean>(false)
-
+    const [Autmation_rules, setAutmation_rules] = useState<any>([])
     const { ClickedSpace }: any = useContext(ClickedWorkSpace)
     useEffect(() => {
         const FetchAutomation_rules = async () => {
             try {
                 const response = await instance.get(`/api/automation/${ClickedSpace._id}/rules`)
-                console.log(response.data.message)
+                console.log(response.data.data)
+                setAutmation_rules(response.data.data)
             } catch (error: any) {
                 console.log(error?.response.data?.message, 'error?.response');
 
@@ -66,25 +67,18 @@ function Automation({ isTheme }: any) {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
-                    {[
-                        {
-                            title: "Move completed tasks",
-                            status: "Active",
-                            enabled: true,
-                            when: "Task status becomes Done",
-                            then: "Move task to Completed",
-                        },
-                        {
-                            title: "Assign new tasks",
-                            status: "Disabled",
-                            enabled: false,
-                            when: "New task is created",
-                            then: "Assign to project manager",
-                        },
-                    ].map((rule) => (
+                    {Autmation_rules.length >= 0 ? <>
+
+
+                        <div>
+                            <p className="text-center">No Autmation Rules Yet created..</p>
+                        </div>
+
+
+                    </> : Autmation_rules?.map((rule: any) => (
 
                         <div
-                            key={rule.title}
+                            key={rule?.title}
                             className={`rounded-xl border p-5 ${isTheme
                                 ? "border-gray-800 bg-gray-900"
                                 : "border-gray-200 bg-white"
@@ -110,18 +104,18 @@ function Automation({ isTheme }: any) {
                                             : "text-gray-900"
                                             }`}
                                     >
-                                        {rule.title}
+                                        {rule?.ruleName}
                                     </h3>
 
                                 </div>
 
                                 <div
-                                    className={`text-xs ${rule.enabled
+                                    className={`text-xs ${rule.active
                                         ? "text-green-500"
                                         : "text-gray-500"
                                         }`}
                                 >
-                                    {rule.status}
+                                    {rule?.active ? "active" : "inactive"}
                                 </div>
 
                             </div>
@@ -138,14 +132,20 @@ function Automation({ isTheme }: any) {
                                     <span className="font-medium">
                                         WHEN
                                     </span>{" "}
-                                    {rule.when}
+                                    {rule?.condition?.field}
                                 </p>
 
                                 <p className="mt-2">
                                     <span className="font-medium">
-                                        THEN
+                                        Operator
                                     </span>{" "}
-                                    {rule.then}
+                                    {rule?.condition?.operator}
+                                </p>
+                                <p className="mt-2">
+                                    <span className="font-medium">
+                                        Do
+                                    </span>{" "}
+                                    {rule?.condition?.value}
                                 </p>
 
                             </div>

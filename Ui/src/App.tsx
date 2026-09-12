@@ -10,7 +10,8 @@ import AcceptGoogleCalendar from "./Components/AcceptGoogleCalndra";
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import { Analytics } from "@vercel/analytics/react"
 import { Toaster } from "sonner";
-import { ReactGanttChart, type Task } from "@jaeungkim/gantt-chart";
+
+
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
 
   const { theme }: any = context;
 
-  const [_, setIsdelay] = useState(false)
+  const [isdly, setIsdelay] = useState(false)
 
 
 
@@ -28,33 +29,10 @@ function App() {
 
     setIsdelay((prev) => !prev)
   }
+  console.log(isdly, 'isdly', JSON.parse(getuserInfo), 'JSON.parse(getuserInfo).googleCalendarConnected ');
 
 
-  const tasks: Task[] = [
-    {
-      id: "1",
-      name: "Project Kickoff",
-      startDate: "2026-08-28T09:00:00Z",
-      endDate: "2026-09-03T17:00:00Z",
-      parentId: null,
-      sequence: "1",
-      dependencies: [],
-    },
-    {
-      id: "2",
-      name: "Requirements Gathering",
-      startDate: "2026-09-04T09:00:00Z",
-      endDate: "2026-09-10T17:00:00Z",
-      parentId: null,
-      sequence: "2",
-      dependencies: [
-        {
-          targetId: "1",
-          type: "FS",
-        },
-      ],
-    },
-  ];
+
 
 
   return (
@@ -63,7 +41,7 @@ function App() {
       <Analytics />
       <Toaster closeButton />
 
-      {!JSON.parse(getuserInfo).googleCalendarConnected ? (
+      {!JSON.parse(getuserInfo).googleCalendarConnected || isdly ? (
         <AcceptGoogleCalendar setOpen={handelPoup} />
       ) : null}
 
@@ -92,25 +70,6 @@ function App() {
             {/* Workspace / Header */}
             <ViewWorkspace />
 
-            <div
-              className={`w-full min-w-0 p-6 ${theme === "Dark"
-                  ? "bg-[#020817]"
-                  : "bg-[#f4f6fb]"
-                }`}
-            >
-              <div className="w-full min-w-0 overflow-x-auto">
-                <ReactGanttChart
-                  tasks={tasks}
-                  height={600}
-                  width="100%"
-                  theme={theme === "Dark" ? "dark" : "light"}
-                  defaultScale="month"
-                  onTasksChange={(updated) => {
-                    console.log("Tasks updated:", updated);
-                  }}
-                />
-              </div>
-            </div>
           </main>
         </div>
       </div>

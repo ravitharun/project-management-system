@@ -20,12 +20,45 @@ import { getuserInfo } from "./LocalStorage";
 import { RemoveTeamMember, UpdateRole } from "../services/ProjectRole";
 import { socket } from "../Scokets/ScoketConfig";
 import { ShowToast } from "./toastHelper";
+import { FiGithub } from "react-icons/fi";
+import OauthGithuLogin from "./OauthGithuLogin";
 
 function ProjectSettings() {
 
     const { state } = useLocation();
 
+    const [__, setRepo] = useState<String>("")
+    useEffect(() => {
 
+
+        const fetechRepos = async () => {
+
+
+            try {
+                let id = localStorage.getItem("githubPermissionId")
+                console.log("calling api repos" + localStorage.getItem("githubPermissionId"))
+                // SetloadingRepos(true)
+                const repos = await instance.get(`/api/github/repositoryselection?id=${id}`,)
+                console.log(repos, 'REPO')
+                setRepo(repos.data.data)
+                // SetloadingRepos(false)
+
+            } catch (error: any) {
+
+                // SetloadingRepos(false)
+                const message = error?.response?.data.message
+                const statuscode = error?.response?.status
+                if (statuscode == 401) {
+                    //   setisGithubLogin(true)
+
+                    return ShowToast(message, statuscode, 'error')
+                }
+
+            }
+
+        }
+        fetechRepos()
+    }, [])
     const navigate = useNavigate();
 
 
@@ -175,6 +208,39 @@ function ProjectSettings() {
 
         }
     }
+      useEffect(() => {
+    
+    
+        const fetechRepos = async () => {
+    
+    
+          try {
+            let id = localStorage.getItem("githubPermissionId")
+            console.log("calling api repos" + localStorage.getItem("githubPermissionId"))
+            // SetloadingRepos(true)
+            const repos = await instance.get(`/api/github/repositoryselection?id=${id}`,)
+    
+            console.log(repos, 'REPO')
+            setRepo(repos.data.data)
+            // SetloadingRepos(false)
+    
+          } catch (error: any) {
+    
+            // SetloadingRepos(false)
+            const message = error?.response?.data.message
+            const statuscode = error?.response?.status
+            if (statuscode == 401) {
+            //   setisGithubLogin(true)
+    
+              return ShowToast(message, statuscode, 'error')
+            }
+    
+          }
+    
+        }
+        fetechRepos()
+      }, [])
+    
 
     return (
         <>
@@ -583,9 +649,41 @@ ${JSON.parse(getuserInfo).userEmail === user.email
                                     ))}
                                 </div>
                             </section>
+                     
+                            {!data?.isGithubConnected ?
+                                <OauthGithuLogin
+                                    setisGithubLogin={data?.isGithubConnected}
+                                />
+                            :<>
+                            
+                                   <div className="rounded-3xl border border-gray-800 bg-gray-900/60 p-6">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-800">
+                                            <FiGithub className="text-white" size={24} />
+                                        </div>
+
+                                        <div>
+                                            <h2 className="text-base font-semibold text-white">
+                                                GitHub Connected
+                                            </h2>
+
+                                            <p className="mt-1 text-sm text-gray-400">
+                                                GitHub is connected to this project and ready to use.
+                                            </p>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            
+                            </>}
                         </div>
                     </div>
                 </div>
+
             </div>
 
             {/* 

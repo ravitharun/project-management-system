@@ -16,7 +16,7 @@ export const Usertoekn = (navigate: any, toast: any) => {
 export const checkuser = () => {
     const tokenRemove: any = localStorage.removeItem("LoginToken")
     const Removeuserinfo: any = localStorage.removeItem("userinfo")
-    alert("hi")
+    
     if (!tokenRemove && !Removeuserinfo) {
 
         return window.location.href == "/login"

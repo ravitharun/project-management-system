@@ -11,7 +11,13 @@
     transform: scale(1);
   }
 }
-
+.gantt-chart circle,
+.gantt-chart [class*="handle"],
+.gantt-chart [class*="connector"],
+.gantt-chart [class*="dependency"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
 /* ============================= */
 /* GANTT DARK THEME              */
 /* ============================= */

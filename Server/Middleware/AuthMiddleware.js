@@ -4,6 +4,8 @@ const AuthTokenVerification = async (req, res, next) => {
     try {
 
         const token = req.headers.authorization;
+        // console.log(token,'token');
+        
 
         if (!token) {
             const err = new Error("Token is required");

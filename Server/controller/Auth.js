@@ -1,5 +1,8 @@
 const cloudinary = require("../config/Clounadry")
 const UserSchema = require("../Models/Auth")
+const IntegrationsSchema = require("../Models/Integrations")
+const NotificationsSchema = require("../Models/Notifications")
+const ProfileSchema = require("../Models/Profile")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
 const { GetEmpNameGenById } = require("../Utils/EmpIDGenrator");
@@ -31,7 +34,21 @@ const AuthNewAccount = async (req, res) => {
             type: req.body.type,
             Firbaseuid: req.body.Firbaseuid
         })
+
+        const saveUserProfile = await ProfileSchema({
+            fullName: saveuser.Username,
+            Role: saveuser.UserRole,
+
+            email: saveuser.userEmail,
+            userId: saveuser._id
+
+        })
+        const svIntegrationsSchema = await IntegrationsSchema({ userId: saveuser._id })
+        const svNotificationsSchema = await NotificationsSchema({ userId: saveuser._id })
+        await saveUserProfile.save()
         await saveuser.save()
+        await svIntegrationsSchema.save()
+        await svNotificationsSchema.save()
         // Queues system
         await EmailQueue.add("SendWelcomeEmail", req.body.email, {
             attempts: 3,
@@ -75,7 +92,6 @@ const Login = async (req, res) => {
         const token = jwt.sign({
             data: userinfo
         }, 'secret', { expiresIn: '1h' });
-        console.log(token, 'token')
 
         // queues system
         await EmailQueue.add("SendWelcomEmail", email, {
@@ -129,7 +145,7 @@ const Google_CalndrLogin = async (req, res) => {
         res.redirect(url);
 
     } catch (error) {
-        console.log(error.message);
+        console.log(error.message, 'errtharun');
 
         res.status(500).json({
             success: false,
@@ -147,6 +163,10 @@ const Google_CalendarCallback = async (req, res) => {
         console.log("CODE:", code);
         // console.log("FIREBASE UID:", uid)
         console.log("FIREBASE UID:", state);
+        if (!state) {
+
+            return res.status(400).json({ message: "something went wrong" })
+        }
 
         const oauth2Client = new google.auth.OAuth2(
             process.env.GOOGLE_CLIENT_ID,
@@ -158,7 +178,12 @@ const Google_CalendarCallback = async (req, res) => {
 
         console.log(tokens, "Google Tokens");
 
-        const update = await UserSchema.findOneAndUpdate({ Firbaseuid: state }, {
+        const update = await UserSchema.findOneAndUpdate({
+            $or: [
+                { Firbaseuid: state },
+                { _id: state }
+            ]
+        }, {
 
             googleRefreshToken: tokens.refresh_token,
             googleCalendarConnected: true
@@ -167,11 +192,10 @@ const Google_CalendarCallback = async (req, res) => {
 
         console.log(update, 'update');
 
-        io.emit("UpdatedUserInfo", update)
 
 
         const encodedUser = encodeURIComponent(JSON.stringify(update));
-     
+
 
 
         res.redirect(
@@ -182,6 +206,9 @@ const Google_CalendarCallback = async (req, res) => {
 
 
 
+        io.emit("UpdatedUserInfo", update)
+
+        return res.status(200).json({ message: update })
     } catch (error) {
         console.log("CALLBACK ERROR:", error.response?.data || error.message);
 
