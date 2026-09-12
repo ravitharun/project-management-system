@@ -41,4 +41,4 @@ UserGithubSchema.index(
     { unique: true }
 );
 
-module.exports = mongoose.model("GithubConnection", UserGithubSchema)
+    module.exports = mongoose.model("GithubConnection", UserGithubSchema)

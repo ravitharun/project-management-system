@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import bgthemeContext from "../Context/ThemeContext"
-import { FiGithub,  } from "react-icons/fi";
+import { FiGithub, } from "react-icons/fi";
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { instance } from "../services/apiservices";
@@ -37,13 +37,16 @@ function OauthGithuLogin({ setisGithubLogin }: any) {
                 "Pid": ClickedSpace?._id
 
             }
-            console.log(data, 'data  ');
+
+            let id = localStorage.getItem("githubPermissionId")
+
+            const response = await instance.post("/api/github/access-permission", { data: data, id: id })
 
 
-            const response = await instance.post("/api/github/access-permission", { data: data })
+
             if (response.status === 201) {
                 setisGithubLogin(false);
-
+                localStorage.setItem("githubPermissionId", response.data.data)
                 return ShowToast(
                     response.data.message,
                     response.status,
@@ -52,7 +55,7 @@ function OauthGithuLogin({ setisGithubLogin }: any) {
             }
 
         } catch (error: any) {
-            console.error("GitHub Login Error:", error);
+
             return ShowToast(error?.response?.data.message, error?.response?.status, 'Error')
         }
     };
