@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import bgthemeContext from "../../Context/ThemeContext";
+import CreateForm from "../CreateForm";
 
 function Forms() {
   const { theme }: any = useContext(bgthemeContext);
@@ -74,6 +75,7 @@ function Forms() {
   });
 
   return (
+    <>
     <div
       className={`min-h-screen p-6 transition-colors ${
         istheme
@@ -519,6 +521,9 @@ function Forms() {
       )}
 
     </div>
+{/* <CreateForm></CreateForm> */}
+    </>
+
   );
 }
 

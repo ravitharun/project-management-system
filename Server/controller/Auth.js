@@ -1,5 +1,8 @@
 const cloudinary = require("../config/Clounadry")
 const UserSchema = require("../Models/Auth")
+const IntegrationsSchema = require("../Models/Integrations")
+const NotificationsSchema = require("../Models/Notifications")
+const ProfileSchema = require("../Models/Profile")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
 const { GetEmpNameGenById } = require("../Utils/EmpIDGenrator");
@@ -31,7 +34,21 @@ const AuthNewAccount = async (req, res) => {
             type: req.body.type,
             Firbaseuid: req.body.Firbaseuid
         })
+
+        const saveUserProfile = await ProfileSchema({
+            fullName: saveuser.Username,
+            Role: saveuser.UserRole,
+
+            email: saveuser.userEmail,
+            userId: saveuser._id
+
+        })
+        const svIntegrationsSchema = await IntegrationsSchema({ userId: saveuser._id })
+        const svNotificationsSchema = await NotificationsSchema({ userId: saveuser._id })
+        await saveUserProfile.save()
         await saveuser.save()
+        await svIntegrationsSchema.save()
+        await svNotificationsSchema.save()
         // Queues system
         await EmailQueue.add("SendWelcomeEmail", req.body.email, {
             attempts: 3,
@@ -128,7 +145,7 @@ const Google_CalndrLogin = async (req, res) => {
         res.redirect(url);
 
     } catch (error) {
-        console.log(error.message,'errtharun');
+        console.log(error.message, 'errtharun');
 
         res.status(500).json({
             success: false,
