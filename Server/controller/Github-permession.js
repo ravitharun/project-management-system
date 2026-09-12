@@ -1,20 +1,26 @@
 
 
 const UserGithubSchema = require("../Models/GithubPermession")
+const axios = require("axios")
 const IsLoginGithubPermession = async (req, res) => {
-
 
     try {
         const { pid, userid } = req.params
 
-        console.log(req.params, 'req.params');
+        console.log(req.params, 'req.params IsLoginGithubPermession');
+        if (!pid || !userid) {
+            return res.status(400).json({ message: " Missing..", status: false })
+
+
+        }
 
         const check = await UserGithubSchema.findOne({
             userApplicationId: userid,
             pid: pid
         });
         if (!check) {
-            return res.status(404).json({   
+            console.log("first")
+            return res.status(404).json({
                 message: "GitHub connection required",
                 status: false
             });
@@ -26,6 +32,7 @@ const IsLoginGithubPermession = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error.message, 'err')
         return res.status(500).json({ message: "server error", status: false })
     }
 }
@@ -34,33 +41,56 @@ const IsLoginGithubPermession = async (req, res) => {
 const SaveGithubPermession = async (req, res) => {
 
     try {
-        const { data } = req.body
-        console.log("tharun user", data.user);
-        // data._tokenResponse.screenName
-        // 
-        console.log(data.user._tokenResponse.screenName, ' data._tokenResponse.screenName');
-        console.log(data?.user?.stsTokenManager, ' data?.user.accessToken');
+        const { data, id } = req.body
+        console.log("tharun user", req.body);
+        //  validation
+        if (!data) {
 
-        const response_premession = new UserGithubSchema({
-            pid: data.Pid,
+            return res.status(400).json({ message: "Missing..", status: false })
+        }
+        if (!id) {
+            const response_premession = new UserGithubSchema({
+                pid: data.Pid,
 
-            userApplicationId: data.userid,
+                userApplicationId: data.userid,
 
-            githubUserId: data.user._tokenResponse.rawUserInfo
-                ? JSON.parse(data.user._tokenResponse.rawUserInfo).id
-                : null,
+                githubUserId: data.user._tokenResponse.rawUserInfo
+                    ? JSON.parse(data.user._tokenResponse.rawUserInfo).id
+                    : null,
 
-            githubUsername: data.user._tokenResponse.screenName,
+                githubUsername: data.user._tokenResponse.screenName,
 
-            githubAccessToken: data.user._tokenResponse.oauthAccessToken,
+                githubAccessToken: data.user._tokenResponse.oauthAccessToken,
 
-            githubId: data.user._tokenResponse.federatedId
+                githubId: data.user._tokenResponse.federatedId
+            });
+
+            await response_premession.save();
+            return res.status(201).json({
+                message: "GitHub connection created successfully",
+                data: response_premession._id,
+                status: true
+            });
+
+        }
+
+        const isExit = await UserGithubSchema.findByIdAndUpdate({ _id: id }, {
+            githubAccessToken: data.user._tokenResponse.oauthAccessToken
+        }, {
+            returnDocument: "after"
+
         });
-        await response_premession.save();
+
+
+
+
         return res.status(201).json({
-            message: "GitHub connection created successfully",
+            message: "GitHub connection Logined successfully",
+            data: isExit._id,
             status: true
         });
+
+
 
     } catch (error) {
         console.log(error.message, 'errtharun')
@@ -69,4 +99,38 @@ const SaveGithubPermession = async (req, res) => {
     }
 }
 
-module.exports = { IsLoginGithubPermession, SaveGithubPermession }
+
+const GithubReposelections = async (req, res) => {
+    try {
+        const { id } = req.query
+        if (!id) {
+
+            return res.status(400).json({ message: "Id is missing." })
+        }
+        const resp = await UserGithubSchema.findById({ _id: id })
+
+        const response = await axios.get(
+            "https://api.github.com/user",
+            {
+                headers: {
+                    Authorization: `Bearer ${resp.githubAccessToken}`,
+                    Accept: "application/vnd.github+json"
+                }
+            }
+        );
+        if (response.data.message == 'Bad credentials') {
+            return res.status(401).json({ message: error?.response.data.message + "Github" })
+        }
+
+
+        res.status(200).json({ message: "repos", data: response.data.repos_url, status: true })
+
+    } catch (error) {
+
+
+        return res.status(500).json({ message: error.message, status: false })
+
+
+    }
+}
+module.exports = { IsLoginGithubPermession, SaveGithubPermession, GithubReposelections }

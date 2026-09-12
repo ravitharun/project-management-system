@@ -10,9 +10,9 @@ export const ShowToast = (
     type: string | any,
 ) => {
 
+    console.log(message, 'isSuccess')
 
     const isSuccess = statusCode === 200 || statusCode === 201;
-    console.log(isSuccess, 'isSuccess')
 
     toast.custom(() => (
         <div className="flex items-center gap-3 rounded-lg border border-gray-700 bg-gray-900 px-4 py-3 text-white shadow-lg">
