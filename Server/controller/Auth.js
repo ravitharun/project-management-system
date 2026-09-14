@@ -91,7 +91,7 @@ const Login = async (req, res) => {
         const userinfo = { email }
         const token = jwt.sign({
             data: userinfo
-        }, 'secret', { expiresIn: '1h' });
+        }, 'secret', { expiresIn: '7d' });
 
         // queues system
         await EmailQueue.add("SendWelcomEmail", email, {
