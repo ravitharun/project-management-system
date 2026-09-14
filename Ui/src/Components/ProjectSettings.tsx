@@ -29,8 +29,6 @@ function ProjectSettings() {
 
     const [__, setRepo] = useState<String>("")
     useEffect(() => {
-
-
         const fetechRepos = async () => {
 
 
