@@ -106,6 +106,8 @@ function CreateMeeting({ onClose }: any) {
         console.log(data)
         try {
             const response = await instance.post("/api/Metting", { mettingInfo: data })
+            console.log(response,'response');
+            
         } catch (error) {
 
         }

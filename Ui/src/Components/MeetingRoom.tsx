@@ -145,7 +145,7 @@
 // }
 
 // export default MeetingRoom;
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
     FiVideo,
     FiPlus,
