@@ -16,7 +16,7 @@ import {
     FaCompress,
 } from "react-icons/fa"
 
-import  { Toaster } from "react-hot-toast"
+import { Toaster } from "react-hot-toast"
 
 import Button from "../../Button"
 
@@ -27,6 +27,7 @@ import Loader from "../../Loader"
 import { nanoid } from "nanoid"
 import bgthemeContext from "../../../Context/ThemeContext"
 import { ShowToast } from "../../toastHelper"
+import { fetchTeamMembers } from "../../../services/TeamMember"
 
 type Props = {
     AddedBy?: string | null
@@ -68,16 +69,10 @@ function TaskForm({
 
 
     useEffect(() => {
-        const fetchTeamMembers = async () => {
+        const fetchTeamMember = async () => {
             try {
                 setloader(true)
-                console.log("first", projectid)
-                const response = await instance.get("/api/WorkSpace/TeamMembers", {
-                    params: {
-                        projectid: projectid
-                    }
-                })
-                console.log(response.data.message, 'res')
+                const response: any = await fetchTeamMembers(projectid)
 
                 setMembers(response.data.message)
                 setloader(false)
@@ -86,9 +81,10 @@ function TaskForm({
 
             }
         }
-        fetchTeamMembers()
+        fetchTeamMember()
     }, [])
-    console.log(Members)
+
+
     useEffect(() => {
 
         const handleKeyDown = (e: any) => {

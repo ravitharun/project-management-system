@@ -9,6 +9,7 @@ import ShareMinAndMaxWorkspaceView from "../Share/ShareMinAndMaxWorkspaceView";
 import bgthemeContext from "../../Context/ThemeContext";
 import SideBarContext from "../../Context/SideBard";
 import { instance } from "../../services/apiservices";
+import MeetingRoom from "../MeetingRoom";
 
 function TaskLayout() {
     const context = useContext(bgthemeContext);
@@ -231,6 +232,7 @@ function TaskLayout() {
                     : "md:ml-20 md:w-full"
                 }
     `}>
+        {/* <MeetingRoom></MeetingRoom> */}
 
                 {ismaxAndMin ?
                     <>
