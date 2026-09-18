@@ -19,7 +19,7 @@ const SprintRouter = require("./routes/SprintRouter");
 const ProjectsVersionRoter = require("./routes/ProjectsVersionRoter");
 const FileUploadRouter = require("./routes/FileUploadsProjectRouter");
 const Activity_Router = require("./routes/Activity-Router");
-const Application_Settings_Profile= require("./routes/ApplicationSettingRouter");
+const Application_Settings_Profile = require("./routes/ApplicationSettingRouter");
 const NotificatonsRouter = require("./routes/NotificatonsRouter");
 const FetchTeamRouter = require("./routes/FetchTeamRouter");
 const AnalytcsRouter = require("./routes/AnalytcsRouter");
@@ -28,6 +28,7 @@ const CreateWorkSpaceRouter = require("./routes/CreateWorkSpace");
 const Comments = require("./routes/Comments");
 const WorkSpaceTaskRouter = require("./routes/WorkSpaceTask_router");
 const CreateAutomation_Router = require("./routes/Automation-Rule-Router");
+const mettings = require("./routes/WorkspaceRouter-Mettings");
 const FetchTaskCalendar = require("./routes/GetTaskCalendarRouter");
 
 // Config / Middleware
@@ -96,8 +97,9 @@ app.use("/api/Notificatons", NotificatonsRouter);
 
 app.use("/api/Team", FetchTeamRouter);
 
-app.use("/api/github",GithuPermessionRouter)
-app.use("/api/Settings",Application_Settings_Profile)
+app.use("/api/github", GithuPermessionRouter)
+app.use("/api/Settings", Application_Settings_Profile)
+app.use("/api/mettings", mettings)
 app.use("/api/Analytcs", AnalytcsRouter);
 
 app.use("/api/WorkSpace", CreateWorkSpaceRouter);
