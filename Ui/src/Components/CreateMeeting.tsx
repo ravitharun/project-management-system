@@ -20,7 +20,7 @@ function CreateMeeting({ onClose }: any) {
     const { ClickedSpace }: any = useContext<any>(ClickedWorkSpace);
     const date = new Date().toISOString().split("T")[0];
     const now = new Date();
-
+    const [loading, setloading] = useState<boolean>(false)
     const currentTime = now.toTimeString().slice(0, 5);
     const [MettingTitle, setMettingTitle] = useState("");
     const [MettingDate, setMettingDate] = useState(date);
@@ -30,6 +30,12 @@ function CreateMeeting({ onClose }: any) {
         []
     );
 
+    const handleClearForm = () => {
+        setMettingTitle("");
+        setMettingDate(date);
+        setMettingStartTime("");
+        setMettingEndTime("");
+    }
     const [selectedParticipants, setSelectedParticipants] = useState<any[]>(
         []
     );
@@ -65,18 +71,23 @@ function CreateMeeting({ onClose }: any) {
     }, [ClickedSpace._id]);
 
     const handleParticipantSelect = (user: any) => {
-        const alreadySelected = selectedParticipants.some(
-            (participant) => participant._id === user._id
-        );
+        console.log(user, 'user');
 
+        const alreadySelected = selectedParticipants.some(
+            (participant) => participant === user
+        );
         if (alreadySelected) {
+
             setSelectedParticipants((prev) =>
+
                 prev.filter((participant) => participant._id !== user._id)
+
             );
         } else {
             setSelectedParticipants((prev) => [...prev, user]);
         }
     };
+
 
     const filteredParticipants = MettingPartisipations.filter((tm: any) => {
         const user = tm?.id;
@@ -94,22 +105,39 @@ function CreateMeeting({ onClose }: any) {
 
     const CreateMetting = async () => {
         if (selectedParticipants.length == 0) {
-            return ShowToast("", "", "Error")
+            return ShowToast("Select the TeamMembers", 400, "Error")
         }
         if (!MettingTitle || !MettingStartTime || !MettingEndTime || !ClickedSpace._id) {
-            return ShowToast("", "", "Error")
+            return ShowToast("Missing required Inputs ", 400, "Error")
 
         }
+        const user_ids = selectedParticipants.map(num => num._id);
+
+
+
         const data = {
-            MettingTitle, MettingStartTime, MettingEndTime, "PID": ClickedSpace._id, "CreatedBy": userid, selectedParticipants
+            MettingTitle, MettingStartTime, MettingEndTime, "PID": ClickedSpace._id, "CreatedBy": userid, "TeamMembers": user_ids
         }
-        console.log(data)
-        try {
-            const response = await instance.post("/api/Metting", { mettingInfo: data })
-            console.log(response,'response');
-            
-        } catch (error) {
 
+        try {
+            setloading(true)
+            const response = await instance.post("/api/mettings/add", { mettingInfo: data })
+            console.log(response, 'response');
+            ShowToast(response?.data?.message, response?.status, response?.statusText)
+            setTimeout(() => {
+                handleClearForm()
+                onClose()
+            }, 1500);
+
+            setloading(false)
+        } catch (error: any) {
+
+            setloading(false)
+            return ShowToast(error?.response?.data?.message, error?.response?.status, "Erorr")
+
+        } finally {
+
+            setloading(false)
         }
     }
     return (
@@ -282,7 +310,7 @@ function CreateMeeting({ onClose }: any) {
 
                                     <input
                                         type="time"
-                                        value={currentTime || MettingEndTime}
+                                        value={MettingEndTime}
                                         onChange={(e) =>
                                             setMettingEndTime(
                                                 e.target.value
@@ -353,15 +381,15 @@ function CreateMeeting({ onClose }: any) {
                                                 key={user._id}
                                                 className="flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 py-1 pl-1 pr-2"
                                             >
-                                                {user.userProfile ? (
+                                                {user?.userProfile ? (
                                                     <img
-                                                        src={user.userProfile}
-                                                        alt={user.Username}
+                                                        src={user?.userProfile}
+                                                        alt={user?.Username}
                                                         className="h-5 w-5 rounded-full object-cover"
                                                     />
                                                 ) : (
                                                     <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500/20 text-[9px] font-semibold text-blue-400">
-                                                        {user.Username
+                                                        {user?.Username
                                                             ?.charAt(0)
                                                             ?.toUpperCase() ||
                                                             "U"}
@@ -369,7 +397,7 @@ function CreateMeeting({ onClose }: any) {
                                                 )}
 
                                                 <span className="max-w-24 truncate text-[10px] text-blue-300">
-                                                    {user.Username}
+                                                    {user?.Username}
                                                 </span>
 
                                                 <button
@@ -439,7 +467,6 @@ function CreateMeeting({ onClose }: any) {
                                                                 participant._id ===
                                                                 user._id
                                                         );
-
                                                     return (
                                                         <div
                                                             key={
@@ -475,7 +502,7 @@ function CreateMeeting({ onClose }: any) {
                                                             </div>
 
                                                             {/* Profile Image */}
-                                                            {user.userProfile ? (
+                                                            {user?.userProfile ? (
                                                                 <img
                                                                     src={
                                                                         user.userProfile
@@ -538,10 +565,18 @@ function CreateMeeting({ onClose }: any) {
 
                         <button
                             type="button"
-                            className="rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white transition hover:bg-blue-700"
+                            disabled={loading}
+                            className="rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
                             onClick={CreateMetting}
                         >
-                            Create Meeting
+                            {loading ? (
+                                <span className="flex items-center gap-2">
+                                    <span className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                                    Creating...
+                                </span>
+                            ) : (
+                                "Create Meeting"
+                            )}
                         </button>
                     </div>
                 </div>
