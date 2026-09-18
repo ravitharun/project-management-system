@@ -9,12 +9,14 @@ import {
     FiMoreVertical,
     FiCheckCircle,
     FiUserCheck,
+    FiX,
 } from "react-icons/fi";
 import CreateMeeting from "./CreateMeeting";
-import JoinMettings from "./JoinMettings";
 import { instance } from "../services/apiservices";
 import { ShowToast } from "./toastHelper";
 import ClickedWorkSpace from "../Context/ClickedWorkSpace";
+import { FaRegCalendarTimes } from "react-icons/fa";
+import { HiOutlineCheckCircle, HiOutlineDotsVertical, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
 
 function MeetingRoom() {
     const { ClickedSpace }: any = useContext(ClickedWorkSpace)
@@ -24,8 +26,10 @@ function MeetingRoom() {
     }
     const [meetingHistory, setMeetingHistory] = useState<any[]>([]);
     const [__, setTodaysMeetings] = useState<any[]>([]);
-    const [___, setUpcomingMeetings] = useState<any[]>([]);
+    const [UpcomingMeetings, setUpcomingMeetings] = useState<any[]>([]);
 
+    const [Upcomingoption, setUpcomingoption] = useState("")
+    const [poupMettinginfo, setpoupMettinginfo] = useState<any | null>(null)
 
     useEffect(() => {
         const fetchMettings = async () => {
@@ -40,9 +44,7 @@ function MeetingRoom() {
                     }
                 })
 
-                // Meeting History
-                // Todays _mettngs
-                // Upcoming_mettings
+
                 console.log(response.data);
 
 
@@ -59,218 +61,315 @@ function MeetingRoom() {
         }
         fetchMettings()
     }, [])
-    console.log(meetingHistory, meetingHistory)
+
+    // handelUpcomingOption
+
+
+    const handelUpcomingOption = (id: any) => {
+        if (!id) {
+            return
+        }
+        setpoupMettinginfo(id)
+        setUpcomingoption(id)
+    }
     return (
-        <div className="min-h-screen bg-gray-50 p-4 dark:bg-[#0b1120] sm:p-6">
-            {/* Header */}
-            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-                        Meetings
-                    </h1>
+        <>
 
-                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        Schedule and join project meetings.
-                    </p>
-                </div>
 
-                <button className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700" onClick={() => setCreateMetting(true)}>
-                    <FiPlus size={18} />
-                    Create Meeting
-                </button>
-            </div>
-            {CreateMetting && <CreateMeeting onClose={onClose} CreateMetting={CreateMetting} ></CreateMeeting>}
-            {/* Upcoming Meetings */}
-            <section className="mb-8">
-                <div className="mb-4 flex items-center justify-between">
+
+            {/* </> */}
+            <div className="min-h-screen bg-gray-50 p-4 dark:bg-[#0b1120] sm:p-6">
+                {/* Header */}
+                <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h2 className="text-base font-semibold text-gray-900 dark:text-white">
-                            Upcoming Meetings
-                        </h2>
+                        <h1 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
+                            Meetings
+                        </h1>
 
-                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                            Meetings scheduled for your projects
+                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                            Schedule and join project meetings.
                         </p>
                     </div>
 
-                    <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-                        3 Upcoming
-                    </span>
+                    <button className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700" onClick={() => setCreateMetting(true)}>
+                        <FiPlus size={18} />
+                        Create Meeting
+                    </button>
                 </div>
+                {CreateMetting && <CreateMeeting onClose={onClose} CreateMetting={CreateMetting} ></CreateMeeting>}
+                {/* Upcoming Meetings */}
+                <section className="mb-8">
+                    <div className="mb-4 flex items-center justify-between">
+                        <div>
+                            <h2 className="text-base font-semibold text-gray-900 dark:text-white">
+                                Upcoming Meetings
+                            </h2>
 
-                <div className="space-y-3">
-                    {/* Meeting 1 */}
-                    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-[#111827]">
-                        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                            <div className="flex gap-3">
-                                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-                                    <FiVideo size={20} />
-                                </div>
-
-                                <div>
-                                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        Sprint Planning
-                                    </h3>
-
-                                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                        E-Commerce Project
-                                    </p>
-
-                                    <div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
-                                        <span className="flex items-center gap-1">
-                                            <FiCalendar size={13} />
-                                            Sep 15, 2026
-                                        </span>
-
-                                        <span className="flex items-center gap-1">
-                                            <FiClock size={13} />
-                                            10:30 AM
-                                        </span>
-
-                                        <span className="flex items-center gap-1">
-                                            <FiUsers size={13} />
-                                            5 Participants
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                                <button className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 lg:flex-none">
-                                    Join Meeting
-                                </button>
-
-                                <button className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-white">
-                                    <FiMoreVertical size={18} />
-                                </button>
-                            </div>
+                            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                Meetings scheduled for your projects
+                            </p>
                         </div>
+
+                        <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                            {UpcomingMeetings.length} Upcoming
+                        </span>
                     </div>
 
-                    {/* Meeting 2 */}
-                    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-[#111827]">
-                        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                            <div className="flex gap-3">
-                                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400">
-                                    <FiVideo size={20} />
-                                </div>
+                    <div className="space-y-3">
+                        {/* Meeting 1 */}
+                        {/* */}
 
-                                <div>
-                                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        Team Standup
-                                    </h3>
+                        {UpcomingMeetings.length == 0 ? <>
 
-                                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                        Taskora Development
-                                    </p>
 
-                                    <div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
-                                        <span className="flex items-center gap-1">
-                                            <FiCalendar size={13} />
-                                            Sep 16, 2026
-                                        </span>
 
-                                        <span className="flex items-center gap-1">
-                                            <FiClock size={13} />
-                                            9:30 AM
-                                        </span>
-
-                                        <span className="flex items-center gap-1">
-                                            <FiUsers size={13} />
-                                            4 Participants
-                                        </span>
-                                    </div>
-                                </div>
+                            <div className="flex flex-col items-center justify-center py-10 text-gray-500">
+                                <FaRegCalendarTimes className="text-4xl mb-3" />
+                                <p className="text-sm font-medium">No upcoming meetings</p>
+                                <span className="text-xs text-gray-400 mt-1">
+                                    You don't have any upcoming meetings scheduled.
+                                </span>
                             </div>
-
-                            <div className="flex items-center gap-2">
-                                <button className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 lg:flex-none">
-                                    Join Meeting
-                                </button>
-
-                                <button className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-white">
-                                    <FiMoreVertical size={18} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Meeting History */}
-            <section>
-                <div className="mb-4">
-                    <h2 className="text-base font-semibold text-gray-900 dark:text-white">
-                        Meeting History
-                    </h2>
-
-                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        Previously completed meetings
-                    </p>
-                </div>
-
-                <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-[#111827]">
-                    <div className="divide-y divide-gray-200 dark:divide-gray-800">
-                        {meetingHistory.length == 0 ? "hey" :
-
-
-                            <>
-
-
-
-                                {meetingHistory.map((mt, idx) => (
-
-
-                                    <div
-                                        className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
-                                        key={idx}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            {mt?.MettingCompleted && (
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400">
-                                                    <FiCheckCircle size={18} />
-                                                </div>
-                                            )}
-
-                                            <div>
-                                                <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                                                    {mt?.MettingTitle || "Meeting Title"}
-                                                </h3>
-
-                                                <div className="mt-1 flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                                                    {/* Date & Time */}
-                                                    <span>
-                                                        {mt?.MettingDate || "Meeting Date"} ·{" "}
-                                                        {mt?.MettingEndTime || "Meeting Time"}
-                                                    </span>
-
-                                                    {/* Team Members */}
-                                                    <span className="flex items-center gap-1">
-                                                        <FiUsers size={13} />
-                                                        {mt?.TeamMembers?.length || 0}
-                                                    </span>
-
-                                                    {/* Attended */}
-                                                    <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
-                                                        <FiUserCheck size={13} />
-                                                        {mt?.attendeeCount.length}
-                                                    </span>
-                                                </div>
-                                            </div>
+                        </> : UpcomingMeetings.map((up) => (
+                            <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-[#111827]">
+                                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                                    <div className="flex gap-3">
+                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                                            <FiVideo size={20} />
                                         </div>
 
-                                        <span className="text-xs font-medium text-green-600 dark:text-green-400">
-                                            {mt?.MettingCompleted && "Completed"}
-                                        </span>
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                {up?.MettingTitle || "MettingTitle"}
+                                            </h3>
+
+
+
+                                            <div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+                                                <span className="flex items-center gap-1">
+                                                    <FiCalendar size={13} />
+                                                    {up?.MettingDate}
+                                                </span>
+
+                                                <span className="flex items-center gap-1">
+                                                    <FiClock size={13} />
+                                                    {Number(up?.MettingStartTime?.split(":")[0]) > 12 ? `${up?.MettingStartTime} Am  ` : `${up?.MettingStartTime} Pm`}-   {up?.MettingEndTime?.split(":")[0] > 12 ? `${up?.MettingStartTime} Am  ` : `${up?.MettingStartTime} Pm`}
+                                                </span>
+
+                                                <span className="flex items-center gap-1">
+                                                    <FiUsers size={13} />
+                                                    {up?.TeamMembers.length} Participants
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                ))}
-                            </>}
+
+                                    <div className="flex items-center gap-2">
+                                        <button className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 lg:flex-none">
+                                            Join Meeting
+                                        </button>
+
+                                        <button className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-white" onClick={() => handelUpcomingOption(up)}>
+                                            <FiMoreVertical size={18} />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Meeting History */}
+                <section>
+                    <div className="mb-4">
+                        <h2 className="text-base font-semibold text-gray-900 dark:text-white">
+                            Meeting History
+                        </h2>
+
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            Previously completed meetings
+                        </p>
+                    </div>
+
+                    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-[#111827]">
+                        <div className="divide-y divide-gray-200 dark:divide-gray-800">
+                            {meetingHistory.length == 0 ? <>
+
+
+
+
+                                <div className="flex flex-col items-center justify-center py-10 text-gray-500">
+                                    <FaRegCalendarTimes className="text-4xl mb-3" />
+                                    <p className="text-sm font-medium">No Meeting History</p>
+                                    <span className="text-xs text-gray-400 mt-1">
+                                        You don't have any past meetings yet.
+                                    </span>
+                                </div>
+                            </> :
+
+
+                                <>
+
+
+
+                                    {meetingHistory.map((mt, idx) => (
+
+
+                                        <div
+                                            className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
+                                            key={idx}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                {mt?.MettingCompleted && (
+                                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400">
+                                                        <FiCheckCircle size={18} />
+                                                    </div>
+                                                )}
+
+                                                <div>
+                                                    <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                                                        {mt?.MettingTitle || "Meeting Title"}
+                                                    </h3>
+
+                                                    <div className="mt-1 flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                                                        {/* Date & Time */}
+                                                        <span>
+                                                            {mt?.MettingDate || "Meeting Date"} ·{" "}
+                                                            {mt?.MettingEndTime || "Meeting Time"}
+                                                        </span>
+
+                                                        {/* Team Members */}
+                                                        <span className="flex items-center gap-1">
+                                                            <FiUsers size={13} />
+                                                            {mt?.TeamMembers?.length || 0}
+                                                        </span>
+
+                                                        {/* Attended */}
+                                                        <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
+                                                            <FiUserCheck size={13} />
+                                                            {mt?.attendeeCount.length}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <span className="text-xs font-medium text-green-600 dark:text-green-400">
+                                                {mt?.MettingCompleted && "Completed"}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </>}
+
+                        </div>
+                    </div>
+                </section>
+                {/* <JoinMettings></JoinMettings> */}
+            </div>
+            {Upcomingoption && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+
+                    {/* Popup */}
+                    <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl dark:border-gray-700 dark:bg-gray-900">
+
+                        {/* Header */}
+                        <div className="flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
+                            <div>
+                                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                    {poupMettinginfo?.MettingTitle || "MettingTitle"}
+                                </h2>
+                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    Choose an action for this meeting
+                                </p>
+                            </div>
+
+                            <button className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800" onClick={() => setUpcomingoption("")}>
+                                <FiX className="text-xl" />
+                            </button>
+                        </div>
+
+                        {/* Meeting Info */}
+                        <div className="my-4 rounded-xl bg-gray-50 p-4 dark:bg-gray-800/50">
+                            <p className="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
+                                <FiCalendar className="text-base text-blue-500" />
+                                {poupMettinginfo?.MettingTitle || ""}
+                            </p>
+
+                            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                {poupMettinginfo?.MettingDate || ""} ·{" "}
+                                {poupMettinginfo?.MettingStartTime || ""}{" "}
+                                {poupMettinginfo?.MettingEndTime && `- ${poupMettinginfo.MettingEndTime}`}
+                            </p>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="space-y-2">
+
+                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+                                <div className="rounded-lg bg-green-100 p-2 dark:bg-green-950/40">
+                                    <HiOutlineCheckCircle className="text-lg text-green-600" />
+                                </div>
+
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                        Mark as Completed
+                                    </p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        Mark this meeting as completed
+                                    </p>
+                                </div>
+                            </button>
+
+                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+                                <div className="rounded-lg bg-blue-100 p-2 dark:bg-blue-950/40">
+                                    <HiOutlinePencil className="text-lg text-blue-600" />
+                                </div>
+
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                        Edit Meeting
+                                    </p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        Update meeting details
+                                    </p>
+                                </div>
+                            </button>
+
+                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+                                <div className="rounded-lg bg-red-100 p-2 dark:bg-red-950/40">
+                                    <HiOutlineTrash className="text-lg text-red-600" />
+                                </div>
+
+                                <div>
+                                    <p className="text-sm font-medium text-red-600">
+                                        Delete Meeting
+                                    </p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        Permanently delete this meeting
+                                    </p>
+                                </div>
+                            </button>
+
+                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+                                <div className="rounded-lg bg-gray-100 p-2 dark:bg-gray-800">
+                                    <FiX className="text-lg text-gray-600 dark:text-gray-300" />
+                                </div>
+
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white" onClick={() => setUpcomingoption("")}>
+                                        Close Meeting
+                                    </p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        Close this action window
+                                    </p>
+                                </div>
+                            </button>
+
+                        </div>
 
                     </div>
                 </div>
-            </section>
-            <JoinMettings></JoinMettings>
-        </div>
+            )}
+        </>
     );
 }
 
