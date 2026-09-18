@@ -15,6 +15,8 @@ import { ShowToast } from "./toastHelper";
 import { Toaster } from "sonner";
 import { instance } from "../services/apiservices";
 import { userid } from "./LocalStorage";
+import { timeFormatampm } from "../types/AmPm";
+import { socket } from "../Scokets/ScoketConfig";
 
 function CreateMeeting({ onClose }: any) {
     const { ClickedSpace }: any = useContext<any>(ClickedWorkSpace);
@@ -44,6 +46,27 @@ function CreateMeeting({ onClose }: any) {
         useState(false);
 
     const [participantSearch, setParticipantSearch] = useState("");
+
+    // MettingsList
+    useEffect(() => {
+
+        const handelMettingsList = (data: any)=>{
+
+
+            console.log("web"+data)
+        }
+
+
+        socket.on("MettingsList", handelMettingsList)
+        return () => {
+
+            socket.off("MettingsList", handelMettingsList)
+
+
+        }
+    }, [])
+
+
 
     useEffect(() => {
         const fetchTeamMember = async () => {
@@ -116,7 +139,7 @@ function CreateMeeting({ onClose }: any) {
 
 
         const data = {
-            MettingTitle, MettingStartTime, MettingEndTime, "PID": ClickedSpace._id, "CreatedBy": userid, "TeamMembers": user_ids
+            MettingTitle, MettingDate, "MettingStartTime": timeFormatampm(MettingStartTime), "MettingEndTime": timeFormatampm(MettingEndTime), "PID": ClickedSpace._id, "CreatedBy": userid, "TeamMembers": user_ids
         }
 
         try {
