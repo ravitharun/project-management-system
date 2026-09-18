@@ -8,6 +8,10 @@ const MeetingSchema = new mongoose.Schema(
       trim: true,
     },
 
+    MettingDate: {
+      type: String,
+      required: true,
+    },
     MettingStartTime: {
       type: String,
       required: true,
@@ -29,11 +33,22 @@ const MeetingSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    MettingCompleted: {
+      type: Boolean,
+      default: false
+    },
 
     TeamMembers: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+      },
+    ],
+    attendeeCount: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: 0
       },
     ],
   },
