@@ -23,8 +23,8 @@ function MeetingRoom() {
         setCreateMetting((prev) => !prev)
     }
     const [meetingHistory, setMeetingHistory] = useState<any[]>([]);
-    const [todaysMeetings, setTodaysMeetings] = useState<any[]>([]);
-    const [upcomingMeetings, setUpcomingMeetings] = useState<any[]>([]);
+    const [__, setTodaysMeetings] = useState<any[]>([]);
+    const [___, setUpcomingMeetings] = useState<any[]>([]);
 
 
     useEffect(() => {
