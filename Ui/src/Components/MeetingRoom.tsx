@@ -16,7 +16,9 @@ import { instance } from "../services/apiservices";
 import { ShowToast } from "./toastHelper";
 import ClickedWorkSpace from "../Context/ClickedWorkSpace";
 import { FaRegCalendarTimes } from "react-icons/fa";
-import { HiOutlineCheckCircle, HiOutlineDotsVertical, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
+import { HiOutlineCheckCircle, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
+import { socket } from "../Scokets/ScoketConfig";
+import { Toaster } from "sonner";
 
 function MeetingRoom() {
     const { ClickedSpace }: any = useContext(ClickedWorkSpace)
@@ -72,10 +74,61 @@ function MeetingRoom() {
         setpoupMettinginfo(id)
         setUpcomingoption(id)
     }
+
+
+
+    // MettingsList
+    useEffect(() => {
+
+        const handelMettingsList = (data: any) => {
+            const meetings = data;
+
+
+            setMeetingHistory(meetings.Mettings);
+            setTodaysMeetings(meetings.todayMetting);
+            setUpcomingMeetings(meetings.upcoming_mettings);
+        };
+
+
+        socket.on("MettingsList", handelMettingsList)
+        return () => {
+
+            socket.off("MettingsList", handelMettingsList)
+
+            socket.off("connect");
+            socket.off("disconnect");
+        }
+    }, [])
+
+    // handelDeleteMettings
+
+
+    const handelDeleteMettings = async (id: any) => {
+        if (!id) {
+
+
+
+            return ShowToast('Some Thing Went Wrong.', 400, 'Error')
+        }
+
+        try {
+            const response = await instance.delete('/api/mettings/delete', {
+                params: {
+                    meet_id: id,
+                    pid: ClickedSpace._id
+                }
+            })
+
+            return ShowToast(response.data.message, response.status, 'sucess')
+        } catch (error: any) {
+
+            return ShowToast(error?.response.data.message, error?.response.data.status, 'Error')
+        }
+    }
     return (
         <>
 
-
+            <Toaster></Toaster>
 
             {/* </> */}
             <div className="min-h-screen bg-gray-50 p-4 dark:bg-[#0b1120] sm:p-6">
@@ -111,7 +164,7 @@ function MeetingRoom() {
                         </div>
 
                         <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-                            {UpcomingMeetings.length} Upcoming
+                            {UpcomingMeetings?.length} Upcoming
                         </span>
                     </div>
 
@@ -119,7 +172,7 @@ function MeetingRoom() {
                         {/* Meeting 1 */}
                         {/* */}
 
-                        {UpcomingMeetings.length == 0 ? <>
+                        {UpcomingMeetings?.length == 0 ? <>
 
 
 
@@ -130,7 +183,7 @@ function MeetingRoom() {
                                     You don't have any upcoming meetings scheduled.
                                 </span>
                             </div>
-                        </> : UpcomingMeetings.map((up) => (
+                        </> : UpcomingMeetings?.map((up) => (
                             <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-[#111827]">
                                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                                     <div className="flex gap-3">
@@ -158,7 +211,7 @@ function MeetingRoom() {
 
                                                 <span className="flex items-center gap-1">
                                                     <FiUsers size={13} />
-                                                    {up?.TeamMembers.length} Participants
+                                                    {up?.TeamMembers?.length} Participants
                                                 </span>
                                             </div>
                                         </div>
@@ -193,7 +246,7 @@ function MeetingRoom() {
 
                     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-[#111827]">
                         <div className="divide-y divide-gray-200 dark:divide-gray-800">
-                            {meetingHistory.length == 0 ? <>
+                            {meetingHistory?.length == 0 ? <>
 
 
 
@@ -212,7 +265,7 @@ function MeetingRoom() {
 
 
 
-                                    {meetingHistory.map((mt, idx) => (
+                                    {meetingHistory?.map((mt, idx) => (
 
 
                                         <div
@@ -334,7 +387,7 @@ function MeetingRoom() {
                                 </div>
                             </button>
 
-                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800" onClick={() => handelDeleteMettings(poupMettinginfo._id)}>
                                 <div className="rounded-lg bg-red-100 p-2 dark:bg-red-950/40">
                                     <HiOutlineTrash className="text-lg text-red-600" />
                                 </div>

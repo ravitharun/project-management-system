@@ -1,8 +1,9 @@
 const express = require("express")
-const { AddMettings, fetchMettings } = require("../controller/workspace-Mettings")
+const { AddMettings, fetchMettings, deleteMeeting } = require("../controller/workspace-Mettings")
 const AuthTokenVerification = require("../Middleware/AuthMiddleware")
 
 const mettings = express.Router()
 mettings.post("/Add", AuthTokenVerification, AddMettings)
-mettings.get("/", fetchMettings)
+mettings.get("/", AuthTokenVerification, fetchMettings)
+mettings.delete("/delete", AuthTokenVerification, deleteMeeting)
 module.exports = mettings

@@ -7,8 +7,8 @@ const AddMettings = async (req, res) => {
 
     try {
         const io = getIO()
-        const { mettingInfo } = req.body;
-        console.log(mettingInfo)
+        const { mettingInfo, Pid } = req.body;
+        console.log(req.body, 'Pid')
 
         if (mettingInfo.TeamMembers.length == 0) {
 
@@ -19,9 +19,26 @@ const AddMettings = async (req, res) => {
 
             return res.status(400).json({ message: "missing.." })
         }
+        if (!Pid) {
+
+
+            return res.status(400).json({ message: "Pid missing.." })
+        }
 
         await MeetingSchema.create(mettingInfo);
-        io.emit("MettingsList", fetchMettings())
+
+        const response = await MeetingSchema.find({ PID: Pid })
+        const todayMetting = Todays_mettings(response)
+        const upcoming_mettings = Upcoming_mettings(response)
+        const Mettings = Mettings_(response)
+        const format = {
+
+            "todayMetting": todayMetting,
+            "upcoming_mettings": upcoming_mettings,
+            "Mettings": Mettings,
+        }
+        console.log(format, 'formattharun')
+        io.emit("MettingsList", format)
 
         return res.status(201).json({ message: "mettingInfo", status: true })
     } catch (error) {
@@ -52,4 +69,38 @@ const fetchMettings = async (req, res) => {
     }
 }
 
-module.exports = { AddMettings, fetchMettings }
+
+const deleteMeeting = async (req, res) => {
+
+
+    try {
+        const data = req.query
+        const io = getIO();
+
+        if (!data.pid || !data.meet_id) {
+
+            return res.status(400).json({ message: "Some Thing Went Wrong.", status: false })
+
+        }
+
+        await MeetingSchema.findByIdAndDelete({ _id: data.meet_id })
+        res.status(200).json({ message: "meeting is Deleted", status: true })
+        const response = await MeetingSchema.find({ PID: data.pid })
+        const todayMetting = Todays_mettings(response)
+        const upcoming_mettings = Upcoming_mettings(response)
+        const Mettings = Mettings_(response)
+        const format = {
+
+            "todayMetting": todayMetting,
+            "upcoming_mettings": upcoming_mettings,
+            "Mettings": Mettings,
+        }
+        return io.emit("MettingsList", format)
+        // io.emit("MettingsList")
+
+    } catch (error) {
+        return res.status(500).json({ message: "server error", status: false })
+    }
+}
+
+module.exports = { AddMettings, fetchMettings, deleteMeeting }

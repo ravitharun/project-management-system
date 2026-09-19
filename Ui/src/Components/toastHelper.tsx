@@ -1,7 +1,7 @@
 
 import { CircleX, CircleCheck } from "lucide-react";
 
-import { toast, Toaster } from "sonner";
+import { toast, } from "sonner";
 import { checkuser } from "./LocalStorage";
 
 export const ShowToast = (
@@ -34,7 +34,6 @@ export const ShowToast = (
         </div>
     ));
 
-    <Toaster position="bottom-right" closeButton></Toaster>
 
 
     {

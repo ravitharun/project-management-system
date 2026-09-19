@@ -16,7 +16,7 @@ import { Toaster } from "sonner";
 import { instance } from "../services/apiservices";
 import { userid } from "./LocalStorage";
 import { timeFormatampm } from "../types/AmPm";
-import { socket } from "../Scokets/ScoketConfig";
+// import { socket } from "../Scokets/ScoketConfig";
 
 function CreateMeeting({ onClose }: any) {
     const { ClickedSpace }: any = useContext<any>(ClickedWorkSpace);
@@ -47,24 +47,7 @@ function CreateMeeting({ onClose }: any) {
 
     const [participantSearch, setParticipantSearch] = useState("");
 
-    // MettingsList
-    useEffect(() => {
 
-        const handelMettingsList = (data: any)=>{
-
-
-            console.log("web"+data)
-        }
-
-
-        socket.on("MettingsList", handelMettingsList)
-        return () => {
-
-            socket.off("MettingsList", handelMettingsList)
-
-
-        }
-    }, [])
 
 
 
@@ -144,7 +127,7 @@ function CreateMeeting({ onClose }: any) {
 
         try {
             setloading(true)
-            const response = await instance.post("/api/mettings/add", { mettingInfo: data })
+            const response = await instance.post("/api/mettings/add", { mettingInfo: data,"Pid":ClickedSpace._id })
             console.log(response, 'response');
             ShowToast(response?.data?.message, response?.status, response?.statusText)
             setTimeout(() => {
