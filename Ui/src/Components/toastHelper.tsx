@@ -34,7 +34,6 @@ export const ShowToast = (
         </div>
     ));
 
-    <Toaster position="bottom-right" closeButton></Toaster>
 
 
     {
