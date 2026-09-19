@@ -16,7 +16,7 @@ import { Toaster } from "sonner";
 import { instance } from "../services/apiservices";
 import { userid } from "./LocalStorage";
 import { timeFormatampm } from "../types/AmPm";
-import { socket } from "../Scokets/ScoketConfig";
+// import { socket } from "../Scokets/ScoketConfig";
 
 function CreateMeeting({ onClose }: any) {
     const { ClickedSpace }: any = useContext<any>(ClickedWorkSpace);
