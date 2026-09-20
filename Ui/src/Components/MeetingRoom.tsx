@@ -9,16 +9,16 @@ import {
     FiMoreVertical,
     FiCheckCircle,
     FiUserCheck,
-    FiX,
+
 } from "react-icons/fi";
 import CreateMeeting from "./CreateMeeting";
 import { instance } from "../services/apiservices";
 import { ShowToast } from "./toastHelper";
 import ClickedWorkSpace from "../Context/ClickedWorkSpace";
 import { FaRegCalendarTimes } from "react-icons/fa";
-import { HiOutlineCheckCircle, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
 import { socket } from "../Scokets/ScoketConfig";
 import { Toaster } from "sonner";
+import MeetingModal from "./MettingParticipation";
 
 function MeetingRoom() {
     const { ClickedSpace }: any = useContext(ClickedWorkSpace)
@@ -29,7 +29,7 @@ function MeetingRoom() {
     const [meetingHistory, setMeetingHistory] = useState<any[]>([]);
     const [__, setTodaysMeetings] = useState<any[]>([]);
     const [UpcomingMeetings, setUpcomingMeetings] = useState<any[]>([]);
-
+    const [Selectedtab, setSelectedtab] = useState<String>("Overview")
     const [Upcomingoption, setUpcomingoption] = useState("")
     const [poupMettinginfo, setpoupMettinginfo] = useState<any | null>(null)
 
@@ -337,113 +337,10 @@ function MeetingRoom() {
                 {/* <JoinMettings></JoinMettings> */}
             </div>
             {Upcomingoption && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
 
-                    {/* Popup */}
-                    <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl dark:border-gray-700 dark:bg-gray-900">
-
-                        {/* Header */}
-                        <div className="flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
-                            <div>
-                                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    {poupMettinginfo?.MettingTitle || "MettingTitle"}
-                                </h2>
-                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    Choose an action for this meeting
-                                </p>
-                            </div>
-
-                            <button className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800" onClick={() => setUpcomingoption("")}>
-                                <FiX className="text-xl" />
-                            </button>
-                        </div>
-
-                        {/* Meeting Info */}
-                        <div className="my-4 rounded-xl bg-gray-50 p-4 dark:bg-gray-800/50">
-                            <p className="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
-                                <FiCalendar className="text-base text-blue-500" />
-                                {poupMettinginfo?.MettingTitle || ""}
-                            </p>
-
-                            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                {poupMettinginfo?.MettingDate || ""} ·{" "}
-                                {poupMettinginfo?.MettingStartTime || ""}{" "}
-                                {poupMettinginfo?.MettingEndTime && `- ${poupMettinginfo.MettingEndTime}`}
-                            </p>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="space-y-2">
-
-                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
-
-
-                                onClick={() => handelmarkAscompleted(poupMettinginfo._id)}
-                            >
-                                <div className="rounded-lg bg-green-100 p-2 dark:bg-green-950/40">
-                                    <HiOutlineCheckCircle className="text-lg text-green-600" />
-                                </div>
-
-                                <div>
-                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                        Mark as Completed
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Mark this meeting as completed
-                                    </p>
-                                </div>
-                            </button>
-
-                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
-                                <div className="rounded-lg bg-blue-100 p-2 dark:bg-blue-950/40">
-                                    <HiOutlinePencil className="text-lg text-blue-600" />
-                                </div>
-
-                                <div>
-                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                        Edit Meeting
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Update meeting details
-                                    </p>
-                                </div>
-                            </button>
-
-                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800" onClick={() => handelDeleteMettings(poupMettinginfo._id)}>
-                                <div className="rounded-lg bg-red-100 p-2 dark:bg-red-950/40">
-                                    <HiOutlineTrash className="text-lg text-red-600" />
-                                </div>
-
-                                <div>
-                                    <p className="text-sm font-medium text-red-600">
-                                        Delete Meeting
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Permanently delete this meeting
-                                    </p>
-                                </div>
-                            </button>
-
-                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
-                                <div className="rounded-lg bg-gray-100 p-2 dark:bg-gray-800">
-                                    <FiX className="text-lg text-gray-600 dark:text-gray-300" />
-                                </div>
-
-                                <div>
-                                    <p className="text-sm font-medium text-gray-900 dark:text-white" onClick={() => setUpcomingoption("")}>
-                                        Close Meeting
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Close this action window
-                                    </p>
-                                </div>
-                            </button>
-
-                        </div>
-
-                    </div>
-                </div>
-            )}
+                <MeetingModal Selectedtab={Selectedtab} handelmarkAscompleted={handelmarkAscompleted} handelDeleteMettings={handelDeleteMettings} poupMettinginfo={poupMettinginfo} Upcomingoption={Upcomingoption} setSelectedtab={setSelectedtab} setUpcomingoption={() => setUpcomingoption("")} ></MeetingModal >
+            )
+            }
         </>
     );
 }
