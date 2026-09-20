@@ -83,7 +83,6 @@ function MeetingRoom() {
         const handelMettingsList = (data: any) => {
             const meetings = data;
 
-
             setMeetingHistory(meetings.Mettings);
             setTodaysMeetings(meetings.todayMetting);
             setUpcomingMeetings(meetings.upcoming_mettings);
@@ -123,6 +122,25 @@ function MeetingRoom() {
         } catch (error: any) {
 
             return ShowToast(error?.response.data.message, error?.response.data.status, 'Error')
+        }
+    }
+
+
+    const handelmarkAscompleted = async (id: any) => {
+
+
+        try {
+            if (!id) {
+                return ShowToast("something Went Wrong", 400, 'Error')
+            }
+
+            console.log({ id: id, Pid: ClickedSpace._id })
+            const response = await instance.put("/api/mettings/completed", { id: id, Pid: ClickedSpace._id })
+            return ShowToast(response?.data?.message, response?.status, "sucess")
+        } catch (error: any) {
+
+
+            return ShowToast(error?.response?.data?.message, error?.response?.status, "Error")
         }
     }
     return (
@@ -357,7 +375,11 @@ function MeetingRoom() {
                         {/* Actions */}
                         <div className="space-y-2">
 
-                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+                            <button className="flex w-full items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
+
+
+                                onClick={() => handelmarkAscompleted(poupMettinginfo._id)}
+                            >
                                 <div className="rounded-lg bg-green-100 p-2 dark:bg-green-950/40">
                                     <HiOutlineCheckCircle className="text-lg text-green-600" />
                                 </div>

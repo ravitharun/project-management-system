@@ -56,6 +56,7 @@ const fetchMettings = async (req, res) => {
         if (!Pid) {
             return res.status(400).json({ message: "Pid is Missing", status: false })
         }
+        console.log("hey")
         const FetchMettings = await MeetingSchema.find({ PID: Pid })
         const todayMetting = Todays_mettings(FetchMettings)
         const upcoming_mettings = Upcoming_mettings(FetchMettings)
@@ -103,4 +104,38 @@ const deleteMeeting = async (req, res) => {
     }
 }
 
-module.exports = { AddMettings, fetchMettings, deleteMeeting }
+
+const Meetingcompleted = async (req, res) => {
+
+    const io = getIO()
+    try {
+        const { id, Pid } = req.body
+        console.log(req.body, 'req.body')
+        if (!id || !Pid) {
+
+            return res.status(400).json({ message: "Some Thing Went Wrong.", status: false })
+        }
+
+
+        const Metting_info = await MeetingSchema.findByIdAndUpdate({ _id: id }, { MettingCompleted: true }, { returnDocument: "after" })
+
+        const response = await MeetingSchema.find({ PID: Pid })
+        const todayMetting = Todays_mettings(response)
+        const upcoming_mettings = Upcoming_mettings(response)
+        const Mettings = Mettings_(response)
+        const format = {
+
+            todayMetting,
+            upcoming_mettings,
+            Mettings,
+        }
+        io.emit("MettingsList", format)
+        console.log(format + "format")
+        return res.status(200).json({ message: "updated the metting Status", Updated_meetings: Metting_info, status: true })
+    } catch (error) {
+        console.log(error.message + "errorTharun")
+        return res.status(500).json({ message: "server error" + error.message, status: false })
+    }
+}
+
+module.exports = { AddMettings, fetchMettings, deleteMeeting, Meetingcompleted }
