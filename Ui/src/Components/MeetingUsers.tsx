@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     ArrowLeft,
     CalendarDays,
@@ -7,7 +7,7 @@ import {
     Users,
     Mail,
     BriefcaseBusiness,
-    CircleCheck,
+    
 } from "lucide-react";
 
 const dummyMeeting = {
@@ -108,8 +108,8 @@ const MeetingUsers = () => {
                                     <div className="mt-2 flex items-center gap-2 text-sm">
                                         <span
                                             className={`h-2 w-2 rounded-full ${selectedUser.status === "Online"
-                                                    ? "bg-green-500"
-                                                    : "bg-gray-500"
+                                                ? "bg-green-500"
+                                                : "bg-gray-500"
                                                 }`}
                                         />
 
@@ -266,8 +266,8 @@ const MeetingUsers = () => {
                             key={user.id}
                             onClick={() => setSelectedUser(user)}
                             className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-gray-800/70 ${index !== filteredUsers.length - 1
-                                    ? "border-b border-gray-800"
-                                    : ""
+                                ? "border-b border-gray-800"
+                                : ""
                                 }`}
                         >
 
@@ -281,8 +281,8 @@ const MeetingUsers = () => {
 
                                     <span
                                         className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-gray-900 ${user.status === "Online"
-                                                ? "bg-green-500"
-                                                : "bg-gray-600"
+                                            ? "bg-green-500"
+                                            : "bg-gray-600"
                                             }`}
                                     />
                                 </div>
