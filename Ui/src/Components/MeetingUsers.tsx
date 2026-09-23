@@ -7,7 +7,7 @@ import {
     Users,
     Mail,
     BriefcaseBusiness,
-    
+
 } from "lucide-react";
 
 const dummyMeeting = {
