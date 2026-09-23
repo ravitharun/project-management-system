@@ -1,12 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
     ControlBar,
     RoomAudioRenderer,
     useSession,
     SessionProvider,
-    useAgent,
-    BarVisualizer,
+
 
 } from '@livekit/components-react';
 import { TokenSource } from 'livekit-client';
