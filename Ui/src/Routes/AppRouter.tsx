@@ -23,6 +23,7 @@ import TaskLayout from "../Components/Task/TaskLayout";
 import { Toaster } from "react-hot-toast";
 import PageNotFound from "../Components/PageNotFound";
 import Settings from "../Components/Settings";
+import JoinMeet from "../Components/JoinMeet";
 
 // import Layout from "../Components/Layout";
 
@@ -186,6 +187,7 @@ function AppRouter() {
                     <Route path="/" element={<App />} />
                     <Route path="*" element={<PageNotFound />} />
                     <Route path="/Workspace" element={<TaskLayout />} />
+                    <Route path="/join-metting" element={<JoinMeet />} />
 
                     {/* <Route path="shared/ViewWorkspace/:id" element={<Shareview theme={theme} />} /> */}
                     <Route path="/shared/ViewWorkspace/:id" element={<Shareview />} />

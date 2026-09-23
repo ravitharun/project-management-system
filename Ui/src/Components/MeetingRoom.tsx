@@ -19,6 +19,8 @@ import { FaRegCalendarTimes } from "react-icons/fa";
 import { socket } from "../Scokets/ScoketConfig";
 import { Toaster } from "sonner";
 import MeetingModal from "./MettingParticipation";
+import JoinMeet from "./JoinMeet";
+import { Link } from "react-router-dom";
 
 function MeetingRoom() {
     const { ClickedSpace }: any = useContext(ClickedWorkSpace)
@@ -236,9 +238,11 @@ function MeetingRoom() {
                                     </div>
 
                                     <div className="flex items-center gap-2">
+                                        <Link to="/join-metting">
                                         <button className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 lg:flex-none">
                                             Join Meeting
                                         </button>
+                                        </Link>
 
                                         <button className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-white" onClick={() => handelUpcomingOption(up)}>
                                             <FiMoreVertical size={18} />
@@ -249,6 +253,7 @@ function MeetingRoom() {
                         ))}
                     </div>
                 </section>
+                <JoinMeet></JoinMeet>
 
                 {/* Meeting History */}
                 <section>
