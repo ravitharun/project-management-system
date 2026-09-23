@@ -197,24 +197,54 @@ function JoinMettings() {
                                         key={participant.name}
                                         className="flex items-center justify-between rounded-lg bg-gray-800 px-3 py-3 transition hover:bg-gray-700"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
+                                        {/* Avatar + Name */}
+                                        <div className="flex min-w-0 items-center gap-3">
+                                            {/* Avatar */}
+                                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
                                                 {participant.name.charAt(0).toUpperCase()}
                                             </div>
 
-                                            <div>
-                                                <p className="text-sm font-medium text-white">
-                                                    {participant.name}
-                                                </p>
-                                                <p className="text-xs text-gray-400">
-                                                    Participant
-                                                </p>
-                                            </div>
+                                            {/* Name */}
+                                            <p className="truncate text-sm font-medium text-white">
+                                                {participant.name}
+                                            </p>
                                         </div>
 
-                                        <button className="rounded-md p-1 text-gray-400 hover:bg-gray-600 hover:text-white">
-                                            <FiMoreVertical size={18} />
-                                        </button>
+                                        {/* Mic + Video + More */}
+                                        <div className="flex flex-shrink-0 items-center gap-2">
+                                            {/* Mic */}
+                                            {isMic ? (
+                                                <FiMicOff
+                                                    size={15}
+                                                    className="text-red-400"
+                                                />
+                                            ) : (
+                                                <FiMic
+                                                    size={15}
+                                                    className="text-gray-300"
+                                                />
+                                            )}
+
+                                            {/* Video */}
+                                            {participant.video ? (
+                                                <FiVideo
+                                                    size={15}
+                                                    className="text-gray-300"
+                                                />
+                                            ) : (
+                                                <FiVideoOff
+                                                    size={15}
+                                                    className="text-gray-500"
+                                                />
+                                            )}
+
+                                            {/* Three dots */}
+                                            <button
+                                                className="rounded-md p-1 text-gray-400 hover:bg-gray-600 hover:text-white"
+                                            >
+                                                <FiMoreVertical size={18} />
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
