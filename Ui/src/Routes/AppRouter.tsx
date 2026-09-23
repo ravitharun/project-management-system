@@ -20,7 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Shareview from "../Components/Shareview";
 import EmailBasedJoinWorkspace from "../Components/EmailApproval/EmailBasedJoinWorkspace";
 import TaskLayout from "../Components/Task/TaskLayout";
-import { Toaster } from "react-hot-toast";
+// import { Toaster } from "react-hot-toast";
 import PageNotFound from "../Components/PageNotFound";
 import Settings from "../Components/Settings";
 import JoinMeet from "../Components/JoinMeet";
