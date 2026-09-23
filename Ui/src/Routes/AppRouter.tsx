@@ -168,7 +168,7 @@ function AppRouter() {
     }, []);
     return (
         <>
-            <Toaster position="bottom-center" />
+
 
             <ToastContainer position="top-center"
                 autoClose={5000}
