@@ -4,25 +4,26 @@ import {
     ControlBar,
     LiveKitRoom,
     RoomAudioRenderer,
-    useSession,
+
 
 
 } from '@livekit/components-react';
-import { Room, TokenSource } from 'livekit-client';
+import { Room, } from 'livekit-client';
 import '@livekit/components-styles';
 import JoinMettings from './JoinMettings';
 import axios from 'axios';
 import { getuserInfo } from './LocalStorage';
 import { ShowToast } from './toastHelper';
 
-const tokenSource = TokenSource.developmentTokenServer('<your development token server id>');
+// const tokenSource = TokenSource.developmentTokenServer('<your development token server id>');
 
 export default function JoinMeet() {
 
     const [IsJoined, setIsJoined] = useState(false);
 
     const [room] = useState(() => new Room());
-
+    const [token, settoken] = useState("")
+    const [serverUrl, setserverUrl] = useState("")
     useEffect(() => {
         const connectRoom = async () => {
             try {
@@ -37,6 +38,10 @@ export default function JoinMeet() {
                 );
 
                 await room.connect(response.data.url, response.data.token);
+
+
+                setserverUrl(response.data.url)
+                settoken(response.data.token)
                 setIsJoined(true)
             } catch (error: any) {
                 ShowToast(error?.response?.data?.message, 400, 'error')
@@ -61,8 +66,10 @@ export default function JoinMeet() {
     return (
         <div data-lk-theme="default" style={{ height: '100vh' }}>
             <LiveKitRoom
+                serverUrl={serverUrl}
+                token={token}
                 room={room}
-                connect={false}
+                connect={true}
             >
                 {IsJoined ? (
                     <JoinMettings room={room} />
@@ -86,13 +93,7 @@ export default function JoinMeet() {
                         </div>
                     </div>
                 )}
-                <ControlBar
-                    controls={{
-                        microphone: true,
-                        camera: false,
-                        screenShare: false
-                    }}
-                />
+
 
                 <RoomAudioRenderer />
             </LiveKitRoom>
