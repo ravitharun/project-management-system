@@ -56,7 +56,9 @@ const RemoveTeamMembers = async (req, res) => {
             });
         }
 
-        const Ischeck = await IsProjectExits(ProjectID)
+        const Ischeck = await Workspace.findById({ _id: ProjectID })
+
+        console.log(Ischeck + "Ischeck")
 
         if (!Ischeck) {
 
@@ -82,7 +84,7 @@ const RemoveTeamMembers = async (req, res) => {
         return res.status(200).json({ message: "Team Member is  Removed", status: true, updatedWorkspace: updatedWorkspace })
 
     } catch (error) {
-        console.log(error.message, 'rr');
+        console.log(error.message, 'err');
 
         return res.status(500).json({ message: "server Error", status: false })
 

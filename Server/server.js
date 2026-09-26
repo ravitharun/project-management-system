@@ -39,6 +39,7 @@ const ErrorMiddleware = require("./Middleware/ErrorMiddleware");
 const AuthTokenVerification = require("./Middleware/AuthMiddleware");
 const Workspace = require("./Models/Workspace");
 const GithuPermessionRouter = require("./routes/GithubPermessionROuter");
+const Mettingrouter = require("./routes/Mettingrouter");
 
 // --------------------------------------------------
 // Environment
@@ -118,6 +119,7 @@ app.use("/api/Activity", Activity_Router);
 
 app.use("/api/projects", ProjectsVersionRoter);
 app.use("/api/automation", CreateAutomation_Router);
+app.use("/api/Metting", Mettingrouter);
 // --------------------------------------------------
 // Redis
 // --------------------------------------------------

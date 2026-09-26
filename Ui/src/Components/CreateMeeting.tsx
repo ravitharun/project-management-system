@@ -93,8 +93,6 @@ function CreateMeeting({ onClose }: any) {
             setSelectedParticipants((prev) => [...prev, user]);
         }
     };
-
-
     const filteredParticipants = MettingPartisipations.filter((tm: any) => {
         const user = tm?.id;
 
@@ -146,6 +144,8 @@ function CreateMeeting({ onClose }: any) {
             setloading(false)
         }
     }
+    console.log(selectedParticipants,'');
+    
     return (
         <>
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
@@ -280,11 +280,7 @@ function CreateMeeting({ onClose }: any) {
                                         value={MettingStartTime}
                                         onChange={(e) => {
                                             const selectedTime = e.target.value;
-                                            console.log(selectedTime, 'stime');
-                                            console.log(currentTime, 'curr');
-                                            console.log(MettingDate == date, 'MettingDate ==date ');
-                                            console.log(MettingDate, 'MettingDate  ');
-                                            console.log(date, 'date ');
+                                          
                                             if (MettingDate == date && selectedTime <= currentTime) {
                                                 return ShowToast(
                                                     `Meeting date and time cannot be in the past or equal to the current time (${currentTime}).`,
@@ -526,7 +522,7 @@ function CreateMeeting({ onClose }: any) {
                                                                             0
                                                                         )
                                                                         ?.toUpperCase() ||
-                                                                        "U"}
+                                                                        "U"}efef
                                                                 </div>
                                                             )}
 

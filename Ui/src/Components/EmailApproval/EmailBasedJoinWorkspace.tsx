@@ -120,9 +120,10 @@ function EmailBasedJoinWorkspace() {
                     );
                 }
 
+                console.log(response + "email")
 
             } catch (error: any) {
-
+                console.log(error + "email")
                 return ShowToast(
                     error?.response?.data?.message,
                     error?.response.status,
