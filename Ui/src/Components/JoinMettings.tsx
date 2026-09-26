@@ -17,6 +17,7 @@ import {
 import { useEffect, useState } from "react";
 
 import {
+    useTracks,
     VideoTrack,
 } from "@livekit/components-react";
 
@@ -58,7 +59,12 @@ function JoinMettings({ room }: { room: Room }) {
                 Track.Source.Camera
             )
         );
-
+    const cameraTracks = useTracks([
+        {
+            source: Track.Source.Camera,
+            withPlaceholder: true,
+        },
+    ]);
     /*
     |--------------------------------------------------------------------------
     | GET CURRENT CAMERA / MIC STATUS
@@ -470,7 +476,7 @@ function JoinMettings({ room }: { room: Room }) {
 
         setTimeout(() => {
 
-            window.location.href = "/";
+            window.location.href = "/workspace";
 
         }, 2000);
     };
@@ -511,6 +517,12 @@ function JoinMettings({ room }: { room: Room }) {
             filter_participants
         );
     };
+    const screenTracks = useTracks([
+        {
+            source: Track.Source.ScreenShare,
+            withPlaceholder: false,
+        },
+    ]);
 
     return (
 
@@ -587,159 +599,77 @@ function JoinMettings({ room }: { room: Room }) {
 
                         <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2">
 
-                            {/* ================================================= */}
-                            {/* YOUR CAMERA */}
-                            {/* ================================================= */}
+                            {cameraTracks.map((track) => {
+                                const isLocal = track.participant.isLocal;
 
-                            <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border border-gray-800 bg-[#111827]">
-
-                                {cameraPublication?.track ? (
-                                    <VideoTrack
-                                        trackRef={{
-                                            participant: room.localParticipant,
-                                            publication: cameraPublication,
-                                            source: Track.Source.Camera,
-                                        }}
-                                        className="h-full w-full object-cover"
-                                    />
-
-                                ) : (
-
-                                    <div className="flex flex-col items-center justify-center">
-
-                                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-700 text-xl font-semibold text-gray-200">
-
-                                            T
-
-                                        </div>
-
-                                        <p className="mt-3 text-sm text-gray-400">
-
-                                            Camera is off
-
-                                        </p>
-
-                                    </div>
-
-                                )}
-
-                                {/* YOUR NAME */}
-
-                                <div className="absolute bottom-3 left-3 flex items-center gap-2 rounded-lg bg-black/60 px-2.5 py-1.5 backdrop-blur-sm">
-
-                                    <span className="text-sm font-medium">
-                                        You
-                                    </span>
-
-                                    {isMic ? (
-
-                                        <FiMic
-                                            size={14}
-                                            className="text-gray-300"
-                                        />
-
-                                    ) : (
-
-                                        <FiMicOff
-                                            size={14}
-                                            className="text-red-400"
-                                        />
-
-                                    )}
-
-                                </div>
-
-                                {/* VIDEO STATUS */}
-
-                                <div className="absolute right-3 top-3 rounded-lg bg-black/60 p-2 text-gray-300">
-
-                                    {iscam ? (
-
-                                        <FiVideo size={15} />
-
-                                    ) : (
-
-                                        <FiVideoOff size={15} />
-
-                                    )}
-
-                                </div>
-
-                            </div>
-
-                            {/* ================================================= */}
-                            {/* OTHER PARTICIPANTS */}
-                            {/* ================================================= */}
-
-                            {participants.map(
-                                (participant) => (
-
+                                return (
                                     <div
-                                        key={participant.id}
-                                        className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border border-gray-800 bg-[#111827]"
+                                        key={track.participant.identity}
+                                        className="relative aspect-video overflow-hidden rounded-xl border border-gray-800 bg-[#111827]"
                                     >
+                                        {/* Video */}
+                                        <VideoTrack
+                                            trackRef={track}
+                                            className="h-full w-full object-cover"
+                                        />
 
-                                        {/* Avatar */}
-
-                                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-700 text-xl font-semibold text-gray-200">
-
-                                            {participant.name
-                                                .charAt(0)
-                                                .toUpperCase()}
-
-                                        </div>
-
-                                        {/* NAME */}
-
+                                        {/* Name + Mic */}
                                         <div className="absolute bottom-3 left-3 flex items-center gap-2 rounded-lg bg-black/60 px-2.5 py-1.5 backdrop-blur-sm">
-
-                                            <span className="text-sm font-medium">
-
-                                                {participant.name}
-
+                                            <span className="text-sm font-medium text-white">
+                                                {isLocal
+                                                    ? "You"
+                                                    : track.participant.name ||
+                                                    track.participant.identity}
                                             </span>
 
-                                            {participant.muted ? (
-
-                                                <FiMicOff
-                                                    size={14}
-                                                    className="text-red-400"
-                                                />
-
-                                            ) : (
-
+                                            {track.participant.isMicrophoneEnabled ? (
                                                 <FiMic
                                                     size={14}
                                                     className="text-gray-300"
                                                 />
-
-                                            )}
-
-                                        </div>
-
-                                        {/* VIDEO */}
-
-                                        <div className="absolute right-3 top-3 rounded-lg bg-black/60 p-2 text-gray-300">
-
-                                            {participant.video ? (
-
-                                                <FiVideo size={15} />
-
                                             ) : (
-
-                                                <FiVideoOff size={15} />
-
+                                                <FiMicOff
+                                                    size={14}
+                                                    className="text-red-400"
+                                                />
                                             )}
-
                                         </div>
 
+                                        {/* Camera Status */}
+                                        <div className="absolute right-3 top-3 rounded-lg bg-black/60 p-2 text-gray-300">
+                                            {track.participant.isCameraEnabled ? (
+                                                <FiVideo size={15} />
+                                            ) : (
+                                                <FiVideoOff size={15} />
+                                            )}
+                                        </div>
                                     </div>
+                                );
+                            })}
+                            {screenTracks.length > 0 && (
+                                <div className="mb-3 w-full">
+                                    {screenTracks.map((track) => (
+                                        <div
+                                            key={track.participant.identity}
+                                            className="relative aspect-video w-full overflow-hidden rounded-xl border border-gray-800 bg-black"
+                                        >
+                                            <VideoTrack
+                                                trackRef={track}
+                                                className="h-full w-full object-contain"
+                                            />
 
-                                )
+                                            <div className="absolute bottom-3 left-3 rounded-lg bg-black/60 px-3 py-1.5 backdrop-blur-sm">
+                                                <span className="text-sm font-medium text-white">
+                                                    {track.participant.isLocal
+                                                        ? "You are sharing your screen"
+                                                        : `${track.participant.name || track.participant.identity} is sharing`}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             )}
-
                         </div>
-
                         {/* ================================================= */}
                         {/* PARTICIPANTS PANEL */}
                         {/* ================================================= */}

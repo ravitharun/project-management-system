@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import {
-    ControlBar,
     LiveKitRoom,
     RoomAudioRenderer,
 
@@ -14,13 +13,14 @@ import JoinMettings from './JoinMettings';
 import axios from 'axios';
 import { getuserInfo } from './LocalStorage';
 import { ShowToast } from './toastHelper';
+import { useLocation } from 'react-router-dom';
 
 // const tokenSource = TokenSource.developmentTokenServer('<your development token server id>');
 
 export default function JoinMeet() {
 
     const [IsJoined, setIsJoined] = useState(false);
-
+    const Meetid = useLocation()
     const [room] = useState(() => new Room());
     const [token, settoken] = useState("")
     const [serverUrl, setserverUrl] = useState("")
@@ -34,6 +34,7 @@ export default function JoinMeet() {
                         roomName: `meeting-${meetuid}`,
                         participantName: JSON.parse(getuserInfo).Username,
                         userID: JSON.parse(getuserInfo)._id,
+                        meetingId: Meetid.state.Meetid
                     }
                 );
 

@@ -1,13 +1,14 @@
 
 const { AccessToken } = require("livekit-server-sdk")
-const MeetingSchema = require("../Models/Meeting")
+const MeetingSchema = require("../Models/Meeting");
+const MeetingParticipantSchema = require("../Models/MeetingParticipantSchema");
 const getLiveKitToken = async (req, res) => {
     try {
-        const { roomName, participantName, userID } = req.body;
+        const { roomName, participantName, userID, meetingId } = req.body;
         console.log(req.body, "req.bodyTharun");
-        if (!userID) {
+        if (!userID || !meetingId) {
 
-            return res.status(400).json({ message: "userID is missing.", status: false })
+            return res.status(400).json({ message: "userID or meetingId missing.", status: false })
         }
         const isAdd = await MeetingSchema.findOne({ TeamMembers: userID });
 
@@ -34,7 +35,19 @@ const getLiveKitToken = async (req, res) => {
         });
 
         const jwt = await token.toJwt();
+        const Save_Join_meet_user = await MeetingParticipantSchema({
+            meetingId: isAdd._id,
+            userId: userID
+        })
+        await Save_Join_meet_user.save()
+        const Attend_count = await MeetingSchema.findByIdAndUpdate({ _id: meetingId }, {
+            $addToSet: {
+                attendeeCount:
+                    [userID]
 
+            }
+        }, { "returnDocument": "after" })
+        // await Attend_count.save()
         res.status(200).json({
             token: jwt,
             url: process.env.LIVEKIT_URL,
