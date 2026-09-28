@@ -1,4 +1,5 @@
 export const getuserInfo: string | null | any = localStorage.getItem("userinfo")
+export const userid: string | null | any = JSON.parse(getuserInfo)?._id
 export const Token: string | null = localStorage.getItem("LoginToken")
 export const useremail: string | null | any = getuserInfo ? JSON.parse(getuserInfo).userEmail : null
 
@@ -16,10 +17,11 @@ export const Usertoekn = (navigate: any, toast: any) => {
 export const checkuser = () => {
     const tokenRemove: any = localStorage.removeItem("LoginToken")
     const Removeuserinfo: any = localStorage.removeItem("userinfo")
-    
-    if (!tokenRemove && !Removeuserinfo) {
 
-        return window.location.href == "/login"
+    if (!tokenRemove && !Removeuserinfo) {
+        alert("hi")
+
+        return window.location.href = "/login"
     }
 
     return window.location.href = "/"

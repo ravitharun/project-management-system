@@ -1,51 +1,421 @@
+// import { useContext, useEffect, useState } from "react";
+
+// import {
+//     FiUser,
+//     FiBell,
+//     FiMoon,
+//     FiShield,
+//     FiLink,
+//     FiBriefcase,
+//     FiChevronRight,
+//     FiMail,
+//     FiLock,
+//     FiGithub,
+//     FiCalendar,
+//     FiCheck,
+//     FiEdit3,
+//     FiSave,
+//     FiChevronDown,
+//     FiCheckCircle,
+//     FiX,
+// } from "react-icons/fi";
+
+// import bgthemeContext from "../Context/ThemeContext";
+// import Sidebar from "./Navbar";
+// import SideBarContext from "../Context/SideBard";
+// import { instance } from "../services/apiservices";
+// import { ShowToast } from "./toastHelper";
+// import { Toaster } from "sonner";
+// import { userid } from "./LocalStorage";
+
+
+// const Settings = () => {
+
+
+
+
+//     const [notifications, setNotifications] = useState({
+//         email: true,
+//         taskAssigned: true,
+//         mentions: true,
+//         comments: false,
+//     });
+//     let user: any = localStorage.getItem("userinfo")
+
+
+
+
+
+//     /* =========================
+//        ACCOUNT
+//     ========================= */
+//     <Account isDark={isDark}></Account>
+
+
+
+//     // /* =========================
+//     //    NOTIFICATIONS
+//     // ========================= */
+
+//     // const renderNotifications = () => (
+//     //     <>
+
+//     //       
+//     //     </>
+//     // );
+
+//     // /* =========================
+//     //    APPEARANCE
+//     // ========================= */
+
+//     // const renderAppearance = () => (
+
+
+//     // );
+
+
+//     /* =========================
+//        SECURITY
+//     ========================= */
+
+
+//     /* =========================
+//        INTEGRATIONS
+//     ========================= */
+//     // function GoogleCalendarManage() {
+//     //     return (
+//     //         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+//     //             <div
+//     //                 className={`w-full max-w-lg overflow-hidden rounded-2xl border shadow-2xl ${isDark
+//     //                     ? "border-gray-800 bg-[#111827] text-white"
+//     //                     : "border-gray-200 bg-white text-gray-900"
+//     //                     }`}
+//     //             >
+//     //                 {/* Header */}
+//     //                 <div
+//     //                     className={`flex items-center justify-between border-b px-5 py-4 ${isDark ? "border-gray-800" : "border-gray-200"
+//     //                         }`}
+//     //                 >
+//     //                     <div className="flex items-center gap-3">
+//     //                         <div
+//     //                             className={`flex h-10 w-10 items-center justify-center rounded-lg ${isDark
+//     //                                 ? "bg-blue-500/10 text-blue-400"
+//     //                                 : "bg-blue-50 text-blue-600"
+//     //                                 }`}
+//     //                         >
+//     //                             <FiCalendar size={20} />
+//     //                         </div>
+
+//     //                         <div>
+//     //                             <h2 className="text-base font-semibold">
+//     //                                 Google Calendar
+//     //                             </h2>
+
+//     //                             <p
+//     //                                 className={`text-xs ${isDark
+//     //                                     ? "text-gray-400"
+//     //                                     : "text-gray-500"
+//     //                                     }`}
+//     //                             >
+//     //                                 Manage your calendar connection
+//     //                             </p>
+//     //                         </div>
+//     //                     </div>
+
+//     //                     <button
+//     //                         // onClick={onClose}
+//     //                         className={`rounded-lg p-2 transition ${isDark
+//     //                             ? "text-gray-400 hover:bg-gray-800 hover:text-white"
+//     //                             : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+//     //                             }`}
+//     //                     >
+//     //                         <FiX size={19} />
+//     //                     </button>
+//     //                 </div>
+
+//     //                 {/* Content */}
+//     //                 <div className="space-y-5 p-5">
+//     //                     {/* Connected Status */}
+//     //                     <div
+//     //                         className={`flex items-center gap-3 rounded-xl border p-4 ${isDark
+//     //                             ? "border-green-500/20 bg-green-500/10"
+//     //                             : "border-green-200 bg-green-50"
+//     //                             }`}
+//     //                     >
+//     //                         <FiCheckCircle
+//     //                             className="shrink-0 text-green-500"
+//     //                             size={20}
+//     //                         />
+
+//     //                         <div>
+//     //                             <p className="text-sm font-medium">
+//     //                                 Connected
+//     //                             </p>
+
+//     //                             <p
+//     //                                 className={`mt-0.5 text-xs ${isDark
+//     //                                     ? "text-gray-400"
+//     //                                     : "text-gray-500"
+//     //                                     }`}
+//     //                             >
+//     //                                 Your Google Calendar is connected.
+//     //                             </p>
+//     //                         </div>
+//     //                     </div>
+
+//     //                     {/* Connected Account */}
+//     //                     <div>
+//     //                         <label
+//     //                             className={`mb-2 block text-sm font-medium ${isDark ? "text-gray-200" : "text-gray-700"
+//     //                                 }`}
+//     //                         >
+//     //                             Connected Account
+//     //                         </label>
+
+//     //                         <div
+//     //                             className={`rounded-lg border px-3 py-2.5 text-sm ${isDark
+//     //                                 ? "border-gray-700 bg-gray-900 text-gray-300"
+//     //                                 : "border-gray-200 bg-gray-50 text-gray-700"
+//     //                                 }`}
+//     //                         >
+//     //                             ravi@gmail.com
+//     //                         </div>
+//     //                     </div>
+
+//     //                     {/* Calendar */}
+//     //                     <div>
+//     //                         <label
+//     //                             className={`mb-2 block text-sm font-medium ${isDark ? "text-gray-200" : "text-gray-700"
+//     //                                 }`}
+//     //                         >
+//     //                             Calendar
+//     //                         </label>
+
+//     //                         <button
+//     //                             type="button"
+//     //                             className={`flex w-full items-center justify-between rounded-lg border px-3 py-2.5 text-sm transition ${isDark
+//     //                                 ? "border-gray-700 bg-gray-900 text-gray-300 hover:border-gray-600"
+//     //                                 : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+//     //                                 }`}
+//     //                         >
+//     //                             <span>My Calendar</span>
+//     //                             <FiChevronDown size={17} />
+//     //                         </button>
+//     //                     </div>
+
+//     //                     {/* Sync */}
+//     //                     <div
+//     //                         className={`flex items-center justify-between rounded-xl border p-4 ${isDark
+//     //                             ? "border-gray-800 bg-gray-900/50"
+//     //                             : "border-gray-200 bg-gray-50"
+//     //                             }`}
+//     //                     >
+//     //                         <div className="pr-4">
+//     //                             <p className="text-sm font-medium">
+//     //                                 Sync project events
+//     //                             </p>
+
+//     //                             <p
+//     //                                 className={`mt-1 text-xs leading-5 ${isDark
+//     //                                     ? "text-gray-400"
+//     //                                     : "text-gray-500"
+//     //                                     }`}
+//     //                             >
+//     //                                 Automatically sync project events with your
+//     //                                 Google Calendar.
+//     //                             </p>
+//     //                         </div>
+
+//     //                         {/* Toggle */}
+//     //                         <button
+//     //                             type="button"
+//     //                             className="relative flex h-6 w-11 shrink-0 items-center rounded-full bg-blue-600"
+//     //                         >
+//     //                             <span className="absolute right-0.5 h-5 w-5 rounded-full bg-white shadow-sm" />
+//     //                         </button>
+//     //                     </div>
+//     //                 </div>
+
+//     //                 {/* Footer */}
+//     //                 <div
+//     //                     className={`flex flex-col-reverse gap-2 border-t px-5 py-4 sm:flex-row sm:justify-end ${isDark ? "border-gray-800" : "border-gray-200"
+//     //                         }`}
+//     //                 >
+//     //                     <button
+//     //                         type="button"
+//     //                         className={`rounded-lg px-4 py-2.5 text-sm font-medium transition ${isDark
+//     //                             ? "text-red-400 hover:bg-red-500/10"
+//     //                             : "text-red-600 hover:bg-red-50"
+//     //                             }`}
+//     //                     >
+//     //                         Disconnect
+//     //                     </button>
+
+//     //                     <button
+//     //                         type="button"
+//     //                         // onClick={onClose}
+//     //                         className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+//     //                     >
+//     //                         Done
+//     //                     </button>
+//     //                 </div>
+//     //             </div>
+//     //         </div>
+//     //     );
+//     // }
+
+
+
+
+
+//     /* =========================
+//        WORKSPACE
+//     ========================= */
+
+//     const renderWorkspace = () => (
+//         <div className="space-y-5 lg:space-y-6">
+
+//             <div>
+//                 <h2
+//                     className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
+//                         }`}
+//                 >
+//                     Workspace
+//                 </h2>
+
+//                 <p
+//                     className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
+//                         }`}
+//                 >
+//                     Manage your workspace information.
+//                 </p>
+//             </div>
+
+//             <div
+//                 className={`rounded-xl border p-4 sm:p-5 lg:p-6 ${isDark
+//                     ? "border-gray-800 bg-[#111827]"
+//                     : "border-gray-200 bg-white"
+//                     }`}
+//             >
+
+//                 <label
+//                     className={`mb-2 block text-sm font-medium ${isDark ? "text-gray-300" : "text-gray-700"
+//                         }`}
+//                 >
+//                     Workspace Name
+//                 </label>
+
+//                 <input
+//                     type="text"
+//                     defaultValue="My Workspace"
+//                     className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-blue-500 ${isDark
+//                         ? "border-gray-700 bg-[#1e293b] text-white"
+//                         : "border-gray-300 bg-white text-gray-900"
+//                         }`}
+//                 />
+
+//                 <button className="mt-5 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700">
+//                     <FiSave size={16} />
+//                     Save Workspace
+//                 </button>
+
+//             </div>
+//         </div>
+//     );
+
+//     /* =========================
+//        CONTENT SWITCH
+//     ========================= */
+
+
+
+
+
+//    
+// };
+
+
+// /* =====================================================
+//    NOTIFICATION ITEM
+// ===================================================== */
+// 
+
+
+// /* =====================================================
+//    TOGGLE
+// ===================================================== */
+
+// const Toggle = ({
+//     enabled,
+//     onChange,
+//     isDark,
+// }: any) => {
+
+//     return (
+//         <button
+//             type="button"
+//             onClick={onChange}
+//             aria-label="Toggle setting"
+//             className={`relative flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${enabled
+//                 ? "bg-blue-600"
+//                 : isDark
+//                     ? "bg-gray-700"
+//                     : "bg-gray-300"
+//                 }`}
+//         >
+//             <span
+//                 className={`absolute h-5 w-5 rounded-full bg-white shadow-sm transition-all ${enabled
+//                     ? "right-0.5"
+//                     : "left-0.5"
+//                     }`}
+//             />
+//         </button>
+//     );
+// };
+
+
+// /* =====================================================
+//    SECURITY ITEM
+// ===================================================== */
+
+
+
+// /* =====================================================
+//    THEME CARD
+// ===================================================== */
+
+
+
+// /* =====================================================
+//    INTEGRATION CARD
+// ===================================================== */
+
+
+
+// export default Settings;
+
+
+
 import { useContext, useState } from "react";
-
-import {
-    FiUser,
-    FiBell,
-    FiMoon,
-    FiShield,
-    FiLink,
-    FiBriefcase,
-    FiChevronRight,
-    FiMail,
-    FiLock,
-    FiGithub,
-    FiCalendar,
-    FiCheck,
-    FiEdit3,
-    FiSave,
-} from "react-icons/fi";
-
-import bgthemeContext from "../Context/ThemeContext";
-import Sidebar from "./Navbar";
 import SideBarContext from "../Context/SideBard";
-import { instance } from "../services/apiservices";
-import { ShowToast } from "./toastHelper";
-import { Toaster } from "sonner";
+import bgthemeContext from "../Context/ThemeContext";
 
-const Settings = () => {
+import Account from "./ApplicationSettings/Account";
+import { FiBell, FiLink, FiMoon, FiShield, FiUser } from "react-icons/fi";
+import Sidebar from "./Navbar";
+import RenderNotifications from "./ApplicationSettings/RenderNotifications";
+import RenderAppearance from "./ApplicationSettings/RenderAppearance";
+import RenderSecurity from "./ApplicationSettings/RenderSecurity";
+import RenderIntegrations from "./ApplicationSettings/RenderIntegrations";
+
+
+function Settings() {
+
+
     const { theme }: any = useContext(bgthemeContext);
     const { sidebaropen }: any = useContext(SideBarContext);
-
-    const isDark = theme === "Dark";
-
     const [activeTab, setActiveTab] = useState("Account");
-
-    const [notifications, setNotifications] = useState({
-        email: true,
-        taskAssigned: true,
-        mentions: true,
-        comments: false,
-    });
-    let user: any = localStorage.getItem("userinfo")
-    console.log(user, 'user');
-
-    const [profile, setProfile] = useState({
-        name: JSON.parse(user).Username,
-        email: JSON.parse(user).userEmail,
-    });
-
+    const isDark = theme === "Dark";
     const settings = [
         {
             name: "Account",
@@ -72,583 +442,47 @@ const Settings = () => {
             description: "Connect external applications and services",
             icon: <FiLink />,
         },
-        {
-            name: "Workspace",
-            description: "Manage your workspace information",
-            icon: <FiBriefcase />,
-        },
+        // {
+        //     name: "Workspace",
+        //     description: "Manage your workspace information",
+        //     icon: <FiBriefcase />,
+        // },
     ];
-
-
-
-
-    // HandelAccount
-
-
-    const HandelAccount = async () => {
-
-
-        try {
-
-            const response = await instance.put("/api/setting", { profile: profile })
-            console.log(response)
-
-            return ShowToast(response?.data?.message, response?.status, "Sucess")
-        } catch (error: any) {
-
-            return ShowToast(error?.response?.data?.message, error?.response?.status, "Error")
-        }
-    }
-
-
-
-    /* =========================
-       ACCOUNT
-    ========================= */
-
-    const renderAccount = () => (
-        <>
-
-
-            <div className="space-y-5 lg:space-y-6">
-
-                <div>
-                    <h2
-                        className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
-                            }`}
-                    >
-                        Account
-                    </h2>
-
-                    <p
-                        className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                            }`}
-                    >
-                        Manage your personal account information.
-                    </p>
-                </div>
-
-                <div
-                    className={`rounded-xl border p-4 sm:p-5 lg:p-6 ${isDark
-                        ? "border-gray-800 bg-[#111827]"
-                        : "border-gray-200 bg-white"
-                        }`}
-                >
-
-                    <div className="mb-6 flex items-center justify-between">
-
-                        <div>
-                            <h3
-                                className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"
-                                    }`}
-                            >
-                                Profile Information
-                            </h3>
-
-                            <p
-                                className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                                    }`}
-                            >
-                                Update your account details.
-                            </p>
-                        </div>
-
-                        <div
-                            className={`flex h-11 w-11 items-center justify-center rounded-full ${isDark
-                                ? "bg-blue-500/10 text-blue-400"
-                                : "bg-blue-50 text-blue-600"
-                                }`}
-                        >
-                            <FiUser size={21} />
-                        </div>
-
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-
-                        <div>
-                            <label
-                                className={`mb-2 block text-sm font-medium ${isDark
-                                    ? "text-gray-300"
-                                    : "text-gray-700"
-                                    }`}
-                            >
-                                Full Name
-                            </label>
-
-                            <input
-                                type="text"
-                                value={profile.name}
-                                onChange={(e) =>
-                                    setProfile({
-                                        ...profile,
-                                        name: e.target.value,
-                                    })
-                                }
-                                className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 ${isDark
-                                    ? "border-gray-700 bg-[#1e293b] text-white"
-                                    : "border-gray-300 bg-white text-gray-900"
-                                    }`}
-                            />
-                        </div>
-
-                        <div>
-                            <label
-                                className={`mb-2 block text-sm font-medium ${isDark
-                                    ? "text-gray-300"
-                                    : "text-gray-700"
-                                    }`}
-                            >
-                                Email
-                            </label>
-
-                            <input
-                                type="email"
-                                value={profile.email}
-                                readOnly
-
-                                onChange={(e) =>
-                                    setProfile({
-                                        ...profile,
-                                        email: e.target.value,
-                                    })
-                                }
-                                className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 ${isDark
-                                    ? "border-gray-700 bg-[#1e293b] text-white"
-                                    : "border-gray-300 bg-white text-gray-900"
-                                    } hover:cursor-not-allowed`
-
-                                }
-                                disabled
-                            />
-                        </div>
-
-                    </div>
-
-                    <button className="mt-5 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
-
-                        onClick={HandelAccount}
-                    >
-                        <FiSave size={16} />
-                        Save Changes
-                    </button>
-
-                </div>
-                <Toaster></Toaster>
-            </div></>
-
-    );
-
-    /* =========================
-       NOTIFICATIONS
-    ========================= */
-
-    const renderNotifications = () => (
-        <>
-
-            <Toaster   ></Toaster>
-            <div className="space-y-5 lg:space-y-6">
-                {/* Header */}
-                <div>
-                    <h2
-                        className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
-                            }`}
-                    >
-                        Notifications
-                    </h2>
-
-                    <p
-                        className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                            }`}
-                    >
-                        Choose which notifications you want to receive.
-                    </p>
-                </div>
-
-                {/* Notification Card */}
-                <div
-                    className={`divide-y overflow-hidden rounded-xl border ${isDark
-                        ? "divide-gray-800 border-gray-800 bg-[#111827]"
-                        : "divide-gray-200 border-gray-200 bg-white"
-                        }`}
-                >
-                    <NotificationItem
-                        icon={<FiMail />}
-                        title="Email Notifications"
-                        description="Receive important updates through email."
-                        enabled={notifications.email}
-                        onChange={() =>
-                            setNotifications({
-                                ...notifications,
-                                email: !notifications.email,
-                            })
-                        }
-                        isDark={isDark}
-                    />
-
-                    <NotificationItem
-                        icon={<FiUser />}
-                        title="Task Assignments"
-                        description="Notify me when a task is assigned to me."
-                        enabled={notifications.taskAssigned}
-                        onChange={() =>
-                            setNotifications({
-                                ...notifications,
-                                taskAssigned: !notifications.taskAssigned,
-                            })
-                        }
-                        isDark={isDark}
-                    />
-
-                    <NotificationItem
-                        icon={<FiBell />}
-                        title="Mentions"
-                        description="Notify me when someone mentions me."
-                        enabled={notifications.mentions}
-                        onChange={() =>
-                            setNotifications({
-                                ...notifications,
-                                mentions: !notifications.mentions,
-                            })
-                        }
-                        isDark={isDark}
-                    />
-
-                    <NotificationItem
-                        icon={<FiEdit3 />}
-                        title="Comments"
-                        description="Notify me about comments on my tasks."
-                        enabled={notifications.comments}
-                        onChange={() =>
-                            setNotifications({
-                                ...notifications,
-                                comments: !notifications.comments,
-                            })
-                        }
-                        isDark={isDark}
-                    />
-                </div>
-
-                {/* Save Button */}
-                <div className="flex justify-end">
-                    <button
-                        type="button"
-                        className="w-full rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 sm:w-auto"
-                    >
-                        Save Changes
-                    </button>
-                </div>
-            </div>
-        </>
-    );
-
-    /* =========================
-       APPEARANCE
-    ========================= */
-
-    const renderAppearance = () => (
-        <>
-
-            <div className="space-y-5 lg:space-y-6">
-
-                <div>
-                    <h2
-                        className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
-                            }`}
-                    >
-                        Appearance
-                    </h2>
-
-                    <p
-                        className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                            }`}
-                    >
-                        Customize how the application looks.
-                    </p>
-                </div>
-
-                <div
-                    className={`rounded-xl border p-4 sm:p-5 lg:p-6 ${isDark
-                        ? "border-gray-800 bg-[#111827]"
-                        : "border-gray-200 bg-white"
-                        }`}
-                >
-
-                    <h3
-                        className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"
-                            }`}
-                    >
-                        Theme
-                    </h3>
-
-                    <p
-                        className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                            }`}
-                    >
-                        Your current application theme.
-                    </p>
-
-                    <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-
-                        <ThemeCard
-                            title="Light"
-                            description="Clean and bright interface"
-                            selected={!isDark}
-                            isDark={isDark}
-                        />
-
-                        <ThemeCard
-                            title="Dark"
-                            description="Easy on the eyes"
-                            selected={isDark}
-                            isDark={isDark}
-                        />
-
-                    </div>
-                </div>
-            </div>
-        </>
-
-    );
-
-
-    /* =========================
-       SECURITY
-    ========================= */
-
-    const renderSecurity = () => (
-        <div className="space-y-5 lg:space-y-6">
-
-            <div>
-                <h2
-                    className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
-                        }`}
-                >
-                    Security
-                </h2>
-
-                <p
-                    className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                        }`}
-                >
-                    Protect your account and manage security.
-                </p>
-            </div>
-
-            <div
-                className={`rounded-xl border ${isDark
-                    ? "border-gray-800 bg-[#111827]"
-                    : "border-gray-200 bg-white"
-                    }`}
-            >
-
-                <SecurityItem
-                    icon={<FiLock />}
-                    title="Change Password"
-                    description="Update your account password."
-                    isDark={isDark}
-                    action={<FiChevronRight />}
-                />
-
-                <SecurityItem
-                    icon={<FiShield />}
-                    title="Two-Factor Authentication"
-                    description="Add an extra layer of security to your account."
-                    isDark={isDark}
-                    action={
-                        <span
-                            className={`rounded-full px-3 py-1 text-xs font-medium ${isDark
-                                ? "bg-gray-800 text-gray-400"
-                                : "bg-gray-100 text-gray-600"
-                                }`}
-                        >
-                            Disabled
-                        </span>
-                    }
-                />
-
-                <SecurityItem
-                    icon={<FiUser />}
-                    title="Active Sessions"
-                    description="View devices currently signed into your account."
-                    isDark={isDark}
-                    action={<FiChevronRight />}
-                />
-
-            </div>
-        </div>
-    );
-
-    /* =========================
-       INTEGRATIONS
-    ========================= */
-
-    const renderIntegrations = () => (
-        <div className="space-y-5 lg:space-y-6">
-
-            <div>
-                <h2
-                    className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
-                        }`}
-                >
-                    Integrations
-                </h2>
-
-                <p
-                    className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                        }`}
-                >
-                    Connect your favorite tools with your workspace.
-                </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-
-                <IntegrationCard
-                    icon={<FiGithub />}
-                    title="GitHub"
-                    description="Connect repositories, issues and pull requests."
-                    connected={false}
-                    isDark={isDark}
-                />
-
-                <IntegrationCard
-                    icon={<FiCalendar />}
-                    title="Google Calendar"
-                    description="Sync project events and deadlines."
-                    connected={true}
-                    isDark={isDark}
-                />
-
-            </div>
-        </div>
-    );
-
-    /* =========================
-       WORKSPACE
-    ========================= */
-
-    const renderWorkspace = () => (
-        <div className="space-y-5 lg:space-y-6">
-
-            <div>
-                <h2
-                    className={`text-xl font-semibold lg:text-2xl ${isDark ? "text-white" : "text-gray-900"
-                        }`}
-                >
-                    Workspace
-                </h2>
-
-                <p
-                    className={`mt-1 text-sm ${isDark ? "text-gray-400" : "text-gray-500"
-                        }`}
-                >
-                    Manage your workspace information.
-                </p>
-            </div>
-
-            <div
-                className={`rounded-xl border p-4 sm:p-5 lg:p-6 ${isDark
-                    ? "border-gray-800 bg-[#111827]"
-                    : "border-gray-200 bg-white"
-                    }`}
-            >
-
-                <label
-                    className={`mb-2 block text-sm font-medium ${isDark ? "text-gray-300" : "text-gray-700"
-                        }`}
-                >
-                    Workspace Name
-                </label>
-
-                <input
-                    type="text"
-                    defaultValue="My Workspace"
-                    className={`w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-blue-500 ${isDark
-                        ? "border-gray-700 bg-[#1e293b] text-white"
-                        : "border-gray-300 bg-white text-gray-900"
-                        }`}
-                />
-
-                <button className="mt-5 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700">
-                    <FiSave size={16} />
-                    Save Workspace
-                </button>
-
-            </div>
-        </div>
-    );
-
-    /* =========================
-       CONTENT SWITCH
-    ========================= */
-
-    const renderContent = () => {
-        switch (activeTab) {
-            case "Account":
-                return renderAccount();
-
-            case "Notifications":
-                return renderNotifications();
-
-            case "Appearance":
-                return renderAppearance();
-
-            case "Security":
-                return renderSecurity();
-
-            case "Integrations":
-                return renderIntegrations();
-
-            case "Workspace":
-                return renderWorkspace();
-
-            default:
-                return renderAccount();
-        }
-    };
-
-    /*
-     * SIDEBAR WIDTH
-     *
-     * Open   -> 276px
-     * Closed -> 80px
-     *
-     * Change 80px if your collapsed Sidebar
-     * has a different width.
-     */
-
-    const mainMargin = sidebaropen
+    const mainMargin: any = sidebaropen
         ? "lg:ml-[276px]"
         : "lg:ml-[80px]";
-
     return (
-        <div
-            className={`min-h-screen ${isDark
-                ? "bg-[#020617]"
-                : "bg-gray-50"
-                }`}
-        >
 
-            {/* SIDEBAR */}
 
-            <Sidebar />
 
-            {/* MAIN CONTENT */}
+        <>
+            <div
+                className={`min-h-screen ${isDark
+                    ? "bg-[#020617]"
+                    : "bg-gray-50"
+                    }`}
+            >
 
-            <main
-                className={`
+                {/* SIDEBAR */}
+                <Sidebar></Sidebar>
+
+                {/* <Sidebar /> */}
+
+                {/* MAIN CONTENT */}
+
+                <main
+                    className={`
                     min-h-screen
                     pt-[80px]
-                    ${mainMargin}
+                    // ${mainMargin}
                     transition-all
                     duration-300
                     ease-in-out
                 `}
-            >
+                >
 
-                <div
-                    className="
+                    <div
+                        className="
                         mx-auto
                         w-full
                         max-w-[1400px]
@@ -661,35 +495,35 @@ const Settings = () => {
                         lg:py-8
                         xl:px-10
                     "
-                >
+                    >
 
-                    {/* HEADER */}
+                        {/* HEADER */}
 
-                    <div className="mb-6 lg:mb-8">
+                        <div className="mb-6 lg:mb-8">
 
-                        <h1
-                            className={`text-2xl font-bold sm:text-3xl ${isDark
-                                ? "text-white"
-                                : "text-gray-900"
-                                }`}
-                        >
-                            Settings
-                        </h1>
+                            <h1
+                                className={`text-2xl font-bold sm:text-3xl ${isDark
+                                    ? "text-white"
+                                    : "text-gray-900"
+                                    }`}
+                            >
+                                Settings
+                            </h1>
 
-                        <p
-                            className={`mt-1 text-sm sm:text-base ${isDark
-                                ? "text-gray-400"
-                                : "text-gray-500"
-                                }`}
-                        >
-                            Manage your account and application preferences.
-                        </p>
+                            <p
+                                className={`mt-1 text-sm sm:text-base ${isDark
+                                    ? "text-gray-400"
+                                    : "text-gray-500"
+                                    }`}
+                            >
+                                Manage your account and application preferences.
+                            </p>
 
-                    </div>
+                        </div>
 
-                    {/* SETTINGS LAYOUT */}
-                    <div
-                        className="
+                        {/* SETTINGS LAYOUT */}
+                        <div
+                            className="
         grid
         min-w-0
         grid-cols-1
@@ -698,34 +532,34 @@ const Settings = () => {
         lg:gap-6
         xl:grid-cols-[260px_minmax(0,1fr)]
     "
-                    >
-                        {/* SETTINGS MENU */}
+                        >
+                            {/* SETTINGS MENU */}
 
-                        <aside
-                            className={`
+                            <aside
+                                className={`
             min-w-0
             h-fit
             rounded-xl
             border
             p-2
             ${isDark
-                                    ? "border-gray-800 bg-[#111827]"
-                                    : "border-gray-200 bg-white"
-                                }
+                                        ? "border-gray-800 bg-[#111827]"
+                                        : "border-gray-200 bg-white"
+                                    }
         `}
-                        >
-                            <div
-                                className="
+                            >
+                                <div
+                                    className="
                 flex
                 flex-col
                 gap-1
             "
-                            >
-                                {settings.map((item) => (
-                                    <button
-                                        key={item.name}
-                                        onClick={() => setActiveTab(item.name)}
-                                        className={`
+                                >
+                                    {settings.map((item) => (
+                                        <button
+                                            key={item.name}
+                                            onClick={() => setActiveTab(item.name)}
+                                            className={`
                         flex
                         w-full
                         min-w-0
@@ -738,329 +572,73 @@ const Settings = () => {
                         transition
 
                         ${activeTab === item.name
-                                                ? isDark
-                                                    ? "bg-blue-500/10 text-blue-400"
-                                                    : "bg-blue-50 text-blue-600"
-                                                : isDark
-                                                    ? "text-gray-400 hover:bg-gray-800 hover:text-white"
-                                                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                                            }
+                                                    ? isDark
+                                                        ? "bg-blue-500/10 text-blue-400"
+                                                        : "bg-blue-50 text-blue-600"
+                                                    : isDark
+                                                        ? "text-gray-400 hover:bg-gray-800 hover:text-white"
+                                                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                                }
                     `}
-                                    >
-                                        {/* ICON */}
+                                        >
+                                            {/* ICON */}
 
-                                        <span className="mt-0.5 shrink-0 text-lg">
-                                            {item.icon}
-                                        </span>
-
-                                        {/* TEXT */}
-
-                                        <span className="min-w-0 flex-1">
-                                            <span className="block truncate text-sm font-medium">
-                                                {item.name}
+                                            <span className="mt-0.5 shrink-0 text-lg">
+                                                {item.icon}
                                             </span>
 
-                                            <span
-                                                className={`
+                                            {/* TEXT */}
+
+                                            <span className="min-w-0 flex-1">
+                                                <span className="block truncate text-sm font-medium">
+                                                    {item.name}
+                                                </span>
+
+                                                <span
+                                                    className={`
                                 mt-1
                                 block
                                 break-words
                                 text-xs
                                 leading-4
                                 ${activeTab === item.name
-                                                        ? isDark
-                                                            ? "text-blue-400/70"
-                                                            : "text-blue-600/70"
-                                                        : "text-gray-400"
-                                                    }
+                                                            ? isDark
+                                                                ? "text-blue-400/70"
+                                                                : "text-blue-600/70"
+                                                            : "text-gray-400"
+                                                        }
                             `}
-                                            >
-                                                {item.description}
+                                                >
+                                                    {item.description}
+                                                </span>
                                             </span>
-                                        </span>
-                                    </button>
-                                ))}
-                            </div>
-                        </aside>
+                                        </button>
+                                    ))}
+                                </div>
+                            </aside>
 
-                        {/* SETTINGS CONTENT */}
+                            {/* SETTINGS CONTENT */}
 
-                        <section className="min-w-0">
-                            {renderContent()}
-                        </section>
+                            <section className="min-w-0">
+                                {activeTab == "Account" && <Account isDark={isDark} />}
+                                {activeTab == "Notifications" && <RenderNotifications isDark={isDark} />}
+                                {activeTab == "Appearance" && <RenderAppearance isDark={isDark} />}
+                                {activeTab == "Security" && <RenderSecurity isDark={isDark} />}
+                                {activeTab == "Integrations" && <RenderIntegrations isDark={isDark} />}
+
+                            </section>
+                        </div>
+
                     </div>
 
-                </div>
-
-            </main>
-
-        </div>
-    );
-};
-
-
-/* =====================================================
-   NOTIFICATION ITEM
-===================================================== */
-const NotificationItem = ({
-    icon,
-    title,
-    description,
-    enabled,
-    onChange,
-    isDark,
-}: any) => {
-    return (
-        <div className="flex w-full items-start gap-3 p-4 sm:items-center sm:gap-4 sm:p-5">
-
-            {/* Left content */}
-            <div className="flex min-w-0 flex-1 items-start gap-3 sm:items-center sm:gap-4">
-
-                {/* Icon */}
-                <div
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${isDark
-                        ? "bg-gray-800 text-gray-300"
-                        : "bg-gray-100 text-gray-600"
-                        }`}
-                >
-                    {icon}
-                </div>
-
-                {/* Text */}
-                <div className="min-w-0 flex-1">
-                    <h3
-                        className={`break-words text-sm font-medium ${isDark ? "text-white" : "text-gray-900"
-                            }`}
-                    >
-                        {title}
-                    </h3>
-
-                    <p className="mt-1 break-words text-xs leading-5 text-gray-500">
-                        {description}
-                    </p>
-                </div>
-            </div>
-
-            {/* Toggle */}
-            <div className="shrink-10 pt-1 sm:pt-0">
-                <Toggle
-                    enabled={enabled}
-                    onChange={onChange}
-                    isDark={isDark}
-                />
-            </div>
-        </div>
-    );
-};
-
-
-/* =====================================================
-   TOGGLE
-===================================================== */
-
-const Toggle = ({
-    enabled,
-    onChange,
-    isDark,
-}: any) => {
-
-    return (
-        <button
-            type="button"
-            onClick={onChange}
-            aria-label="Toggle setting"
-            className={`relative flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${enabled
-                ? "bg-blue-600"
-                : isDark
-                    ? "bg-gray-700"
-                    : "bg-gray-300"
-                }`}
-        >
-            <span
-                className={`absolute h-5 w-5 rounded-full bg-white shadow-sm transition-all ${enabled
-                    ? "right-0.5"
-                    : "left-0.5"
-                    }`}
-            />
-        </button>
-    );
-};
-
-
-/* =====================================================
-   SECURITY ITEM
-===================================================== */
-
-const SecurityItem = ({
-    icon,
-    title,
-    description,
-    isDark,
-    action,
-}: any) => {
-
-    return (
-        <div
-            className={`flex items-center justify-between gap-4 border-b p-4 last:border-b-0 sm:p-5 ${isDark
-                ? "border-gray-800"
-                : "border-gray-200"
-                }`}
-        >
-
-            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-
-                <div
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${isDark
-                        ? "bg-gray-800 text-gray-300"
-                        : "bg-gray-100 text-gray-600"
-                        }`}
-                >
-                    {icon}
-                </div>
-
-                <div className="min-w-0">
-
-                    <h3
-                        className={`text-sm font-medium ${isDark
-                            ? "text-white"
-                            : "text-gray-900"
-                            }`}
-                    >
-                        {title}
-                    </h3>
-
-                    <p className="mt-1 text-xs text-gray-500">
-                        {description}
-                    </p>
-
-                </div>
+                </main>
 
             </div>
 
-            <div className="shrink-0 text-gray-400">
-                {action}
-            </div>
-
-        </div>
-    );
-};
 
 
-/* =====================================================
-   THEME CARD
-===================================================== */
+        </>
+    )
+}
 
-const ThemeCard = ({
-    title,
-    description,
-    selected,
-    isDark,
-}: any) => {
-
-    return (
-        <div
-            className={`rounded-xl border-2 p-4 transition ${selected
-                ? "border-blue-500"
-                : isDark
-                    ? "border-gray-700"
-                    : "border-gray-200"
-                }`}
-        >
-
-            <div className="flex items-center justify-between gap-3">
-
-                <div>
-
-                    <p
-                        className={`text-sm font-medium sm:text-base ${isDark
-                            ? "text-white"
-                            : "text-gray-900"
-                            }`}
-                    >
-                        {title}
-                    </p>
-
-                    <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-                        {description}
-                    </p>
-
-                </div>
-
-                {selected && (
-                    <FiCheck className="shrink-0 text-blue-500" />
-                )}
-
-            </div>
-
-        </div>
-    );
-};
-
-
-/* =====================================================
-   INTEGRATION CARD
-===================================================== */
-
-const IntegrationCard = ({
-    icon,
-    title,
-    description,
-    connected,
-    isDark,
-}: any) => {
-
-    return (
-        <div
-            className={`rounded-xl border p-4 sm:p-5 ${isDark
-                ? "border-gray-800 bg-[#111827]"
-                : "border-gray-200 bg-white"
-                }`}
-        >
-
-            <div className="flex items-start justify-between gap-3">
-
-                <div
-                    className={`flex h-11 w-11 items-center justify-center rounded-lg ${isDark
-                        ? "bg-gray-800 text-white"
-                        : "bg-gray-100 text-gray-700"
-                        }`}
-                >
-                    {icon}
-                </div>
-
-                {connected && (
-                    <span className="flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-600">
-                        <FiCheck />
-                        Connected
-                    </span>
-                )}
-
-            </div>
-
-            <h3
-                className={`mt-4 text-base font-semibold ${isDark
-                    ? "text-white"
-                    : "text-gray-900"
-                    }`}
-            >
-                {title}
-            </h3>
-
-            <p className="mt-1 text-sm leading-5 text-gray-500">
-                {description}
-            </p>
-
-            <button
-                className={`mt-5 w-full rounded-lg border px-4 py-2.5 text-sm font-medium transition ${isDark
-                    ? "border-gray-700 text-gray-300 hover:bg-gray-800"
-                    : "border-gray-300 text-gray-700 hover:bg-gray-50"
-                    }`}
-            >
-                {connected ? "Manage" : "Connect"}
-            </button>
-
-        </div>
-    );
-};
-
-export default Settings;
+export default Settings

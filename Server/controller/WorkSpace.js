@@ -491,7 +491,7 @@ const RemoveStarWorkspaceByUserEmail = async (req, res, next) => {
 const FetchTeamInfoWorkpsace = async (req, res, next) => {
     try {
         const { projectid } = req.query
-        console.log(projectid, 'SpaceID')
+        console.log(req.query, 'SpaceID  req.query')
         if (!projectid) {
             const err = new Error("SpaceID is required.")
             err.status = 404
@@ -499,7 +499,6 @@ const FetchTeamInfoWorkpsace = async (req, res, next) => {
         }
 
         const Isexits = await Workspace.findById(projectid).populate("WorkSpacememebers.id")
-        console.log(Isexits, 'checkisexits')
         if (!Isexits) {
             const err = new Error("There is no workspace")
 
@@ -508,12 +507,11 @@ const FetchTeamInfoWorkpsace = async (req, res, next) => {
             return err
         }
 
-        console.log(Isexits.WorkSpacememebers.length, 'check length')
-        console.log(Isexits.WorkSpacememebers, 'check info')
+        // console.log(Isexits.WorkSpacememebers.length, 'check length')
+        // console.log(Isexits.WorkSpacememebers, 'check info')
 
 
         if (Isexits.WorkSpacememebers.length == 0) {
-            console.log("hey")
             return res.status(404).json({ message: "No" })
         }
 

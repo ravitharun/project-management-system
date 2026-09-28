@@ -1,8 +1,8 @@
 
 import { CircleX, CircleCheck } from "lucide-react";
 
-import { toast, Toaster } from "sonner";
-import { checkuser } from "./LocalStorage";
+import { toast, } from "sonner";
+// import { checkuser } from "./LocalStorage";
 
 export const ShowToast = (
     message: string | any,
@@ -34,17 +34,16 @@ export const ShowToast = (
         </div>
     ));
 
-    <Toaster position="bottom-right" closeButton></Toaster>
 
 
-    {
-        statusCode == 401 &&
+    // {
+    //     statusCode == 401 &&
 
 
-            checkuser()
+    //         checkuser()
 
 
-    }
+    // }
 
 
 };

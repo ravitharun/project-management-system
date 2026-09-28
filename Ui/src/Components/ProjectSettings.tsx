@@ -29,8 +29,6 @@ function ProjectSettings() {
 
     const [__, setRepo] = useState<String>("")
     useEffect(() => {
-
-
         const fetechRepos = async () => {
 
 
@@ -39,7 +37,6 @@ function ProjectSettings() {
                 console.log("calling api repos" + localStorage.getItem("githubPermissionId"))
                 // SetloadingRepos(true)
                 const repos = await instance.get(`/api/github/repositoryselection?id=${id}`,)
-                console.log(repos, 'REPO')
                 setRepo(repos.data.data)
                 // SetloadingRepos(false)
 

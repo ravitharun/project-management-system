@@ -39,7 +39,7 @@ function App() {
     <>
       <SpeedInsights />
       <Analytics />
-      <Toaster closeButton />
+      <Toaster closeButton duration={1000} />
 
       {!JSON.parse(getuserInfo).googleCalendarConnected || isdly ? (
         <AcceptGoogleCalendar setOpen={handelPoup} />

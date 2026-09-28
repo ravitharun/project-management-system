@@ -23,6 +23,7 @@ import Forms from "../../FormsPages/Forms";
 import Development from "../../Development";
 import Reports from "../../Reports";
 import Goals from "../../Goals";
+import MeetingRoom from "../../MeetingRoom";
 
 
 function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }: any) {
@@ -31,7 +32,6 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
   const { theme }: any = context
   const data: any = { HandelShare, handelMaximizeAndMinPoup, workspace, setOpenProject, openProject, workspaceMenuRef, SetBackground, CurrentView, setCurrentView, handleProjectSetting, ismaxAndMin }
   const navi = useNavigate()
-
   const contextSpace = useContext(ClickedWorkSpace);
 
   const { setClickedSpace }: any = contextSpace
@@ -432,7 +432,10 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
                 return (
                   <button
                     key={idx}
-                    onClick={() => setCurrentView(view)}
+                    onClick={() => {
+                      setCurrentView(view)
+
+                    }}
                     className={`
                   px-4 py-2.5
                   rounded-xl
@@ -453,6 +456,21 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
                 );
               }
             )}
+            <button className={`
+                  px-4 py-2.5
+                  rounded-xl
+                  text-[13px]
+                  whitespace-nowrap
+                  transition-all
+
+                  ${CurrentView == "Meetings"
+                ? theme === "Dark"
+                  ? "bg-white text-black"
+                  : "bg-black text-white"
+                : "opacity-60 hover:opacity-100"
+              }
+                `} onClick={() => setCurrentView("Meetings")}
+            >Mettings</button>
           </div>
 
           {/* BOARD */}
@@ -485,12 +503,16 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
 
             {CurrentView == "Development" &&
               // <h1>{CurrentView} View Adding Soon</h1>
-              <Development/>
+              <Development />
+            }
+            {CurrentView == "Meetings" &&
+              // <h1>{CurrentView} View Adding Soon</h1>
+              <MeetingRoom />
             }
 
             {CurrentView == "Forms" &&
               // <h1>{CurrentView} View Adding Soon</h1>
-              <Forms/>
+              <Forms />
             }
 
             {CurrentView == "List" && (
@@ -511,7 +533,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
             }
 
             {CurrentView == "Reports" &&
-            <Reports/>
+              <Reports />
             }
 
             {CurrentView == "Backlog" &&
@@ -532,7 +554,7 @@ function MinAndMaxWorkspaceView({ HandelShare, handelMaximizeAndMinPoup, workspa
 
             {CurrentView == "Goals" &&
               // <h1>{CurrentView} View Adding Soon</h1>
-              <Goals/>
+              <Goals />
             }
 
             {CurrentView == "Board" && (
